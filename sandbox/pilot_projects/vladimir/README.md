@@ -34,7 +34,8 @@ dotnet watch run --no-hot-reload
 
 .NET i Entity Framework:
 ```bash
-dotnet ef migrations ---
+# InitialCreate za prvo kreiranje, posle je ime opisno sta je dodato
+dotnet ef migrations add InitalCreate
 dotnet ef database update
 ```
 
