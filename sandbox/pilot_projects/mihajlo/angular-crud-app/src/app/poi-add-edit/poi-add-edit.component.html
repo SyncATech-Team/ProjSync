@@ -1,0 +1,36 @@
+<div mat-dialog-title>
+    <h1>Nova znamenitost</h1>
+</div>
+<form [formGroup]="poiForm" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Naziv</mat-label>
+                <input matInput type="text" placeholder="Ex. Naziv" formControlName="name">
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Grad</mat-label>
+                <input matInput placeholder="Ex. Grad" formControlName="city">
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Drzava</mat-label>
+                <input matInput placeholder="Ex. Drzava" formControlName="country">
+            </mat-form-field>
+        </div>
+
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Opis</mat-label>
+                <input matInput placeholder="Ex. Opis" formControlName="description">
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" color="warn" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form>
