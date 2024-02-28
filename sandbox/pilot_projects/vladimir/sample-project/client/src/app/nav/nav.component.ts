@@ -9,9 +9,8 @@ import { AccountService } from '../service/account.service';
 export class NavComponent implements OnInit {
   // model koji ce da se koristi za mapiranje iz forme
   model: any = {};
-  loggedIn = false;
 
-  constructor(private accoutService: AccountService) { }
+  constructor(public accoutService: AccountService) { }
 
   ngOnInit(): void {
     
@@ -22,13 +21,12 @@ export class NavComponent implements OnInit {
     this.accoutService.login(this.model).subscribe({
       next: response => {
         console.log(response);
-        this.loggedIn = true;
       },
       error: error => console.log(error)
     })
   }
 
   logout() {
-    this.loggedIn = false;
+    this.accoutService.logout();
   }
 }
