@@ -2,8 +2,37 @@
 Manje aplikacija koja ce koristiti tehnologije: Angular, .NET, relacionu bazu podataka
 
 ## Front
-Angular
+Angular v16
+instaliranje Angular-a:
+```bash
+npm install -g @angular/cli@16
+```
+Ukoliko se ne naglasi @16 onda ce da se instalira najnovija verzija.
 
+Kreiranje novog projekta (koji se zove client)
+```bash
+ng new client
+```
+
+Bild i pokretanje aplikacije:
+```bash
+cd client
+ng serve
+```
+
+Kreiranje nove komponente i servisa:
+```bash
+# umesto components moze da se koristi i samo c alias, 
+# a --skip-tests je znak da se ne dodaju testovi za komponentu
+ng g component nav --skip-tests
+ng g service account --skip-tests
+```
+
+Dodavanje ngx-bootstarp u projekat (korisceno za dropdown):
+```bash
+ng add ngx-bootstrap
+ng add ngx-bootstrap  --component dropdowns
+```
 ## Backend
 .NET 8
 
