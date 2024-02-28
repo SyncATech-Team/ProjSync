@@ -1,0 +1,75 @@
+
+
+<div class="container">
+    <div class="row">
+        <form #form="ngForm" (ngSubmit)="addTask()">
+            <br>
+            <h2>
+                Add task
+            </h2>
+            <div class="md-3">
+              <label for="description" class="form-label">Description</label>
+              <input type="text" class="form-control" id="description" [(ngModel)]="newTask.description" name="description">
+            </div>
+            <div class="mb-3">
+                <label for="dueDate" class="form-label">Due date</label>
+                <input type="datetime-local" class="form-control" id="dueDate" [(ngModel)]="newTask.dueDate" name="dueDate">
+            </div>
+            
+            <button type="submit" class="btn btn-primary bt" style="float: right;">Submit</button>
+          </form>
+    </div>
+    <br>
+    <div class="row">
+        <h2>
+            Tasks
+        </h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">Due Date</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let task of tasks">
+                <td>{{task.description}}</td>
+                <td>{{task.createdDate| date: 'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{task.dueDate| date: 'dd/MM/yyyy HH:mm'}}</td>
+                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="updateTask2(task)"> Update</button></td> 
+                <td><button type="button" class="btn btn-danger" (click)="deleteTask(task.id)">Delete</button></td> 
+            </tr>
+            </tbody>
+        </table>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel" >Update task</h1>
+                </div>
+                <div class="modal-body">
+                    <form #form="ngForm" (ngSubmit)="updateTask()">
+                        <div class="mb-3">
+                          <label for="description" class="form-label">Description</label>
+                          <input type="email" class="form-control" id="description" [(ngModel)]="taskToUpdate.description" name="description">
+                        </div>
+                        <div class="mb-3">
+                            <label for="dueDate" class="form-label">Due date</label>
+                            <input type="datetime-local" class="form-control" id="dueDate" [(ngModel)]="taskToUpdate.dueDate" name="dueDate">
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getAllTasks()">Close</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+                          </div>
+                      </form>
+                </div>
+              
+            </div>
+            </div>
+        </div>
+    </div>
+
+</div>
