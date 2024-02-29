@@ -1,0 +1,12 @@
+<h1>HELLO</h1>
+
+<input id="name" type="text" [(ngModel)] = "name">
+<button (click)="addItem()" id="Postavi">Postavi</button>
+
+<table >
+  <tr *ngFor="let item of items">
+    <td>{{item.name}}</td>
+
+    <button (click)="delItem(item.Id)" id="Zavrseno">Zavrseno</button>
+  </tr>
+</table>
