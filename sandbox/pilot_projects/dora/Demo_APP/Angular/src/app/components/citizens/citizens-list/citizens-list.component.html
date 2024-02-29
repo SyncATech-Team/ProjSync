@@ -1,0 +1,28 @@
+<div class="container my-5">
+     <h1 class="mb-3">Citizens</h1>
+
+     <table class="table" *ngIf="citizens && citizens.length > 0">
+        <thead>
+            <tr>
+                <th>UMCN</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let citizen of citizens">
+                <td>{{citizen.umcn}}</td>
+                <td>{{citizen.name}}</td>
+                <td>{{citizen.email}}</td>
+                <td>{{citizen.phone}}</td>
+                <td>{{citizen.address}}</td>
+                <td><a [routerLink]="['/citizens', 'edit', citizen.umcn]">View</a></td>
+            </tr>
+        </tbody>
+
+     </table>
+     <p *ngIf="!citizens || citizens.length <= 0">No citizens found.</p>
+</div>

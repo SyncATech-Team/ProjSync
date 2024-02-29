@@ -1,0 +1,42 @@
+<div class="container my-5">
+
+    <h1 class="mb-3">Edit Citizen</h1>
+
+    <div class="row">
+        <div class="col-6">
+
+            <form #form="ngForm" (ngSubmit)="updateCitizen()">
+                <div class="mb-3">
+                    <label for="umcn" class="form-label">UMCN</label>
+                    <input type="text" class="form-control" id="umcn" readonly
+                    name="umcn" [(ngModel)]="citizenDetails.umcn" >
+                  </div>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="name" 
+                  name="name" [(ngModel)]="citizenDetails.name" >
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email"
+                    name="email" [(ngModel)]="citizenDetails.email">
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="number" class="form-control" id="phone"
+                    name="phone" [(ngModel)]="citizenDetails.phone">
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address"
+                    name="address" [(ngModel)]="citizenDetails.address">
+                </div>
+                
+                <button type="submit" class="btn btn-primary mr-5">Save</button>
+                <button type="button" class="btn btn-danger" (click)="deleteCitizen(citizenDetails.umcn)">Delete</button>
+              </form>
+
+        </div>
+    </div>
+
+</div>
