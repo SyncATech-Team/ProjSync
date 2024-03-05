@@ -1,0 +1,37 @@
+<div class="container cc">
+    <div class="row">
+        <div class="col mx-5 px-5 my-5">
+            <div class="text-center mb-5">
+                <h2>ProjSync</h2>
+                <p>Log in to continue</p>
+            </div>
+
+            <form>
+                <div class="mb-3">
+                    <input type="text" 
+                    name="username"
+                    class="form-control form-control-lg bg-light fs-6" 
+                    placeholder="Enter your email address"
+                    [(ngModel)]="user.username">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" 
+                    name="password"
+                    class="form-control form-control-lg bg-light fs-6" 
+                    placeholder="Enter your password"
+                    [(ngModel)]="user.password">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="submit" class="btn btn-lg btn-primary w-100 fs-6" value="Log in">
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="formCheck">
+                    <label for="formCheck" class="form-check-label text-secondary"><small>Remember Me</small></label>
+                </div>
+            </form>
+            <div class="mt-5 pt-5 text-center">
+                <small><a href="#">Can't log in?</a></small>
+            </div>
+        </div>
+    </div>
+</div>
