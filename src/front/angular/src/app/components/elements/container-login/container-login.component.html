@@ -7,12 +7,15 @@
             </div>
 
             <form>
-                <div class="mb-3">
+                <div class="mb-3 field-group">
                     <input type="text" 
                     name="username"
                     class="form-control form-control-lg bg-light fs-6" 
-                    placeholder="Enter your email address"
+                    placeholder="Enter your email"
                     [(ngModel)]="user.username">
+                    <div class="icon">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </div>
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" 
