@@ -11,4 +11,10 @@ export class ContainerLoginComponent {
     username:  "",
     password:  ""
   }
+
+  showPassword: boolean = false;
+
+  togglePasswordVisibility(){
+    this.showPassword = !this.showPassword;
+  }
 }

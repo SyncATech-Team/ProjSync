@@ -7,19 +7,29 @@
             </div>
 
             <form>
-                <div class="mb-3">
+                <div class="mb-3 field-group">
                     <input type="text" 
                     name="username"
                     class="form-control form-control-lg bg-light fs-6" 
-                    placeholder="Enter your email address"
+                    placeholder="Enter your email"
                     [(ngModel)]="user.username">
+                    <div class="icon">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </div>
                 </div>
-                <div class="input-group mb-3">
-                    <input type="password" 
+                <div class="mb-3 field-group">
+                    <input 
+                    [type]="showPassword ? 'text' : 'password'" 
                     name="password"
                     class="form-control form-control-lg bg-light fs-6" 
                     placeholder="Enter your password"
                     [(ngModel)]="user.password">
+                    <div class="icon">
+                        <i *ngIf="showPassword; else hideIcon" (click)="togglePasswordVisibility()" class="fa-solid fa-eye"></i>
+                        <ng-template #hideIcon>
+                            <i class="fa-solid fa-eye-slash" (click)="togglePasswordVisibility()"></i>
+                        </ng-template>
+                    </div>
                 </div>
                 <div class="input-group mb-3">
                     <input type="submit" class="btn btn-lg btn-primary w-100 fs-6" value="Log in">
