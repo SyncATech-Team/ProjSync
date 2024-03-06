@@ -5,3 +5,20 @@
 .btn{
     background-color: #5E5BF4;
 }
+
+.field-group{
+    position: relative;
+}
+
+.icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999999;
+    font-size: 1.6em;    
+}
