@@ -18,7 +18,8 @@
                     </div>
                 </div>
                 <div class="mb-3 field-group">
-                    <input type="password" 
+                    <input 
+                    [type]="showPassword ? 'text' : 'password'" 
                     name="password"
                     class="form-control form-control-lg bg-light fs-6" 
                     placeholder="Enter your password"
