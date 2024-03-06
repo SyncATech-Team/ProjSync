@@ -13,19 +13,9 @@ export class ContainerLoginComponent implements OnInit {
     password:  ""
   }
 
-  constructor(public accoutService: AccountService, private router: Router) { }
+  showPassword: boolean = false;
 
-  ngOnInit(): void {
-    
-  }
-
-  login() {
-    // dobili smo Observable, moramo da uradimo subscribe da bismo koristili
-    this.accoutService.login(this.model).subscribe({
-      next: () => this.router.navigateByUrl('/home'),
-
-      // TODO: Prikazati gresku kada npr korisnik unese pogresnu lozinku ili username
-      error: error => console.log(error)
-    })
+  togglePasswordVisibility(){
+    this.showPassword = !this.showPassword;
   }
 }
