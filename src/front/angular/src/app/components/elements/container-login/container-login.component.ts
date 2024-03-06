@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   templateUrl: './container-login.component.html',
   styleUrl: './container-login.component.css'
 })
-export class ContainerLoginComponent implements OnInit {
-  model : any = {
+export class ContainerLoginComponent {
+  user : any = {
     username:  "",
     password:  ""
   }
