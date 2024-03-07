@@ -1,4 +1,6 @@
 using backAPI.Data;
+using backAPI.Repositories.Implementation;
+using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +12,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddDbContext<DataContext>(opt =>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddDbContext<DataContext>(opt => {
+    opt.UseSqlite(builder.Configuration.GetConnectionString("SyncATechDefaultConectionSQLite"));
 });
+
+builder.Services.AddScoped<IUsersRepository, UsersRepository>(); // inject service
 
 var app = builder.Build();
 

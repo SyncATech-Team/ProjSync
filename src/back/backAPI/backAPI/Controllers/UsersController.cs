@@ -1,6 +1,7 @@
-﻿using backAPI.Data;
-using backAPI.DTOs;
-using backAPI.Entities;
+﻿using backAPI.Entities;
+using backAPI.Entities.Domain;
+using backAPI.Entities.DTO;
+using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -8,22 +9,23 @@ using System.Text;
 
 namespace backAPI.Controllers
 {
-    public class AccountController : BaseApiController
+    public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IUsersRepository usersRepository;
+
 
         // TODO: Dodati servis za JWT
-        public AccountController(DataContext context)
-        {
-            _context = context;
+        public UsersController(IUsersRepository usersRepository) {
+            this.usersRepository = usersRepository;
         }
 
-        [HttpPost("register")] // POST: api/account/register, body {RegisterDto)
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        // POST: api/users/register, body {RegisterDTO)
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
         {
             // proveriti da li u bazi postoji korisnik sa istim username-om
             // ukoliko postoji vratiti 404 Bad Request
-            if (await UserExists(registerDto.Username))
+            if (await UserExists(registerDTO.Username))
             {
                 return BadRequest("Username is taken");
             }
@@ -33,34 +35,42 @@ namespace backAPI.Controllers
             using var hmac = new HMACSHA512();
             var user = new User
             {
-                Username = registerDto.Username,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                Username = registerDTO.Username,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),
+                PasswordSalt = hmac.Key,
+                UserEmail = registerDTO.UserEmail,
+                UserFirstName = registerDTO.UserFirstName,
+                UserLastName = registerDTO.UserLastName,
+                RoleCompany = registerDTO.RoleCompany,
+                UserAddress = registerDTO.UserAddress,
+                UserContactPhone = registerDTO.UserContactPhone,
+                UserLinkedinProfile = registerDTO.UserLinkedinProfile,
+                UserStatus = registerDTO.UserStatus
             };
 
-            _context.Users.Add(user);
             // sacuvati korisnika u bazi
-            await _context.SaveChangesAsync();
+            await usersRepository.CreateNewUserAsync(user);
 
             // TODO: dodati servis koji ce da kreira token i vrati kroz DTO
-            return new UserDto
+            return new UserDTO
             {
                 Username = user.Username,
                 Token = ""
             };
         }
 
+
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.Username == loginDto.Username);
+            var user = await usersRepository.GetUserIfExists(loginDTO.UserEmail);
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
             if (user == null) return Unauthorized("invalid username");
 
             // koristimo pass_salt sacuvan u bazi da bismo obezbedili da ce sifra na isti nacin biti hesirana
             using var hmac = new HMACSHA512(user.PasswordSalt);
-            byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+            byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
 
             for (int i = 0; i < computedHash.Length; i++)
             {
@@ -70,7 +80,7 @@ namespace backAPI.Controllers
             }
 
             // TODO: dodati servis koji ce da kreira token i vrati kroz DTO
-            return new UserDto
+            return new UserDTO
             {
                 Username = user.Username,
                 Token = ""
@@ -82,9 +92,8 @@ namespace backAPI.Controllers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        private async Task<bool> UserExists(string username)
-        {
-            return await _context.Users.AnyAsync(x => x.Username == username.ToLower());
+        private async Task<bool> UserExists(string username) {
+            return await usersRepository.CheckUserExistance(username);
         }
     }
 }

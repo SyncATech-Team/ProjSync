@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backAPI.DTOs
+namespace backAPI.Entities.DTO
 {
     /// <summary>
     /// Za login korisnika koristice se ovaj DTO kao objekat koji ce API da prihvati
     /// </summary>
-    public class LoginDto
+    public class LoginDTO
     {
         [Required]
-        public string Username { get; set; }
+        public string UserEmail { get; set; }
         [Required]
         public string Password { get; set; }
     }
