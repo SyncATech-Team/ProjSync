@@ -1,4 +1,4 @@
-<div class="container cc">
+<!-- <div class="container cc">
     <div class="row">
         <div class="col mx-5 px-5 my-5">
             <div class="text-center mb-5">
@@ -40,8 +40,78 @@
                 </div>
             </form>
             <div class="mt-5 pt-5 text-center">
-                <small><a href="#">Can't log in?</a></small>
+                <small><a href="mailto: syncatechpmf@gmail.com?subject=Problems with login">Can't log in?</a></small>
             </div>
+        </div>
+    </div>
+</div> -->
+
+<div id="page" class="login">
+    <div class="container">
+        <div class="login-container-wrapper clearfix">
+            <div class="logo">
+                <i class="fa fa-sign-in"></i>
+            </div>
+            
+            <!-- Welcome message -->
+            <div class="welcome">
+                <strong>Welcome,</strong> please login
+            </div>
+            <!-- End of Welcome message -->
+
+            <form class="form-horizontal login-form">
+                
+                <!-- Input username -->
+                <div class="form-group relative">
+                    <input
+                        name="username"
+                        id="login_username" 
+                        class="form-control input-lg" 
+                        type="email" 
+                        placeholder="syncatechpmf@domain.com" 
+                        [(ngModel)]="user.username"
+                        required>
+                    <i class="fa fa-user"></i>
+                </div>
+                <!-- End of Input username -->
+                
+                <!-- Input password -->
+                <div class="form-group relative password">
+                    <input 
+                        name="password"
+                        id="login_password" 
+                        class="form-control input-lg" 
+                        [type]="showPassword ? 'text' : 'password'" 
+                        placeholder="Password" 
+                        [(ngModel)]="user.password"
+                        required>
+                    <i style="cursor: pointer;" *ngIf="showPassword; else hideIcon" (click)="togglePasswordVisibility()" class="fa fa-unlock"></i>
+                    
+                    <ng-template #hideIcon>
+                        <i style="cursor: pointer;" class="fa fa-lock" (click)="togglePasswordVisibility()"></i>
+                    </ng-template>
+                </div>
+                <!-- End of Input password -->
+                
+                <!-- Optional options -->
+                <div id="need_flex">
+                    <div class="checkbox pull-left">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                    
+                    <div class="checkbox pull-right">
+                        <label> <a id="mailto_link" class="forget" href="mailto: syncatechpmf@gmail.com?Subject=Problems with login" title="Contact us">Need help with login?</a> </label>
+                    </div>
+                </div>
+                <!-- End of Optional options -->
+
+                <!-- Submit button -->
+                <div id="login-btn-div" class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg btn-block" value="Log in">Login</button>
+                </div>
+                <!-- End of Submit button -->
+
+            </form>
         </div>
     </div>
 </div>
