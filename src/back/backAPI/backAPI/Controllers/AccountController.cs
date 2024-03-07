@@ -31,9 +31,9 @@ namespace backAPI.Controllers
             // hesirati sifru koja je stigla za registraciju i kreirati i salt kao Key generisan
             // preko random vrednosti
             using var hmac = new HMACSHA512();
-            var user = new AppUser
+            var user = new User
             {
-                UserName = registerDto.Username,
+                Username = registerDto.Username,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key
             };
@@ -45,7 +45,7 @@ namespace backAPI.Controllers
             // TODO: dodati servis koji ce da kreira token i vrati kroz DTO
             return new UserDto
             {
-                Username = user.UserName,
+                Username = user.Username,
                 Token = ""
             };
         }
@@ -53,7 +53,7 @@ namespace backAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.Username == loginDto.Username);
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
             if (user == null) return Unauthorized("invalid username");
@@ -72,7 +72,7 @@ namespace backAPI.Controllers
             // TODO: dodati servis koji ce da kreira token i vrati kroz DTO
             return new UserDto
             {
-                Username = user.UserName,
+                Username = user.Username,
                 Token = ""
             };
         }
@@ -84,7 +84,7 @@ namespace backAPI.Controllers
         /// <returns></returns>
         private async Task<bool> UserExists(string username)
         {
-            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await _context.Users.AnyAsync(x => x.Username == username.ToLower());
         }
     }
 }
