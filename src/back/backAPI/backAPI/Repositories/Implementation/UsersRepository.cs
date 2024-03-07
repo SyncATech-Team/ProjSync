@@ -20,12 +20,16 @@ namespace backAPI.Repositories.Implementation {
             return user;
         }
 
-        public async Task<bool> CheckUserExistance(string username) {
+        public async Task<bool> CheckUsernameExistance(string username) {
             return await dataContext.Users.AnyAsync(user => user.Username.ToLower() == username.ToLower());
         }
 
         Task<User> IUsersRepository.GetUserIfExists(string email) {
             return dataContext.Users.SingleOrDefaultAsync(user => user.UserEmail == email);
+        }
+
+        async Task<bool> IUsersRepository.CheckEmailExistance(string email) {
+            return await dataContext.Users.AnyAsync(user => user.UserEmail.ToLower() == email.ToLower());
         }
     }
 }

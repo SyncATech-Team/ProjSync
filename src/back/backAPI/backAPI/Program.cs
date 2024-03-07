@@ -16,7 +16,8 @@ builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseSqlite(builder.Configuration.GetConnectionString("SyncATechDefaultConectionSQLite"));
 });
 
-builder.Services.AddScoped<IUsersRepository, UsersRepository>(); // inject service
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();                    // inject service
+builder.Services.AddScoped<ICompanyRolesRepository, CompanyRolesRepository>();      // inject service
 
 var app = builder.Build();
 

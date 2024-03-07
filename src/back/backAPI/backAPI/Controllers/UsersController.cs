@@ -25,14 +25,22 @@ namespace backAPI.Controllers
         {
             // proveriti da li u bazi postoji korisnik sa istim username-om
             // ukoliko postoji vratiti 404 Bad Request
-            if (await UserExists(registerDTO.Username))
+            if (await usersRepository.CheckUsernameExistance(registerDTO.Username))
             {
-                return BadRequest("Username is taken");
+                return BadRequest("Username is taken by another user!");
+            }
+
+            // proveriti da li u bazi postoji korisnik sa istim email-om
+            // ukoliko postoji vratiti 404 Bad Request
+            if (await usersRepository.CheckEmailExistance(registerDTO.UserEmail)) {
+                return BadRequest("Email is already used by another user!");
             }
 
             // hesirati sifru koja je stigla za registraciju i kreirati i salt kao Key generisan
             // preko random vrednosti
             using var hmac = new HMACSHA512();
+
+            // Convert DTO to Domain Model
             var user = new User
             {
                 Username = registerDTO.Username,
@@ -51,6 +59,7 @@ namespace backAPI.Controllers
             // sacuvati korisnika u bazi
             await usersRepository.CreateNewUserAsync(user);
 
+            // Map back from Domain model to DTO | encapsulate clients response
             // TODO: dodati servis koji ce da kreira token i vrati kroz DTO
             return new UserDTO
             {
@@ -85,15 +94,6 @@ namespace backAPI.Controllers
                 Username = user.Username,
                 Token = ""
             };
-        }
-
-        /// <summary>
-        /// Metoda koja proverava da li je korisnik sacuvan u bazi
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        private async Task<bool> UserExists(string username) {
-            return await usersRepository.CheckUserExistance(username);
         }
     }
 }
