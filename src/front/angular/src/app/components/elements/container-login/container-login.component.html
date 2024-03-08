@@ -59,7 +59,7 @@
             </div>
             <!-- End of Welcome message -->
 
-            <form class="form-horizontal login-form">
+            <form class="form-horizontal login-form" #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
                 
                 <!-- Input username -->
                 <div class="form-group relative">
