@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationCreation : Migration
+    public partial class MigrationSql : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,40 +15,40 @@ namespace backAPI.Migrations
                 name: "CompanyRoles",
                 columns: table => new
                 {
-                    RoleCompanyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    RoleCompanyName = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
                     WorkingHourPrice = table.Column<double>(type: "REAL", nullable: false),
                     OvertimeHourPrice = table.Column<double>(type: "REAL", nullable: false),
                     WeekendHourPrice = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompanyRoles", x => x.RoleCompanyId);
+                    table.PrimaryKey("PK_CompanyRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "BLOB", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: false),
-                    UserEmail = table.Column<string>(type: "TEXT", nullable: false),
-                    UserFirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    UserLastName = table.Column<string>(type: "TEXT", nullable: false),
-                    RoleCompany = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserProfilePhoto = table.Column<string>(type: "TEXT", nullable: true),
-                    UserAddress = table.Column<string>(type: "TEXT", nullable: true),
-                    UserContactPhone = table.Column<string>(type: "TEXT", nullable: true),
-                    UserLinkedinProfile = table.Column<string>(type: "TEXT", nullable: true),
-                    UserStatus = table.Column<string>(type: "TEXT", nullable: true)
+                    Username = table.Column<string>(type: "TEXT", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", nullable: true),
+                    CompanyRoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProfilePhoto = table.Column<string>(type: "TEXT", nullable: true),
+                    Address = table.Column<string>(type: "TEXT", nullable: true),
+                    ContactPhone = table.Column<string>(type: "TEXT", nullable: true),
+                    LinkedinProfile = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,24 +66,6 @@ namespace backAPI.Migrations
                 {
                     table.PrimaryKey("PK_WorkingHours", x => x.UserId);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CompanyRoles_RoleCompanyName",
-                table: "CompanyRoles",
-                column: "RoleCompanyName",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_UserEmail",
-                table: "Users",
-                column: "UserEmail",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Username",
-                table: "Users",
-                column: "Username",
-                unique: true);
         }
 
         /// <inheritdoc />

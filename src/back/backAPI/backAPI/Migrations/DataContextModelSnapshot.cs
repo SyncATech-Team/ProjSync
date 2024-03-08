@@ -19,16 +19,15 @@ namespace backAPI.Migrations
 
             modelBuilder.Entity("backAPI.Entities.Domain.CompanyRole", b =>
                 {
-                    b.Property<int>("RoleCompanyId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("OvertimeHourPrice")
                         .HasColumnType("REAL");
-
-                    b.Property<string>("RoleCompanyName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<double>("WeekendHourPrice")
                         .HasColumnType("REAL");
@@ -36,69 +35,54 @@ namespace backAPI.Migrations
                     b.Property<double>("WorkingHourPrice")
                         .HasColumnType("REAL");
 
-                    b.HasKey("RoleCompanyId");
-
-                    b.HasIndex("RoleCompanyName")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("CompanyRoles");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CompanyRoleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContactPhone")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LinkedinProfile")
+                        .HasColumnType("TEXT");
+
                     b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
                         .HasColumnType("BLOB");
 
-                    b.Property<int>("RoleCompany")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserAddress")
+                    b.Property<string>("ProfilePhoto")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserContactPhone")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserFirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserLastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserLinkedinProfile")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserProfilePhoto")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserStatus")
+                    b.Property<string>("Status")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("UserId");
-
-                    b.HasIndex("UserEmail")
-                        .IsUnique();
-
-                    b.HasIndex("Username")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });

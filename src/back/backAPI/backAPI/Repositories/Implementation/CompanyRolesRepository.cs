@@ -49,14 +49,14 @@ namespace backAPI.Repositories.Implementation {
         /* **************************************************************************
          * PUT | Izmeni entitet za prosledjeni id
          * ************************************************************************** */
-        public async Task<bool> UpdateCompanyRole(int id, CompanyRoleDTO request) {
+        public async Task<bool> UpdateCompanyRole(int id, ApiCompanyRole request) {
             var role = await dataContext.Roles.FindAsync(id);
 
-            if (role == null || await CheckCompanyRoleNameExistance(request.RoleCompanyName) == true) {
+            if (role == null || await CheckCompanyRoleNameExistance(request.Name) == true) {
                 return false;
             }
 
-            role.RoleCompanyName = request.RoleCompanyName;
+            role.Name = request.Name;
             role.OvertimeHourPrice = request.OvertimeHourPrice;
             role.WorkingHourPrice = request.WorkingHourPrice;
             role.WeekendHourPrice = request.WeekendHourPrice;
@@ -68,7 +68,7 @@ namespace backAPI.Repositories.Implementation {
          * Provera da li u bazi vec postoji uloga koju zelimo da dodamo
          * ************************************************************************** */
         public async Task<bool> CheckCompanyRoleNameExistance(string name) {
-            return await dataContext.Roles.AnyAsync(role => role.RoleCompanyName.ToLower() == name.ToLower());
+            return await dataContext.Roles.AnyAsync(role => role.Name.ToLower() == name.ToLower());
         }
     }
 }

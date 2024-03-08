@@ -6,10 +6,16 @@ namespace backAPI.Entities.Domain {
 
     [Table("WorkingHours")]
     public class WorkingHours {
-        [Key] [Column(Order = 1)] public int UserId { get; set; }
-        [Required] [Column (Order = 2)] public DateTime SpecificDate { get; set; }
-        [Required] public double HoursWorking {  get; set; }
-        [Required, DefaultValue(false)] public bool Weekend { get; set; }
-        [Required, DefaultValue(false)] public bool Overtime { get; set; }
+        [Key]
+        [ForeignKey("Users")]
+        [Column(Order = 1)]
+        public int UserId { get; set; }
+        [Column (Order = 2)]
+        public DateTime SpecificDate { get; set; }
+        public double HoursWorking {  get; set; }
+        [DefaultValue(false)]
+        public bool Weekend { get; set; }
+        [DefaultValue(false)]
+        public bool Overtime { get; set; }
     }
 }

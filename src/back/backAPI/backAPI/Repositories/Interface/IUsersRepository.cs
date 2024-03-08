@@ -1,13 +1,46 @@
 ﻿using backAPI.Entities.Domain;
+using backAPI.Entities.DTO;
 
 namespace backAPI.Repositories.Interface {
     public interface IUsersRepository {
 
-        Task<User> CreateNewUserAsync(User user);
-        Task<bool> CheckUsernameExistance(string username);
-        Task<bool> CheckEmailExistance(string email);
-        Task<User> GetUserIfExists(string email);
+        /// <summary>
+        /// Funkcija za upisvanje novog korisnika u bazu podataka
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<User> RegisterUser(User user);
+
+        /// <summary>
+        /// Funkcija koja za prosledjeni id vraca korisnika
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        Task<User> GetUser(string email);
+
+        /// <summary>
+        /// Funkcija koja za prosledjeni id korisnika brise njegove podatke iz baze
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true u slucaju da je brisanje uspesno, false u suprotnom</returns>
         Task<bool> DeleteUser(int id);
 
+        /// <summary>
+        /// Funkcija koja odredjuje id za prosledjeno korisnicko ime
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>
+        /// Id korisnika ili -1 ukoliko ne postoji korisnik sa prosledjenim korisnickim imenom
+        /// </returns>
+        Task<int> UsernameToId(string username);
+
+        /// <summary>
+        /// Funkcija koja odredjuje id za prosledjeni email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>
+        /// Id korisnika ili -1 ukoliko ne postoji korisnik sa prosledjenim email-om
+        /// </returns>
+        Task<int> EmailToId(string email);
     }
 }

@@ -11,14 +11,10 @@ namespace backAPI.Entities.Domain
     public class CompanyRole
     {
         [Key]
-        public int RoleCompanyId { get; set; }              // Id uloge u kompaniji, primary key, autoincrement
-        [Required]
-        public string RoleCompanyName { get; set; }         // Jedinstveni naziv pozicije u kompaniji [direktor, menadzer, radnik, ...]
-        [Required]
-        public double WorkingHourPrice { get; set; }        // Cena rada po satu za odredjenu poziciju
-        [Required]
-        public double OvertimeHourPrice { get; set; }       // Cena prekovremenog rada
-        [Required]
-        public double WeekendHourPrice { get; set; }        // Cena rada vikendom
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double WorkingHourPrice { get; set; }
+        public double OvertimeHourPrice { get; set; }
+        public double WeekendHourPrice { get; set; }
     }
 }

@@ -21,13 +21,13 @@ namespace backAPI.Controllers {
          * GET | Get ALL working hours for all users
          * ***************************************************************************** */
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WorkingHoursDTO>>> GetAllWorkingHours() {
+        public async Task<ActionResult<IEnumerable<ApiWorkingHours>>> GetAllWorkingHours() {
             var workHours = await workingHoursRepository.GetWorkingHoursAsync();
 
-            List<WorkingHoursDTO> result = new List<WorkingHoursDTO>();
+            List<ApiWorkingHours> result = new List<ApiWorkingHours>();
 
             foreach(var workHour in workHours) {
-                result.Add(new WorkingHoursDTO {
+                result.Add(new ApiWorkingHours {
                     UserId = workHour.UserId,
                     SpecificDate = workHour.SpecificDate,
                     HoursWorking = workHour.HoursWorking,
