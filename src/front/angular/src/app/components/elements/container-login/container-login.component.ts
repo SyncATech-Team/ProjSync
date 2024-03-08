@@ -13,9 +13,22 @@ export class ContainerLoginComponent {
     password:  ""
   }
 
+  constructor(public accoutService: AccountService, private router: Router) { }
+
   showPassword: boolean = false;
 
   togglePasswordVisibility(){
     this.showPassword = !this.showPassword;
   }
+
+  login() {
+    // dobili smo Observable, moramo da uradimo subscribe da bismo koristili
+    this.accoutService.login(this.user).subscribe({
+      next: () => this.router.navigateByUrl('/home'),
+
+      // TODO: Prikazati gresku kada npr korisnik unese pogresnu lozinku ili username
+      error: error => console.log(error)
+    })
+  }
+
 }
