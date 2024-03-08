@@ -1,4 +1,5 @@
 ﻿using backAPI.Entities.Domain;
+using backAPI.Other.Logger;
 using Microsoft.EntityFrameworkCore;
 
 namespace backAPI.Data
@@ -7,6 +8,11 @@ namespace backAPI.Data
     {
         public DataContext(DbContextOptions options) : base(options)
         {
+        }
+
+        // Log queries to console :)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddProvider(new ColoredConsoleLoggerProvider())));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
