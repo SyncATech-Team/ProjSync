@@ -1,4 +1,5 @@
-﻿using backAPI.Entities;
+﻿using backAPI.Entities.Domain;
+using backAPI.Other.Logger;
 using Microsoft.EntityFrameworkCore;
 
 namespace backAPI.Data
@@ -9,9 +10,12 @@ namespace backAPI.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        // Log queries to console :)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddProvider(new ColoredConsoleLoggerProvider())));
+        }
 
-#region TABLE: User builder
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
             
             // TABLE: User | COLUMN: Username | Unique constraint 
             modelBuilder.Entity<User>()
@@ -23,21 +27,15 @@ namespace backAPI.Data
                 .HasIndex(user => user.UserEmail)
                 .IsUnique();
 
-#endregion
-
-#region TABLE: RoleCompany
-
             // TABLE: RoleCompany | COLUMN: RoleCompanyName | Unique constraint
-            modelBuilder.Entity<RoleCompany>()
+            modelBuilder.Entity<CompanyRole>()
                 .HasIndex(roleCompany => roleCompany.RoleCompanyName)
                 .IsUnique();
-
-#endregion
-
 
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<RoleCompany> Roles { get; set; }
+        public DbSet<CompanyRole> Roles { get; set; }
+        public DbSet<WorkingHours> WorkHours { get; set; }
     }
 }
