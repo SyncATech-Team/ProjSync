@@ -31,5 +31,18 @@ namespace backAPI.Repositories.Implementation {
         async Task<bool> IUsersRepository.CheckEmailExistance(string email) {
             return await dataContext.Users.AnyAsync(user => user.UserEmail.ToLower() == email.ToLower());
         }
+
+        public async Task<bool> DeleteUser(int id) {
+            var user = await dataContext.Users.FindAsync(id);
+
+            if(user == null) {
+                return false;
+            }
+
+            dataContext.Users.Remove(user);
+            await dataContext.SaveChangesAsync(true);
+
+            return true;
+        }
     }
 }

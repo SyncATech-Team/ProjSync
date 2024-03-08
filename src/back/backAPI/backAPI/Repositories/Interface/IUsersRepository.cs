@@ -7,6 +7,7 @@ namespace backAPI.Repositories.Interface {
         Task<bool> CheckUsernameExistance(string username);
         Task<bool> CheckEmailExistance(string email);
         Task<User> GetUserIfExists(string email);
+        Task<bool> DeleteUser(int id);
 
     }
 }

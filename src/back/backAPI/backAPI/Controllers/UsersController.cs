@@ -95,5 +95,19 @@ namespace backAPI.Controllers
                 Token = ""
             };
         }
+
+        /* *****************************************************************************
+         * Delete user
+         * ***************************************************************************** */
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteUser(int id) {
+            var deleted = await usersRepository.DeleteUser(id);
+
+            if(deleted == false) {
+                return NotFound("There is no user with specified id");
+            }
+
+            return Ok();
+        }
     }
 }
