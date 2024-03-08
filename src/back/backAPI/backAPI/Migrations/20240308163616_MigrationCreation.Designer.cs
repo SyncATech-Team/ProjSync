@@ -8,11 +8,11 @@ using backAPI.Data;
 
 #nullable disable
 
-namespace backAPI.Data.Migrations
+namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240307215341_InitialCreate_II")]
-    partial class InitialCreate_II
+    [Migration("20240308163616_MigrationCreation")]
+    partial class MigrationCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
