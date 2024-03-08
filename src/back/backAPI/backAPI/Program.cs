@@ -18,6 +18,7 @@ builder.Services.AddDbContext<DataContext>(opt => {
 
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();                    // inject service
 builder.Services.AddScoped<ICompanyRolesRepository, CompanyRolesRepository>();      // inject service
+builder.Services.AddScoped<IWorkingHoursRepository, WorkingHoursRepository>();      // inject service
 
 var app = builder.Build();
 

@@ -9,25 +9,30 @@ namespace backAPI.Repositories.Implementation {
 
         private readonly DataContext dataContext;
 
+        /* **************************************************************************
+         * Konstruktor
+         * ************************************************************************** */
         public CompanyRolesRepository(DataContext dataContext) {
             this.dataContext = dataContext;
         }
-
+        /* **************************************************************************
+         * POST | Metod za kreiranje nove uloge u kompaniji
+         * ************************************************************************** */
         public async Task<CompanyRole> CreateNewRoleAsync(CompanyRole companyRole) {
             await dataContext.Roles.AddAsync(companyRole);
             await dataContext.SaveChangesAsync();
 
             return companyRole;
         }
-
-        public async Task<bool> CheckCompanyRoleNameExistance(string name) {
-            return await dataContext.Roles.AnyAsync(role => role.RoleCompanyName.ToLower() ==  name.ToLower());
-        }
-
+        /* **************************************************************************
+         * GET | Daj sve uloge
+         * ************************************************************************** */
         public async Task<IEnumerable<CompanyRole>> GetCompanyRolesAsync() {
             return await dataContext.Roles.ToListAsync();
         }
-
+        /* **************************************************************************
+         * DELETE | Obrisi ulogu za prosledjeni id
+         * ************************************************************************** */
         public async Task<bool> DeleteCompanyRole(int id) {
 
             var role = await dataContext.Roles.FindAsync(id);
@@ -41,7 +46,9 @@ namespace backAPI.Repositories.Implementation {
 
             return true;
         }
-
+        /* **************************************************************************
+         * PUT | Izmeni entitet za prosledjeni id
+         * ************************************************************************** */
         public async Task<bool> UpdateCompanyRole(int id, CompanyRoleDTO request) {
             var role = await dataContext.Roles.FindAsync(id);
 
@@ -56,6 +63,12 @@ namespace backAPI.Repositories.Implementation {
             await dataContext.SaveChangesAsync();
 
             return true;
+        }
+        /* **************************************************************************
+         * Provera da li u bazi vec postoji uloga koju zelimo da dodamo
+         * ************************************************************************** */
+        public async Task<bool> CheckCompanyRoleNameExistance(string name) {
+            return await dataContext.Roles.AnyAsync(role => role.RoleCompanyName.ToLower() == name.ToLower());
         }
     }
 }

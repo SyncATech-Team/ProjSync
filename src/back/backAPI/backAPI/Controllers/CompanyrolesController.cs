@@ -13,12 +13,14 @@ namespace backAPI.Controllers {
 
         private readonly ICompanyRolesRepository companyRolesRepository;
 
+        /* *****************************************************************************
+         * Konstruktor
+         * ***************************************************************************** */
         public CompanyrolesController(ICompanyRolesRepository companyRolesRepository) {
             this.companyRolesRepository = companyRolesRepository;
         }
-
         /* *****************************************************************************
-         * Get ALL company roles
+         * GET | Get ALL company roles
          * ***************************************************************************** */
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompanyRoleDTO>>> GetCompanyRoles() {
@@ -26,6 +28,7 @@ namespace backAPI.Controllers {
 
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
 
+            // Encapsulate CompanyRole to CompanyRoleDTO object
             foreach (var role in roles) {
                 companyRoles.Add(
                     new CompanyRoleDTO {
@@ -39,9 +42,8 @@ namespace backAPI.Controllers {
 
             return companyRoles;
         }
-
         /* *****************************************************************************
-         * Get company role by ID
+         * GET{id} | Get company role by ID
          * ***************************************************************************** */
         [HttpGet("{id}")]
         public async Task<ActionResult<CompanyRoleDTO>> GetCompanyRole(int id) {
@@ -59,9 +61,8 @@ namespace backAPI.Controllers {
                 WeekendHourPrice = role.WeekendHourPrice
             };
         }
-
         /* *****************************************************************************
-         * Create new company role
+         * POST | Create new company role
          * ***************************************************************************** */
         [HttpPost]
         public async Task<ActionResult<CompanyRoleDTO>> CreateCompanyRole(CompanyRoleDTO role) {
@@ -89,23 +90,21 @@ namespace backAPI.Controllers {
                 WeekendHourPrice = companyRole.WeekendHourPrice
             };
         }
-
         /* *****************************************************************************
-         * Update company role
+         * PUT{id} | Update company role for the given id
          * ***************************************************************************** */
         [HttpPut("{id}")]
         public async Task<ActionResult<bool>> UpdateCompanyRole(int id, CompanyRoleDTO request) {
             var updated = await companyRolesRepository.UpdateCompanyRole(id, request);
 
             if(!updated) {
-                return BadRequest("Cannot update role!");
+                return BadRequest("Cannot update the role!");
             }
 
             return Ok();
         }
-
         /* *****************************************************************************
-         * Delete company role
+         * DELETE{id} | Delete company role
          * ***************************************************************************** */
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteCompanyRole(int id) {
