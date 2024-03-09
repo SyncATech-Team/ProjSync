@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg navigation navbar-custom-color px-4">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">ProjSync</a>
+    <div class="logo">
+      <a class="navbar-brand" href="#">ProjSync</a><br>
+      <small>Powered by SyncATech</small>
+    </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,41 +12,41 @@
 
         <div class="dropdown" dropdown>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" dropdownToggle>Your work</a>
+            <a class="nav-link dropdown-toggle item" dropdownToggle>Your work</a>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item" href="#">Your Projects</a></li>
-              <li><a class="dropdown-item" href="#">Your Tasks</a></li>
+              <li><a class="dropdown-item item" href="#">Your Projects</a></li>
+              <li><a class="dropdown-item item" href="#">Your Tasks</a></li>
             </ul>
           </li>
         </div>
 
         <div class="dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" dropdownToggle>People</a>
-            <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item" href="#">people_opt1</a></li>
-              <li><a class="dropdown-item" href="#">people_opt_2</a></li>
+          <a class="nav-link dropdown-toggle item"   dropdownToggle>People</a>
+            <ul class="dropdown-menu item" *dropdownMenu>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
               <li class="divider dropdown-divider"></li>
-              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
             </ul>
         </div>
 
         <div class="dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" dropdownToggle>Dashboard</a>
+          <a class="nav-link dropdown-toggle item" dropdownToggle>Dashboard</a>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item" href="#">people_opt1</a></li>
-              <li><a class="dropdown-item" href="#">people_opt_2</a></li>
-              <li class="divider dropdown-divider"></li>
-              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
+              <li class="divider dropdown-divider item"></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
             </ul>
         </div>
 
         <div class="dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" dropdownToggle>Projects</a>
+          <a class="nav-link dropdown-toggle item" dropdownToggle>Projects</a>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item" href="#">people_opt1</a></li>
-              <li><a class="dropdown-item" href="#">people_opt_2</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
               <li class="divider dropdown-divider"></li>
-              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
             </ul>
         </div>
         

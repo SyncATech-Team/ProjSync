@@ -1,7 +1,10 @@
+.navbar .logo{
+    margin-right: 6vh;
+}
+
 .navbar .navbar-brand{
     font-weight: bold;
-    font-size: 26px;
-    margin-right: 6vh;
+    font-size: 26px;   
 }
 
 .navbar-custom-color {
@@ -10,6 +13,10 @@
 
 .left--menu{
     font-size: 18px;
+}
+
+.left--menu .item{
+    cursor: pointer;
 }
 
 .right--side button{
