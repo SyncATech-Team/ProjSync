@@ -4,6 +4,7 @@ using backAPI.Entities.DTO;
 using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,6 +18,29 @@ namespace backAPI.Controllers
         // TODO: Dodati servis za JWT
         public UsersController(IUsersRepository usersRepository) {
             this.usersRepository = usersRepository;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DTOUser>>> GetAllUsers() {
+            List<DTOUser> dTOUsers = new List<DTOUser>();
+            
+            var users = await usersRepository.GetUsersAsync();
+
+            foreach(var user in users) {
+                dTOUsers.Add(new DTOUser {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Username = user.Email,
+                    CompanyRoleId = user.CompanyRoleId,
+                    Address = user.Address,
+                    ContactPhone = user.ContactPhone,
+                    LinkedinProfile = user.LinkedinProfile,
+                    Status = user.Status
+                });
+            }
+
+            return dTOUsers;
         }
 
         // POST: api/users/register, body {RegisterDTO)
