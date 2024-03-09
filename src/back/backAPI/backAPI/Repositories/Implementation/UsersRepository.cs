@@ -22,7 +22,12 @@ namespace backAPI.Repositories.Implementation {
             this.dataContext = dataContext;
             this.configuration = configuration;
         }
-
+        /* **********************************************************************************
+         * GetUsersAsync
+         * ********************************************************************************** */
+        public async Task<IEnumerable<User>> GetUsersAsync() {
+            return await dataContext.Users.ToListAsync();
+        }
         /* **********************************************************************************
          * RegisterUser
          * ********************************************************************************** */
