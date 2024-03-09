@@ -5,6 +5,12 @@ namespace backAPI.Repositories.Interface {
     public interface IUsersRepository {
 
         /// <summary>
+        /// Funkcija koja dovlaci sve korisnike koji su registrovani u oragnizaciji
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<User>> GetUsersAsync();
+
+        /// <summary>
         /// Funkcija za upisvanje novog korisnika u bazu podataka
         /// </summary>
         /// <param name="user"></param>

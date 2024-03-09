@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class LoginPageComponent {
   
+  close_invalid_login_popup() {
+    let x = document.getElementById("invalid_login_div");
+    if(x != null) x.hidden = true;
+  }
+
 }
