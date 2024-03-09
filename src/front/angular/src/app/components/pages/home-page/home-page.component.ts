@@ -24,7 +24,7 @@ export class HomePageComponent implements OnInit {
     id:0,
     name: "project1",
     key: "p1",
-    type: "type1",
+    type: "Company-managed software",
     description: "description1",
     owner: this.owner,
     icon: "",
@@ -34,10 +34,10 @@ export class HomePageComponent implements OnInit {
     visibility: ""
   }
   project2: Project = {
-    id:0,
+    id:1,
     name: "project2",
     key: "p2",
-    type: "type2",
+    type: "Company-managed software",
     description: "description1",
     owner: this.owner,
     icon: "",
@@ -45,13 +45,13 @@ export class HomePageComponent implements OnInit {
     dueDate: new Date,
     budget: 0,
     visibility: "",
-    parent: this.project1
+    parent: this.project1.id
   }
   project3: Project = {
-    id:0,
+    id:2,
     name: "project3",
     key: "p3",
-    type: "type3",
+    type: "Company-managed software",
     description: "description3",
     owner: this.owner,
     icon: "",
@@ -59,13 +59,13 @@ export class HomePageComponent implements OnInit {
     dueDate: new Date,
     budget: 0,
     visibility: "",
-    parent: this.project1
+    parent: this.project1.id
   }
   project4: Project = {
-    id:0,
+    id:3,
     name: "project4",
     key: "p4",
-    type: "type4",
+    type: "Company-managed software",
     description: "description1",
     owner: this.owner,
     icon: "",
@@ -73,7 +73,7 @@ export class HomePageComponent implements OnInit {
     dueDate: new Date,
     budget: 0,
     visibility: "",
-    parent: this.project2
+    parent: this.project2.id
   }
   projects: any[] = [
         this.project1,
@@ -84,5 +84,24 @@ export class HomePageComponent implements OnInit {
 
   toProject():void {
     
+  }
+
+  extandedRows:number[]=[];
+  isRotated: boolean = false;
+
+  toggleRow(rowID: number): void{
+    let index = this.extandedRows.indexOf(rowID);
+    this.isRotated = !this.isRotated;
+    if(index!==-1)
+    {
+      this.extandedRows.splice(index, 1);
+    }
+    else
+    {
+      this.extandedRows.push(rowID);
+    }
+  }
+  isExtanded(rowID: number):boolean{
+    return this.extandedRows.includes(rowID);
   }
 }

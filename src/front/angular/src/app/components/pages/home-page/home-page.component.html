@@ -1,34 +1,47 @@
 <app-nav-bar></app-nav-bar>
 
 <div class="container" style="margin-top: 100px;">
+    <h1 style="color:#5E5BF4 ;">
+        Projects
+    </h1>
     <h1 *ngIf="(accoutService.currentUser$ | async) as user">Testni pozdrav: Zdravo {{user.username | titlecase}}</h1>
 </div>
 
 <div class="container">
     <div class="row">
-        <h2>
-            Projects
-        </h2>
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">*</th>
+                    <th scope="col"><i class="fa-solid fa-star" style="color: #000;"></i></th>
                     <th scope="col">Name</th>
                     <th scope="col">Key</th>
                     <th scope="col">Type</th>
                     <th scope="col">Lead</th>
-                    <th></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let project of projects" (click)="toProject()">
-                    <td></td>
-                    <td>{{project.name}}</td>
-                    <td>{{project.key}}</td>
-                    <td>{{project.type}}</td> 
-                    <td>{{project.owner.username}}</td>
-                    <td><button class="btn"></button></td>
-                </tr>
+                <ng-container *ngFor="let project of projects">
+                    <tr>
+                        <td><input type="checkbox" id="star-checkbox"></td>
+                        <td (click)="toProject()">{{project.name}}</td>
+                        <td>{{project.key}}</td>
+                        <td>{{project.type}}</td> 
+                        <td>{{project.owner.username}}</td>
+                        <td><button class="btn btn-primary" (click)="toggleRow(project.id)"><i class="fas fa-chevron-down"></i></button></td>
+                    </tr>
+                    <ng-container  *ngIf="isExtanded(project.id)">
+                        <ng-container *ngFor="let subproject of projects">
+                            <tr *ngIf="project.id == subproject.parent">
+                                <td></td>
+                                <td>{{subproject.name}}</td>
+                                <td>{{subproject.key}}</td>
+                                <td>{{subproject.type}}</td> 
+                                <td>{{subproject.owner.username}}</td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
             </tbody>
         </table>
     </div>

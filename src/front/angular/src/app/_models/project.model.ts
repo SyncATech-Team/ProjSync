@@ -8,7 +8,7 @@ export interface Project{
     description: string,
     owner: User,
     icon: string,
-    parent?: Project,
+    parent?: number,
     createdDate: Date,
     dueDate: Date,
     budget: number,
