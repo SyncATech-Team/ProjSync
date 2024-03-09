@@ -6,12 +6,15 @@
                 <p id="text">Admin corner</p>
             </div>
         </div>
-        <div id="selection">
-            <button id="btn" class="btn btn-primary">Create person</button>
+        <div id="selection" style="margin-bottom: 5%;">
+            <button id="btn" class="btn btn-primary" (click)="showhidden()">Create person</button>
             <button id="btnr" class="btn btn-primary">Create role</button>
 
         </div>
 
+        <div>
+            <app-register-user *ngIf="visible" ></app-register-user>
+        </div>
     </div>
 
 </div>

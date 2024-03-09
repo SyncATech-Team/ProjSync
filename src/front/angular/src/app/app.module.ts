@@ -12,6 +12,7 @@ import { NavBarComponent } from './components/elements/nav-bar/nav-bar.component
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
+import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AdminPageComponent } from './components/pages/admin-page/admin-page.com
     ContainerLoginComponent,
     NavBarComponent,
     HomePageComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    RegisterUserComponent
   ],
   imports: [
     BrowserModule,

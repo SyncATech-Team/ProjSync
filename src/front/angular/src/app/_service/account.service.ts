@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'http://localhost:5000/api/';
+  baseUrl = 'https://localhost:5000/api/'; // Zamenjen "http"->"https" kako bi radio register
 
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
@@ -35,7 +35,7 @@ export class AccountService {
   register(model: any) {
     // POST: http://localhost:5000/api/account/register, model se salje preko body-ja
     // od http klijenta dobijamo Observable i vraca nam se UserDto
-    return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
+    return this.http.post<User>(this.baseUrl + 'Users/register', model).pipe( // Zamenjen "account/register"->"Users/register" kako bi register radio
       map(user => {
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));

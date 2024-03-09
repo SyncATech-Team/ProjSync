@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AdminPageComponent {
 
+
+  visible : boolean = false;
+
+  showhidden(){
+    this.visible = this.visible?false:true;
+  }
+
 }

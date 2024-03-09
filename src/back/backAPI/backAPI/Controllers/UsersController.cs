@@ -25,14 +25,14 @@ namespace backAPI.Controllers
         {
             // proveriti da li u bazi postoji korisnik sa istim username-om
             // ukoliko postoji vratiti 400 Bad Request
-            if ((await usersRepository.UsernameToId(registerDTO.Username)) == -1)
+            if ((await usersRepository.UsernameToId(registerDTO.Username)) != -1)
             {
                 return BadRequest("Username is taken by another user!");
             }
 
             // proveriti da li u bazi postoji korisnik sa istim email-om
             // ukoliko postoji vratiti 404 Bad Request
-            if ((await usersRepository.EmailToId(registerDTO.Email)) == -1) {
+            if ((await usersRepository.EmailToId(registerDTO.Email)) != -1) {
                 return BadRequest("Email is already used by another user!");
             }
 
