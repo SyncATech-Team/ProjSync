@@ -1,0 +1,64 @@
+<div id="page">
+    <div class="container">
+        <div class="clearfix mx-auto" style="width: 60%;" >
+            <form class="row g-3" (ngSubmit)="create()" autocomplete="off" style="margin-bottom: 10%;">
+
+                <div class="col-12"> <!-- field za ime-->
+                    <label for="name" class="form-label">Name</label>
+                    <input 
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="form-control"
+                        placeholder="Name"
+                        [(ngModel)]="role.Name"
+                        required
+                        >
+                </div>
+
+                <div class="col-12"> <!-- field za WorkingHourPrice-->
+                    <label for="WorkingHourPrice" class="form-label">Working Hour Price</label>
+                    <input 
+                        type="number"
+                        id="WorkingHourPrice"
+                        name="WorkingHourPrice"
+                        class="form-control"
+                        placeholder="271.00"
+                        [(ngModel)]="role.WorkingHourPrice"
+                        required
+                        >
+                </div>
+
+                <div class="col-12"> <!-- field za OvertimeHourPrice-->
+                    <label for="OvertimeHourPrice" class="form-label">Overtime Hour Price</label>
+                    <input 
+                        type="number"
+                        id="OvertimeHourPrice"
+                        name="OvertimeHourPrice"
+                        class="form-control"
+                        placeholder="300.00"
+                        [(ngModel)]="role.OvertimeHourPrice"
+                        required
+                        >
+                </div>
+
+                <div class="col-12"> <!-- field za WeekendHourPrice-->
+                    <label for="WeekendHourPrice" class="form-label">Weekend Hour Price</label>
+                    <input 
+                        type="number"
+                        id="WeekendHourPrice"
+                        name="WeekendHourPrice"
+                        class="form-control"
+                        placeholder="350.00"
+                        [(ngModel)]="role.WeekendHourPrice"
+                        required
+                        >
+                </div>
+
+                <div id="login-btn-div" class="form-group">
+                    <button type="submit" class="btn btn-primary" value="Create">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
