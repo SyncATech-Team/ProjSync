@@ -1,53 +1,65 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary rounded">
-  <div class="container">
-    <a class="navbar-brand" routerLink="/home">ProjSync</a>
-
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/home" routerLinkActive="active">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/home" routerLinkActive="active">Some link?</a>
-        </li>
+<nav class="navbar navbar-expand-lg navigation navbar-custom-color px-4">
+  <div class="container-fluid">
+    <div class="logo">
+      <a class="navbar-brand" href="#">ProjSync</a><br>
+      <small>Powered by SyncATech</small>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 left--menu">
 
         <div class="dropdown" dropdown>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" dropdownToggle>Your work</a>
+            <a class="nav-link dropdown-toggle item" dropdownToggle>Your work</a>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item" href="#">Your Projects</a></li>
-              <li><a class="dropdown-item" href="#">Your Tasks</a></li>
+              <li><a class="dropdown-item item" href="#">Your Projects</a></li>
+              <li><a class="dropdown-item item" href="#">Your Tasks</a></li>
             </ul>
           </li>
         </div>
-        
+
         <div class="dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" dropdownToggle>People</a>
-            <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item" href="#">people_opt1</a></li>
-              <li><a class="dropdown-item" href="#">people_opt_2</a></li>
+          <a class="nav-link dropdown-toggle item"   dropdownToggle>People</a>
+            <ul class="dropdown-menu item" *dropdownMenu>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
               <li class="divider dropdown-divider"></li>
-              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
             </ul>
         </div>
 
         <div class="dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" dropdownToggle>Dashboard</a>
+          <a class="nav-link dropdown-toggle item" dropdownToggle>Dashboard</a>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item" href="#">dashboard_opt1</a></li>
-              <li><a class="dropdown-item" href="#">dashboard_opt_2</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
+              <li class="divider dropdown-divider item"></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
             </ul>
         </div>
 
+        <div class="dropdown" dropdown>
+          <a class="nav-link dropdown-toggle item" dropdownToggle>Projects</a>
+            <ul class="dropdown-menu" *dropdownMenu>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
+              <li class="divider dropdown-divider"></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
+            </ul>
+        </div>
+        
       </ul>
 
-      <div class="d-lg-flex col-lg-3">
-        <button class="btn btn-primary">Create</button>
+      <div class="d-flex right--side">
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        </form>
+        <i class="fa-solid fa-bell px-3"></i>
+        <i class="fa-solid fa-gear px-3"></i>
+        <i class="fa-solid fa-user px-3"></i>
       </div>
-      
-      <form role="search">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-      </form>
-      
+    </div>
   </div>
 </nav>
-

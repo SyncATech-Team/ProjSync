@@ -1,0 +1,37 @@
+.navbar .logo{
+    margin-right: 6vh;
+}
+
+.navbar .logo:hover{
+    margin-right: 6vh;
+    cursor: pointer;
+}
+
+.navbar .navbar-brand{
+    font-weight: bold;
+    font-size: 26px;   
+}
+
+.navbar-custom-color {
+    background-color: #7795ef;
+}
+
+.left--menu{
+    font-size: 18px;
+}
+
+.left--menu .item{
+    cursor: pointer;
+}
+
+.right--side button{
+    border: 1px solid black;
+    margin-left: 2vh;
+}
+
+.right--side i{
+    margin-left: 10px;
+    font-size: 22px;
+    margin: auto;
+    cursor: pointer;
+}
