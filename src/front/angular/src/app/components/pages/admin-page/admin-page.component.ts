@@ -8,10 +8,16 @@ import { Component } from '@angular/core';
 export class AdminPageComponent {
 
 
-  visible : boolean = false;
+  visibleUser : boolean = false;
+  visibleRole : boolean = false;
 
-  showhidden(){
-    this.visible = this.visible?false:true;
+  showhiddenUser(){
+    this.visibleRole = false;
+    this.visibleUser = this.visibleUser?false:true;
   }
 
+  showhiddenRole(){
+    this.visibleUser = false;
+    this.visibleRole = this.visibleRole?false:true;
+  }
 }
