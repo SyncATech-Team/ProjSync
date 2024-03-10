@@ -12,8 +12,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+/*
+// SQLite
 builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseSqlite(builder.Configuration.GetConnectionString("SyncATechDefaultConectionSQLite"));
+});
+*/
+
+// MySQL
+builder.Services.AddDbContext<DataContext>(opt => {
+    opt.UseMySQL(builder.Configuration.GetConnectionString("SyncATechDefaultConectionMySQL"));
 });
 
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();                    // inject service
@@ -37,3 +45,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// test commit

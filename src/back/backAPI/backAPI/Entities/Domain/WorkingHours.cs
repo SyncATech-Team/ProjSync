@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backAPI.Entities.Domain {
 
@@ -12,10 +13,11 @@ namespace backAPI.Entities.Domain {
         public int UserId { get; set; }
         [Column (Order = 2)]
         public DateTime SpecificDate { get; set; }
+        [Required, NotNull]
         public double HoursWorking {  get; set; }
-        [DefaultValue(false)]
-        public bool Weekend { get; set; }
-        [DefaultValue(false)]
-        public bool Overtime { get; set; }
+        
+        public bool? Weekend { get; set; } = false;
+        
+        public bool? Overtime { get; set; } = false;
     }
 }
