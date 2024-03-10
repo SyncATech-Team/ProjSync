@@ -3,6 +3,7 @@ import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 import { User } from '../../../_models/user';
 import { Project } from '../../../_models/project.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -14,13 +15,15 @@ export class HomePageComponent implements OnInit {
   constructor(public accoutService: AccountService) { }
 
   ngOnInit(): void {
-    
+    this.projects.forEach((project)=>{
+      project.subProjects = this.projects.filter((subproject)=>  subproject.parent == project.id );
+    });
   }
   owner: User = {
     username: "User1",
     token: ""
   };
-  project1: Project = {
+  project1: any = {
     id:0,
     name: "project1",
     key: "p1",
@@ -31,9 +34,11 @@ export class HomePageComponent implements OnInit {
     createdDate: new Date,
     dueDate: new Date,
     budget: 0,
-    visibility: ""
+    visibility: "",
+    isExtanded: false,
+    isFavorite: false
   }
-  project2: Project = {
+  project2: any = {
     id:1,
     name: "project2",
     key: "p2",
@@ -45,9 +50,11 @@ export class HomePageComponent implements OnInit {
     dueDate: new Date,
     budget: 0,
     visibility: "",
-    parent: this.project1.id
+    parent: this.project1.id,
+    isExtanded: false,
+    isFavorite: false
   }
-  project3: Project = {
+  project3: any = {
     id:2,
     name: "project3",
     key: "p3",
@@ -59,9 +66,11 @@ export class HomePageComponent implements OnInit {
     dueDate: new Date,
     budget: 0,
     visibility: "",
-    parent: this.project1.id
+    parent: this.project1.id,
+    isExtanded: false,
+    isFavorite: false
   }
-  project4: Project = {
+  project4: any = {
     id:3,
     name: "project4",
     key: "p4",
@@ -73,7 +82,9 @@ export class HomePageComponent implements OnInit {
     dueDate: new Date,
     budget: 0,
     visibility: "",
-    parent: this.project2.id
+    parent: this.project2.id,
+    isExtanded: false,
+    isFavorite: true
   }
   projects: any[] = [
         this.project1,
@@ -86,22 +97,7 @@ export class HomePageComponent implements OnInit {
     
   }
 
-  extandedRows:number[]=[];
-  isRotated: boolean = false;
-
-  toggleRow(rowID: number): void{
-    let index = this.extandedRows.indexOf(rowID);
-    this.isRotated = !this.isRotated;
-    if(index!==-1)
-    {
-      this.extandedRows.splice(index, 1);
-    }
-    else
-    {
-      this.extandedRows.push(rowID);
-    }
-  }
-  isExtanded(rowID: number):boolean{
-    return this.extandedRows.includes(rowID);
+  toggleRow(project: any): void{
+    project.isExtanded = !project.isExtanded;
   }
 }
