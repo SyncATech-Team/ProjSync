@@ -1,12 +1,17 @@
 using backAPI.Data;
+using backAPI.Extensions;
 using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
+using backAPI.Services.Implementation;
+using backAPI.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services.AddIdentityServices(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,6 +32,7 @@ builder.Services.AddDbContext<DataContext>(opt => {
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();                    // inject service
 builder.Services.AddScoped<ICompanyRolesRepository, CompanyRolesRepository>();      // inject service
 builder.Services.AddScoped<IWorkingHoursRepository, WorkingHoursRepository>();      // inject service
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
