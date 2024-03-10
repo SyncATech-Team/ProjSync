@@ -7,13 +7,14 @@
             </div>
         </div>
         <div id="selection" style="margin-bottom: 5%;">
-            <button id="btn" class="btn btn-primary" (click)="showhidden()">Create person</button>
-            <button id="btnr" class="btn btn-primary">Create role</button>
+            <button id="btn" class="btn btn-primary" (click)="showhiddenUser()">Create person</button>
+            <button id="btnr" class="btn btn-primary" (click)="showhiddenRole()">Create role</button>
 
         </div>
 
         <div>
-            <app-register-user *ngIf="visible" ></app-register-user>
+            <app-register-user *ngIf="visibleUser" ></app-register-user>
+            <app-create-role *ngIf="visibleRole"></app-create-role>
         </div>
     </div>
 

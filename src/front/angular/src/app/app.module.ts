@@ -13,6 +13,7 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
 import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
+import { CreateRoleComponent } from './components/elements/create-role/create-role.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RegisterUserComponent } from './components/elements/register-user/regis
     NavBarComponent,
     HomePageComponent,
     AdminPageComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    CreateRoleComponent
   ],
   imports: [
     BrowserModule,
