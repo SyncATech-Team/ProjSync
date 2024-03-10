@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ContainerLoginComponent {
   user : any = {
-    username:  "",
+    email:  "",
     password:  ""
   }
 
@@ -27,7 +27,10 @@ export class ContainerLoginComponent {
       next: () => this.router.navigateByUrl('/home'),
 
       // TODO: Prikazati gresku kada npr korisnik unese pogresnu lozinku ili username
-      error: error => console.log(error)
+      error: error => {
+        let x = document.getElementById("invalid_login_div");
+        if(x != null) x.hidden = false;
+      }
     })
   }
 

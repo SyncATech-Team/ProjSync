@@ -23,16 +23,16 @@ namespace backAPI.Controllers {
          * GET | Get ALL company roles
          * ***************************************************************************** */
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CompanyRoleDTO>>> GetCompanyRoles() {
-            List<CompanyRoleDTO> companyRoles = new List<CompanyRoleDTO>();
+        public async Task<ActionResult<IEnumerable<ApiCompanyRole>>> GetCompanyRoles() {
+            List<ApiCompanyRole> companyRoles = new List<ApiCompanyRole>();
 
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
 
             // Encapsulate CompanyRole to CompanyRoleDTO object
             foreach (var role in roles) {
                 companyRoles.Add(
-                    new CompanyRoleDTO {
-                        RoleCompanyName = role.RoleCompanyName,
+                    new ApiCompanyRole {
+                        Name = role.Name,
                         WorkingHourPrice = role.WorkingHourPrice,
                         OvertimeHourPrice = role.OvertimeHourPrice,
                         WeekendHourPrice = role.WeekendHourPrice
@@ -46,16 +46,16 @@ namespace backAPI.Controllers {
          * GET{id} | Get company role by ID
          * ***************************************************************************** */
         [HttpGet("{id}")]
-        public async Task<ActionResult<CompanyRoleDTO>> GetCompanyRole(int id) {
+        public async Task<ActionResult<ApiCompanyRole>> GetCompanyRole(int id) {
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
-            var role = roles.FirstOrDefault(role => role.RoleCompanyId == id);
+            var role = roles.FirstOrDefault(role => role.Id == id);
 
             if(role == null) {
                 return NotFound();
             }
 
-            return new CompanyRoleDTO {
-                RoleCompanyName = role.RoleCompanyName,
+            return new ApiCompanyRole {
+                Name = role.Name,
                 WorkingHourPrice = role.WorkingHourPrice,
                 OvertimeHourPrice = role.OvertimeHourPrice,
                 WeekendHourPrice = role.WeekendHourPrice
@@ -65,15 +65,15 @@ namespace backAPI.Controllers {
          * POST | Create new company role
          * ***************************************************************************** */
         [HttpPost]
-        public async Task<ActionResult<CompanyRoleDTO>> CreateCompanyRole(CompanyRoleDTO role) {
+        public async Task<ActionResult<string>> CreateCompanyRole(ApiCompanyRole role) {
 
-            if(await companyRolesRepository.CheckCompanyRoleNameExistance(role.RoleCompanyName)) {
-                return BadRequest("Name " + role.RoleCompanyName + " is already used!");
+            if(await companyRolesRepository.CheckCompanyRoleNameExistance(role.Name)) {
+                return BadRequest("Name " + role.Name + " is already used!");
             }
 
             // Convert DTO to Domain Model
             var companyRole = new CompanyRole {
-                RoleCompanyName = role.RoleCompanyName,
+                Name = role.Name,
                 WorkingHourPrice = role.WorkingHourPrice,
                 OvertimeHourPrice = role.OvertimeHourPrice,
                 WeekendHourPrice = role.WeekendHourPrice
@@ -82,19 +82,13 @@ namespace backAPI.Controllers {
             // save to database
             await companyRolesRepository.CreateNewRoleAsync(companyRole);
 
-            // Map back from Domain model to DTO
-            return new CompanyRoleDTO {
-                RoleCompanyName = companyRole.RoleCompanyName,
-                WorkingHourPrice = companyRole.WorkingHourPrice,
-                OvertimeHourPrice = companyRole.OvertimeHourPrice,
-                WeekendHourPrice = companyRole.WeekendHourPrice
-            };
+            return Ok();
         }
         /* *****************************************************************************
          * PUT{id} | Update company role for the given id
          * ***************************************************************************** */
         [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> UpdateCompanyRole(int id, CompanyRoleDTO request) {
+        public async Task<ActionResult<string>> UpdateCompanyRole(int id, ApiCompanyRole request) {
             var updated = await companyRolesRepository.UpdateCompanyRole(id, request);
 
             if(!updated) {
@@ -107,7 +101,7 @@ namespace backAPI.Controllers {
          * DELETE{id} | Delete company role
          * ***************************************************************************** */
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteCompanyRole(int id) {
+        public async Task<ActionResult<string>> DeleteCompanyRole(int id) {
             var deleted = await companyRolesRepository.DeleteCompanyRole(id);
 
             if(deleted == false) {

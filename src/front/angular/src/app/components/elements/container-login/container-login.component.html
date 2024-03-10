@@ -61,19 +61,20 @@
 
             <form class="form-horizontal login-form" #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
                 
-                <!-- Input username -->
+                <!-- Input email -->
                 <div class="form-group relative">
                     <input
-                        name="username"
-                        id="login_username" 
+                        name="email"
+                        id="login_email" 
                         class="form-control input-lg" 
                         type="email" 
                         placeholder="syncatechpmf@domain.com" 
-                        [(ngModel)]="user.username"
+                        [(ngModel)]="user.email"
+                        spellcheck="false"
                         required>
                     <i class="fa fa-user"></i>
                 </div>
-                <!-- End of Input username -->
+                <!-- End of Input email -->
                 
                 <!-- Input password -->
                 <div class="form-group relative password">
@@ -84,6 +85,7 @@
                         [type]="showPassword ? 'text' : 'password'" 
                         placeholder="Password" 
                         [(ngModel)]="user.password"
+                        spellcheck="false"
                         required>
                     <i style="cursor: pointer;" *ngIf="showPassword; else hideIcon" (click)="togglePasswordVisibility()" class="fa fa-unlock"></i>
                     
