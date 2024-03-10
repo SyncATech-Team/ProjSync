@@ -1,6 +1,19 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 
+interface User{
+    FirstName : string,
+    LastName: string,
+    Username: string,
+    Email: string,
+    Password: string,
+    CompanyRoleId: number,
+    Address: string,
+    ContactPhone: string,
+    LinkedinProfile: string,
+    Status: string
+}
+
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',
@@ -8,7 +21,7 @@ import { AccountService } from '../../../_service/account.service';
 })
 export class RegisterUserComponent {
 
-  user : any ={
+  user : User ={
     FirstName : "",
     LastName: "",
     Username: "",
