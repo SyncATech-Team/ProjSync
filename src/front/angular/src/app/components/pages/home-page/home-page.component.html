@@ -9,21 +9,30 @@
         Projects
     </h1>
     <div class="row">
-        <table class="table" style="text-align: center;">
+        <div class="col col-2">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+        </div>
+        <div class="col col-2">
+            <input class="form-control" type="search" placeholder="Filter" aria-label="Filter">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <table class="table"  matSort (matSortChange)="sortData($event)">
             <thead>
                 <tr>
-                    <th scope="col"><i class="fa-solid fa-star" style="color: #000;"></i></th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Key</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Lead</th>
+                    <th mat-sort-header="stared" scope="col"><i class="fa-solid fa-star" style="color: #000;"></i></th>
+                    <th mat-sort-header="name" scope="col">Name</th>
+                    <th mat-sort-header="key" scope="col">Key</th>
+                    <th mat-sort-header="type" scope="col">Type</th>
+                    <th mat-sort-header="lead" scope="col">Lead</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let project of projects">
+                <ng-container *ngFor="let project of sortedData">
                     <tr>
-                        <td><input type="checkbox" id="star-checkbox" [checked]="project.isFavorite"></td>
+                        <td><input type="checkbox" id="star-checkbox" [checked]="project.isFavorite" (change)="project.isFavorite=!project.isFavorite"></td>
                         <td (click)="toProject()">{{project.name}}</td>
                         <td>{{project.key}}</td>
                         <td>{{project.type}}</td> 
