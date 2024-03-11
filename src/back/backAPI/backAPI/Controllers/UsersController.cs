@@ -2,6 +2,7 @@
 using backAPI.Entities.Domain;
 using backAPI.Entities.DTO;
 using backAPI.Repositories.Interface;
+using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -13,11 +14,13 @@ namespace backAPI.Controllers
     public class UsersController : BaseApiController
     {
         private readonly IUsersRepository usersRepository;
+        private readonly IEmailService emailService;
 
 
         // TODO: Dodati servis za JWT
-        public UsersController(IUsersRepository usersRepository) {
+        public UsersController(IUsersRepository usersRepository, IEmailService emailService) {
             this.usersRepository = usersRepository;
+            this.emailService = emailService;
         }
 
         [HttpGet]
@@ -82,6 +85,8 @@ namespace backAPI.Controllers
 
             // sacuvati korisnika u bazi
             await usersRepository.RegisterUser(user);
+
+            emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
 
             // Map back from Domain model to DTO | encapsulate clients response
             // TODO: dodati servis koji ce da kreira token i vrati kroz DTO

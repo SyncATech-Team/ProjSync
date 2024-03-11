@@ -33,6 +33,7 @@ builder.Services.AddScoped<IUsersRepository, UsersRepository>();                
 builder.Services.AddScoped<ICompanyRolesRepository, CompanyRolesRepository>();      // inject service
 builder.Services.AddScoped<IWorkingHoursRepository, WorkingHoursRepository>();      // inject service
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
