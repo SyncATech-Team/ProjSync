@@ -70,6 +70,7 @@
                         type="email" 
                         placeholder="syncatechpmf@domain.com" 
                         [(ngModel)]="user.email"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
                         spellcheck="false"
                         required>
                     <i class="fa fa-user"></i>
@@ -109,7 +110,7 @@
 
                 <!-- Submit button -->
                 <div id="login-btn-div" class="form-group">
-                    <button type="submit" class="btn btn-success btn-lg btn-block" value="Log in">Login</button>
+                    <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="loginForm.invalid">Login</button>
                 </div>
                 <!-- End of Submit button -->
 
