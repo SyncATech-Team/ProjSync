@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'http://localhost:5000/api/';
+  baseUrl = 'https://localhost:5000/api/';
 
   private currentUserSource = new BehaviorSubject<User | null>(null);
   private RoleSource = new BehaviorSubject<CreateCompanyRole | null>(null);
@@ -37,7 +37,7 @@ export class AccountService {
   register(model: any) {
     // POST: http://localhost:5000/api/Users/register, model se salje preko body-ja
     // od http klijenta dobijamo Observable i vraca nam se UserDto
-    return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
+    return this.http.post<User>(this.baseUrl + 'Users/register', model).pipe(
       map(user => {
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
