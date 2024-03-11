@@ -3,9 +3,9 @@ import { AccountService } from '../../../_service/account.service';
 
 interface Role{
     Name : string,
-    WorkingHourPrice : number ,
-    OvertimeHourPrice : number,
-    WeekendHourPrice : number
+    WorkingHourPrice : number | null,
+    OvertimeHourPrice : number | null,
+    WeekendHourPrice : number | null
 }
 
 
@@ -18,13 +18,15 @@ export class CreateRoleComponent {
 
   role : Role={
     Name : "",
-    WorkingHourPrice : 0,
-    OvertimeHourPrice : 0,
-    WeekendHourPrice :0
+    WorkingHourPrice : null,
+    OvertimeHourPrice : null,
+    WeekendHourPrice :null
   }
 
+  constructor(public accoutService: AccountService) { }
+
   create(){
-    // Implementirati
+    this.accoutService.create(this.role).subscribe()
   }
 
 }
