@@ -18,8 +18,25 @@ export class CreateRoleComponent {
 
   constructor(public companyRoleService: CompanyroleService) { }
 
-  create(){
-    this.companyRoleService.create(this.role);
-  }
+  create() {
+    this.companyRoleService.create(this.role).subscribe({
+      next: () => {
+        let y = document.getElementById("valid_role_div");
+        if(y != null) y.hidden = false;
 
+        let x = document.getElementById("invalid_role_div");
+        if(x != null) x.hidden = true;
+      },
+
+      error: (error) => {
+        // prikazi poruku greske
+        let x = document.getElementById("invalid_role_div");
+        if(x != null) x.hidden = false;
+
+        let y = document.getElementById("valid_role_div");
+        if(y != null) y.hidden = true;
+      }
+    })
+
+  }
 }
