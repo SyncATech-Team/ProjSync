@@ -21,8 +21,18 @@ export class AdminPageComponent {
     this.visibleRole = this.visibleRole?false:true;
   }
 
-  close_invalid_register_popup() {
-    let x = document.getElementById("invalid_register_div");
-    if(x != null) x.hidden = true;
+  close_alert(getByid: string) {
+
+    let x = document.getElementById(getByid);
+    if(x != null) {
+      x.hidden = true;
+    }
+  }
+  
+  close_all_alerts() {
+    this.close_alert("invalid_register_div");
+    this.close_alert("invalid_role_div");
+    this.close_alert("valid_register_div");
+    this.close_alert("valid_role_div");
   }
 }
