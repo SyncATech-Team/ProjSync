@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using backAPI.Services.Implementation;
-
+using backAPI.DTO.Login;
 
 namespace backAPI.Controllers
 {
@@ -80,27 +80,30 @@ namespace backAPI.Controllers
         }
 
 
-        /*        [HttpPost("login")]
-                public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
-                {
-                    var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponseDto>> Login(LoginDto loginDto)
+        {
+            var user = await _usersRepository.GetUser(loginDto.Email);
 
-                    if (user == null) return Unauthorized("invalid username");
+            // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
+            if (user == null) return Unauthorized("invalid credentials!");
 
-                    // pass key to be identical algs
-                    using var hmac = new HMACSHA512(user.PasswordSalt);
-                    byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+            // koristimo pass_salt sacuvan u bazi da bismo obezbedili da ce sifra na isti nacin biti hesirana
+            using var hmac = new HMACSHA512(user.PasswordSalt);
+            byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
-                    for (int i = 0; i < computedHash.Length; i++)
-                    {
-                        if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("invalid password");
-                    }
+            for (int i = 0; i < computedHash.Length; i++)
+            {
+                // ako nema potpunog poklapanja vratiti 401 Unauthorized
+                if (computedHash[i] != user.PasswordHash[i])
+                    return Unauthorized("invalid password");
+            }
 
-                    return new UserDto
-                    {
-                        Username = user.UserName,
-                        Token = _tokenService.CreateToken(user)
-                    };
-                }*/
+            return new LoginResponseDto
+            {
+                Username = user.Username,
+                Token = _tokenService.CreateToken(user)
+            };
+        }
     }
 }
