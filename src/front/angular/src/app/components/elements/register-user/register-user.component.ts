@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
+import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
 
 interface User{
     FirstName : string,
@@ -34,7 +35,7 @@ export class RegisterUserComponent {
     Status: ""
   }
 
-  constructor(public accoutService: AccountService) { }
+  constructor(public accoutService: AccountService, private adminPage: AdminPageComponent) { }  // Potencijani improve 
 
   register(){
 
@@ -42,6 +43,9 @@ export class RegisterUserComponent {
 
     this.accoutService.register(this.user).subscribe({
       next: () => {
+        let y = document.getElementById("valid_register_div");
+        if(y != null) y.hidden = false;
+
         let x = document.getElementById("invalid_register_div");
         if(x != null) x.hidden = true;
       },
@@ -50,8 +54,15 @@ export class RegisterUserComponent {
         // prikazi poruku greske
         let x = document.getElementById("invalid_register_div");
         if(x != null) x.hidden = false;
+
+        let y = document.getElementById("valid_register_div");
+        if(y != null) y.hidden = true;
       }
     });
+  }
+
+  close_alerts() {
+    this.adminPage.close_all_alerts();
   }
 
 }
