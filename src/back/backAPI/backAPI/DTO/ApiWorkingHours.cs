@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backAPI.Entities.DTO {
-    public class ApiWorkingHours {
+namespace backAPI.DTO
+{
+    public class ApiWorkingHours
+    {
 
         public int UserId { get; set; }
         public DateTime SpecificDate { get; set; }
