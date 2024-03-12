@@ -1,10 +1,11 @@
 ﻿using backAPI.Data;
+using backAPI.DTO;
 using backAPI.Entities.Domain;
-using backAPI.Entities.DTO;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace backAPI.Repositories.Implementation {
+namespace backAPI.Repositories.Implementation
+{
     public class CompanyRolesRepository : ICompanyRolesRepository {
 
         private readonly DataContext dataContext;
@@ -15,6 +16,7 @@ namespace backAPI.Repositories.Implementation {
         public CompanyRolesRepository(DataContext dataContext) {
             this.dataContext = dataContext;
         }
+
         /* **************************************************************************
          * POST | Metod za kreiranje nove uloge u kompaniji
          * ************************************************************************** */
@@ -24,12 +26,15 @@ namespace backAPI.Repositories.Implementation {
 
             return companyRole;
         }
-        /* **************************************************************************
-         * GET | Daj sve uloge
-         * ************************************************************************** */
+
+        /// <summary>
+        /// Dohvatanje svih objekata iz baze
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<CompanyRole>> GetCompanyRolesAsync() {
             return await dataContext.Roles.ToListAsync();
         }
+
         /* **************************************************************************
          * DELETE | Obrisi ulogu za prosledjeni id
          * ************************************************************************** */
@@ -49,7 +54,7 @@ namespace backAPI.Repositories.Implementation {
         /* **************************************************************************
          * PUT | Izmeni entitet za prosledjeni id
          * ************************************************************************** */
-        public async Task<bool> UpdateCompanyRole(int id, ApiCompanyRole request) {
+        public async Task<bool> UpdateCompanyRole(int id, CompanyRoleDto request) {
             var role = await dataContext.Roles.FindAsync(id);
 
             if (role == null || await CheckCompanyRoleNameExistance(request.Name) == true) {
@@ -69,6 +74,13 @@ namespace backAPI.Repositories.Implementation {
          * ************************************************************************** */
         public async Task<bool> CheckCompanyRoleNameExistance(string name) {
             return await dataContext.Roles.AnyAsync(role => role.Name.ToLower() == name.ToLower());
+        }
+
+        public async Task<CompanyRole> GetCompanyRoleByNameAsync(string companyRoleName)
+        {
+            return await dataContext.Roles
+                .Where(x => x.Name == companyRoleName)
+                .SingleOrDefaultAsync();
         }
     }
 }

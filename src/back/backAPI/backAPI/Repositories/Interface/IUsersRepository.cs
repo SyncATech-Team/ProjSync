@@ -1,5 +1,5 @@
 ﻿using backAPI.Entities.Domain;
-using backAPI.Entities.DTO;
+using backAPI.DTO;
 
 namespace backAPI.Repositories.Interface {
     public interface IUsersRepository {
@@ -48,5 +48,23 @@ namespace backAPI.Repositories.Interface {
         /// Id korisnika ili -1 ukoliko ne postoji korisnik sa prosledjenim email-om
         /// </returns>
         Task<int> EmailToId(string email);
+
+        /// <summary>
+        /// Provera da li korisnik postoji sa istim korisnickim imenom
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>
+        /// True - ukoliko korisnik postoji sa ovim korisnickim imenom, False suprotno
+        /// </returns>
+        Task<bool> UserExistsByUsername(string username);
+
+        /// <summary>
+        /// Provera da li korisnik postoji sa istim email-om
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>
+        /// True - ukoliko korisnik postoji sa ovim email-om, False suprotno
+        /// </returns>
+        Task<bool> UserExistsByEmail(string email);
     }
 }

@@ -1,6 +1,7 @@
-﻿namespace backAPI.Entities.DTO {
-    public class ApiCompanyRole {
-
+﻿namespace backAPI.DTO
+{
+    public class CompanyRoleDto
+    {
         public string Name { get; set; }
         public double WorkingHourPrice { get; set; }
         public double OvertimeHourPrice { get; set; }

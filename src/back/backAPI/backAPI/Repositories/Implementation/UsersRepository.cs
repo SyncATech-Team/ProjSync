@@ -1,6 +1,6 @@
 ﻿using backAPI.Data;
 using backAPI.Entities.Domain;
-using backAPI.Entities.DTO;
+using backAPI.DTO;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -84,6 +84,18 @@ namespace backAPI.Repositories.Implementation {
             return user.Id;
         }
 
+        // Implementacija metode za proveru da li korisnik postoji u bazi preko korisnickog imena
+        public async Task<bool> UserExistsByUsername(string username)
+        {
+            return await dataContext.Users.AnyAsync(x => x.Username == username);
+        }
+
+        // Implementacija metode za proveru da li korisnik postoji u bazi preko email-a
+        public async Task<bool> UserExistsByEmail(string email)
+        {
+            return await dataContext.Users.AnyAsync(x => x.Email == email);
+        }
+
         /* ****************************************************************************************************************************** */
         /* ****************************************************************************************************************************** */
         /* ********************************************** PRIVATE HELPER METHODS ******************************************************** */
@@ -149,5 +161,7 @@ namespace backAPI.Repositories.Implementation {
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
+
+
     }
 }

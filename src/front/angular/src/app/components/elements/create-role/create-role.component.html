@@ -14,17 +14,17 @@
 
             <div class="modal-body">
                 <!-- Form -->
-                <form id="formCreateRole" class="row g-3" (ngSubmit)="create()" autocomplete="off" style="margin-bottom: 10%;">
+                <form #createRoleForm="ngForm" (ngSubmit)="create()" id="formCreateRole" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
 
                     <div class="col-12"> <!-- field za ime-->
                         <div class="form-floating mb-3">
-                            <input 
+                        <input 
                             type="text"
                             id="name"
                             name="name"
                             class="form-control"
                             placeholder="Name"
-                            [(ngModel)]="role.Name"
+                            [(ngModel)]="role.name"
                             required
                             >
                             <label for="name" class="form-label">Name</label>
@@ -33,13 +33,13 @@
     
                     <div class="col-12"> <!-- field za WorkingHourPrice-->
                         <div class="form-floating mb-3">
-                            <input 
+                        <input 
                             type="number"
                             id="WorkingHourPrice"
                             name="WorkingHourPrice"
                             class="form-control"
                             placeholder="271.00"
-                            [(ngModel)]="role.WorkingHourPrice"
+                            [(ngModel)]="role.workingHourPrice"
                             required
                             min="0"
                             >
@@ -49,13 +49,13 @@
     
                     <div class="col-12"> <!-- field za OvertimeHourPrice-->
                         <div class="form-floating mb-3">
-                            <input 
+                        <input
                             type="number"
                             id="OvertimeHourPrice"
                             name="OvertimeHourPrice"
                             class="form-control"
                             placeholder="300.00"
-                            [(ngModel)]="role.OvertimeHourPrice"
+                            [(ngModel)]="role.overtimeHourPrice"
                             required
                             min="0"
                             >
@@ -64,20 +64,23 @@
                     </div>
     
                     <div class="col-12"> <!-- field za WeekendHourPrice-->
-                            <div class="form-floating mb-3">
-                            <input 
+                        <div class="form-floating mb-3">
+                        <input 
                             type="number"
                             id="WeekendHourPrice"
                             name="WeekendHourPrice"
                             class="form-control"
                             placeholder="350.00"
-                            [(ngModel)]="role.WeekendHourPrice"
+                            [(ngModel)]="role.weekendHourPrice"
                             required
                             min="0"
                             >
                             <label for="WeekendHourPrice" class="form-label">Weekend Hour Price</label>
                         </div>
                     </div>
+
+                    
+
                 </form>
                 <!-- End of Form -->
             </div>
@@ -86,6 +89,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" form="formCreateRole" class="btn btn-primary" data-bs-dismiss="modal" (click)="close_alerts()">Create</button>
             </div>
+            
         </div>
     </div>
 </div>

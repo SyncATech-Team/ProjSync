@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
-import { CreateCompanyRole } from '../_models/role';
+import { CreateCompanyRole } from '../_models/create-company-role';
 import { HttpClient } from '@angular/common/http';
+import { RegisterModel } from '../_models/register-user';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'https://localhost:5000/api/';
+  baseUrl = environment.apiUrl;
 
   private currentUserSource = new BehaviorSubject<User | null>(null);
-  private RoleSource = new BehaviorSubject<CreateCompanyRole | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
   
   constructor(private http: HttpClient) { }
@@ -33,31 +34,10 @@ export class AccountService {
     )
   }
 
-  // TODO: registracija samo za admin stranu
-  register(model: any) {
-    // POST: http://localhost:5000/api/Users/register, model se salje preko body-ja
-    // od http klijenta dobijamo Observable i vraca nam se UserDto
-    return this.http.post<User>(this.baseUrl + 'Users/register', model).pipe(
-      map(user => {
-        if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
-        }
-      })
-    )
-  }
-
-  create(model: any) {
+  register(model: RegisterModel) {
     // POST: http://localhost:5000/api/account/register, model se salje preko body-ja
     // od http klijenta dobijamo Observable i vraca nam se UserDto
-    return this.http.post<CreateCompanyRole>(this.baseUrl + 'Companyroles', model).pipe( 
-      map(role => {
-        if (role) {
-          localStorage.setItem('role', JSON.stringify(role));
-          this.RoleSource.next(role);
-        }
-      })
-    )
+    return this.http.post<RegisterModel>(this.baseUrl + 'account/register', model);
   }
 
   logout() {

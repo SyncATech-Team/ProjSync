@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-admin-page',
@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrl: './admin-page.component.css'
 })
 export class AdminPageComponent {
-
+  constructor() { }
 
   visibleUser : boolean = false;
   visibleRole : boolean = false;
