@@ -1,13 +1,14 @@
 ﻿using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
 
-    // localhost:xyzt/api/companyroles
+    // TODO: ne ubacivati autorizaciju dok login nije gotov
     public class CompanyrolesController : BaseApiController {
 
         private readonly ICompanyRolesRepository companyRolesRepository;
