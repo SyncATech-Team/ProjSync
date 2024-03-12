@@ -72,7 +72,8 @@
                         [(ngModel)]="user.email"
                         pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
                         spellcheck="false"
-                        required>
+                        required
+                        autocomplete="off">
                     <i class="fa fa-user"></i>
                 </div>
                 <!-- End of Input email -->
@@ -87,7 +88,8 @@
                         placeholder="Password" 
                         [(ngModel)]="user.password"
                         spellcheck="false"
-                        required>
+                        required
+                        autocomplete="current-password">
                     <i style="cursor: pointer;" *ngIf="showPassword; else hideIcon" (click)="togglePasswordVisibility()" class="fa fa-unlock"></i>
                     
                     <ng-template #hideIcon>
@@ -99,11 +101,11 @@
                 <!-- Optional options -->
                 <div id="need_flex">
                     <div class="checkbox pull-left">
-                        <label><input type="checkbox"> Remember me</label>
+                        <label><input id="input-checkbox-rememberme" type="checkbox"> Remember me</label>
                     </div>
                     
                     <div class="checkbox pull-right">
-                        <label> <a id="mailto_link" class="forget" href="mailto: syncatech@outlook.com?Subject=Problems with login" title="Contact us">Need help with login?</a> </label>
+                        <span> <a id="mailto_link" class="forget" href="mailto: syncatech@outlook.com?Subject=Problems with login" title="Contact us">Need help with login?</a> </span>
                     </div>
                 </div>
                 <!-- End of Optional options -->

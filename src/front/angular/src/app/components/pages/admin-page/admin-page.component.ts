@@ -35,4 +35,17 @@ export class AdminPageComponent {
     this.close_alert("valid_register_div");
     this.close_alert("valid_role_div");
   }
+
+  hide_all_pages() {
+
+    let x = document.getElementById("welcome");
+    if(x != null) x.hidden = true;
+
+    let y = document.getElementById("users");
+    if(y != null) y.hidden = true;
+
+    let z = document.getElementById("company_roles");
+    if(z != null) z.hidden = true;
+  }
+
 }
