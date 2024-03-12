@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
-import { AccountService } from '../../../_service/account.service';
-
-interface Role{
-    Name : string,
-    WorkingHourPrice : number | null,
-    OvertimeHourPrice : number | null,
-    WeekendHourPrice : number | null
-}
-
+import { CompanyroleService } from '../../../_service/companyrole.service';
+import { CreateCompanyRole } from '../../../_models/create-company-role';
 
 @Component({
   selector: 'app-create-role',
@@ -16,17 +9,17 @@ interface Role{
 })
 export class CreateRoleComponent {
 
-  role : Role={
-    Name : "",
-    WorkingHourPrice : null,
-    OvertimeHourPrice : null,
-    WeekendHourPrice :null
+  role: CreateCompanyRole = {
+    name: '',
+    workingHourPrice: 0,
+    overtimeHourPrice: 0,
+    weekendHourPrice: 0
   }
 
-  constructor(public accoutService: AccountService) { }
+  constructor(public companyRoleService: CompanyroleService) { }
 
   create(){
-    this.accoutService.create(this.role).subscribe()
+    this.companyRoleService.create(this.role);
   }
 
 }

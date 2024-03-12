@@ -1,14 +1,16 @@
-﻿
-namespace backAPI.Entities.DTO {
+﻿namespace backAPI.DTO
+{
 
     // Objekat za login korisnika
-    public class UserLogin {
+    public class UserLogin
+    {
         public string Email { get; set; }
         public string Password { get; set; }
     }
 
     // Objekat za registraciju korisnika
-    public class UserRegister {
+    public class UserRegister
+    {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -21,7 +23,8 @@ namespace backAPI.Entities.DTO {
         public string Status { get; set; }
     }
 
-    public class DTOUser {
+    public class DTOUser
+    {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

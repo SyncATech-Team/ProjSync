@@ -1,15 +1,14 @@
-﻿using backAPI.Entities.Domain;
-using backAPI.Entities.DTO;
+﻿using backAPI.DTO;
+using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backAPI.Controllers {
+namespace backAPI.Controllers
+{
 
     // localhost:xyzt/api/companyroles
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CompanyrolesController : ControllerBase {
+    public class CompanyrolesController : BaseApiController {
 
         private readonly ICompanyRolesRepository companyRolesRepository;
 
@@ -19,34 +18,27 @@ namespace backAPI.Controllers {
         public CompanyrolesController(ICompanyRolesRepository companyRolesRepository) {
             this.companyRolesRepository = companyRolesRepository;
         }
-        /* *****************************************************************************
-         * GET | Get ALL company roles
-         * ***************************************************************************** */
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ApiCompanyRole>>> GetCompanyRoles() {
-            List<ApiCompanyRole> companyRoles = new List<ApiCompanyRole>();
+        public async Task<ActionResult<IEnumerable<string>>> GetCompanyRoles() {
+            List<string> companyRoles = new List<string>();
 
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
 
-            // Encapsulate CompanyRole to CompanyRoleDTO object
-            foreach (var role in roles) {
-                companyRoles.Add(
-                    new ApiCompanyRole {
-                        Name = role.Name,
-                        WorkingHourPrice = role.WorkingHourPrice,
-                        OvertimeHourPrice = role.OvertimeHourPrice,
-                        WeekendHourPrice = role.WeekendHourPrice
-                    }
-                );
-            }
+            if (roles == null)
+                return BadRequest("There are no comany roles to fetch");
 
+            foreach (var role in roles)
+                companyRoles.Add(role.Name);
+            
             return companyRoles;
         }
+
         /* *****************************************************************************
          * GET{id} | Get company role by ID
          * ***************************************************************************** */
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApiCompanyRole>> GetCompanyRole(int id) {
+        public async Task<ActionResult<CompanyRoleDto>> GetCompanyRole(int id) {
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
             var role = roles.FirstOrDefault(role => role.Id == id);
 
@@ -54,7 +46,7 @@ namespace backAPI.Controllers {
                 return NotFound();
             }
 
-            return new ApiCompanyRole {
+            return new CompanyRoleDto {
                 Name = role.Name,
                 WorkingHourPrice = role.WorkingHourPrice,
                 OvertimeHourPrice = role.OvertimeHourPrice,
@@ -65,7 +57,7 @@ namespace backAPI.Controllers {
          * POST | Create new company role
          * ***************************************************************************** */
         [HttpPost]
-        public async Task<ActionResult<string>> CreateCompanyRole(ApiCompanyRole role) {
+        public async Task<ActionResult<string>> CreateCompanyRole(CompanyRoleDto role) {
 
             if(await companyRolesRepository.CheckCompanyRoleNameExistance(role.Name)) {
                 return BadRequest("Name " + role.Name + " is already used!");
@@ -88,7 +80,7 @@ namespace backAPI.Controllers {
          * PUT{id} | Update company role for the given id
          * ***************************************************************************** */
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateCompanyRole(int id, ApiCompanyRole request) {
+        public async Task<ActionResult<string>> UpdateCompanyRole(int id, CompanyRoleDto request) {
             var updated = await companyRolesRepository.UpdateCompanyRole(id, request);
 
             if(!updated) {

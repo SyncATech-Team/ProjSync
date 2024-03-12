@@ -1,13 +1,12 @@
-﻿using backAPI.Entities.Domain;
-using backAPI.Entities.DTO;
+﻿using backAPI.DTO;
+using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backAPI.Controllers {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class WorkinghoursController : ControllerBase {
+namespace backAPI.Controllers
+{
+    public class WorkinghoursController : BaseApiController {
 
         private readonly IWorkingHoursRepository workingHoursRepository;
 
