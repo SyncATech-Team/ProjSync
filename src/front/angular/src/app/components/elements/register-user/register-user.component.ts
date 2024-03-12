@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { RegisterModel } from '../../../_models/register-user';
 import { CompanyroleService } from '../../../_service/companyrole.service';
+import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
+
 
 @Component({
   selector: 'app-register-user',
@@ -24,7 +26,7 @@ export class RegisterUserComponent implements OnInit {
     status: ''
   };
 
-  constructor(public accoutService: AccountService, public companyRoleService: CompanyroleService) { }
+  constructor(public accoutService: AccountService, public companyRoleService: CompanyroleService, private adminPage: AdminPageComponent) { }
 
   ngOnInit(): void {
     this.getAllCompanyRoles();
@@ -36,23 +38,33 @@ export class RegisterUserComponent implements OnInit {
 
     this.accoutService.register(this.registrationModel).subscribe({
       next: () => {
+        let y = document.getElementById("valid_register_div");
+        if (y != null) y.hidden = false;
+
         let x = document.getElementById("invalid_register_div");
-        if(x != null) x.hidden = true;
+        if (x != null) x.hidden = true;
       },
 
       error: (error) => {
         // prikazi poruku greske
         let x = document.getElementById("invalid_register_div");
-        if(x != null) x.hidden = false;
+        if (x != null) x.hidden = false;
+
+        let y = document.getElementById("valid_register_div");
+        if (y != null) y.hidden = true;
       }
     });
   }
+  
+  // dohvati sva imena za company role
+  getAllCompanyRoles() {
+    this.companyRoleService.getAllCompanyRoles().subscribe({
+      next: response => this.roles = response
+    })
+  }
 
-    // dohvati sva imena za company role
-    getAllCompanyRoles() {
-      this.companyRoleService.getAllCompanyRoles().subscribe({
-        next: response => this.roles = response
-      })
-    }
+  close_alerts() {
+    this.adminPage.close_all_alerts();
+  }
 
 }
