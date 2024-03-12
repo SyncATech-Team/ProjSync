@@ -32,8 +32,8 @@
                     </div>
     
                     <div class="col-12"> <!-- field za WorkingHourPrice-->
-                        <label for="WorkingHourPrice" class="form-label">Working Hour Price</label>
-                        <input 
+                        <div class="form-floating mb-3">
+                            <input 
                             type="number"
                             id="WorkingHourPrice"
                             name="WorkingHourPrice"
@@ -41,12 +41,15 @@
                             placeholder="271.00"
                             [(ngModel)]="role.WorkingHourPrice"
                             required
+                            min="0"
                             >
+                            <label for="WorkingHourPrice" class="form-label">Working Hour Price</label>
+                        </div>
                     </div>
     
                     <div class="col-12"> <!-- field za OvertimeHourPrice-->
-                        <label for="OvertimeHourPrice" class="form-label">Overtime Hour Price</label>
-                        <input 
+                        <div class="form-floating mb-3">
+                            <input 
                             type="number"
                             id="OvertimeHourPrice"
                             name="OvertimeHourPrice"
@@ -54,12 +57,15 @@
                             placeholder="300.00"
                             [(ngModel)]="role.OvertimeHourPrice"
                             required
+                            min="0"
                             >
+                            <label for="OvertimeHourPrice" class="form-label">Overtime Hour Price</label>
+                        </div>
                     </div>
     
                     <div class="col-12"> <!-- field za WeekendHourPrice-->
-                        <label for="WeekendHourPrice" class="form-label">Weekend Hour Price</label>
-                        <input 
+                            <div class="form-floating mb-3">
+                            <input 
                             type="number"
                             id="WeekendHourPrice"
                             name="WeekendHourPrice"
@@ -67,7 +73,10 @@
                             placeholder="350.00"
                             [(ngModel)]="role.WeekendHourPrice"
                             required
+                            min="0"
                             >
+                            <label for="WeekendHourPrice" class="form-label">Weekend Hour Price</label>
+                        </div>
                     </div>
                 </form>
                 <!-- End of Form -->
