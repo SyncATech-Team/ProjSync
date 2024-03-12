@@ -1,6 +1,25 @@
+<!-- Neuspesno kreiran korisnik -->
 <div id="invalid_register_div" class="alert alert-warning alert-dismissible fade show" role="alert" hidden style="position: fixed; width: 100%; top: 0px">
     <strong>Invalid user registration</strong> Please fill all of the required fields correctly.
-    <button id="close_warning_button" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="close_invalid_register_popup()" title="Hide"></button>
+    <button id="close_warning_button_register_fail" type="button" class="btn-close" aria-label="Close" (click)="close_alert('invalid_register_div')" title="Hide"></button>
+</div>
+
+<!-- Neuspesno kreirana pozicija u kompaniji -->
+<div id="invalid_role_div" class="alert alert-warning alert-dismissible fade show" role="alert" hidden style="position: fixed; width: 100%; top: 0px">
+    <strong>Invalid role information</strong> Please fill all of the required fields correctly.
+    <button id="close_warning_button_crole_create" type="button" class="btn-close" aria-label="Close" (click)="close_alert('invalid_role_div')" title="Hide"></button>
+</div>
+
+<!-- Uspesno kreiran korisnik -->
+<div id="valid_register_div" class="alert alert-success alert-dismissible fade show" role="alert" hidden style="position: fixed; width: 100%; top: 0px">
+    <strong>Success</strong> Successfully registered new user.
+    <button id="close_warning_button_valid_register" type="button" class="btn-close" aria-label="Close" (click)="close_alert('valid_register_div')" title="Hide"></button>
+</div>
+
+<!-- Uspesno kreirana nova pozicija u komapniji -->
+<div id="valid_role_div" class="alert alert-success alert-dismissible fade show" role="alert" hidden style="position: fixed; width: 100%; top: 0px">
+    <strong>Success!</strong> Successfully created new company role.
+    <button id="close_warning_button_valid_crole" type="button" class="btn-close" aria-label="Close" (click)="close_alert('valid_role_div')" title="Hide"></button>
 </div>
 
 <div id="page">
