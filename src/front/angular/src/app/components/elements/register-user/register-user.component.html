@@ -1,140 +1,180 @@
-<div id="page">
-    <div class="container">
-        <div class="clearfix">
-            <form class="row g-3" (ngSubmit)="register()" autocomplete="off" style="margin-bottom: 10%;">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Register user
+</button>
 
-                <div class="col-md-6"> <!-- field za ime-->
-                    <label for="firstName" class="form-label">First Name</label>
-                    <input 
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        class="form-control"
-                        placeholder="Name"
-                        [(ngModel)]="user.FirstName"
-                        required
-                        >
-                </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">User registration form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
 
-                <div class="col-md-6"> <!-- field za prezime-->
-                    <label for="lastName" class="form-label">Last Name</label>
-                    <input 
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        class="form-control"
-                        placeholder="Surname"
-                        [(ngModel)]="user.LastName"
-                        required
-                        >
-                </div>
+            <div class="modal-body">
 
-                <div class="col-12"> <!-- field za username-->
-                    <label for="username" class="form-label">Username</label>
-                    <input 
-                        type="text"
-                        id="username"
-                        name="username"
-                        class="form-control"
-                        placeholder="username"
-                        [(ngModel)]="user.Username"
-                        required
-                        >
-                </div>
+                <!-- Form -->
+                <form id="formRegisterUser" class="row g-3" (ngSubmit)="register()" autocomplete="off" style="margin-bottom: 10%;">
 
-                <div class="col-12"> <!-- field za email-->
-                    <label for="email" class="form-label">Email</label>
-                    <input 
-                        type="email"
-                        id="email"
-                        name="email"
-                        class="form-control"
-                        placeholder="syncatechpmf@domain.com"
-                        [(ngModel)]="user.Email"
-                        required
-                        >
-                </div>
+                    <div class="col-md-6"> <!-- field za ime-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                class="form-control required-field"
+                                placeholder="John"
+                                [(ngModel)]="user.FirstName"
+                                required
+                            >
+                            <label for="firstName" class="form-label">First Name</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-6"> <!-- field za prezime-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                class="form-control"
+                                placeholder="Doe"
+                                [(ngModel)]="user.LastName"
+                                required
+                            >
+                            <label for="lastName" class="form-label">Last Name</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12"> <!-- field za username-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-control"
+                                placeholder="username"
+                                [(ngModel)]="user.Username"
+                                required
+                            >
+                            <label for="username" class="form-label">Username</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12"> <!-- field za email-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="syncatechpmf@domain.com"
+                                [(ngModel)]="user.Email"
+                                required
+                            >
+                            <label for="email" class="form-label">Email</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12"> <!-- field za password | Omoguciti promenu unutar main aplikacije od strane user-a |-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="12345"
+                                [(ngModel)]="user.Password"
+                                required
+                            >
+                            <label for="password" class="form-label">Password</label>
+                        </div>
+                        <!-- vvv Da li mora da bude "password" vvv -->
+                    </div>
+    
+                    <!-- Napravi da bude dropDown -->
+                    <!-- ! -->
+                    <!-- ! -->
+                    <!-- ! -->
+                    <div class="col-12"> <!-- field za companyRole-->
+                        <div class="form-floating mb-3">
+                            <select id="companyRoleId" class="form-select" aria-label="companyRoleId" [(ngModel)]="user.CompanyRoleId" name="companyRoleId">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                            <label for="companyRoleId" class="form-label">Company Role</label>
+                        </div>
+    
+                    </div>
+    
+                    <div class="col-12"> <!-- field za address-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="addres"
+                                id="addres"
+                                name="addres"
+                                class="form-control"
+                                placeholder="Radoja Domanovica 12"
+                                [(ngModel)]="user.Address"
+                            >
+                            <label for="addres" class="form-label">Address</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12"> <!-- field za contactPhone-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="tel"
+                                id="contactPhone"
+                                name="contactPhone"
+                                class="form-control"
+                                placeholder="0612345678"
+                                [(ngModel)]="user.ContactPhone"
+                            >
+                            <label for="contactPhone" class="form-label">Phone</label>
+                        </div>
+                        
+                    </div>
+    
+                    <div class="col-12"> <!-- field za linkedinProfile-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="linkedinProfile"
+                                name="linkedinProfile"
+                                class="form-control"
+                                placeholder="ProfileName"
+                                [(ngModel)]="user.LinkedinProfile"
+                            >
+                            <label for="linkedinProfile" class="form-label">LinkedIn Profile</label>
+                        </div>
+                        
+                    </div>
+    
+                    <div class="col-12"> <!-- field za status-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="status"
+                                name="status"
+                                class="form-control"
+                                placeholder="status"
+                                [(ngModel)]="user.Status"
+                            >
+                            <label for="status" class="form-label">Status</label>
+                        </div>
+                    </div>
+                </form>
+                <!-- End of Form -->
+            </div>
 
-                <div class="col-12"> <!-- field za password | Omoguciti promenu unutar main aplikacije od strane user-a |-->
-                    <label for="password" class="form-label">Password</label>
-                    <!-- vvv Da li mora da bude "password" vvv -->
-                    <input 
-                        type="text"
-                        id="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="12345"
-                        [(ngModel)]="user.Password"
-                        required
-                        >
-                </div>
-
-                <!-- Napravi da bude dropDown -->
-                <!-- ! -->
-                <!-- ! -->
-                <!-- ! -->
-                <div class="col-12"> <!-- field za companyRole-->
-                    <label for="companyRoleId" class="form-label">Company Role</label>
-
-                    <select id="companyRoleId" class="form-select" aria-label="companyRoleId" [(ngModel)]="user.CompanyRoleId" name="companyRoleId">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                      </select>
-                </div>
-
-                <div class="col-12"> <!-- field za address-->
-                    <label for="addres" class="form-label">Address</label>
-                    <input 
-                        type="addres"
-                        id="addres"
-                        name="addres"
-                        class="form-control"
-                        placeholder="Radoja Domanovica 12"
-                        [(ngModel)]="user.Address"
-                        >
-                </div>
-
-                <div class="col-12"> <!-- field za contactPhone-->
-                    <label for="contactPhone" class="form-label">Phone</label>
-                    <input 
-                        type="text"
-                        id="contactPhone"
-                        name="contactPhone"
-                        class="form-control"
-                        placeholder="0612345678"
-                        [(ngModel)]="user.ContactPhone"
-                        >
-                </div>
-
-                <div class="col-12"> <!-- field za linkedinProfile-->
-                    <label for="linkedinProfile" class="form-label">LinkedIn Profile</label>
-                    <input 
-                        type="text"
-                        id="linkedinProfile"
-                        name="linkedinProfile"
-                        class="form-control"
-                        placeholder="ProfileName"
-                        [(ngModel)]="user.LinkedinProfile"
-                        >
-                </div>
-
-                <div class="col-12"> <!-- field za status-->
-                    <label for="status" class="form-label">Status</label>
-                    <input 
-                        type="text"
-                        id="status"
-                        name="status"
-                        class="form-control"
-                        placeholder="status"
-                        [(ngModel)]="user.Status"
-                        >
-                </div>
-
-                <div id="login-btn-div" class="form-group">
-                    <button type="submit" class="btn btn-primary" value="Register">Register</button>
-                </div>
-            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="formRegisterUser" class="btn btn-primary">Register</button>
+            </div>
         </div>
     </div>
 </div>

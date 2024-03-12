@@ -20,4 +20,9 @@ export class AdminPageComponent {
     this.visibleUser = false;
     this.visibleRole = this.visibleRole?false:true;
   }
+
+  close_invalid_register_popup() {
+    let x = document.getElementById("invalid_register_div");
+    if(x != null) x.hidden = true;
+  }
 }

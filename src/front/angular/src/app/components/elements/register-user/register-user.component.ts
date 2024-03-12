@@ -37,7 +37,21 @@ export class RegisterUserComponent {
   constructor(public accoutService: AccountService) { }
 
   register(){
-    this.accoutService.register(this.user).subscribe()
+
+    console.log(document.getElementById('invalid_register_div'));
+
+    this.accoutService.register(this.user).subscribe({
+      next: () => {
+        let x = document.getElementById("invalid_register_div");
+        if(x != null) x.hidden = true;
+      },
+
+      error: (error) => {
+        // prikazi poruku greske
+        let x = document.getElementById("invalid_register_div");
+        if(x != null) x.hidden = false;
+      }
+    });
   }
 
 }
