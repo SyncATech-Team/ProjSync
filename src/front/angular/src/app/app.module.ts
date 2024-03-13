@@ -15,9 +15,11 @@ import { AdminPageComponent } from './components/pages/admin-page/admin-page.com
 import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
 import { CreateRoleComponent } from './components/elements/create-role/create-role.component';
 import { AdminSidebarComponent } from './components/elements/admin-sidebar/admin-sidebar.component';
+import { CreateProjectComponent } from './components/elements/create-project/create-project.component';
 import { UserPageComponent } from './components/pages/admin-page/user-page/user-page.component';
 import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
 import { DashboardPageComponent } from './components/pages/admin-page/dashboard-page/dashboard-page.component';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { DashboardPageComponent } from './components/pages/admin-page/dashboard-
     RegisterUserComponent,
     CreateRoleComponent,
     AdminSidebarComponent,
+    CreateProjectComponent,
     UserPageComponent,
     RolePageComponent,
     DashboardPageComponent

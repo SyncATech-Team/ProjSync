@@ -1,0 +1,151 @@
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+    Create project
+</button>
+
+<div class="modal fade" id="createProjectModal" tabindex="-1" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createProjectModalLabel">Create project</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form #createProjectForm="ngForm" (ngSubmit)="create()" id="formCreateProject" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
+
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control"
+                            placeholder="Name"
+                            [(ngModel)]="project.name"
+                            required
+                            autocomplete="off"
+                            >
+                            <label for="name" class="form-label">Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="key"
+                            id="key"
+                            name="key"
+                            class="form-control"
+                            placeholder="TC"
+                            [(ngModel)]="project.key"
+                            required
+                            >
+                            <label for="key" class="form-label">Key</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="text"
+                            id="type"
+                            name="type"
+                            class="form-control"
+                            placeholder="Type"
+                            [(ngModel)]="project.type"
+                            required
+                            >
+                            <label for="type" class="form-label">Type</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input
+                            type="text"
+                            id="description"
+                            name="description"
+                            class="form-control"
+                            placeholder="Description"
+                            [(ngModel)]="project.description"
+                            required
+                            min="0"
+                            >
+                            <label for="description" class="form-label">Description</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="text"
+                            id="owner"
+                            name="owner"
+                            class="form-control"
+                            placeholder="Owner"
+                            [(ngModel)]="project.owner"
+                            required
+                            >
+                            <label for="owner" class="form-label">Owner</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="date"
+                            id="dueDate"
+                            name="dueDate"
+                            class="form-control"
+                            [(ngModel)]="project.dueDate"
+                            required
+                            >
+                            <label for="dueDate" class="form-label">Due date</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="number"
+                            id="budget"
+                            name="budget"
+                            class="form-control"
+                            placeholder="100000.00"
+                            [(ngModel)]="project.budget"
+                            required
+                            >
+                            <label for="budget" class="form-label">Budget</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12"> 
+                        <div class="form-floating mb-3">
+                            <select id="projectVisibility" class="form-select" aria-label="projectVisibility" [(ngModel)]="project.visibility" name="projectVisibility">
+                                <option *ngFor="let visibility of projectVisibility" value="{{visibility}}">{{visibility}}</option>
+                            </select>
+                            <label for="projectVisibility" class="form-label">Project visibility</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12"> 
+                        <div class="form-floating mb-3">
+                            <select id="projectParent" class="form-select" aria-label="projectParent" [(ngModel)]="project.parent" name="projectParent">
+                                <option *ngFor="let project of projects" value="{{project.id}}">{{project.name}}</option>
+                            </select>
+                            <label for="projectParent" class="form-label">Parent</label>
+                        </div>
+                    </div>
+
+                </form>
+                
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="formCreateProject" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
