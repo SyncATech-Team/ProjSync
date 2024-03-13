@@ -5,6 +5,7 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
 import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
 import { DashboardPageComponent } from './components/pages/admin-page/dashboard-page/dashboard-page.component';
 import { UserPageComponent } from './components/pages/admin-page/user-page/user-page.component';
+import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'admin', component: AdminPageComponent},
   {path: 'admin/dashboard', component: DashboardPageComponent},
   {path: 'admin/user', component: UserPageComponent},
+  {path: 'admin/role', component: RolePageComponent},
   {path: '**', component: LoginPageComponent, pathMatch: 'full'},
 ];
 

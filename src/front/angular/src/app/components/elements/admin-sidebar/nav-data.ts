@@ -8,5 +8,10 @@ export const navbarData = [
         routeLink : '/admin/user',
         icon: 'fa-solid fa-user',
         label: 'Users'
+    },
+    {
+        routeLink : '/admin/role',
+        icon: 'fa-regular fa-building',
+        label: 'Roles'
     }
 ];
