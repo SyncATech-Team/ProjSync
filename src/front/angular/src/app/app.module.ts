@@ -14,7 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
 import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
 import { CreateRoleComponent } from './components/elements/create-role/create-role.component';
-import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { MatSortModule } from '@angular/material/sort';
     HttpClientModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
-    MatSortModule
   ],
   providers: [
     provideClientHydration()
