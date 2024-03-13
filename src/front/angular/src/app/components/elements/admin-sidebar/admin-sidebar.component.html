@@ -1,4 +1,4 @@
-<nav class="navbar bg-body-tertiary">
+<!--<nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
         
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
@@ -76,3 +76,27 @@
         </div>
     </div>
 </nav>
+-->
+
+<!-- Mihajlo SIDE BAR -->
+
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : '' ">
+    <!-- Header od sidenav -->
+    <div class="logo-container">
+        <button class="logo" (click)="toggleCollapse()"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo-text" *ngIf="collapsed">Admin</div>
+        <button class="button-close" *ngIf="collapsed" (click)="closeSidenav()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <!-- Linkovi -->
+    <ul class="sidenav-nav">
+        <li class="sidenav-nav-item" *ngFor="let data of navData">
+            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]">
+                <i class="sidenav-link-icon" [classList]="data.icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{ data.label }}</span>
+            </a>
+        </li>
+    </ul>
+</div>
