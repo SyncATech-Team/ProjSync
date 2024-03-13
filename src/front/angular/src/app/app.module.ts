@@ -15,6 +15,7 @@ import { AdminPageComponent } from './components/pages/admin-page/admin-page.com
 import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
 import { CreateRoleComponent } from './components/elements/create-role/create-role.component';
 import { AdminSidebarComponent } from './components/elements/admin-sidebar/admin-sidebar.component';
+import { CreateProjectComponent } from './components/elements/create-project/create-project.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AdminSidebarComponent } from './components/elements/admin-sidebar/admin
     AdminPageComponent,
     RegisterUserComponent,
     CreateRoleComponent,
-    AdminSidebarComponent
+    AdminSidebarComponent,
+    CreateProjectComponent
   ],
   imports: [
     BrowserModule,

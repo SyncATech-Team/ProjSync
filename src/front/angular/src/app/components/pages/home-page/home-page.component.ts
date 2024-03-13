@@ -93,7 +93,7 @@ export class HomePageComponent implements OnInit {
   }
   project5: any = {
     id:4,
-    name: "project1",
+    name: "project21",
     key: "er",
     type: "Company-managed software1",
     description: "description1",
@@ -319,7 +319,7 @@ export class HomePageComponent implements OnInit {
       this.isAscending = true;
     }
 
-    this.projects.sort((a, b) => {
+    this.projectsShow.sort((a, b) => {
       const direction = this.isAscending ? 1 : -1;
       if (a[column] < b[column]) return -1 * direction;
       if (a[column] > b[column]) return 1 * direction;
@@ -342,7 +342,6 @@ export class HomePageComponent implements OnInit {
         this.projectsShow=this.projects.filter((project)=> project.visibility===filter);
       }
     }
-    
   }
   
 }
