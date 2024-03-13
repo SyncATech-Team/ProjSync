@@ -59,7 +59,10 @@ export class RegisterUserComponent implements OnInit {
   // dohvati sva imena za company role
   getAllCompanyRoles() {
     this.companyRoleService.getAllCompanyRoles().subscribe({
-      next: response => this.roles = response
+      next: response => this.roles = response,
+      error: (error) => {
+        console.log(error);
+      }
     })
   }
 

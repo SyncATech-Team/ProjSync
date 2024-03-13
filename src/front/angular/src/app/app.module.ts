@@ -14,6 +14,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
 import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
 import { CreateRoleComponent } from './components/elements/create-role/create-role.component';
+<<<<<<< src/front/angular/src/app/app.module.ts
+=======
+import { AdminSidebarComponent } from './components/elements/admin-sidebar/admin-sidebar.component';
+>>>>>>> src/front/angular/src/app/app.module.ts
 
 @NgModule({
   declarations: [
@@ -24,7 +28,8 @@ import { CreateRoleComponent } from './components/elements/create-role/create-ro
     HomePageComponent,
     AdminPageComponent,
     RegisterUserComponent,
-    CreateRoleComponent
+    CreateRoleComponent,
+    AdminSidebarComponent
   ],
   imports: [
     BrowserModule,
