@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
+import { navbarData } from './nav-data';
 
+interface SideNavToggle{
+  screenWidth : number;
+  collapsed: boolean;
+}
 @Component({
   selector: 'app-admin-sidebar',
   templateUrl: './admin-sidebar.component.html',
@@ -8,18 +13,24 @@ import { AdminPageComponent } from '../../pages/admin-page/admin-page.component'
 })
 export class AdminSidebarComponent {
 
-  constructor(private adminPage: AdminPageComponent) { }
+  @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
 
-  showUsersPage() {
-    this.adminPage.hide_all_pages();
-    let x = document.getElementById("users");
-    if(x != null) x.hidden = false;
+  //TRUE -> otvoren side nav
+  //FALSE -> zatvoren side nav
+  collapsed : boolean = false;
+  screenWidth = 0;
+  navData = navbarData;
+
+  constructor() { }
+
+  toggleCollapse() {
+    this.collapsed = !this.collapsed;
+    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 
-  showCompanyRolesPage() {
-    this.adminPage.hide_all_pages();
-    let x = document.getElementById("company_roles");
-    if(x != null) x.hidden = false;
+  closeSidenav() {
+    this.collapsed = false;
+    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 
 }

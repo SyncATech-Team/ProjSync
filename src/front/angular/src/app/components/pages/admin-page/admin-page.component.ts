@@ -1,12 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 
+interface SideNavToggle{
+  screenWidth: number;
+  collapsed: boolean;
+}
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.component.html',
   styleUrl: './admin-page.component.css'
 })
+
+@Injectable({
+  providedIn: 'root'
+})
+
 export class AdminPageComponent {
   constructor() { }
+
+  isSideNavCollapsed = false;
+  screenWidth = 0;
 
   visibleUser : boolean = false;
   visibleRole : boolean = false;
@@ -48,4 +60,8 @@ export class AdminPageComponent {
     if(z != null) z.hidden = true;
   }
 
+  onToggleSideNav(data: SideNavToggle) {
+    this.screenWidth = data.screenWidth;
+    this.isSideNavCollapsed = data.collapsed;
+  }
 }
