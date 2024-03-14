@@ -1,2 +1,50 @@
+<div id="contentPages">
+    <div id="sideNavBar">
+        <app-admin-sidebar></app-admin-sidebar>
+    </div>
+
+    <div id="content">
+        <div id="description">
+            Use this page to create new company roles.
+            Additional description.
+        </div>
+
+        <div id="controls">
+            <input type="text" name="search-box" id="search-box">
+        </div>
+
+        <div id="roles">
+            <table id="example" class="table table-striped table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Working hour price</th>
+                        <th>Overtime price</th>
+                        <th>Weekend price</th>
+                        <td>
+                            <app-create-role (roleCreated)="onRoleCreated($event)"></app-create-role>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- TO DO - ZASTO API VRACA NIZ STRINGOVA -->
+                    <tr *ngFor="let role of roles">
+                        <td>{{ role }}</td>
+                        <td>Needs insert</td>
+                        <td>Needs insert</td>
+                        <td>Needs insert</td>
+                        <td>Action to do</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="additionalContent">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat, soluta.
+        </div>
+
+    </div>
+</div>
+
 <app-admin-sidebar></app-admin-sidebar>
 <app-create-role></app-create-role>
