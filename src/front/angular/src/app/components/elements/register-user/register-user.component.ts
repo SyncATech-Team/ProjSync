@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { RegisterModel } from '../../../_models/register-user';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
-
 
 @Component({
   selector: 'app-register-user',
@@ -32,6 +31,8 @@ export class RegisterUserComponent implements OnInit {
     this.getAllCompanyRoles();
   }
 
+  @Output() userCreated = new EventEmitter<RegisterModel>();
+
   register() {
 
     console.log(document.getElementById('invalid_register_div'));
@@ -43,6 +44,8 @@ export class RegisterUserComponent implements OnInit {
 
         let x = document.getElementById("invalid_register_div");
         if (x != null) x.hidden = true;
+
+        this.userCreated.emit(this.registrationModel);
       },
 
       error: (error) => {

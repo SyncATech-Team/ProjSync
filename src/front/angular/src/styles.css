@@ -1,0 +1,5 @@
+html, body {
+    min-height: 100vh;  /* Ensures body fills minimum viewport height */
+    margin: 0;         /* Remove default browser margins */
+    overflow: hidden;
+}

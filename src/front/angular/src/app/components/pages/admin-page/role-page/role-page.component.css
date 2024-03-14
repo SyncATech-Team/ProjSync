@@ -1,0 +1,21 @@
+#contentPages {
+    display: flex;
+}
+
+#content {
+    margin-left: 1%;
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+}
+
+#content table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#content table th {
+    text-align: center;
+}
+
+td:last-child {text-align:center;}
