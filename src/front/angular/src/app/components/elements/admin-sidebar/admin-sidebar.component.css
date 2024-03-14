@@ -3,9 +3,6 @@
     transition: all .5s ease;
     display: inline-block;
     position: relative;
-    height: 100vh;
-    /* z-index: 1;
-    top: 0; */
     width: 5rem;
     height: 100%;  
     box-shadow: 0.063rem 0 1.25rem 0 #8690a3; 
@@ -93,8 +90,7 @@
     transition: all .3s ease;
 }
 
-.sidenav-nav .sidenav-nav-item .sidenav-nav-link .sidenav-link-icon{
-    font-size: 22px;
+.sidenav-nav .sidenav-nav-item .sidenav-nav-link i{
     width: 2rem;
     min-width: 2rem;
     margin: 0 0.5rem;
@@ -109,5 +105,14 @@
 .sidenav-collapsed .sidenav-nav-item:hover .sidenav-nav-link{
     background-color: #fff;
     border-radius: 0.625rem;
+    color: #000;
+}
+
+.active{
+    background-color: #fff;
+}
+
+.active .sidenav-link-icon,
+.active .sidenav-link-text{
     color: #000;
 }
