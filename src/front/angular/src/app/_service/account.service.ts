@@ -5,6 +5,7 @@ import { CreateCompanyRole } from '../_models/create-company-role';
 import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../_models/register-user';
 import { environment } from '../../environments/environment.development';
+import { UserGetter } from '../_models/user-getter';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,10 @@ export class AccountService {
     // POST: http://localhost:5000/api/account/register, model se salje preko body-ja
     // od http klijenta dobijamo Observable i vraca nam se UserDto
     return this.http.post<RegisterModel>(this.baseUrl + 'Account/register', model);
+  }
+
+  getAllUsers() {
+    return this.http.get<UserGetter[]>(this.baseUrl + "Users");
   }
 
   logout() {
