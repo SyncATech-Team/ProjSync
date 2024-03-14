@@ -18,5 +18,10 @@ export const navbarData = [
         routeLink : '/admin/role',
         icon: 'fa-regular fa-building',
         label: 'Roles'
+    },
+    {
+        routeLink : '',
+        icon: 'fa-solid fa-arrow-right-from-bracket',
+        label: 'Log out'
     }
 ];
