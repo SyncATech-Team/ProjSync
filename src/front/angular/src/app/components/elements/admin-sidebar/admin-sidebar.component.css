@@ -118,3 +118,8 @@
 .active .sidenav-link-text{
     color: #000;
 }
+
+li:last-child {
+    position: absolute;
+    bottom: 0; /* Place at bottom of container */
+}
