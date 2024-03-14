@@ -19,7 +19,6 @@ export class UserPageComponent implements OnInit {
       this.accountService.getAllUsers().subscribe({
         next: response => {
           this.users = response;
-          console.log(this.users);
         },
         error: error => {
           console.log("ERROR: " + error);
