@@ -7,7 +7,7 @@ import { CompanyroleService } from '../../../../_service/companyrole.service';
   templateUrl: './role-page.component.html',
   styleUrl: './role-page.component.css'
 })
-export class RolePageComponent {
+export class RolePageComponent implements OnInit {
 
   roles: string[] = [];
 
@@ -19,7 +19,7 @@ export class RolePageComponent {
         this.roles = response;
       },
       error: error => {
-        console.log("ERROR: " + error);
+        console.log("ERROR: " + error.error);
       }
     });
   }

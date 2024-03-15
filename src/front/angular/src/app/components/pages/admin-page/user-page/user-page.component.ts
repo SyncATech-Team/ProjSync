@@ -21,7 +21,7 @@ export class UserPageComponent implements OnInit {
           this.users = response;
         },
         error: error => {
-          console.log("ERROR: " + error);
+          console.log("ERROR: " + error.error);
         }
       });
   }
