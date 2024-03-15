@@ -6,6 +6,7 @@ import { AdminPageComponent } from './components/pages/admin-page/admin-page.com
 import { DashboardPageComponent } from './components/pages/admin-page/dashboard-page/dashboard-page.component';
 import { UserPageComponent } from './components/pages/admin-page/user-page/user-page.component';
 import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
+import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
 import { authGuard } from './_guards/auth.guard';
 
 const routes: Routes = [
@@ -21,11 +22,12 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard],
     children: [
-      // {path: 'home', component: HomePageComponent},
-      // {path: 'admin', component: AdminPageComponent},
-      // {path: 'admin/dashboard', component: DashboardPageComponent},
-      // {path: 'admin/user', component: UserPageComponent},
-      // {path: 'admin/role', component: RolePageComponent},
+      {path: 'home', component: HomePageComponent},
+      {path: 'admin', component: AdminPageComponent},
+      {path: 'admin/dashboard', component: DashboardPageComponent},
+      {path: 'admin/user', component: UserPageComponent},
+      {path: 'admin/role', component: RolePageComponent},
+      {path: 'password_reset', component: PasswordResetPageComponent}
     ]
   },
 
