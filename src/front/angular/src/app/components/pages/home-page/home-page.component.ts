@@ -3,7 +3,8 @@ import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 import { User } from '../../../_models/user';
 import { Project } from '../../../_models/project.model';
-import { Observable } from 'rxjs';
+import { ProjectService } from '../../../_service/project.service';
+
 
 @Component({
   selector: 'app-home-page',
@@ -12,14 +13,24 @@ import { Observable } from 'rxjs';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(public accoutService: AccountService) { }
-
+  constructor(public accoutService: AccountService,private projectService:ProjectService) { }
+  projects2: Project[]=[];
   ngOnInit(): void {
+    this.projectService.getAllProjects().subscribe({
+      next: (response) => {
+        this.projects2 = response;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
     this.projects.forEach((project)=>{
       project.subProjects = this.projects.filter((subproject)=>  subproject.parent == project.id );
     });
     this.filterProjects('private');
   }
+
+  
   owner: User = {
     username: "User1",
     token: ""
