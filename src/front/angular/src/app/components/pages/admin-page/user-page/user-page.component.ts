@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../../../../_service/account.service';
 import { UserGetter } from '../../../../_models/user-getter';
 import { RegisterModel } from '../../../../_models/register-user';
+import { UserService } from '../../../../_service/user.service';
 
 @Component({
   selector: 'app-user-page',
@@ -13,10 +13,10 @@ export class UserPageComponent implements OnInit {
   
   users: UserGetter[] = [];
 
-  constructor(private http: HttpClient, private accountService: AccountService){ }
+  constructor(private http: HttpClient, private userService: UserService){ }
 
   ngOnInit(): void {
-      this.accountService.getAllUsers().subscribe({
+      this.userService.getAllUsers().subscribe({
         next: response => {
           this.users = response;
         },
