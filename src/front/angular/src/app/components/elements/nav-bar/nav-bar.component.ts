@@ -9,10 +9,16 @@ import { Router } from '@angular/router';
 })
 export class NavBarComponent {
 
+  notify_collapsed : boolean = false;
+
   constructor(public accoutService: AccountService, private router: Router) { }
   
   logout() {
     this.accoutService.logout();
     this.router.navigateByUrl('/');
+  }
+
+  toggleNotifyCollapsed(){
+    this.notify_collapsed = !this.notify_collapsed;
   }
 }

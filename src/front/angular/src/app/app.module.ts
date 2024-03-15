@@ -19,6 +19,7 @@ import { CreateProjectComponent } from './components/elements/create-project/cre
 import { UserPageComponent } from './components/pages/admin-page/user-page/user-page.component';
 import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
 import { DashboardPageComponent } from './components/pages/admin-page/dashboard-page/dashboard-page.component';
+import { NotificationComponent } from './components/elements/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { DashboardPageComponent } from './components/pages/admin-page/dashboard-
     CreateProjectComponent,
     UserPageComponent,
     RolePageComponent,
-    DashboardPageComponent
+    DashboardPageComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

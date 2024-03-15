@@ -1,103 +1,105 @@
 <app-nav-bar></app-nav-bar>
-<!--
-<div class="container" style="margin-top: 100px;">
-    <h1 *ngIf="(accoutService.currentUser$ | async) as user">Testni pozdrav: Zdravo {{user.username | titlecase}}</h1>
-</div>
--->
-<div class="container" style="margin-top: 20px;">
-    <h1 style="color:#5E5BF4 ;">
-        Projects
-    </h1>
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-2 col-3">
-            <input id="home-projects-search" name="projects-serach" class="form-control" type="search" placeholder="Search" aria-label="Search">
-        </div>
-        <div class="col-md-2 col-3">
-            <input id="home-projects-filter" class="form-control" type="search" placeholder="Filter" aria-label="Filter">
-        </div>
-        <div class="col d-flex justify-content-end">
-            <app-create-project></app-create-project>
-        </div>
+<div id="page-wrapper">
+    <!--
+    <div class="container" style="margin-top: 100px;">
+        <h1 *ngIf="(accoutService.currentUser$ | async) as user">Testni pozdrav: Zdravo {{user.username | titlecase}}</h1>
     </div>
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" (click)="filterProjects('private')">Your projects</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" (click)="filterProjects('stared')">Stared projects</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" (click)="filterProjects('public')">Explore projects</a>
-        </li>
-    </ul>
-    <div class="vh-75" style="height: 530px;overflow-y: scroll;">
-        
-        <table class="table" >
-            <thead>
-                <tr>
-                    <th scope="col" colspan="1"><i class="fa-solid fa-star" style="color: #000;"></i></th>
-                    <th (click)="sortData('name')" scope="col-3" colspan="3">
-                        Name
-                        <span *ngIf="sortedColumn === 'name'" class="sort-arrow">
-                            <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
-                            <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
-                        </span>
-                    </th>
-                    <th (click)="sortData('key')" scope="col" colspan="1">
-                        Key
-                        <span *ngIf="sortedColumn === 'key'" class="sort-arrow">
-                            <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
-                            <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
-                        </span>
-                    </th>
-                    <th (click)="sortData('type')" scope="col" colspan="3">
-                        Type
-                        <span *ngIf="sortedColumn === 'type'" class="sort-arrow">
-                            <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
-                            <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
-                        </span>
-                    </th>
-                    <th (click)="sortData('owner')" scope="col" colspan="3">
-                        Lead
-                        <span *ngIf="sortedColumn === 'owner'" class="sort-arrow">
-                            <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
-                            <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
-                        </span>
-                    </th>
-                    <th scope="col" colspan="1"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let project of projectsShow">
+    -->
+    <div class="container" style="margin-top: 20px;">
+        <h1 style="color:#5E5BF4 ;">
+            Projects
+        </h1>
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-md-2 col-3">
+                <input id="home-projects-search" name="projects-serach" class="form-control" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="searchTerm" (input)="filterProjectsByName()">
+            </div>
+            <div class="col-md-2 col-3">
+                <input id="home-projects-filter" class="form-control" type="search" placeholder="Filter" aria-label="Filter">
+            </div>
+            <div class="col d-flex justify-content-end">
+                <app-create-project></app-create-project>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" (click)="filterProjects('private')">Your projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" (click)="filterProjects('stared')">Stared projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" (click)="filterProjects('public')">Explore projects</a>
+            </li>
+        </ul>
+        <div class="vh-75">
+            
+            <table class="table" >
+                <thead>
                     <tr>
-                        <td colspan="1"><input type="checkbox" [checked]="project.isFavorite" (change)="project.isFavorite=!project.isFavorite"></td>
-                        <td colspan="3" (click)="toProject()">{{project.name}}</td>
-                        <td colspan="1">{{project.key}}</td>
-                        <td colspan="3">{{project.type}}</td> 
-                        <td colspan="3">{{project.owner}}</td>
-                        <td colspan="1">
-                            <button class="btn btn-primary" (click)="toggleRow(project)" >
-                                <i *ngIf="project.isExtanded" class="fas fa-chevron-up"></i>
-                                <i *ngIf="!project.isExtanded" class="fas fa-chevron-down"></i>
-                            </button>
-                        </td>
+                        <th scope="col" colspan="1"><i class="fa-solid fa-star" style="color: #000;"></i></th>
+                        <th (click)="sortData('name')" scope="col-3" colspan="3">
+                            Name
+                            <span *ngIf="sortedColumn === 'name'" class="sort-arrow">
+                                <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
+                                <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
+                            </span>
+                        </th>
+                        <th (click)="sortData('key')" scope="col" colspan="1">
+                            Key
+                            <span *ngIf="sortedColumn === 'key'" class="sort-arrow">
+                                <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
+                                <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
+                            </span>
+                        </th>
+                        <th (click)="sortData('type')" scope="col" colspan="3">
+                            Type
+                            <span *ngIf="sortedColumn === 'type'" class="sort-arrow">
+                                <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
+                                <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
+                            </span>
+                        </th>
+                        <th (click)="sortData('owner')" scope="col" colspan="3">
+                            Lead
+                            <span *ngIf="sortedColumn === 'owner'" class="sort-arrow">
+                                <i *ngIf="isAscending" class="fas fa-chevron-up"></i>
+                                <i *ngIf="!isAscending" class="fas fa-chevron-down"></i>
+                            </span>
+                        </th>
+                        <th scope="col" colspan="1"></th>
                     </tr>
-                    <tr *ngIf="project.isExtanded && project.subProjects.length != 0">
-                        <td colspan="11" style="padding: 0;">
-                            <table class="table" style="margin-bottom: 0;">
-                                <tbody>
-                                <tr *ngFor="let subproject of project.subProjects">
-                                    <td colspan="1"><i class="fa-solid fa-turn-up fa-rotate-90"></i></td>
-                                    <td colspan="3">{{subproject.name}}</td>
-                                    <td colspan="1">{{subproject.key}}</td>
-                                    <td colspan="3">{{subproject.type}}</td> 
-                                    <td colspan="3">{{subproject.owner}}</td>
-                                </tr></tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </ng-container>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <ng-container id="table-container" *ngFor="let project of projectsShow">
+                        <tr>
+                            <td colspan="1"><input type="checkbox" [checked]="project.isFavorite" (change)="project.isFavorite=!project.isFavorite"></td>
+                            <td colspan="3" (click)="toProject()">{{project.name}}</td>
+                            <td colspan="1">{{project.key}}</td>
+                            <td colspan="3">{{project.type}}</td> 
+                            <td colspan="3">{{project.owner}}</td>
+                            <td colspan="1">
+                                <button class="btn btn-primary" (click)="toggleRow(project)" >
+                                    <i *ngIf="project.isExtanded" class="fas fa-chevron-up"></i>
+                                    <i *ngIf="!project.isExtanded" class="fas fa-chevron-down"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="project.isExtanded && project.subProjects.length != 0">
+                            <td colspan="11" style="padding: 0;">
+                                <table class="table" style="margin-bottom: 0;">
+                                    <tbody>
+                                    <tr *ngFor="let subproject of project.subProjects">
+                                        <td colspan="1"><i class="fa-solid fa-turn-up fa-rotate-90"></i></td>
+                                        <td colspan="3">{{subproject.name}}</td>
+                                        <td colspan="1">{{subproject.key}}</td>
+                                        <td colspan="3">{{subproject.type}}</td> 
+                                        <td colspan="3">{{subproject.owner}}</td>
+                                    </tr></tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
