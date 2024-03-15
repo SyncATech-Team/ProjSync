@@ -64,7 +64,7 @@ export class RegisterUserComponent implements OnInit {
     this.companyRoleService.getAllCompanyRoles().subscribe({
       next: response => this.roles = response,
       error: (error) => {
-        console.log(error);
+        console.log(error.error);
       }
     })
   }

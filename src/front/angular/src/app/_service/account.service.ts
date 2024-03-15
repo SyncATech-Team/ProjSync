@@ -19,7 +19,7 @@ export class AccountService {
   constructor(private http: HttpClient) { }
 
   login(model: any) {
-    // POST: http://localhost:5000/api/Users/login, model se salje preko body-ja
+    // POST: http://localhost:5000/api/Account/login, model se salje preko body-ja
     // od http klijenta dobijamo Observable i vraca nam se UserDto
     return this.http.post<User>(this.baseUrl + 'Account/login', model).pipe(
 
@@ -36,7 +36,7 @@ export class AccountService {
   }
 
   register(model: RegisterModel) {
-    // POST: http://localhost:5000/api/account/register, model se salje preko body-ja
+    // POST: http://localhost:5000/api/Account/register, model se salje preko body-ja
     // od http klijenta dobijamo Observable i vraca nam se UserDto
     return this.http.post<RegisterModel>(this.baseUrl + 'Account/register', model);
   }
