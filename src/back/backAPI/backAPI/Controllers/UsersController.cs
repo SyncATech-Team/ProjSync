@@ -37,7 +37,7 @@ namespace backAPI.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
-                    Username = user.Email,
+                    Username = user.Username,
                     CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name, // ??
                     Address = user.Address,
                     ContactPhone = user.ContactPhone,

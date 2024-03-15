@@ -4,6 +4,7 @@
 
 #content {
     margin-left: 1%;
+    margin-right: 1%;
     height: 100vh;
     width: 100%;
     overflow-y: auto;
@@ -18,4 +19,50 @@
     text-align: center;
 }
 
-td:last-child {text-align:center;}
+#content table td {
+    text-align: center;
+}
+
+/* td:last-child {text-align:center;} */
+
+td:nth-last-child(2) {
+    background-color: #ec5941;
+    opacity: 0.7;
+}
+td:nth-last-child(1) {
+    background-color: rgba(42, 55, 168, 0.616);
+    opacity: 0.7;
+}
+
+td:nth-last-child(2):hover {
+    opacity: 1;
+}
+
+td:nth-last-child(1):hover {
+    opacity: 1;
+}
+
+td img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+td a {
+    color: blue;
+}
+
+td a::after {
+    color: blue;
+}
+
+#profilecontent {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+#profilecontent span {
+    text-decoration: underline;
+    margin-left: 2%;
+}

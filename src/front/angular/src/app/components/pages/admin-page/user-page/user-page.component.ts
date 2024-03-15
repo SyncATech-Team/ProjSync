@@ -37,4 +37,17 @@ export class UserPageComponent implements OnInit {
     });  // Add the new user to the users array
   }
 
+  getRandomInteger(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  getDefaultImagePath(): string {
+    let x: number = this.getRandomInteger(1, 10);
+    let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
+    
+    console.log(path);
+
+    return path;
+  }
+
 }

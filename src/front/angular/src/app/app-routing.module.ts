@@ -10,15 +10,22 @@ import { authGuard } from './_guards/auth.guard';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
+  {path: 'home', component: HomePageComponent},
+  {path: 'admin', component: AdminPageComponent},
+  {path: 'admin/dashboard', component: DashboardPageComponent},
+  {path: 'admin/user', component: UserPageComponent},
+  {path: 'admin/role', component: RolePageComponent},
+  
+  // CHECK - TO DO
   {path: '',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard],
     children: [
-      {path: 'home', component: HomePageComponent},
-      {path: 'admin', component: AdminPageComponent},
-      {path: 'admin/dashboard', component: DashboardPageComponent},
-      {path: 'admin/user', component: UserPageComponent},
-      {path: 'admin/role', component: RolePageComponent},
+      // {path: 'home', component: HomePageComponent},
+      // {path: 'admin', component: AdminPageComponent},
+      // {path: 'admin/dashboard', component: DashboardPageComponent},
+      // {path: 'admin/user', component: UserPageComponent},
+      // {path: 'admin/role', component: RolePageComponent},
     ]
   },
 

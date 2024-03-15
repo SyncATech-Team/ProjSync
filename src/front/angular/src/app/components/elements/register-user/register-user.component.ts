@@ -69,8 +69,8 @@ export class RegisterUserComponent implements OnInit {
     })
   }
 
-  close_alerts() {
-    this.adminPage.close_all_alerts();
-  }
+  // close_alerts() {
+  //   this.adminPage.close_all_alerts();
+  // }
 
 }
