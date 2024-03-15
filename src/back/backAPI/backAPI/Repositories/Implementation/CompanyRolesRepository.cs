@@ -3,6 +3,7 @@ using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation
 {
@@ -69,6 +70,11 @@ namespace backAPI.Repositories.Implementation
 
             return true;
         }
+
+        public async Task<CompanyRole> GetCompanyRoleById(int id) {
+            return await dataContext.Roles.Where(role => role.Id == id).FirstAsync();
+        }
+
         /* **************************************************************************
          * Provera da li u bazi vec postoji uloga koju zelimo da dodamo
          * ************************************************************************** */

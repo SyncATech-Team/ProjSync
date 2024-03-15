@@ -32,8 +32,8 @@ export class UserPageComponent implements OnInit {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      companyRoleId: user.companyRole,
-      phone: user.contactPhone
+      companyRoleName: user.companyRole,
+      contactPhone: user.contactPhone
     });  // Add the new user to the users array
   }
 

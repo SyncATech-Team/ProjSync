@@ -11,5 +11,6 @@ namespace backAPI.Repositories.Interface
         Task<bool> DeleteCompanyRole(int id);
         Task<bool> UpdateCompanyRole(int id, CompanyRoleDto request);
         Task<bool> CheckCompanyRoleNameExistance(string name);
+        Task<CompanyRole> GetCompanyRoleById(int id);
     }
 }

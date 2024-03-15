@@ -7,7 +7,7 @@
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public int CompanyRoleId { get; set; }
+        public string CompanyRoleName { get; set; }
         public string Address { get; set; }
         public string ContactPhone { get; set; }
         public string LinkedinProfile { get; set; }
