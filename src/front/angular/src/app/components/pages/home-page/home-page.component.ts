@@ -12,6 +12,8 @@ import { Observable } from 'rxjs';
 })
 export class HomePageComponent implements OnInit {
 
+  searchTerm: string = '';
+
   constructor(public accoutService: AccountService) { }
 
   ngOnInit(): void {
@@ -343,5 +345,17 @@ export class HomePageComponent implements OnInit {
       }
     }
   }
+
+  //Search po nazivu projekta dodat
+  filterProjectsByName() {
+    let x = document.getElementById("table-container");
+    if(x != null){
+      x.innerHTML = "";
+    }
+
+    this.projectsShow = this.projects.filter(project =>
+        project.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+}
   
 }

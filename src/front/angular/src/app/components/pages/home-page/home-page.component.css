@@ -1,3 +1,8 @@
+#page-wrapper {
+    height: 100vh;
+    overflow-y: auto;
+}
+
 input[type="checkbox"] {
     position: relative;
     width: 30px;
@@ -31,5 +36,5 @@ input[type="checkbox"]:checked:before {
 th{
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 999;
 }
