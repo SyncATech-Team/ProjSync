@@ -19,6 +19,8 @@ import { CreateProjectComponent } from './components/elements/create-project/cre
 import { UserPageComponent } from './components/pages/admin-page/user-page/user-page.component';
 import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
 import { DashboardPageComponent } from './components/pages/admin-page/dashboard-page/dashboard-page.component';
+import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
+import { PasswordResetComponent } from './components/elements/password-reset/password-reset.component';
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import { DashboardPageComponent } from './components/pages/admin-page/dashboard-
     CreateProjectComponent,
     UserPageComponent,
     RolePageComponent,
-    DashboardPageComponent
+    DashboardPageComponent,
+    PasswordResetPageComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule,
