@@ -41,3 +41,28 @@ td:nth-last-child(2):hover {
 td:nth-last-child(1):hover {
     opacity: 1;
 }
+
+td img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+td a {
+    color: blue;
+}
+
+td a::after {
+    color: blue;
+}
+
+#profilecontent {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+#profilecontent span {
+    text-decoration: underline;
+    margin-left: 2%;
+}

@@ -12,14 +12,15 @@
 
         <div id="controls">
             <input type="text" name="search-box" id="search-box">
-            <app-register-user (userCreated)="onUserCreated($event)"></app-register-user>
         </div>
+
+        <app-register-user (userCreated)="onUserCreated($event)"></app-register-user>
 
         <div id="users">
             <table id="example" class="table table-striped table-responsive-lg table-bordered" cellspacing="0">
 	            <thead>
 		            <tr>
-			            <th>Username</th>
+			            <th>User</th>
                         <th>Email</th>
                         <th>First name</th>
                         <th>Last name</th>
@@ -30,8 +31,21 @@
 	            </thead>
 	            <tbody>
                     <tr *ngFor="let user of users">
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.email }}</td>
+                        <td>
+                            <div id="profilecontent">
+                                <img *ngIf="1==1; else secondImageSource"
+                                src={{getDefaultImagePath()}} alt="user-default-image">
+                                <ng-template #secondImageSource>
+                                    <img src="{{getDefaultImagePath()}}" alt="user-image">
+                                </ng-template>
+                                <span>{{ user.username }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="mailto:{{user.email}}">
+                                {{ user.email }}        
+                            </a>
+                        </td>
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.lastName }}</td>
                         <td>{{ user.companyRoleName }}</td>
