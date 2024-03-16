@@ -1,4 +1,5 @@
 import { Component, Injectable, OnInit } from '@angular/core';
+import { CompanyroleService } from '../../../_service/companyrole.service';
 
 interface SideNavToggle{
   screenWidth: number;

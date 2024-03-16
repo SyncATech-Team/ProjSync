@@ -21,8 +21,8 @@ namespace backAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> GetCompanyRoles() {
-            List<string> companyRoles = new List<string>();
+        public async Task<ActionResult<IEnumerable<CompanyRoleDto>>> GetCompanyRoles() {
+            List<CompanyRoleDto> companyRoles = new List<CompanyRoleDto>();
 
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
 
@@ -30,9 +30,18 @@ namespace backAPI.Controllers
                 return BadRequest("There are no comany roles to fetch");
 
             foreach (var role in roles)
-                companyRoles.Add(role.Name);
+            {
+                var companyRoleDto = new CompanyRoleDto
+                {
+                    Name = role.Name,
+                    OvertimeHourPrice = role.OvertimeHourPrice,
+                    WeekendHourPrice = role.WeekendHourPrice,
+                    WorkingHourPrice = role.WorkingHourPrice,
+                };
+                companyRoles.Add(companyRoleDto);
+            }
             
-            return companyRoles;
+            return Ok(companyRoles);
         }
 
         /* *****************************************************************************
@@ -58,7 +67,7 @@ namespace backAPI.Controllers
          * POST | Create new company role
          * ***************************************************************************** */
         [HttpPost]
-        public async Task<ActionResult<string>> CreateCompanyRole(CompanyRoleDto role) {
+        public async Task<ActionResult> CreateCompanyRole(CompanyRoleDto role) {
 
             if(await companyRolesRepository.CheckCompanyRoleNameExistance(role.Name)) {
                 return BadRequest("Name " + role.Name + " is already used!");
@@ -75,33 +84,33 @@ namespace backAPI.Controllers
             // save to database
             await companyRolesRepository.CreateNewRoleAsync(companyRole);
 
-            return Ok();
+            return NoContent();
         }
         /* *****************************************************************************
          * PUT{id} | Update company role for the given id
          * ***************************************************************************** */
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateCompanyRole(int id, CompanyRoleDto request) {
+        public async Task<ActionResult> UpdateCompanyRole(int id, CompanyRoleDto request) {
             var updated = await companyRolesRepository.UpdateCompanyRole(id, request);
 
             if(!updated) {
                 return BadRequest("Cannot update the role!");
             }
 
-            return Ok();
+            return NoContent();
         }
         /* *****************************************************************************
          * DELETE{id} | Delete company role
          * ***************************************************************************** */
         [HttpDelete("{name}")]
-        public async Task<ActionResult<string>> DeleteCompanyRole(string name) {
+        public async Task<ActionResult> DeleteCompanyRole(string name) {
             var deleted = await companyRolesRepository.DeleteCompanyRole(name);
 
             if(deleted == false) {
                 return NotFound("There is no company role with given name");
             }
 
-            return Ok();
+            return NoContent();
         }
 
     }

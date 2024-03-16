@@ -103,7 +103,7 @@
                     <div class="col-12"> <!-- field za companyRole-->
                         <div class="form-floating mb-3">
                             <select id="companyRoleId" class="form-select" aria-label="companyRoleId" [(ngModel)]="registrationModel.companyRole" name="companyRoleId">
-                                <option *ngFor="let role of roles" value="{{role}}">{{role}}</option>
+                                <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
                             </select>
                             <label for="companyRoleId" class="form-label">Company Role</label>
                         </div>
