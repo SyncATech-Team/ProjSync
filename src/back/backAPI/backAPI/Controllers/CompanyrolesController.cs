@@ -93,12 +93,12 @@ namespace backAPI.Controllers
         /* *****************************************************************************
          * DELETE{id} | Delete company role
          * ***************************************************************************** */
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteCompanyRole(int id) {
-            var deleted = await companyRolesRepository.DeleteCompanyRole(id);
+        [HttpDelete("{name}")]
+        public async Task<ActionResult<string>> DeleteCompanyRole(string name) {
+            var deleted = await companyRolesRepository.DeleteCompanyRole(name);
 
             if(deleted == false) {
-                return NotFound("There is no company role for the given id");
+                return NotFound("There is no company role with given name");
             }
 
             return Ok();

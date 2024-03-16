@@ -8,90 +8,70 @@
     height: 100vh;
     width: 100%;
     overflow-y: auto;
-    overflow-x: hidden;
 }
 
 #users {
-    margin-top: 2%;
-    margin-bottom: 2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
 
-/* *********************************************************************************************** */
-/* TABLE STYLING */
-/* *********************************************************************************************** */
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table-header {
-    background-color: #e0e0e0;
-    padding: 10px;
-    text-align: center; /* Align content to the left */
-    font-weight: bold;
-}
-
-.table-row:nth-child(even) {
-    background-color: #f8f8f8; /* Light gray for even rows */
-}
-
-.table-row {
-    border-bottom: 1px solid #ddd; /* Add a light border between rows */
-    padding: 10px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-}
-
-.table-row:hover {
-    background-color: #eee; /* Lighten background on hover */
-}
-
-.action-icon {
-    font-size: 18px; /* Adjust font size as needed */
-    color: #000; /* Gray color for icons */
-    cursor: pointer; /* Indicate clickable action */
+th {
+    text-align: center;
 }
 
 .flexdiv-custom {
     display: flex;
-    align-items: left;
+    align-items: center;
     justify-content: space-around;
 }
 
-.cardDescription {
-    font-weight: bold;
+#header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-@media (max-width: 600px) {
-    .table-row, .table-header {
-      padding: 5px; /* Reduce padding for smaller screens */
-    }
-    td {
-      font-size: 18px; /* Adjust header font size */
-    }
-    .cardDescription {
-        display: block;
-    }
-    .table-header {
-        visibility: hidden;
-    }
-    /* .userCard {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    } */
-    #users {
-        width: 100vh;
-    }
+.filterTableOptions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-@media (min-width: 600px) { /* Target screens wider than 768px */
-    .cardDescription {
-        display: none;
-    }
-    .table-header {
-        visibility: visible;
-    }
+.action {
+    border-radius: 20%;
+}
+
+.action:first-child {
+    background-color: #ec5941;
+}
+
+.action:last-child {
+    background-color: lightblue;
+}
+
+.action span {
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    color: black;
+    cursor: pointer;
+}
+
+.pi-trash {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pi-pencil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profilecontent img {
+    width: 20px;
+    height: 20px;
 }
 
 /* LINKS */
@@ -108,9 +88,96 @@ a:hover {
     text-decoration: underline;
 }
 
+/* *********************************************************************************************** */
+/* TABLE STYLING */
+/* *********************************************************************************************** */
+/* .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+} */
+
+/* .table-header {
+    background-color: #e0e0e0;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+} */
+
+/* .table-row:nth-child(even) {
+    background-color: #f8f8f8;
+} */
+/* 
+.table-row {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.table-row:hover {
+    background-color: #eee;
+}
+
+.action-icon {
+    font-size: 18px; 
+    color: #000; 
+    cursor: pointer; 
+}
+
+.flexdiv-custom {
+    display: flex;
+    align-items: left;
+    justify-content: space-around;
+}
+
+.cardDescription {
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .table-row, .table-header {
+      padding: 5px; 
+    }
+    td {
+      font-size: 18px;
+    }
+    .cardDescription {
+        display: block;
+    }
+    .table-header {
+        visibility: hidden;
+    }
+    #users {
+        width: 100vh;
+    }
+}
+
+@media (min-width: 600px) {
+    .cardDescription {
+        display: none;
+    }
+    .table-header {
+        visibility: visible;
+    }
+} */
+
+/* LINKS */
+/* a,
+a:link,
+a:active,
+a:visited,
+a:hover {
+    color:           rgb(35, 118, 196);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+} */
+
 /* END LINKS */
 
-.flexdiv-custom span {
+/* .flexdiv-custom span {
     border-radius: 10px;
 }
 
@@ -158,4 +225,4 @@ select {
 .user-profile:hover {
     text-decoration: underline;
     cursor: pointer;
-}
+} */
