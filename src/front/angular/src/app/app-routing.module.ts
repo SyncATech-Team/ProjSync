@@ -16,6 +16,7 @@ const routes: Routes = [
   {path: 'admin/dashboard', component: DashboardPageComponent},
   {path: 'admin/user', component: UserPageComponent},
   {path: 'admin/role', component: RolePageComponent},
+  {path: 'password_reset', component: PasswordResetPageComponent},
   
   // CHECK - TO DO
   {path: '',
