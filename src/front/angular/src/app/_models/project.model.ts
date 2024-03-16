@@ -1,16 +1,17 @@
-import { User } from "./user";
-
 export interface Project{
     id: number,
     name: string,
     key: string,
-    type: string
+    typeId: number
     description: string,
-    owner: User,
-    icon: string,
-    parent?: number,
-    createdDate: Date,
+    ownerId: number,
+    icon?: string,
+    parentId?: number|null,
+    creationDate: Date,
     dueDate: Date,
     budget: number,
-    visibility: string
+    visibilityId: number,
+    isExtanded?: boolean,
+    isFavorite?: boolean,
+    subProjects?: Project[]
 }

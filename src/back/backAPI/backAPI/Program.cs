@@ -32,8 +32,11 @@ builder.Services.AddDbContext<DataContext>(opt => {
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();                    // inject service
 builder.Services.AddScoped<ICompanyRolesRepository, CompanyRolesRepository>();      // inject service
 builder.Services.AddScoped<IWorkingHoursRepository, WorkingHoursRepository>();      // inject service
-builder.Services.AddScoped<ITokenService, TokenService>();                          // inject service
-builder.Services.AddScoped<IEmailService, EmailService>();                          // inject service
+builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+builder.Services.AddScoped<IProjectTypesRepository, ProjectTypesRepository>();
+builder.Services.AddScoped<IProjectVisibilitiesRepository, ProjectVisibilitiesRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
