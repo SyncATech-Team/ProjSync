@@ -3,6 +3,7 @@ import { AccountService } from '../../../_service/account.service';
 import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 import { CompanyRole } from '../../../_models/company-role';
+import { RolePageComponent } from '../../pages/admin-page/role-page/role-page.component';
 
 @Component({
   selector: 'app-create-role',
@@ -18,29 +19,20 @@ export class CreateRoleComponent {
     weekendHourPrice: 0
   }
 
-  constructor(public companyRoleService: CompanyroleService) { }
+  constructor(public companyRoleService: CompanyroleService, private rolePage: RolePageComponent) { }
   
   //@Output() roleCreated = new EventEmitter<CompanyRole>();
 
   create() {
     this.companyRoleService.create(this.role).subscribe({
       next: () => {
-        let y = document.getElementById("valid_role_div");
-        if(y != null) y.hidden = false;
-
-        let x = document.getElementById("invalid_role_div");
-        if(x != null) x.hidden = true;
-
+        this.rolePage.showSuccess("Successfully created new role");
         //this.roleCreated.emit(this.role);
       },
 
       error: () => {
         // prikazi poruku greske
-        let x = document.getElementById("invalid_role_div");
-        if(x != null) x.hidden = false;
-
-        let y = document.getElementById("valid_role_div");
-        if(y != null) y.hidden = true;
+        this.rolePage.showError("Unable to create new role with given parameters. Probably duplicate names");
       }
     })
   }

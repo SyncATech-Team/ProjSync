@@ -67,3 +67,7 @@ th {
     align-items: center;
     justify-content: center;
 }
+
+.exportFileOptions button {
+    border-radius: 20%;
+}

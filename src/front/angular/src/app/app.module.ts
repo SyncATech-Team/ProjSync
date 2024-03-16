@@ -25,6 +25,7 @@ import { NotificationComponent } from './components/elements/notification/notifi
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ButtonModule } from 'primeng/button';
     BsDropdownModule.forRoot(),
     TableModule,
     TagModule,
-    ButtonModule
+    ButtonModule,
+    ToastModule
   ],
   providers: [
     provideClientHydration(),

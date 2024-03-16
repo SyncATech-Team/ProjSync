@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string;
@@ -16,10 +17,18 @@ interface ExportColumn {
   dataKey: string;
 }
 
+/**
+ * Obezbediti komponentu da bude injectable
+ */
+@Injectable({
+  providedIn: 'root'
+})
+
 @Component({
   selector: 'app-role-page',
   templateUrl: './role-page.component.html',
-  styleUrl: './role-page.component.css'
+  styleUrl: './role-page.component.css',
+  providers: [MessageService]
 })
 export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
@@ -40,14 +49,14 @@ export class RolePageComponent implements OnInit {
    * Konstruktor
    * @param croleService 
    */
-  constructor(private companyRoleService: CompanyroleService) {
+  constructor(private companyRoleService: CompanyroleService, private messageService: MessageService) {
   }
 
   /**
    * OnInit
    */
   ngOnInit(): void {
-    this.loading = false;
+    this.loading = true;
     // Dohvati sve uloge koje postoje iz baze
     this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
     this.roles$.subscribe(roles => this.roles = roles);
@@ -58,6 +67,7 @@ export class RolePageComponent implements OnInit {
     ];
 
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+    this.loading = false;
   }
 
   /**
@@ -90,6 +100,10 @@ export class RolePageComponent implements OnInit {
         if(indexToRemoveBackup !== -1) {
           this.roles_backup.splice(indexToRemoveBackup, 1);
         }
+        this.showSuccess("Deleted role: " + argRole.name);
+      },
+      error: error => {
+        this.showError("Unable to delete choosen role. Probably in use.");
       }
     });
 
@@ -207,6 +221,15 @@ export class RolePageComponent implements OnInit {
         type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  // SHOW MESSAGE POPUP
+  showSuccess(message: string) {
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
+  }
+
+  showError(message: string) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
   }
 
 }
