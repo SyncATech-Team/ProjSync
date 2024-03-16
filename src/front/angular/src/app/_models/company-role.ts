@@ -1,4 +1,4 @@
-export interface CompanyRole{
+export interface CompanyRole {
     name : string;
     workingHourPrice : number;
     overtimeHourPrice : number;

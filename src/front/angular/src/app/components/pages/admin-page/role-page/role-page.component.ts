@@ -3,6 +3,7 @@ import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
+import { Observable, map } from 'rxjs';
 
 interface Column {
   field: string;
@@ -21,7 +22,8 @@ interface ExportColumn {
   styleUrl: './role-page.component.css'
 })
 export class RolePageComponent implements OnInit {
-
+  roles$: Observable<CompanyRole[]> | undefined;
+  
   /* PODACI CLANOVI */
   roles: CompanyRole[] = [];
   roles_backup: CompanyRole[] = [];
@@ -38,28 +40,17 @@ export class RolePageComponent implements OnInit {
    * Konstruktor
    * @param croleService 
    */
-  constructor(private croleService: CompanyroleService) {}
+  constructor(private companyRoleService: CompanyroleService) {
+  }
 
   /**
    * OnInit
    */
   ngOnInit(): void {
     this.loading = false;
-    
     // Dohvati sve uloge koje postoje iz baze
-    this.croleService.getAllCompanyRoleNames().subscribe({
-      next: response => {
-        this.roles = response.map(name => ({
-          name,
-          workingHourPrice: -1,
-          overtimeHourPrice: -1,
-          weekendHourPrice: -1
-        }));
-      },
-      error: error => {
-        console.log("ERROR: " + error.error);
-      }
-    });
+    this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
+    this.roles$.subscribe(roles => this.roles = roles);
 
     // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
     this.cols = [
@@ -88,8 +79,8 @@ export class RolePageComponent implements OnInit {
     const response = prompt("In order to delete role please enter [" + argRole.name + "]");
     if(response != argRole.name) return;
 
-    this.croleService.deleteRole(argRole.name).subscribe({
-      next: response => {
+    this.companyRoleService.deleteRole(argRole.name).subscribe({
+      next: _ => {
         const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
         if (indexToRemove !== -1) {
           this.roles.splice(indexToRemove, 1);

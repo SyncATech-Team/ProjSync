@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
 import { CompanyroleService } from '../../../_service/companyrole.service';
-import { CreateCompanyRole } from '../../../_models/create-company-role';
 import { CompanyRole } from '../../../_models/company-role';
 
 @Component({
@@ -12,18 +11,18 @@ import { CompanyRole } from '../../../_models/company-role';
 })
 export class CreateRoleComponent {
 
-  role: CreateCompanyRole = {
+  role: CompanyRole = {
     name: '',
     workingHourPrice: 0,
     overtimeHourPrice: 0,
     weekendHourPrice: 0
   }
 
-  constructor(public companyRoleService: CompanyroleService, private adminPage: AdminPageComponent) { }
+  constructor(public companyRoleService: CompanyroleService) { }
+  
+  //@Output() roleCreated = new EventEmitter<CompanyRole>();
 
-  @Output() roleCreated = new EventEmitter<CompanyRole>();
-
-  create(){
+  create() {
     this.companyRoleService.create(this.role).subscribe({
       next: () => {
         let y = document.getElementById("valid_role_div");
@@ -32,7 +31,7 @@ export class CreateRoleComponent {
         let x = document.getElementById("invalid_role_div");
         if(x != null) x.hidden = true;
 
-        this.roleCreated.emit(this.role);
+        //this.roleCreated.emit(this.role);
       },
 
       error: () => {

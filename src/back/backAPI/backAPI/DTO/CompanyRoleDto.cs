@@ -6,6 +6,5 @@
         public double WorkingHourPrice { get; set; }
         public double OvertimeHourPrice { get; set; }
         public double WeekendHourPrice { get; set; }
-
     }
 }
