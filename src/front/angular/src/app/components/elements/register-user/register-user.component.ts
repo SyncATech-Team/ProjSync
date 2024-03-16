@@ -61,6 +61,16 @@ export class RegisterUserComponent implements OnInit {
     });
   }
   
+  suggestUsername() {
+    let x = document.getElementById("input-email") as HTMLInputElement;
+    let y = document.getElementById("input-username") as HTMLInputElement;
+
+    if(x != null) {
+      let v = x.value.split("@")[0];
+      y.value = v;
+    }
+  }
+
   // close_alerts() {
   //   this.adminPage.close_all_alerts();
   // }
