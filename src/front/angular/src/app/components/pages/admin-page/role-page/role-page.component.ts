@@ -79,7 +79,7 @@ export class RolePageComponent implements OnInit {
     const response = prompt("In order to delete role please enter [" + argRole.name + "]");
     if(response != argRole.name) return;
 
-    this.companyRoleService.deleteRole(argRole.name).subscribe({
+    this.companyRoleService.deleteRole(argRole).subscribe({
       next: _ => {
         const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
         if (indexToRemove !== -1) {

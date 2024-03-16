@@ -36,7 +36,13 @@ export class CompanyroleService {
     )
   }
 
-  deleteRole(name: string) {
-    return this.http.delete<string>(this.baseUrl + "Companyroles/" + name);
+  deleteRole(role: CompanyRole) {
+    return this.http.delete<string>(this.baseUrl + "Companyroles/" + role.name).pipe(
+
+      map(() => {
+        const index =this.roles.indexOf(role);
+        this.roles.splice(index, 1);
+      })
+    )
   }
 }
