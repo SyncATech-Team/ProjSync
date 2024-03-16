@@ -5,47 +5,100 @@
 
     <div id="content">
         <div id="description">
-            Use this page to register all your new users.
-            Additional description.
+            <h4>Platform members</h4>
+            You can invite a new member to your platform by creating their account.
         </div>
 
         <div id="controls">
-            <input type="text" name="search-box" id="search-box">
+            <!-- Dodati polja za search, filter etc. -->
+            <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
         </div>
 
         <div id="users">
-            <table id="example" class="table table-striped table-bordered" cellspacing="0">
-	            <thead>
-		            <tr>
-			            <th>Username</th>
-                        <th>Email</th>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        <th>Role</th>
-                        <th>Phone</th>
-                        <td>
-                            <app-register-user (userCreated)="onUserCreated($event)"></app-register-user>
+            <div class="mb-1">
+                <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+                <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+                <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+            </div>
+            <p-table
+                #dt2
+                [value]="users"
+                dataKey="username"
+                [globalFilterFields]="['username']"
+                [paginator]="true"
+                [rows]="5"
+                [first]="first"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
+                [showCurrentPageReport]="true"
+                (onPage)="pageChange($event)"
+                currentPageReportTemplate="Showing {first} to {last} of {{users.length}} entries"
+                [tableStyle]="{'width': '100%'}"
+                responsiveLayout="stack" [breakpoint]="'960px'"
+                styleClass="p-datatable-striped">
+                
+                <ng-template pTemplate="caption" class="align-content-center justify-content-around">
+                    <div id="header-content" class="flex">
+                        <div class="exportFileOptions">
+                            <button type="button" pButton pRipple icon="pi pi-file" (click)="dt2.exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"  class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom" title="Export as Excel"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom" title="Export as PDF"></button>
+                        </div>
+
+                        <div class="filterTableOptions">
+                            <!-- <button
+                                pButton label="Clear"
+                                class="p-button-outlined"
+                                icon="pi pi-filter-slash" (click)="clear(dt1)">
+                            </button> -->
+                        
+                            <div class="p-input-icon-left ml-auto">
+                                <!-- <i class="pi pi-search"></i> -->
+                                <input pInputText id="search-input-term-users-global"  #searchInput type="text" (input)="search(dt2)" placeholder="Search keyword"/>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Account</th>
+                        <th>Email address</th>
+                        <th>Company role</th>
+                        <th>Actions</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td><span class="p-column-title" style="font-weight: bold;">Account</span>
+                            <div class="profilecontent">
+                                <img *ngIf="1==1; else secondImageSource"
+                                src={{getDefaultImagePath()}} alt="user-default-image">
+                                <ng-template #secondImageSource>
+                                    <img src="{{getDefaultImagePath()}}" alt="user-image">
+                                </ng-template>
+                                <span>{{ user.username }}</span>
+                            </div>
+                        </td>
+                        <td><span class="p-column-title" style="font-weight: bold;">Email</span>
+                            <a href="mailto:{{user.email}}"> {{user.email}}</a>
+                        </td>
+                        <td><span class="p-column-title" style="font-weight: bold;">Company role</span> {{ user.companyRoleName }}</td>
+                        <td><span class="p-column-title" style="font-weight: bold">Actions</span>
+                            <div class="flexdiv-custom">
+                                <div class="action">
+                                    <span (click)="deleteUser(user)" class="pi pi-trash" title="Delete user"></span>
+                                </div>
+
+                                <div class="action">
+                                    <span class="pi pi-pencil" title="Edit user"></span>
+                                </div>
+                            </div>
                         </td>
                     </tr>
-	            </thead>
-	            <tbody>
-                    <tr *ngFor="let user of users">
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.firstName }}</td>
-                        <td>{{ user.lastName }}</td>
-                        <td>{{ user.companyRoleId }}</td>
-                        <td>{{ user.phone ? user.phone : '/' }}</td>
-                        <td>Action - TO DO</td>
-                    </tr>
-                </tbody>
-            </table>
+                </ng-template>
+            </p-table>
         </div>
-
-        <div id="additionalContent">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat, soluta.
-        </div>
-
     </div>
 </div>
 
@@ -72,3 +125,127 @@
         </div>
     </div>
  -->
+
+ <!-- <table id="example" class="table table-striped table-responsive-lg table-bordered" cellspacing="0">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Role</th>
+            <th>Phone</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <td>
+                <div id="profilecontent">
+                    <img *ngIf="1==1; else secondImageSource"
+                    src={{getDefaultImagePath()}} alt="user-default-image">
+                    <ng-template #secondImageSource>
+                        <img src="{{getDefaultImagePath()}}" alt="user-image">
+                    </ng-template>
+                    <span>{{ user.username }}</span>
+                </div>
+            </td>
+            <td>
+                <a href="mailto:{{user.email}}">
+                    {{ user.email }}        
+                </a>
+            </td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.companyRoleName }}</td>
+            <td>{{ user.contactPhone ? user.contactPhone : '/' }}</td>
+            <td class="action-td-delete">
+                <i 
+                    class="fa fa-trash"
+                    aria-hidden="true"
+                    style="color: #000000; cursor: pointer;"
+                    title="Delete user"></i>
+            </td>
+            <td class="action-td-update">
+                <i 
+                    class="fa-solid fa-pen-to-square"
+                    style="color: #000000; cursor: pointer;"
+                    title="Edit user"></i>
+            </td>
+        </tr>
+    </tbody>
+</table> -->
+
+<!-- VERZIJA 3 -->
+
+<!-- <p-table
+                class="custom-table"
+                [value]="users"
+                responsiveLayout="stack" [breakpoint]="'600px'" [tableStyle]="{'min-width': '50rem'}">
+                
+                
+                <ng-template pTemplate="header" let-columns>
+                    <tr class="table-header">
+                        <th pSortableColumn="username" class="table-header">Account<p-sortIcon field="username"></p-sortIcon></th>
+                        <th pSortableColumn="email" class="table-header">Email address <p-sortIcon field="email"></p-sortIcon></th>
+                        <th class="table-header">Company role</th>
+                        <td class="table-header">Actions</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user let-columns="columns">
+                    <tr class="table-row">
+                        <td title="{{user.username}}">
+                            <div class="userCard">
+                                <div class="cardDescription">Account</div>
+                                <div>
+                                    <div class="profilecontent">
+                                        <img *ngIf="1==1; else secondImageSource"
+                                        src="../../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" alt="user-default-image">
+                                        <ng-template #secondImageSource>
+                                            <img src="../../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" alt="user-image">
+                                        </ng-template>
+                                        <span class="user-profile">{{ user.username }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td title="{{user.email}}">
+                            <div class="userCard">
+                                <div class="cardDescription">Email</div>
+                                <div>
+                                    <a href="mailto:{{user.email}}"> {{user.email}}</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td title="Company role">
+                            <div class="userCard">
+                                <div class="cardDescription">Role</div>
+                                <select name="select-role" class="select-role" disabled>
+                                    <option value="{{user.companyRoleName}}">{{user.companyRoleName}}</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="userCard">
+                                <div class="cardDescription">Actions</div>
+                                <div>
+                                    <div class="flexdiv-custom">
+                                        <span>
+                                            <i 
+                                            class="action-icon fa fa-trash"
+                                            aria-hidden="true"
+                                            title="Delete user"
+                                            (click)="deleteUser(user.username)"></i>
+                                        </span>
+                                        <span>
+                                            <i 
+                                            class="action-icon fa-solid fa-pen-to-square"
+                                            title="Edit user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table> -->

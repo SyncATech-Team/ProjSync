@@ -4,6 +4,6 @@ export interface UserGetter {
     email: string;
     firstName: string;
     lastName: string;
-    companyRoleId: string;
-    phone: string;
+    companyRoleName: string;
+    contactPhone: string;
 }

@@ -8,8 +8,9 @@ namespace backAPI.Repositories.Interface
         Task<CompanyRole> CreateNewRoleAsync(CompanyRole companyRole);
         Task<IEnumerable<CompanyRole>> GetCompanyRolesAsync();
         Task<CompanyRole> GetCompanyRoleByNameAsync(string companyRoleName);
-        Task<bool> DeleteCompanyRole(int id);
+        Task<bool> DeleteCompanyRole(string name);
         Task<bool> UpdateCompanyRole(int id, CompanyRoleDto request);
         Task<bool> CheckCompanyRoleNameExistance(string name);
+        Task<CompanyRole> GetCompanyRoleById(int id);
     }
 }

@@ -1,0 +1,13 @@
+<div class="dropdown" [ngClass]="notify_collapsed ? 'active' : '' ">
+    <div class="notify_item" *ngFor="let data of notificationData">
+        <div class="notify_img">
+            <!-- Treba da bude slika, i tag je inicijalno -->
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="notify_info">
+            <p> {{ data.message }} <span>Timeline Share</span>
+            </p>
+            <span class="notify_time">{{ data.time }}</span>
+        </div>
+    </div>
+</div>

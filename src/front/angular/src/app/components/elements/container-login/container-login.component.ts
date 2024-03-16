@@ -17,7 +17,7 @@ export class ContainerLoginComponent {
 
   showPassword: boolean = false;
 
-  togglePasswordVisibility(){
+  togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 

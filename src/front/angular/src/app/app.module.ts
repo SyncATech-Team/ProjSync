@@ -10,7 +10,7 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NavBarComponent } from './components/elements/nav-bar/nav-bar.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
 import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
 import { CreateRoleComponent } from './components/elements/create-role/create-role.component';
@@ -19,7 +19,12 @@ import { CreateProjectComponent } from './components/elements/create-project/cre
 import { UserPageComponent } from './components/pages/admin-page/user-page/user-page.component';
 import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
 import { DashboardPageComponent } from './components/pages/admin-page/dashboard-page/dashboard-page.component';
-
+import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
+import { PasswordResetComponent } from './components/elements/password-reset/password-reset.component';
+import { NotificationComponent } from './components/elements/notification/notification.component';
+import { TableModule } from "primeng/table";
+import { TagModule } from "primeng/tag";
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,10 @@ import { DashboardPageComponent } from './components/pages/admin-page/dashboard-
     CreateProjectComponent,
     UserPageComponent,
     RolePageComponent,
-    DashboardPageComponent
+    DashboardPageComponent,
+    PasswordResetPageComponent,
+    PasswordResetComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +52,9 @@ import { DashboardPageComponent } from './components/pages/admin-page/dashboard-
     HttpClientModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
+    TableModule,
+    TagModule,
+    ButtonModule
   ],
   providers: [
     provideClientHydration(),

@@ -47,9 +47,25 @@ if(app.Environment.IsDevelopment()) {
 }
 
 // da bi front klijent mogao da zove api, potrebno je da se dozvoli CORS
-// klijentska aplikacija radi na portu 4200
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod()
-    .WithOrigins("http://localhost:4200"));
+Console.ForegroundColor = ConsoleColor.Yellow;
+Console.WriteLine("Adding CORS policy");
+Console.WriteLine("");
+
+int numOfOrigins = int.Parse(builder.Configuration["AllowedCorsOrigins:NumOfOrigins"]);
+string[] origins = new string[numOfOrigins];
+for (int i = 0; i < numOfOrigins; i++) {
+    string key = "AllowedCorsOrigins:Addresses:" + i;
+    var address = builder.Configuration[key];
+    Console.WriteLine("\tAllowing CORS policy to origin address [" + address + "]...");
+
+    origins[i] = address;
+}
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(origins));
+
+Console.WriteLine("");
+Console.WriteLine("CORS policy specified...");
+
+Console.ForegroundColor = ConsoleColor.White;
 
 app.UseAuthorization();
 app.MapControllers();

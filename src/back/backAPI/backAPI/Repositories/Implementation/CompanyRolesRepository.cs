@@ -3,6 +3,7 @@ using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation
 {
@@ -36,11 +37,12 @@ namespace backAPI.Repositories.Implementation
         }
 
         /* **************************************************************************
-         * DELETE | Obrisi ulogu za prosledjeni id
+         * DELETE | Obrisi ulogu za prosledjeni naziv
          * ************************************************************************** */
-        public async Task<bool> DeleteCompanyRole(int id) {
+        public async Task<bool> DeleteCompanyRole(string name) {
 
-            var role = await dataContext.Roles.FindAsync(id);
+            var roleId = await GetCompanyRoleByNameAsync(name);
+            var role = await dataContext.Roles.FindAsync(roleId.Id);
             
             if(role == null) {
                 return false;
@@ -69,6 +71,11 @@ namespace backAPI.Repositories.Implementation
 
             return true;
         }
+
+        public async Task<CompanyRole> GetCompanyRoleById(int id) {
+            return await dataContext.Roles.Where(role => role.Id == id).FirstAsync();
+        }
+
         /* **************************************************************************
          * Provera da li u bazi vec postoji uloga koju zelimo da dodamo
          * ************************************************************************** */

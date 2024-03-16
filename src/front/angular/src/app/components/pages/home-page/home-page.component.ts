@@ -13,8 +13,12 @@ import { ProjectService } from '../../../_service/project.service';
 })
 export class HomePageComponent implements OnInit {
 
+
   constructor(public accoutService: AccountService,private projectService:ProjectService) { }
   projects: Project[]=[];
+
+  searchTerm: string = '';
+
   ngOnInit(): void {
     this.projectService.getAllProjects().subscribe({
       next: (response) => {
@@ -77,5 +81,17 @@ export class HomePageComponent implements OnInit {
       }
     }
   }
+
+  //Search po nazivu projekta dodat
+  filterProjectsByName() {
+    let x = document.getElementById("table-container");
+    if(x != null){
+      x.innerHTML = "";
+    }
+
+    this.projectsShow = this.projects.filter(project =>
+        project.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+}
   
 }

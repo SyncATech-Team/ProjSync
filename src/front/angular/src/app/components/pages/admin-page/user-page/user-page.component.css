@@ -4,18 +4,225 @@
 
 #content {
     margin-left: 1%;
+    /* margin-right: 1%; */
     height: 100vh;
     width: 100%;
     overflow-y: auto;
 }
 
-#content table {
-    margin-top: 10px;
-    margin-bottom: 10px;
+#users {
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
 
-#content table th {
+th {
     text-align: center;
 }
 
-td:last-child {text-align:center;}
+.flexdiv-custom {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filterTableOptions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.action {
+    border-radius: 20%;
+}
+
+.action:first-child {
+    background-color: #ec5941;
+}
+
+.action:last-child {
+    background-color: lightblue;
+}
+
+.action span {
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    color: black;
+    cursor: pointer;
+}
+
+.pi-trash {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pi-pencil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profilecontent img {
+    width: 20px;
+    height: 20px;
+}
+
+/* LINKS */
+a,
+a:link,
+a:active,
+a:visited,
+a:hover {
+    color:           rgb(35, 118, 196);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* *********************************************************************************************** */
+/* TABLE STYLING */
+/* *********************************************************************************************** */
+/* .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+} */
+
+/* .table-header {
+    background-color: #e0e0e0;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+} */
+
+/* .table-row:nth-child(even) {
+    background-color: #f8f8f8;
+} */
+/* 
+.table-row {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.table-row:hover {
+    background-color: #eee;
+}
+
+.action-icon {
+    font-size: 18px; 
+    color: #000; 
+    cursor: pointer; 
+}
+
+.flexdiv-custom {
+    display: flex;
+    align-items: left;
+    justify-content: space-around;
+}
+
+.cardDescription {
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .table-row, .table-header {
+      padding: 5px; 
+    }
+    td {
+      font-size: 18px;
+    }
+    .cardDescription {
+        display: block;
+    }
+    .table-header {
+        visibility: hidden;
+    }
+    #users {
+        width: 100vh;
+    }
+}
+
+@media (min-width: 600px) {
+    .cardDescription {
+        display: none;
+    }
+    .table-header {
+        visibility: visible;
+    }
+} */
+
+/* LINKS */
+/* a,
+a:link,
+a:active,
+a:visited,
+a:hover {
+    color:           rgb(35, 118, 196);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+} */
+
+/* END LINKS */
+
+/* .flexdiv-custom span {
+    border-radius: 10px;
+}
+
+.flexdiv-custom span:nth-child(1) {
+    background-color: #ec5941;
+}
+
+.flexdiv-custom span:nth-child(2) {
+    background-color: blue;
+}
+
+.flexdiv-custom span i {
+    padding: 10px;
+}
+
+div .profilecontent img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.profilecontent {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+td {
+    width: fit-content;
+}
+
+tr {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+select {
+    width: 200px;
+}
+
+.user-profile {
+    margin-left: 1%;
+}
+
+.user-profile:hover {
+    text-decoration: underline;
+    cursor: pointer;
+} */

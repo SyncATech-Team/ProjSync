@@ -46,8 +46,8 @@ export class CreateRoleComponent {
     })
   }
 
-  close_alerts() {
-    this.adminPage.close_all_alerts();
-  }
+  // close_alerts() {
+  //   this.adminPage.close_all_alerts();
+  // }
 
 }

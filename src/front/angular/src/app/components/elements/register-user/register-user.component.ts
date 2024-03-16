@@ -61,16 +61,16 @@ export class RegisterUserComponent implements OnInit {
   
   // dohvati sva imena za company role
   getAllCompanyRoles() {
-    this.companyRoleService.getAllCompanyRoles().subscribe({
+    this.companyRoleService.getAllCompanyRoleNames().subscribe({
       next: response => this.roles = response,
       error: (error) => {
-        console.log(error);
+        console.log(error.error);
       }
     })
   }
 
-  close_alerts() {
-    this.adminPage.close_all_alerts();
-  }
+  // close_alerts() {
+  //   this.adminPage.close_all_alerts();
+  // }
 
 }
