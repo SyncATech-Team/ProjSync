@@ -29,3 +29,9 @@ th {
     align-items: center;
     justify-content: space-between;
 }
+
+.filterTableOptions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

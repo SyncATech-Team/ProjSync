@@ -34,9 +34,9 @@
                 [loading]="loading"
                 [globalFilterFields]="['name']"
                 [paginator]="true"
-                [rows]="10"
+                [rows]="5"
                 [first]="first"
-                [rowsPerPageOptions]="[10, 25, 50]"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
                 [showCurrentPageReport]="true"
                 (onPage)="pageChange($event)"
                 currentPageReportTemplate="Showing {first} to {last} of {{roles.length}} entries"
@@ -48,8 +48,8 @@
                     <div id="header-content" class="flex">
                         <div class="exportFileOptions">
                             <button type="button" pButton pRipple icon="pi pi-file" (click)="dt1.exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
-                            <button type="button" pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
-                            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"  class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom" title="Export as Excel"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom" title="Export as PDF"></button>
                         </div>
 
                         <div class="filterTableOptions">

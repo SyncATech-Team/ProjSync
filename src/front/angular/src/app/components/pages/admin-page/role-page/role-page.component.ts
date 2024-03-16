@@ -22,6 +22,7 @@ interface ExportColumn {
 })
 export class RolePageComponent implements OnInit {
 
+  /* PODACI CLANOVI */
   roles: string[] = [];
   roles_backup: string[] = [];
 
@@ -33,10 +34,19 @@ export class RolePageComponent implements OnInit {
   loading: boolean = true;
   activityValues: number[] = [0, 100];
 
+  /**
+   * Konstruktor
+   * @param croleService 
+   */
   constructor(private croleService: CompanyroleService) {}
 
+  /**
+   * OnInit
+   */
   ngOnInit(): void {
     this.loading = false;
+    
+    // Dohvati sve uloge koje postoje iz baze
     this.croleService.getAllCompanyRoles().subscribe({
       next: response => {
         this.roles = response;
@@ -47,47 +57,62 @@ export class RolePageComponent implements OnInit {
       }
     });
 
+    // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
     this.cols = [
       { field: 'role', header: 'List of company roles', customExportHeader: 'Company role name' },
     ];
 
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
-
-    console.log(this.exportColumns);
   }
 
+  /**
+   * Metod koji se poziva kada se insertuje nova uloga
+   * @param role 
+   */
   onRoleCreated(role: CompanyRole) {
     this.roles.push(role.name);  // Add the new user to the users array
-    this.roles_backup.push(role.name);
+    this.roles_backup = this.roles;
+    // this.roles_backup.push(role.name); // izgleda da pravi problem, dodaje duple uloge kad se insertuje nova
   }
 
-  onRoleDeleted(role: CompanyRole) {
-
-  }
-
+  /**
+   * Metod za brisanje uloge u kompaniji [potencijalno treba unaprediti error-handleing]
+   * @param name 
+   * @returns 
+   */
   deleteCompanyRole(name: string) {
     const response = prompt("In order to delete role please enter [" + name + "]");
     if(response != name) return;
 
     this.croleService.deleteRole(name).subscribe({
       next: response => {
-        // Use the findIndex method to efficiently locate the index of the role to remove
         const indexToRemove = this.roles.findIndex(role => role === name);
-        // If the role is found, efficiently remove it using splice
         if (indexToRemove !== -1) {
           this.roles.splice(indexToRemove, 1);
+        }
+
+        const indexToRemoveBackup = this.roles_backup.findIndex(role => role === name);
+        if(indexToRemoveBackup !== -1) {
+          this.roles_backup.splice(indexToRemoveBackup, 1);
         }
       }
     });
 
   }
 
-  // SERCH
+  /**
+   * Reset tabele - brise se filter za pretragu po nazivu uloge
+   * @param table 
+   */
   clear(table: Table) {
     table.clear();
     this.roles = this.roles_backup;
   }
 
+  /**
+   * Nisam siguran za sta se ovo koristilo xD...
+   * @param event 
+   */
   filerApply(event: any): void {
     let tekst: string = "";
     if(event.target.value != null) {
@@ -97,6 +122,10 @@ export class RolePageComponent implements OnInit {
     console.log(tekst);
   }
 
+  /**
+   * Filter po nazivu koji je unet; Prikaz samo onih uloga koje sadrze taj naziv
+   * @param table 
+   */
   search(table: Table) {
     this.roles = this.roles_backup;
     let x = document.getElementById("search-input-term-roles-global") as HTMLInputElement;
@@ -104,36 +133,56 @@ export class RolePageComponent implements OnInit {
     this.roles = this.roles.filter(x => x.toLowerCase().includes(searchTerm));
   }
 
-  // END SEARCH
-
-  // PAGINATOR FUNCTIONS
+  /**
+   * Koristi se za prelazenje sa jedne stranice na drugu
+   */
   next() {
     if(this.first + this.rows <= this.roles.length)
       this.first = this.first + this.rows;
   }
 
+  /**
+   * Vracanje na prethodnu stranicu
+   */
   prev() {
       this.first = this.first - this.rows;
   }
 
+  /**
+   * Reset stranice na prvu stranu
+   */
   reset() {
       this.first = 0;
   }
 
+  /**
+   * Promena strane
+   * @param event
+   */
   pageChange(event: any) {
       this.first = event.first;
       this.rows = event.rows;
   }
 
+  /**
+   * Provera da li se radi o poslednjoj stranici
+   * @returns
+   */
   isLastPage(): boolean {
       return this.roles ? this.first === this.roles.length - this.rows : true;
   }
 
+  /**
+   * Provera da li se radi o pocetnoj stranici
+   * @returns 
+   */
   isFirstPage(): boolean {
       return this.roles ? this.first === 0 : true;
   }
-  // PAGINATOR FUNCTIONS
 
+  /**
+   * Metod za eksportovanje PDF-a koji sadrzi nazive uloga u kompaniji
+   */
   exportPdf() {
     import('jspdf').then((jsPDF) => {
         import('jspdf-autotable').then((x) => {
@@ -143,5 +192,26 @@ export class RolePageComponent implements OnInit {
         });
     });
   }
+
+  /**
+   * Metod za eksportovanje Excel fajla koji sadrzi nazive uloga u kompaniji
+   */
+  exportExcel() {
+    import('xlsx').then((xlsx) => {
+        const worksheet = xlsx.utils.json_to_sheet(this.roles);
+        const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+        const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+        this.saveAsExcelFile(excelBuffer, 'roles');
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+        type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+}
 
 }
