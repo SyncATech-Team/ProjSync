@@ -53,11 +53,11 @@
                         </div>
 
                         <div class="filterTableOptions">
-                            <button
+                            <!-- <button
                                 pButton label="Clear"
                                 class="p-button-outlined"
                                 icon="pi pi-filter-slash" (click)="clear(dt1)">
-                            </button>
+                            </button> -->
                         
                             <div class="p-input-icon-left ml-auto">
                                 <!-- <i class="pi pi-search"></i> -->
@@ -79,14 +79,19 @@
 
                 <ng-template pTemplate="body" let-role>
                     <tr>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name</span>{{ role }}</td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name1</span>Needs insert</td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name2</span>Needs insert</td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name3</span>Needs insert</td>
+                        <td><span class="p-column-title" style="font-weight: bold;">Name</span>{{ role.name }}</td>
+                        <td><span class="p-column-title" style="font-weight: bold;">Name1</span> {{ role.workingHourPrice }}</td>
+                        <td><span class="p-column-title" style="font-weight: bold;">Name2</span> {{ role.overtimeHourPrice }}</td>
+                        <td><span class="p-column-title" style="font-weight: bold;">Name3</span> {{ role.weekendHourPrice }} </td>
                         <td><span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
-                                <i (click)="deleteCompanyRole(role)" class="action-icon fa fa-trash"></i>
-                                <i class="action-icon fa-solid fa-pen-to-square"></i>
+                                <div class="action">
+                                    <span (click)="deleteCompanyRole(role)" class="pi pi-trash" title="Delete role"></span>
+                                </div>
+
+                                <div class="action">
+                                    <span class="pi pi-pencil" title="Edit role"></span>
+                                </div>
                             </div>
                         </td>
                     </tr>

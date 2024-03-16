@@ -19,7 +19,7 @@ export class CompanyroleService {
     return this.http.delete<string>(this.baseUrl + "Companyroles/" + name);
   }
 
-  getAllCompanyRoles() {
+  getAllCompanyRoleNames() {
     return this.http.get<string[]>(this.baseUrl + 'Companyroles');
   }
 }

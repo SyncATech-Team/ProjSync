@@ -23,8 +23,8 @@ interface ExportColumn {
 export class RolePageComponent implements OnInit {
 
   /* PODACI CLANOVI */
-  roles: string[] = [];
-  roles_backup: string[] = [];
+  roles: CompanyRole[] = [];
+  roles_backup: CompanyRole[] = [];
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
@@ -47,10 +47,14 @@ export class RolePageComponent implements OnInit {
     this.loading = false;
     
     // Dohvati sve uloge koje postoje iz baze
-    this.croleService.getAllCompanyRoles().subscribe({
+    this.croleService.getAllCompanyRoleNames().subscribe({
       next: response => {
-        this.roles = response;
-        this.roles_backup = response;
+        this.roles = response.map(name => ({
+          name,
+          workingHourPrice: -1,
+          overtimeHourPrice: -1,
+          weekendHourPrice: -1
+        }));
       },
       error: error => {
         console.log("ERROR: " + error.error);
@@ -59,7 +63,7 @@ export class RolePageComponent implements OnInit {
 
     // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
     this.cols = [
-      { field: 'role', header: 'List of company roles', customExportHeader: 'Company role name' },
+      { field: 'name', header: 'List of company roles', customExportHeader: 'Company role name' },
     ];
 
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
@@ -70,7 +74,7 @@ export class RolePageComponent implements OnInit {
    * @param role 
    */
   onRoleCreated(role: CompanyRole) {
-    this.roles.push(role.name);  // Add the new user to the users array
+    this.roles.push(role);  // Add the new user to the users array
     this.roles_backup = this.roles;
     // this.roles_backup.push(role.name); // izgleda da pravi problem, dodaje duple uloge kad se insertuje nova
   }
@@ -86,12 +90,12 @@ export class RolePageComponent implements OnInit {
 
     this.croleService.deleteRole(name).subscribe({
       next: response => {
-        const indexToRemove = this.roles.findIndex(role => role === name);
+        const indexToRemove = this.roles.findIndex(role => role.name === name);
         if (indexToRemove !== -1) {
           this.roles.splice(indexToRemove, 1);
         }
 
-        const indexToRemoveBackup = this.roles_backup.findIndex(role => role === name);
+        const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === name);
         if(indexToRemoveBackup !== -1) {
           this.roles_backup.splice(indexToRemoveBackup, 1);
         }
@@ -130,7 +134,7 @@ export class RolePageComponent implements OnInit {
     this.roles = this.roles_backup;
     let x = document.getElementById("search-input-term-roles-global") as HTMLInputElement;
     let searchTerm = x.value.toLowerCase();
-    this.roles = this.roles.filter(x => x.toLowerCase().includes(searchTerm));
+    this.roles = this.roles.filter(x => x.name.toLowerCase().includes(searchTerm));
   }
 
   /**

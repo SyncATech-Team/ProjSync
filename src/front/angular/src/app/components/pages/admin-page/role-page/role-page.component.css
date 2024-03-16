@@ -35,3 +35,35 @@ th {
     align-items: center;
     justify-content: space-between;
 }
+
+.action {
+    border-radius: 20%;
+}
+
+.action:first-child {
+    background-color: #ec5941;
+}
+
+.action:last-child {
+    background-color: lightblue;
+}
+
+.action span {
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    color: black;
+    cursor: pointer;
+}
+
+.pi-trash {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pi-pencil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
