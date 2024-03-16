@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+<button type="button" class="btn btn-primary" (click)="initializeProjects()" data-bs-toggle="modal" data-bs-target="#createProjectModal">
     Create project
 </button>
 
@@ -21,7 +21,7 @@
                             name="name"
                             class="form-control"
                             placeholder="Name"
-                            [(ngModel)]="project.name"
+                            [(ngModel)]="creationModel.name"
                             required
                             autocomplete="off"
                             >
@@ -37,24 +37,18 @@
                             name="key"
                             class="form-control"
                             placeholder="TC"
-                            [(ngModel)]="project.key"
+                            [(ngModel)]="creationModel.key"
                             required
                             >
                             <label for="key" class="form-label">Key</label>
                         </div>
                     </div>
-    
-                    <div class="col-12">
+
+                    <div class="col-12"> 
                         <div class="form-floating mb-3">
-                        <input 
-                            type="text"
-                            id="type"
-                            name="type"
-                            class="form-control"
-                            placeholder="Type"
-                            [(ngModel)]="project.type"
-                            required
-                            >
+                            <select id="type" class="form-select" aria-label="type" [(ngModel)]="creationModel.typeId" name="type">
+                                <option *ngFor="let type of projectTypes" value="{{type.id}}">{{type.name}}</option>
+                            </select>
                             <label for="type" class="form-label">Type</label>
                         </div>
                     </div>
@@ -67,25 +61,19 @@
                             name="description"
                             class="form-control"
                             placeholder="Description"
-                            [(ngModel)]="project.description"
+                            [(ngModel)]="creationModel.description"
                             required
                             min="0"
                             >
                             <label for="description" class="form-label">Description</label>
                         </div>
                     </div>
-    
-                    <div class="col-12">
+
+                    <div class="col-12"> 
                         <div class="form-floating mb-3">
-                        <input 
-                            type="text"
-                            id="owner"
-                            name="owner"
-                            class="form-control"
-                            placeholder="Owner"
-                            [(ngModel)]="project.owner"
-                            required
-                            >
+                            <select id="owner" class="form-select" aria-label="owner" [(ngModel)]="creationModel.ownerId" name="owner">
+                                <option *ngFor="let user of users" value="{{user.id}}">{{user.firstName}} {{user.lastName}}</option>
+                            </select>
                             <label for="owner" class="form-label">Owner</label>
                         </div>
                     </div>
@@ -97,7 +85,7 @@
                             id="dueDate"
                             name="dueDate"
                             class="form-control"
-                            [(ngModel)]="project.dueDate"
+                            [(ngModel)]="creationModel.dueDate"
                             required
                             >
                             <label for="dueDate" class="form-label">Due date</label>
@@ -112,7 +100,7 @@
                             name="budget"
                             class="form-control"
                             placeholder="100000.00"
-                            [(ngModel)]="project.budget"
+                            [(ngModel)]="creationModel.budget"
                             required
                             >
                             <label for="budget" class="form-label">Budget</label>
@@ -121,8 +109,8 @@
 
                     <div class="col-12"> 
                         <div class="form-floating mb-3">
-                            <select id="projectVisibility" class="form-select" aria-label="projectVisibility" [(ngModel)]="project.visibility" name="projectVisibility">
-                                <option *ngFor="let visibility of projectVisibility" value="{{visibility}}">{{visibility}}</option>
+                            <select id="projectVisibility" class="form-select" aria-label="projectVisibility" [(ngModel)]="creationModel.visibilityId" name="projectVisibility">
+                                <option *ngFor="let visibility of projectVisibilities" value="{{visibility.id}}">{{visibility.name}}</option>
                             </select>
                             <label for="projectVisibility" class="form-label">Project visibility</label>
                         </div>
@@ -130,7 +118,7 @@
 
                     <div class="col-12"> 
                         <div class="form-floating mb-3">
-                            <select id="projectParent" class="form-select" aria-label="projectParent" [(ngModel)]="project.parent" name="projectParent">
+                            <select id="projectParent" class="form-select" aria-label="projectParent" [(ngModel)]="creationModel.parentId" name="projectParent">
                                 <option *ngFor="let project of projects" value="{{project.id}}">{{project.name}}</option>
                             </select>
                             <label for="projectParent" class="form-label">Parent</label>

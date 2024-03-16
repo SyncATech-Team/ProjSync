@@ -32,6 +32,7 @@ namespace backAPI.Controllers
 
             foreach(var user in users) {
                 dTOUsers.Add(new DTOUser {
+                    Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,

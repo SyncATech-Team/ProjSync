@@ -24,6 +24,7 @@ namespace backAPI.Controllers
             foreach (var project in projects)
             {
                 result.Add(new ProjectDto {
+                    Id = project.Id,
                     Name = project.Name,
                     Key = project.Key,
                     TypeId = project.TypeId,
@@ -38,6 +39,7 @@ namespace backAPI.Controllers
             }
             return result;
         }
+
         [HttpPost]
         public async Task<ActionResult> CreateProject(ProjectDto projectDto)
         {

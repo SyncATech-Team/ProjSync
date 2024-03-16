@@ -14,4 +14,8 @@ export class ProjectService {
   getAllProjects(){
     return this.http.get<Project[]>(this.baseUrl + "Projects");
   }
+
+  createProject(model: Project){
+    return this.http.post<Project>(this.baseUrl + "Projects", model);
+  }
 }
