@@ -24,6 +24,7 @@ import { PasswordResetComponent } from './components/elements/password-reset/pas
 import { NotificationComponent } from './components/elements/notification/notification.component';
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { TagModule } from "primeng/tag";
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     TableModule,
-    TagModule
+    TagModule,
+    ButtonModule
   ],
   providers: [
     provideClientHydration(),

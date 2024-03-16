@@ -23,8 +23,8 @@
                 
                 <ng-template pTemplate="header" let-columns>
                     <tr class="table-header">
-                        <th class="table-header">Account</th>
-                        <th class="table-header">Email address</th>
+                        <th pSortableColumn="username" class="table-header">Account<p-sortIcon field="username"></p-sortIcon></th>
+                        <th pSortableColumn="email" class="table-header">Email address <p-sortIcon field="email"></p-sortIcon></th>
                         <th class="table-header">Company role</th>
                         <td class="table-header">Actions</td>
                     </tr>
