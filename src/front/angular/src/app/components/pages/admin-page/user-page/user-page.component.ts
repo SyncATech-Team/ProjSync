@@ -45,9 +45,13 @@ export class UserPageComponent implements OnInit {
     let x: number = this.getRandomInteger(1, 10);
     let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
     
-    console.log(path);
+    // console.log(path);
 
     return path;
+  }
+
+  deleteUser(username: string): void {
+    let ans = prompt("Are you sure that you want to delete user " + username + " [TO DO! Zahtevati da korisnik unese username kao potvrdu]");
   }
 
 }

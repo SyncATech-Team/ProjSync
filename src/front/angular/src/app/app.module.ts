@@ -22,6 +22,8 @@ import { DashboardPageComponent } from './components/pages/admin-page/dashboard-
 import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
 import { PasswordResetComponent } from './components/elements/password-reset/password-reset.component';
 import { NotificationComponent } from './components/elements/notification/notification.component';
+import { TableModule } from "primeng/table";
+import { TagModule } from "primeng/tag";
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { NotificationComponent } from './components/elements/notification/notifi
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TableModule,
+    TagModule
   ],
   providers: [
     provideClientHydration(),
