@@ -9,6 +9,7 @@ import { ProjectType } from '../../../_models/project-type';
 import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectVisibility } from '../../../_models/project-visibility';
 import { ProjectVisibilityService } from '../../../_service/project-visibility.service';
+import { UserService } from '../../../_service/user.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { ProjectVisibilityService } from '../../../_service/project-visibility.s
 })
 export class CreateProjectComponent implements OnInit{
 
-  constructor(private projectVisibilityService: ProjectVisibilityService, private projectTypeService: ProjectTypeService, private accountService: AccountService,
+  constructor(private projectVisibilityService: ProjectVisibilityService, private projectTypeService: ProjectTypeService, private userService: UserService,
     private homePage: HomePageComponent,private datePipe:DatePipe,private projectService: ProjectService) {}
 
   users: UserGetter []= [];
@@ -27,7 +28,7 @@ export class CreateProjectComponent implements OnInit{
   projectVisibilities: ProjectVisibility[]=[];
 
   ngOnInit(): void {
-    this.accountService.getAllUsers().subscribe({
+    this.userService.getAllUsers().subscribe({
       next: (response)=>{
         this.users=response;
       },
