@@ -2,6 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { Table } from 'primeng/table';
+import * as FileSaver from 'file-saver';
+
+interface Column {
+  field: string;
+  header: string;
+  customExportHeader?: string;
+}
+
+interface ExportColumn {
+  title: string;
+  dataKey: string;
+}
 
 @Component({
   selector: 'app-role-page',
@@ -12,6 +24,9 @@ export class RolePageComponent implements OnInit {
 
   roles: string[] = [];
   roles_backup: string[] = [];
+
+  cols!: Column[];
+  exportColumns!: ExportColumn[];
   
   first = 0;
   rows = 10;
@@ -31,11 +46,40 @@ export class RolePageComponent implements OnInit {
         console.log("ERROR: " + error.error);
       }
     });
+
+    this.cols = [
+      { field: 'role', header: 'List of company roles', customExportHeader: 'Company role name' },
+    ];
+
+    this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+    console.log(this.exportColumns);
   }
 
   onRoleCreated(role: CompanyRole) {
     this.roles.push(role.name);  // Add the new user to the users array
     this.roles_backup.push(role.name);
+  }
+
+  onRoleDeleted(role: CompanyRole) {
+
+  }
+
+  deleteCompanyRole(name: string) {
+    const response = prompt("In order to delete role please enter [" + name + "]");
+    if(response != name) return;
+
+    this.croleService.deleteRole(name).subscribe({
+      next: response => {
+        // Use the findIndex method to efficiently locate the index of the role to remove
+        const indexToRemove = this.roles.findIndex(role => role === name);
+        // If the role is found, efficiently remove it using splice
+        if (indexToRemove !== -1) {
+          this.roles.splice(indexToRemove, 1);
+        }
+      }
+    });
+
   }
 
   // SERCH
@@ -89,5 +133,15 @@ export class RolePageComponent implements OnInit {
       return this.roles ? this.first === 0 : true;
   }
   // PAGINATOR FUNCTIONS
+
+  exportPdf() {
+    import('jspdf').then((jsPDF) => {
+        import('jspdf-autotable').then((x) => {
+            const doc = new jsPDF.default('p', 'px', 'a4');
+            (doc as any).autoTable(this.exportColumns, this.roles);
+            doc.save('roles.pdf');
+        });
+    });
+  }
 
 }
