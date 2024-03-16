@@ -15,7 +15,11 @@ export class CompanyroleService {
     return this.http.post<CreateCompanyRole>(this.baseUrl + 'Companyroles', model);
   }
 
-  getAllCompanyRoles() {
+  deleteRole(name: string) {
+    return this.http.delete<string>(this.baseUrl + "Companyroles/" + name);
+  }
+
+  getAllCompanyRoleNames() {
     return this.http.get<string[]>(this.baseUrl + 'Companyroles');
   }
 }
