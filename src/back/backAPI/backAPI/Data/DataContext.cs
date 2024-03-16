@@ -81,5 +81,6 @@ namespace backAPI.Data
         public DbSet<UsersOnProject> UsersOnProjects { get; set; }
         public DbSet<ProjectDocumentation> ProjectDocumentation { get; set; }
         public DbSet<TaskComment> TaskComment { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }
