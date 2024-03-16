@@ -84,18 +84,18 @@ export class RolePageComponent implements OnInit {
    * @param name 
    * @returns 
    */
-  deleteCompanyRole(name: string) {
-    const response = prompt("In order to delete role please enter [" + name + "]");
-    if(response != name) return;
+  deleteCompanyRole(argRole: CompanyRole) {
+    const response = prompt("In order to delete role please enter [" + argRole.name + "]");
+    if(response != argRole.name) return;
 
-    this.croleService.deleteRole(name).subscribe({
+    this.croleService.deleteRole(argRole.name).subscribe({
       next: response => {
-        const indexToRemove = this.roles.findIndex(role => role.name === name);
+        const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
         if (indexToRemove !== -1) {
           this.roles.splice(indexToRemove, 1);
         }
 
-        const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === name);
+        const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === argRole.name);
         if(indexToRemoveBackup !== -1) {
           this.roles_backup.splice(indexToRemoveBackup, 1);
         }
