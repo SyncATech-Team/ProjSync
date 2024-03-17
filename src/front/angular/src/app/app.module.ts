@@ -26,6 +26,8 @@ import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { ToastModule } from 'primeng/toast';
     TableModule,
     TagModule,
     ButtonModule,
-    ToastModule
+    ToastModule,
+    ModalModule.forRoot()
   ],
   providers: [
     provideClientHydration(),
