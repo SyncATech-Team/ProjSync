@@ -5,6 +5,8 @@ import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { CreateRoleComponent } from '../../../elements/create-role/create-role.component';
 
 interface Column {
   field: string;
@@ -32,7 +34,14 @@ interface ExportColumn {
 })
 export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
-  
+  bsModalRef: BsModalRef<CreateRoleComponent> = new BsModalRef<CreateRoleComponent>();
+  createdRole: CompanyRole = {
+    name: '',
+    workingHourPrice: 0,
+    overtimeHourPrice: 0,
+    weekendHourPrice: 0
+  }
+
   /* PODACI CLANOVI */
   roles: CompanyRole[] = [];
   roles_backup: CompanyRole[] = [];
@@ -49,7 +58,8 @@ export class RolePageComponent implements OnInit {
    * Konstruktor
    * @param croleService 
    */
-  constructor(private companyRoleService: CompanyroleService, private messageService: MessageService) {
+  constructor(private companyRoleService: CompanyroleService, private messageService: MessageService,
+    private modalService: BsModalService) {
   }
 
   /**
@@ -70,14 +80,24 @@ export class RolePageComponent implements OnInit {
     this.loading = false;
   }
 
-  /**
-   * Metod koji se poziva kada se insertuje nova uloga
-   * @param role 
-   */
-  onRoleCreated(role: CompanyRole) {
-    this.roles.push(role);  // Add the new user to the users array
-    this.roles_backup = this.roles;
-    // this.roles_backup.push(role.name); // izgleda da pravi problem, dodaje duple uloge kad se insertuje nova
+  openRolesModal() {
+    const config = {
+      class: 'modal-dialog-centered',
+      initialState: {
+        createdRole: this.createdRole
+      }
+    }
+    this.bsModalRef = this.modalService.show(CreateRoleComponent, config);
+    this.bsModalRef.onHide?.subscribe({
+      next: () => {
+        const createdRole = this.bsModalRef.content?.createdRole;
+        this.companyRoleService.create(createdRole!).subscribe({
+          next: () => this.showSuccess("Successfully created new role"),
+          error: _ => 
+            this.showError("Unable to create new role with given parameters. Probably duplicate names")
+        })
+      }
+    })
   }
 
   /**
