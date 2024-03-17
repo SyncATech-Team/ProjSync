@@ -18,5 +18,7 @@ namespace backAPI.Repositories.Interface
         Task<Project> GetProjectByName(string name);
 
         Task<bool> UpdateProject(string name,ProjectDto request);
+        
+        Task<Project> GetProjectById(int id);
     }
 }

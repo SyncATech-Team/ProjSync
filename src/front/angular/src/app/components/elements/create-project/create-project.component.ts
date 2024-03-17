@@ -19,12 +19,27 @@ import { UserService } from '../../../_service/user.service';
 })
 export class CreateProjectComponent implements OnInit{
 
-  constructor(private projectVisibilityService: ProjectVisibilityService, private projectTypeService: ProjectTypeService, private userService: UserService,
-    private homePage: HomePageComponent,private datePipe:DatePipe,private projectService: ProjectService) {}
-
   users: UserGetter []= [];
   projectTypes: ProjectType []=[];
   projectVisibilities: ProjectVisibility[]=[];
+
+  creationModel: Project = {
+    name: "",
+    key: "",
+    typeName: "",
+    description: "",
+    ownerUsername: "",
+    creationDate: new Date(), 
+    dueDate: new Date(),
+    budget: 0,
+    visibilityName: "",
+    parentProjectName: null
+  }
+
+  projects: Project[]=[];
+
+  constructor(private projectVisibilityService: ProjectVisibilityService, private projectTypeService: ProjectTypeService, private userService: UserService,
+    private homePage: HomePageComponent,private datePipe:DatePipe,private projectService: ProjectService) {}
 
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe({
@@ -54,21 +69,6 @@ export class CreateProjectComponent implements OnInit{
       }
     });
   }
-  creationModel: Project = {
-      id: 0,
-      name: "",
-      key: "",
-      typeId: 0,
-      description: "",
-      ownerId: 0,
-      creationDate: new Date(), 
-      dueDate: new Date(),
-      budget: 0,
-      visibilityId: 0,
-      parentId: null
-    }
-  
-  projects: Project[]=[];
 
   initializeProjects():void {
     this.projects=this.homePage.projects;

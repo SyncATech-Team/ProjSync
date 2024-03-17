@@ -34,6 +34,13 @@ namespace backAPI.Controllers
                 var visibility = await _projectVisibilitiesRepository.GetProjectVisibilityByIdAsync(project.VisibilityId);
                 var owner = await _usersRepository.IdToUsername(project.OwnerId);
 
+                Project parent = null;
+                if(project.ParentId != null) {
+                    parent = await _projectsRepository.GetProjectById((int)project.ParentId);
+                }
+
+                var parentName = (parent == null) ? "No parent" : parent.Name;
+
                 result.Add(new ProjectDto {
                     Name = project.Name,
                     Key = project.Key,
@@ -42,7 +49,7 @@ namespace backAPI.Controllers
                     CreationDate = project.CreationDate,
                     DueDate = project.DueDate,
                     OwnerUsername = owner,
-                    ParentId = project.ParentId,
+                    ParentProjectName = parentName,
                     Budget = project.Budget,
                     VisibilityName = visibility.Name
                 });

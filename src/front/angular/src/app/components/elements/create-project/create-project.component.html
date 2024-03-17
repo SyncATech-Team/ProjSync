@@ -46,8 +46,8 @@
 
                     <div class="col-12"> 
                         <div class="form-floating mb-3">
-                            <select id="type" class="form-select" aria-label="type" [(ngModel)]="creationModel.typeId" name="type">
-                                <option *ngFor="let type of projectTypes" value="{{type.id}}">{{type.name}}</option>
+                            <select id="type" class="form-select" aria-label="type" [(ngModel)]="creationModel.typeName" name="type">
+                                <option *ngFor="let type of projectTypes" value="{{type.name}}">{{type.name}}</option>
                             </select>
                             <label for="type" class="form-label">Type</label>
                         </div>
@@ -71,7 +71,7 @@
 
                     <div class="col-12"> 
                         <div class="form-floating mb-3">
-                            <select id="owner" class="form-select" aria-label="owner" [(ngModel)]="creationModel.ownerId" name="owner">
+                            <select id="owner" class="form-select" aria-label="owner" [(ngModel)]="creationModel.ownerUsername" name="owner">
                                 <option *ngFor="let user of users" value="{{user.username}}">{{user.firstName}} {{user.lastName}}</option>
                             </select>
                             <label for="owner" class="form-label">Owner</label>
@@ -110,8 +110,8 @@
 
                     <div class="col-12"> 
                         <div class="form-floating mb-3">
-                            <select id="projectVisibility" class="form-select" aria-label="projectVisibility" [(ngModel)]="creationModel.visibilityId" name="projectVisibility">
-                                <option *ngFor="let visibility of projectVisibilities" value="{{visibility.id}}">{{visibility.name}}</option>
+                            <select id="projectVisibility" class="form-select" aria-label="projectVisibility" [(ngModel)]="creationModel.visibilityName" name="projectVisibility">
+                                <option *ngFor="let visibility of projectVisibilities" value="{{visibility.name}}">{{visibility.name}}</option>
                             </select>
                             <label for="projectVisibility" class="form-label">Project visibility</label>
                         </div>
@@ -119,8 +119,8 @@
 
                     <div class="col-12"> 
                         <div class="form-floating mb-3">
-                            <select id="projectParent" class="form-select" aria-label="projectParent" [(ngModel)]="creationModel.parentId" name="projectParent">
-                                <option *ngFor="let project of projects" value="{{project.id}}">{{project.name}}</option>
+                            <select id="projectParent" class="form-select" aria-label="projectParent" [(ngModel)]="creationModel.parentProjectName" name="projectParent">
+                                <option *ngFor="let project of projects" value="{{project.name}}">{{project.name}}</option>
                             </select>
                             <label for="projectParent" class="form-label">Parent</label>
                         </div>
