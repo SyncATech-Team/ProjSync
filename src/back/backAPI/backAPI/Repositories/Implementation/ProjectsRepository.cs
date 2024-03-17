@@ -73,9 +73,6 @@ namespace backAPI.Repositories.Implementation
             return await dataContext.Projects.ToListAsync();
         }
 
-        public async Task<Project> GetProjectByName(string name) {
-            return await dataContext.Projects.FirstOrDefaultAsync(x => x.Name == name);
-        }
 
         public async Task<Project> GetProjectById(int id) {
             return await dataContext.Projects.FirstOrDefaultAsync(x => x.Id == id);
@@ -105,7 +102,7 @@ namespace backAPI.Repositories.Implementation
             project.Key = request.Key;
             project.TypeId = projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName).Result.Id;
             project.OwnerId = usersRepository.GetUserByUsername(request.OwnerUsername).Result.Id;
-            project.ParentId = request.ParentId;
+            project.ParentId = (request.ParentProjectName == null) ? null : GetProjectByName(request.ParentProjectName).Result.Id;
             project.CreationDate = request.CreationDate;
             project.DueDate = request.DueDate;
             project.Budget = request.Budget;
