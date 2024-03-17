@@ -21,14 +21,27 @@ namespace backAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: false),
-                    WorkingHourPrice = table.Column<double>(type: "double", nullable: false),
-                    OvertimeHourPrice = table.Column<double>(type: "double", nullable: false),
-                    WeekendHourPrice = table.Column<double>(type: "double", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompanyRoles", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    User_Id = table.Column<int>(type: "int", nullable: false),
+                    Message = table.Column<string>(type: "longtext", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -202,7 +215,9 @@ namespace backAPI.Migrations
                     Address = table.Column<string>(type: "longtext", nullable: true),
                     ContactPhone = table.Column<string>(type: "longtext", nullable: true),
                     LinkedinProfile = table.Column<string>(type: "longtext", nullable: true),
-                    Status = table.Column<string>(type: "longtext", nullable: true)
+                    Status = table.Column<string>(type: "longtext", nullable: true),
+                    IsVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PreferedLanguage = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,18 +294,18 @@ namespace backAPI.Migrations
 
             // table USERS
             migrationBuilder.AddForeignKey(
-                name: "FK_CompanyRole_ID_USERS",
+                name: "FK_CompanyRole_ID_Users",
                 table: "Users",
                 column: "CompanyRoleId",
                 principalTable: "CompanyRoles",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
+                onDelete: ReferentialAction.Restrict,
                 onUpdate: ReferentialAction.Cascade
             );
 
             // table PROJECTS
             migrationBuilder.AddForeignKey(
-                name: "FK_Project_type_PROJECTS",
+                name: "FK_Project_type_Projects",
                 table: "Projects",
                 column: "TypeId",
                 principalTable: "ProjectTypes",
@@ -300,7 +315,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_owner_PROJECTS",
+                name: "FK_owner_Projects",
                 table: "Projects",
                 column: "OwnerId",
                 principalTable: "Users",
@@ -310,7 +325,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_project_id_PROJECTS",
+                name: "FK_project_id_Projects",
                 table: "Projects",
                 column: "ParentId",
                 principalTable: "Projects",
@@ -320,7 +335,7 @@ namespace backAPI.Migrations
            );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_visibility_PROJECTS",
+                name: "FK_visibility_Projects",
                 table: "Projects",
                 column: "VisibilityId",
                 principalTable: "ProjectVisibilities",
@@ -331,7 +346,7 @@ namespace backAPI.Migrations
 
             // table WORKING HOURS
             migrationBuilder.AddForeignKey(
-                name: "FK_User_WH",
+                name: "FK_User_WorkingHours",
                 table: "WorkingHours",
                 column: "UserId",
                 principalTable: "Users",
@@ -342,7 +357,7 @@ namespace backAPI.Migrations
 
             // table PROJECT DOCUMENTATIONS
             migrationBuilder.AddForeignKey(
-                name: "FK_project_PD",
+                name: "FK_project_ProjectDocumentation",
                 table: "ProjectDocumentations",
                 column: "ProjectId",
                 principalTable: "Projects",
@@ -353,7 +368,7 @@ namespace backAPI.Migrations
 
             // table TASKS
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_TASKS",
+                name: "FK_Users_Tasks",
                 table: "Tasks",
                 column: "CreatedBy",
                 principalTable: "Users",
@@ -363,7 +378,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Project_TASKS",
+                name: "FK_Project_Tasks",
                 table: "Tasks",
                 column: "ProjectId",
                 principalTable: "Projects",
@@ -373,7 +388,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Priority_TASKS",
+                name: "FK_Priority_Tasks",
                 table: "Tasks",
                 column: "PriorityId",
                 principalTable: "TaskPriorities",
@@ -383,7 +398,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Type_TASKS",
+                name: "FK_Type_Tasks",
                 table: "Tasks",
                 column: "TypeId",
                 principalTable: "TaskTypes",
@@ -394,7 +409,7 @@ namespace backAPI.Migrations
 
             // table TASK COMMENTS
             migrationBuilder.AddForeignKey(
-                name: "FK_User_TC",
+                name: "FK_User_TaskComments",
                 table: "TaskComments",
                 column: "UserId",
                 principalTable: "Users",
@@ -404,7 +419,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Task_TC",
+                name: "FK_Task_TaskComments",
                 table: "TaskComments",
                 column: "TaskId",
                 principalTable: "Tasks",
@@ -416,7 +431,7 @@ namespace backAPI.Migrations
             // table USERS ON PROJECTS
 
             migrationBuilder.AddForeignKey(
-                name: "FK_User_UOP",
+                name: "FK_User_UsersOnProjects",
                 table: "UsersOnProjects",
                 column: "UserId",
                 principalTable: "Users",
@@ -426,7 +441,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Project_UOP",
+                name: "FK_Project_UsersOnProjects",
                 table: "UsersOnProjects",
                 column: "ProjectId",
                 principalTable: "Projects",
@@ -436,7 +451,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ProjectRole_UOP",
+                name: "FK_ProjectRole_UsersOnProjects",
                 table: "UsersOnProjects",
                 column: "ProjectRole",
                 principalTable: "ProjectRoles",
@@ -448,7 +463,7 @@ namespace backAPI.Migrations
             // table USERS ON TASKS
 
             migrationBuilder.AddForeignKey(
-                name: "FK_User_UOT",
+                name: "FK_User_UsersOnTasks",
                 table: "UsersOnTasks",
                 column: "UserId",
                 principalTable: "Users",
@@ -458,7 +473,7 @@ namespace backAPI.Migrations
             );
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Task_UOT",
+                name: "FK_Task_UsersOnTasks",
                 table: "UsersOnTasks",
                 column: "TaskId",
                 principalTable: "Tasks",
@@ -470,58 +485,59 @@ namespace backAPI.Migrations
             /* ************************************************************************************************************* */
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyRoles_Name",
+                name: "CompanyRoles_Name",
                 table: "CompanyRoles",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectRoles_Name",
+                name: "ProjectRoles_Name",
                 table: "ProjectRoles",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_Key",
+                name: "Projects_Key",
                 table: "Projects",
                 column: "Key",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectTypes_Name",
+                name: "ProjectTypes_Name",
                 table: "ProjectTypes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectVisibilities_Name",
+                name: "ProjectVisibilities_Name",
                 table: "ProjectVisibilities",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskPriorities_Name",
+                name: "TaskPriorities_Name",
                 table: "TaskPriorities",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskTypes_Name",
+                name: "TaskTypes_Name",
                 table: "TaskTypes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
+                name: "Users_Email",
                 table: "Users",
                 column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Username",
+                name: "Users_Username",
                 table: "Users",
                 column: "Username",
                 unique: true);
+
         }
 
         /// <inheritdoc />
@@ -529,6 +545,9 @@ namespace backAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CompanyRoles");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "ProjectDocumentations");

@@ -33,10 +33,7 @@ namespace backAPI.Controllers
             {
                 var companyRoleDto = new CompanyRoleDto
                 {
-                    Name = role.Name,
-                    OvertimeHourPrice = role.OvertimeHourPrice,
-                    WeekendHourPrice = role.WeekendHourPrice,
-                    WorkingHourPrice = role.WorkingHourPrice,
+                    Name = role.Name
                 };
                 companyRoles.Add(companyRoleDto);
             }
@@ -45,22 +42,19 @@ namespace backAPI.Controllers
         }
 
         /* *****************************************************************************
-         * GET{id} | Get company role by ID
+         * GET{name} | Get company role by Name
          * ***************************************************************************** */
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CompanyRoleDto>> GetCompanyRole(int id) {
+        [HttpGet("{name}")]
+        public async Task<ActionResult<CompanyRoleDto>> GetCompanyRole(string name) {
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
-            var role = roles.FirstOrDefault(role => role.Id == id);
+            var role = roles.FirstOrDefault(role => role.Name == name);
 
             if(role == null) {
                 return NotFound();
             }
 
             return new CompanyRoleDto {
-                Name = role.Name,
-                WorkingHourPrice = role.WorkingHourPrice,
-                OvertimeHourPrice = role.OvertimeHourPrice,
-                WeekendHourPrice = role.WeekendHourPrice
+                Name = role.Name
             };
         }
         /* *****************************************************************************
@@ -75,10 +69,7 @@ namespace backAPI.Controllers
 
             // Convert DTO to Domain Model
             var companyRole = new CompanyRole {
-                Name = role.Name,
-                WorkingHourPrice = role.WorkingHourPrice,
-                OvertimeHourPrice = role.OvertimeHourPrice,
-                WeekendHourPrice = role.WeekendHourPrice
+                Name = role.Name
             };
 
             // save to database
@@ -87,11 +78,11 @@ namespace backAPI.Controllers
             return NoContent();
         }
         /* *****************************************************************************
-         * PUT{id} | Update company role for the given id
+         * PUT{name} | Update company role for the given name
          * ***************************************************************************** */
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateCompanyRole(int id, CompanyRoleDto request) {
-            var updated = await companyRolesRepository.UpdateCompanyRole(id, request);
+        [HttpPut("{name}")]
+        public async Task<ActionResult> UpdateCompanyRole(string name, CompanyRoleDto request) {
+            var updated = await companyRolesRepository.UpdateCompanyRole(name, request);
 
             if(!updated) {
                 return BadRequest("Cannot update the role!");
@@ -100,7 +91,7 @@ namespace backAPI.Controllers
             return NoContent();
         }
         /* *****************************************************************************
-         * DELETE{id} | Delete company role
+         * DELETE{name} | Delete company role
          * ***************************************************************************** */
         [HttpDelete("{name}")]
         public async Task<ActionResult> DeleteCompanyRole(string name) {

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
-import { Router } from '@angular/router';
-import { User } from '../../../_models/user';
 import { Project } from '../../../_models/project.model';
 import { ProjectService } from '../../../_service/project.service';
 
@@ -13,23 +11,29 @@ import { ProjectService } from '../../../_service/project.service';
 })
 export class HomePageComponent implements OnInit {
 
-
-  constructor(public accoutService: AccountService,private projectService:ProjectService) { }
   projects: Project[]=[];
+  
+  sortedColumn: string = '';
+  isAscending: boolean = true;
+  projectsShow: any[] = [];
 
   searchTerm: string = '';
+
+  constructor(public accoutService: AccountService,private projectService:ProjectService) { }
 
   ngOnInit(): void {
     this.projectService.getAllProjects().subscribe({
       next: (response) => {
         this.projects = response;
+        console.log(this.projects);
         this.projects.forEach((project)=>{
-          project.subProjects = this.projects.filter((subproject)=>  subproject.parentId == project.id );
+          project.subProjects = this.projects.filter((subproject)=>  subproject.parentProjectName == project.name );
           project.isExtanded = false;
           project.isFavorite = false;
           this.filterProjects('private');
+
+          console.log(project);
         });
-        console.log(this.projects);
       },
       error: (error) => {
         console.log(error);
@@ -38,16 +42,12 @@ export class HomePageComponent implements OnInit {
   }
   
   toProject():void {
-    
+    alert("TO DO");
   }
 
   toggleRow(project: any): void{
     project.isExtanded = !project.isExtanded;
   }
-
-  sortedColumn: string = '';
-  isAscending: boolean = true;
-  projectsShow: any[] = [];
 
   sortData(column: string) {
     if (this.sortedColumn === column) {
@@ -73,11 +73,11 @@ export class HomePageComponent implements OnInit {
     else{
       if(filter=="private")
       {
-        this.projectsShow=this.projects.filter((project)=> project.visibilityId===1);
+        this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Private");
       }
       else
       {
-        this.projectsShow=this.projects.filter((project)=> project.visibilityId===2);
+        this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Public");
       }
     }
   }

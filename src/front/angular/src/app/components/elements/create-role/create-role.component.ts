@@ -10,5 +10,30 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 export class CreateRoleComponent {
   createdRole: CompanyRole | undefined;
 
-  constructor(public bsModalRef: BsModalRef) { }
+  role: CompanyRole = {
+    name: ''
+  }
+
+  constructor(public companyRoleService: CompanyroleService, private rolePage: RolePageComponent) { }
+  
+  //@Output() roleCreated = new EventEmitter<CompanyRole>();
+
+  create() {
+    this.companyRoleService.create(this.role).subscribe({
+      next: () => {
+        this.rolePage.showSuccess("Successfully created new role");
+        //this.roleCreated.emit(this.role);
+      },
+
+      error: () => {
+        // prikazi poruku greske
+        this.rolePage.showError("Unable to create new role with given parameters. Probably duplicate names");
+      }
+    })
+  }
+
+  // close_alerts() {
+  //   this.adminPage.close_all_alerts();
+  // }
+
 }

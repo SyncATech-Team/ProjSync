@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -33,5 +34,7 @@ namespace backAPI.Entities.Domain
         public string ContactPhone { get; set; }
         public string LinkedinProfile { get; set; }
         public string Status { get; set; }
+        public bool IsVerified { get; set; } = false;
+        public string PreferedLanguage { get; set; } = "engish";
     }
 }

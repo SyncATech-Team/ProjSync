@@ -17,5 +17,13 @@ namespace backAPI.Repositories.Implementation
         {
             return await dataContext.ProjectTypes.ToListAsync();
         }
+
+        public async Task<ProjectType> GetProjectTypeByNameAsync(string name) {
+            return await dataContext.ProjectTypes.FirstOrDefaultAsync(x => x.Name == name);
+        }
+
+        public async Task<ProjectType> GetProjectTypeById(int id) {
+            return await dataContext.ProjectTypes.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

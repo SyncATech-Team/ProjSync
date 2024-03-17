@@ -29,21 +29,33 @@ namespace backAPI.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<double>("OvertimeHourPrice")
-                        .HasColumnType("double");
-
-                    b.Property<double>("WeekendHourPrice")
-                        .HasColumnType("double");
-
-                    b.Property<double>("WorkingHourPrice")
-                        .HasColumnType("double");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
                     b.ToTable("CompanyRoles");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("User_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Project", b =>
@@ -304,6 +316,9 @@ namespace backAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -318,6 +333,9 @@ namespace backAPI.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("longblob");
+
+                    b.Property<string>("PreferedLanguage")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("longtext");

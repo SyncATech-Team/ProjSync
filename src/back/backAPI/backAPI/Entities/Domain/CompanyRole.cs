@@ -15,11 +15,5 @@ namespace backAPI.Entities.Domain
         public int Id { get; set; }
         [Required, NotNull]
         public string Name { get; set; }
-        [Required, NotNull]
-        public double WorkingHourPrice { get; set; }
-        [Required, NotNull]
-        public double OvertimeHourPrice { get; set; }
-        [Required, NotNull]
-        public double WeekendHourPrice { get; set; }
     }
 }

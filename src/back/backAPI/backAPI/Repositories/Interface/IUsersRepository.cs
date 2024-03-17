@@ -18,18 +18,33 @@ namespace backAPI.Repositories.Interface {
         Task<User> RegisterUser(User user);
 
         /// <summary>
-        /// Funkcija koja za prosledjeni id vraca korisnika
+        /// Funkcija koja za prosledjeni email vraca korisnika
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        Task<User> GetUser(string email);
+        Task<User> GetUserByEmail(string email);
+
+        /// <summary>
+        /// Funkcija koja za prosledjeni username vraca korisnika
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        Task<User> GetUserByUsername(string username);
 
         /// <summary>
         /// Funkcija koja za prosledjeni id korisnika brise njegove podatke iz baze
         /// </summary>
         /// <param name="id"></param>
         /// <returns>true u slucaju da je brisanje uspesno, false u suprotnom</returns>
-        Task<bool> DeleteUser(int id);
+        Task<bool> DeleteUser(string username);
+
+        /// <summary>
+        /// Funkcija koja update-uje podatke korisnika
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<bool> UpdateUser(string username, UserDto user);
 
         /// <summary>
         /// Funkcija koja odredjuje id za prosledjeno korisnicko ime
@@ -48,6 +63,8 @@ namespace backAPI.Repositories.Interface {
         /// Id korisnika ili -1 ukoliko ne postoji korisnik sa prosledjenim email-om
         /// </returns>
         Task<int> EmailToId(string email);
+
+        Task<string> IdToUsername(int id);
 
         /// <summary>
         /// Provera da li korisnik postoji sa istim korisnickim imenom

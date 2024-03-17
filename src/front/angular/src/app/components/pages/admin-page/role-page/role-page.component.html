@@ -92,9 +92,6 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Name</th>
-                        <th>Working hour price</th>
-                        <th>Overtime price</th>
-                        <th>Weekend price</th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
@@ -102,9 +99,6 @@
                 <ng-template pTemplate="body" let-role>
                     <tr>
                         <td><span class="p-column-title" style="font-weight: bold;">Name</span>{{ role.name }}</td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name1</span> {{ role.workingHourPrice }}</td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name2</span> {{ role.overtimeHourPrice }}</td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name3</span> {{ role.weekendHourPrice }} </td>
                         <td><span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 <div class="action">

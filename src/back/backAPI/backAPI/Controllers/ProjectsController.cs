@@ -10,10 +10,17 @@ namespace backAPI.Controllers
     public class ProjectsController : BaseApiController
     {
         private readonly IProjectsRepository _projectsRepository;
+        private readonly IUsersRepository _usersRepository;
+        private readonly IProjectTypesRepository _projectTypesRepository;
+        private readonly IProjectVisibilitiesRepository _projectVisibilitiesRepository;
 
-        public ProjectsController(IProjectsRepository projectsRepository)
+        public ProjectsController(IProjectsRepository projectsRepository, IUsersRepository usersRepository,
+            IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository)
         {
             _projectsRepository = projectsRepository;
+            _usersRepository = usersRepository;
+            _projectTypesRepository = projectTypesRepository;
+            _projectVisibilitiesRepository = projectVisibilitiesRepository;
         }
 
         [HttpGet]
@@ -23,18 +30,28 @@ namespace backAPI.Controllers
             List<ProjectDto> result = new List<ProjectDto>();
             foreach (var project in projects)
             {
+                var type = await _projectTypesRepository.GetProjectTypeById(project.TypeId);
+                var visibility = await _projectVisibilitiesRepository.GetProjectVisibilityByIdAsync(project.VisibilityId);
+                var owner = await _usersRepository.IdToUsername(project.OwnerId);
+
+                Project parent = null;
+                if(project.ParentId != null) {
+                    parent = await _projectsRepository.GetProjectById((int)project.ParentId);
+                }
+
+                var parentName = (parent == null) ? "No parent" : parent.Name;
+
                 result.Add(new ProjectDto {
-                    Id = project.Id,
                     Name = project.Name,
                     Key = project.Key,
-                    TypeId = project.TypeId,
+                    TypeName = type.Name,
                     Description = project.Description,
                     CreationDate = project.CreationDate,
                     DueDate = project.DueDate,
-                    OwnerId = project.OwnerId,
-                    ParentId = project.ParentId,
+                    OwnerUsername = owner,
+                    ParentProjectName = parentName,
                     Budget = project.Budget,
-                    VisibilityId = project.VisibilityId
+                    VisibilityName = visibility.Name
                 });
             }
             return result;
@@ -54,22 +71,36 @@ namespace backAPI.Controllers
                 return BadRequest("Project key is taken");
             }
 
-            var project = new Project
+            await _projectsRepository.CreateProject(projectDto);
+
+            return Ok();
+        }
+
+        [HttpPut("{name}")]
+        public async Task<ActionResult<string>> UpdateProject(string name,ProjectDto request)
+        {
+            var updated = await _projectsRepository.UpdateProject(name, request);
+
+            if(updated == false)
             {
-                Name = projectDto.Name,
-                Key = projectDto.Key,
-                Description = projectDto.Description,
-                CreationDate = projectDto.CreationDate,
-                DueDate = projectDto.DueDate,
-                OwnerId = projectDto.OwnerId,
-                ParentId = projectDto.ParentId,
-                Budget = projectDto.Budget,
-                VisibilityId = projectDto.VisibilityId,
-                TypeId = projectDto.TypeId
-            };
+                return NotFound("There is no project whit specified name");
+            }
 
-            await _projectsRepository.CreateProject(project);
+            return Ok();
+        }
 
+
+
+
+        [HttpDelete("{name}")]
+        public async Task<ActionResult<string>> DeleteProject(string name)
+        {
+            var deleted = await _projectsRepository.DeleteProject(name);
+
+            if(deleted == false)
+            {
+                return NotFound("There is no project whit specified name");
+            }
             return Ok();
         }
     }

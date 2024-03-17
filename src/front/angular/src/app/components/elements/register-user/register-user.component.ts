@@ -2,9 +2,9 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { RegisterModel } from '../../../_models/register-user';
 import { CompanyroleService } from '../../../_service/companyrole.service';
-import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
 import { Observable } from 'rxjs';
 import { CompanyRole } from '../../../_models/company-role';
+import { UserPageComponent } from '../../pages/admin-page/user-page/user-page.component';
 
 @Component({
   selector: 'app-register-user',
@@ -27,7 +27,8 @@ export class RegisterUserComponent implements OnInit {
     status: ''
   };
 
-  constructor(public accoutService: AccountService, public companyRoleService: CompanyroleService, private adminPage: AdminPageComponent) { }
+  constructor(public accoutService: AccountService, 
+    public companyRoleService: CompanyroleService, private userPage: UserPageComponent) { }
 
   ngOnInit(): void {
     this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
@@ -37,26 +38,15 @@ export class RegisterUserComponent implements OnInit {
 
   register() {
 
-    console.log(document.getElementById('invalid_register_div'));
-
     this.accoutService.register(this.registrationModel).subscribe({
       next: () => {
-        let y = document.getElementById("valid_register_div");
-        if (y != null) y.hidden = false;
-
-        let x = document.getElementById("invalid_register_div");
-        if (x != null) x.hidden = true;
-
+        this.userPage.showSuccess("Successfully registered new user!");
         this.userCreated.emit(this.registrationModel);
       },
 
       error: (error) => {
         // prikazi poruku greske
-        let x = document.getElementById("invalid_register_div");
-        if (x != null) x.hidden = false;
-
-        let y = document.getElementById("valid_register_div");
-        if (y != null) y.hidden = true;
+        this.userPage.showError("Unable to register new user. Check input fields!");
       }
     });
   }
@@ -68,6 +58,7 @@ export class RegisterUserComponent implements OnInit {
     if(x != null) {
       let v = x.value.split("@")[0];
       y.value = v;
+      this.registrationModel.username = v;
     }
   }
 
