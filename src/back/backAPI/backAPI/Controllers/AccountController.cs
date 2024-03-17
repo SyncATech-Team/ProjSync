@@ -1,4 +1,4 @@
-﻿using backAPI.Data;
+using backAPI.Data;
 using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Implementation;
@@ -74,7 +74,7 @@ namespace backAPI.Controllers
             await _usersRepository.RegisterUser(user);
 
             // poslati registacioni mejl
-            _emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
+            // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
 
             return Ok();
         }
