@@ -104,8 +104,12 @@
                             <span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 <div class="action">
-                                    <span (click)="deleteUser(user.username)" class="pi pi-trash" 
-                                        title="Delete user"></span>
+                                    <!-- <span (click)="deleteUser(user.username)" class="pi pi-trash" 
+                                        title="Delete user"></span> -->
+
+                                    <p-toast></p-toast>
+                                    <p-confirmDialog></p-confirmDialog>
+                                    <p-button class="deleteBtn" (click)="deleteUser(user.username, $event)" icon="pi pi-trash" styleClass="p-button-danger"></p-button>
                                 </div>
 
                                 <div class="action">

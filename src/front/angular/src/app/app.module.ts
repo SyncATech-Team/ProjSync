@@ -28,6 +28,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { MessageService } from 'primeng/api';
     TagModule,
     ButtonModule,
     ToastModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ConfirmDialogModule
   ],
   providers: [
     provideClientHydration(),

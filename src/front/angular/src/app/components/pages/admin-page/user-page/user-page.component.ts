@@ -5,7 +5,7 @@ import { RegisterModel } from '../../../../_models/register-user';
 import { UserService } from '../../../../_service/user.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 
 interface Column {
   field: string;
@@ -26,7 +26,7 @@ interface ExportColumn {
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css',
-  providers: [MessageService]
+  providers: [ConfirmationService, MessageService]
 })
 export class UserPageComponent implements OnInit {
   
@@ -44,7 +44,8 @@ export class UserPageComponent implements OnInit {
 
   constructor(private http: HttpClient, 
     private userService: UserService, 
-    private messageService: MessageService){ }
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService){ }
 
   ngOnInit(): void {
       this.userService.getAllUsers().subscribe({
@@ -95,9 +96,50 @@ export class UserPageComponent implements OnInit {
 
     return path;
   }
+  
+  // let ans = prompt("Are you sure that you want to delete user " + username + " [TO DO! Zahtevati da korisnik unese username kao potvrdu]");
+  // if(ans != username) console.log();  
 
-  deleteUser(username: string): void {
-    let ans = prompt("Are you sure that you want to delete user " + username + " [TO DO! Zahtevati da korisnik unese username kao potvrdu]");
+  deleteUser(username: string, event: Event): void {
+
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Do you want to delete this record?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass:"p-button-danger p-button-text",
+        rejectButtonStyleClass:"p-button-text p-button-text",
+        acceptIcon:"none",
+        rejectIcon:"none",
+
+        accept: (input: string) => {
+          this.userService.deleteUser(username).subscribe({
+            next: _=>{
+              const indexToRemove = this.users.findIndex(username => username === username);
+              
+              //Brisanje iz lokalnog niza
+              if (indexToRemove !== -1) {
+                this.users.splice(indexToRemove, 1);
+              }
+      
+              const indexToRemoveBackup = this.users_backup.findIndex(username => username === username);
+              if(indexToRemoveBackup !== -1) {
+                this.users_backup.splice(indexToRemoveBackup, 1);
+              }
+              console.log("Uspesno obrisan " + username);
+            },
+            error: error => {
+              console.log("Neuspesno obrisan user");
+            }
+          });
+          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+        }
+    });
+
+
   }
 
   /**

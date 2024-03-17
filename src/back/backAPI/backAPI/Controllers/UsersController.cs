@@ -94,7 +94,7 @@ namespace backAPI.Controllers
             var deleted = await _usersRepository.DeleteUser(username);
 
             if(deleted == false) {
-                return NotFound("There is no user with specified id");
+                return NotFound("There is no user with specified username");
             }
 
             return Ok();
