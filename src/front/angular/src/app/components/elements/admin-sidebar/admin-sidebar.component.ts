@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
+import { AccountService } from '../../../_service/account.service';
 import { navbarData } from './nav-data';
+import { Router } from '@angular/router';
 
 interface SideNavToggle{
   screenWidth : number;
@@ -21,7 +23,7 @@ export class AdminSidebarComponent {
   screenWidth = 0;
   navData = navbarData;
 
-  constructor() { }
+  constructor(public accoutService: AccountService, private router: Router) { }
 
   toggleCollapse() {
     this.collapsed = !this.collapsed;
@@ -33,4 +35,8 @@ export class AdminSidebarComponent {
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 
+  logout() {
+    this.accoutService.logout();
+    this.router.navigateByUrl('/');
+  }
 }

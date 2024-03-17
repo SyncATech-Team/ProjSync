@@ -16,7 +16,7 @@
             <a class="sidenav-nav-link" [routerLink]="[data.routeLink]"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact:true}"
-            >
+            (click)="data.routeLink === '' ? logout() : null">
                 <i [class]="data.icon" class="sidenav-link-icon"></i>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{ data.label }}</span>
             </a>
