@@ -1,19 +1,11 @@
 ﻿using backAPI.DTO;
-using backAPI.DTO.Login;
-using backAPI.Entities;
-using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace backAPI.Controllers
 {
-    public class UsersController : BaseApiController
-    {
+    public class UsersController : BaseApiController {
         private readonly IUsersRepository _usersRepository;
         private readonly ICompanyRolesRepository _companyRolesRepository;
         private readonly IEmailService _emailService;
@@ -26,15 +18,18 @@ namespace backAPI.Controllers
             _companyRolesRepository = companyRolesRepository;
         }
 
+        /* *****************************************************************************
+         * Get all users
+         * ***************************************************************************** */
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DTOUser>>> GetAllUsers() {
-            List<DTOUser> dTOUsers = new List<DTOUser>();
-            
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers() {
+            List<UserDto> dTOUsers = new List<UserDto>();
+
             var users = await _usersRepository.GetUsersAsync();
 
             foreach (var user in users) {
-                dTOUsers.Add(new DTOUser {
-                    Id = user.Id,
+                // Enkapsuliraj podatke o korisniku u DTO objekat
+                dTOUsers.Add(new UserDto {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
@@ -43,7 +38,10 @@ namespace backAPI.Controllers
                     Address = user.Address,
                     ContactPhone = user.ContactPhone,
                     LinkedinProfile = user.LinkedinProfile,
-                    Status = user.Status
+                    Status = user.Status,
+                    ProfilePhoto = user.ProfilePhoto,
+                    IsVerified = user.IsVerified,
+                    PreferedLanguage = user.PreferedLanguage
                 });
             }
 
@@ -51,11 +49,49 @@ namespace backAPI.Controllers
         }
 
         /* *****************************************************************************
+         * Get user by username
+         * ***************************************************************************** */
+        [HttpGet("{username}")]
+        public async Task<ActionResult<UserDto>> GetUserByUsername(string username) {
+            var user = await _usersRepository.GetUserByUsername(username);
+
+            if (user == null) {
+                return NotFound();
+            }
+
+            return Ok(new UserDto {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Username = user.Username,
+                CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name, // ??
+                Address = user.Address,
+                ContactPhone = user.ContactPhone,
+                LinkedinProfile = user.LinkedinProfile,
+                Status = user.Status,
+                ProfilePhoto = user.ProfilePhoto,
+                IsVerified = user.IsVerified,
+                PreferedLanguage = user.PreferedLanguage
+            });
+        }
+
+        [HttpPut("{username}")]
+        public async Task<ActionResult<string>> UpdateUser(string username, UserDto request) {
+            
+            var updated = await _usersRepository.UpdateUser(username, request);
+            if(!updated) {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        /* *****************************************************************************
          * Delete user
          * ***************************************************************************** */
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteUser(int id) {
-            var deleted = await _usersRepository.DeleteUser(id);
+        [HttpDelete("{username}")]
+        public async Task<ActionResult<string>> DeleteUser(string username) {
+            var deleted = await _usersRepository.DeleteUser(username);
 
             if(deleted == false) {
                 return NotFound("There is no user with specified id");

@@ -13,10 +13,7 @@ import { RolePageComponent } from '../../pages/admin-page/role-page/role-page.co
 export class CreateRoleComponent {
 
   role: CompanyRole = {
-    name: '',
-    workingHourPrice: 0,
-    overtimeHourPrice: 0,
-    weekendHourPrice: 0
+    name: ''
   }
 
   constructor(public companyRoleService: CompanyroleService, private rolePage: RolePageComponent) { }

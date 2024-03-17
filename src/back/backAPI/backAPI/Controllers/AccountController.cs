@@ -1,15 +1,11 @@
 ﻿using backAPI.Data;
 using backAPI.DTO;
 using backAPI.Entities.Domain;
-using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using backAPI.Services.Implementation;
 using backAPI.DTO.Login;
 
 namespace backAPI.Controllers
@@ -74,7 +70,8 @@ namespace backAPI.Controllers
             await _usersRepository.RegisterUser(user);
 
             // poslati registacioni mejl
-            _emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
+            // otkomentarisati da se ne bi slao mejl stalno :(
+            // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
 
             return Ok();
         }
@@ -83,7 +80,7 @@ namespace backAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponseDto>> Login(LoginDto loginDto)
         {
-            var user = await _usersRepository.GetUser(loginDto.Email);
+            var user = await _usersRepository.GetUserByEmail(loginDto.Email);
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
             if (user == null) return Unauthorized("invalid credentials!");

@@ -1,4 +1,5 @@
 ﻿using backAPI.Data;
+using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -8,14 +9,37 @@ namespace backAPI.Repositories.Implementation
     public class ProjectsRepository : IProjectsRepository
     {
         private readonly DataContext dataContext;
+        private readonly IUsersRepository usersRepository;
+        private readonly IProjectTypesRepository projectTypesRepository;
+        private readonly IProjectVisibilitiesRepository projectVisibilitiesRepository;
 
-        public ProjectsRepository(DataContext dataContext)
+        public ProjectsRepository(DataContext dataContext, IUsersRepository usersRepository, 
+            IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository)
         {
             this.dataContext = dataContext;
+            this.usersRepository = usersRepository;
+            this.projectTypesRepository = projectTypesRepository;
+            this.projectVisibilitiesRepository = projectVisibilitiesRepository;
         }
 
-        public async Task<Project> CreateProject(Project project)
+        public async Task<Project> CreateProject(ProjectDto request)
         {
+            var user = await usersRepository.GetUserByUsername(request.OwnerUsername);
+            var type = await projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName);
+            var visibility = await projectVisibilitiesRepository.GetProjectVisibilityByNameAsync(request.VisibilityName);
+            var project = new Project {
+                Name = request.Name,
+                Key = request.Key,
+                Description = request.Description,
+                CreationDate = request.CreationDate,
+                DueDate = request.DueDate,
+                OwnerId = user.Id,
+                ParentId = request.ParentId,  // to do?
+                Budget = request.Budget,
+                VisibilityId = visibility.Id,
+                TypeId = type.Id
+            };
+
             await dataContext.Projects.AddAsync(project);
             await dataContext.SaveChangesAsync();
 

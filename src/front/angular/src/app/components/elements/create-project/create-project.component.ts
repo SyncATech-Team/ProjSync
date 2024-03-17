@@ -3,7 +3,6 @@ import { HomePageComponent } from '../../pages/home-page/home-page.component';
 import { DatePipe } from '@angular/common';
 import { ProjectService } from '../../../_service/project.service';
 import { Project } from '../../../_models/project.model';
-import { AccountService } from '../../../_service/account.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { ProjectType } from '../../../_models/project-type';
 import { ProjectTypeService } from '../../../_service/project-type.service';

@@ -1,4 +1,5 @@
-﻿using backAPI.Entities.Domain;
+﻿using backAPI.DTO;
+using backAPI.Entities.Domain;
 
 namespace backAPI.Repositories.Interface
 {
@@ -10,6 +11,6 @@ namespace backAPI.Repositories.Interface
 
         Task<bool> ProjectExistsByKey(string key);
 
-        Task<Project> CreateProject(Project project);
+        Task<Project> CreateProject(ProjectDto request);
     }
 }

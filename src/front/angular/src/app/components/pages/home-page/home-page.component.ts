@@ -29,7 +29,6 @@ export class HomePageComponent implements OnInit {
           project.isFavorite = false;
           this.filterProjects('private');
         });
-        console.log(this.projects);
       },
       error: (error) => {
         console.log(error);

@@ -8,19 +8,25 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Repositories.Implementation {
     public class UsersRepository : IUsersRepository {
 
         private readonly DataContext dataContext;
         private readonly IConfiguration configuration;
+        private readonly ICompanyRolesRepository companyRolesRepository;
 
         /* **********************************************************************************
          * Konstruktor
          * ********************************************************************************** */
-        public UsersRepository(DataContext dataContext, IConfiguration configuration) { 
+        public UsersRepository(DataContext dataContext, IConfiguration configuration, ICompanyRolesRepository companyRolesRepository) { 
             this.dataContext = dataContext;
             this.configuration = configuration;
+            this.companyRolesRepository = companyRolesRepository;
         }
         /* **********************************************************************************
          * GetUsersAsync
@@ -40,17 +46,24 @@ namespace backAPI.Repositories.Implementation {
         }
 
         /* **********************************************************************************
-         * GetUser
+         * GetUserByEmail
          * ********************************************************************************** */
-        public async Task<User> GetUser(string email) {
+        public async Task<User> GetUserByEmail(string email) {
             return await dataContext.Users.SingleOrDefaultAsync(user => user.Email == email);
+        }
+
+        /* **********************************************************************************
+         * GetUserByUsername
+         * ********************************************************************************** */
+        public async Task<User> GetUserByUsername(string username) {
+            return await dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
         }
 
         /* **********************************************************************************
          * DeleteUser
          * ********************************************************************************** */
-        public async Task<bool> DeleteUser(int id) {
-            var user = await dataContext.Users.FindAsync(id);
+        public async Task<bool> DeleteUser(string username) {
+            var user = await GetUserByUsername(username);
 
             if(user == null) {
                 return false;
@@ -60,6 +73,34 @@ namespace backAPI.Repositories.Implementation {
 
             dataContext.Users.Remove(user);
             await dataContext.SaveChangesAsync(true);
+
+            return true;
+        }
+        /* **********************************************************************************
+         * Update user
+         * ********************************************************************************** */
+        public async Task<bool> UpdateUser(string username, UserDto request) {
+            var user = await GetUserByUsername(username);
+
+            // ne postoji user
+            if (user == null) {
+                return false;
+            }
+
+            user.Username = request.Username;
+            user.Email = request.Email;
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.CompanyRoleId = companyRolesRepository.GetCompanyRoleByNameAsync(request.CompanyRoleName).Result.Id;
+            user.ProfilePhoto = request.ProfilePhoto;
+            user.Address = request.Address;
+            user.ContactPhone = request.ContactPhone;
+            user.LinkedinProfile = request.LinkedinProfile;
+            user.Status = request.Status;
+            user.IsVerified = request.IsVerified;
+            user.PreferedLanguage = request.PreferedLanguage;
+
+            await dataContext.SaveChangesAsync();
 
             return true;
         }
@@ -82,6 +123,14 @@ namespace backAPI.Repositories.Implementation {
                 return -1;
             }
             return user.Id;
+        }
+
+        public async Task<string> IdToUsername(int id) {
+            var user = await dataContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+            if(user == null) {
+                return null;
+            }
+            return user.Username;
         }
 
         // Implementacija metode za proveru da li korisnik postoji u bazi preko korisnickog imena

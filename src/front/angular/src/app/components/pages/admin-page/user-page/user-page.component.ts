@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
 import { RegisterModel } from '../../../../_models/register-user';
 import { UserService } from '../../../../_service/user.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
+import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string;
@@ -17,10 +18,15 @@ interface ExportColumn {
   dataKey: string;
 }
 
+@Injectable({
+  providedIn: 'root'
+})
+
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
-  styleUrl: './user-page.component.css'
+  styleUrl: './user-page.component.css',
+  providers: [MessageService]
 })
 export class UserPageComponent implements OnInit {
   
@@ -36,7 +42,9 @@ export class UserPageComponent implements OnInit {
   loading: boolean = true;
   activityValues: number[] = [0, 100];
 
-  constructor(private http: HttpClient, private userService: UserService){ }
+  constructor(private http: HttpClient, 
+    private userService: UserService, 
+    private messageService: MessageService){ }
 
   ngOnInit(): void {
       this.userService.getAllUsers().subscribe({
@@ -65,7 +73,11 @@ export class UserPageComponent implements OnInit {
       firstName: user.firstName,
       lastName: user.lastName,
       companyRoleName: user.companyRole,
-      contactPhone: user.contactPhone
+      contactPhone: user.contactPhone,
+      linkedinProfile: user.linkedinProfile,
+      status: user.status,
+      isVerified: false,            // proveriti
+      preferedLanguage: "english"   // proveriti
     });  // Add the new user to the users array
     this.users_backup = this.users;
   }
@@ -200,6 +212,15 @@ export class UserPageComponent implements OnInit {
         type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  // SHOW MESSAGE POPUP
+  showSuccess(message: string) {
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
+  }
+
+  showError(message: string) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
   }
 
 }

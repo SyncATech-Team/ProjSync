@@ -54,19 +54,16 @@ namespace backAPI.Repositories.Implementation
             return true;
         }
         /* **************************************************************************
-         * PUT | Izmeni entitet za prosledjeni id
+         * PUT | Izmeni entitet za prosledjeno ime
          * ************************************************************************** */
-        public async Task<bool> UpdateCompanyRole(int id, CompanyRoleDto request) {
-            var role = await dataContext.Roles.FindAsync(id);
+        public async Task<bool> UpdateCompanyRole(string name, CompanyRoleDto request) {
+            var role = await GetCompanyRoleByNameAsync(name);
 
             if (role == null || await CheckCompanyRoleNameExistance(request.Name) == true) {
                 return false;
             }
 
             role.Name = request.Name;
-            role.OvertimeHourPrice = request.OvertimeHourPrice;
-            role.WorkingHourPrice = request.WorkingHourPrice;
-            role.WeekendHourPrice = request.WeekendHourPrice;
             await dataContext.SaveChangesAsync();
 
             return true;
