@@ -1,16 +1,15 @@
 export interface Project{
-    id: number,
     name: string,
     key: string,
-    typeId: number
+    typeName: string
     description: string,
-    ownerId: number,
+    ownerUsername: string,
     icon?: string,
-    parentId?: number|null,
+    parentProjectName?: string|null,
     creationDate: Date,
     dueDate: Date,
     budget: number,
-    visibilityId: number,
+    visibilityName: string,
     isExtanded?: boolean,
     isFavorite?: boolean,
     subProjects?: Project[]

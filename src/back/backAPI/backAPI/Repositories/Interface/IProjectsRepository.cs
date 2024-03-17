@@ -12,5 +12,7 @@ namespace backAPI.Repositories.Interface
         Task<bool> ProjectExistsByKey(string key);
 
         Task<Project> CreateProject(ProjectDto request);
+        Task<Project> GetProjectByName(string name);
+        Task<Project> GetProjectById(int id);
     }
 }

@@ -3,6 +3,7 @@ using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation
 {
@@ -27,6 +28,7 @@ namespace backAPI.Repositories.Implementation
             var user = await usersRepository.GetUserByUsername(request.OwnerUsername);
             var type = await projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName);
             var visibility = await projectVisibilitiesRepository.GetProjectVisibilityByNameAsync(request.VisibilityName);
+            var parent = await GetProjectByName(request.ParentProjectName);
             var project = new Project {
                 Name = request.Name,
                 Key = request.Key,
@@ -34,7 +36,7 @@ namespace backAPI.Repositories.Implementation
                 CreationDate = request.CreationDate,
                 DueDate = request.DueDate,
                 OwnerId = user.Id,
-                ParentId = request.ParentId,  // to do?
+                ParentId = parent.Id,  // to do?
                 Budget = request.Budget,
                 VisibilityId = visibility.Id,
                 TypeId = type.Id
@@ -49,6 +51,14 @@ namespace backAPI.Repositories.Implementation
         public async Task<IEnumerable<Project>> GetProjectsAsync()
         {
             return await dataContext.Projects.ToListAsync();
+        }
+
+        public async Task<Project> GetProjectByName(string name) {
+            return await dataContext.Projects.FirstOrDefaultAsync(x => x.Name == name);
+        }
+
+        public async Task<Project> GetProjectById(int id) {
+            return await dataContext.Projects.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<bool> ProjectExistsByKey(string key)
