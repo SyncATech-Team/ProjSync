@@ -68,5 +68,33 @@ namespace backAPI.Controllers
 
             return Ok();
         }
+
+        [HttpPut("{name}")]
+        public async Task<ActionResult<string>> UpdateProject(string name,ProjectDto request)
+        {
+            var updated = await _projectsRepository.UpdateProject(name, request);
+
+            if(updated == false)
+            {
+                return NotFound("There is no project whit specified name");
+            }
+
+            return Ok();
+        }
+
+
+
+
+        [HttpDelete("{name}")]
+        public async Task<ActionResult<string>> DeleteProject(string name)
+        {
+            var deleted = await _projectsRepository.DeleteProject(name);
+
+            if(deleted == false)
+            {
+                return NotFound("There is no project whit specified name");
+            }
+            return Ok();
+        }
     }
 }

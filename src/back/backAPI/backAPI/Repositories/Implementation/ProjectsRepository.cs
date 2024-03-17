@@ -46,6 +46,26 @@ namespace backAPI.Repositories.Implementation
             return project;
         }
 
+        public async Task<bool> DeleteProject(string name)
+        {
+            var project = await GetProjectByName(name);
+            
+            if (project == null)
+            {
+                return false;
+            }
+
+            dataContext.Projects.Remove(project);
+            await dataContext.SaveChangesAsync(true);
+            
+            return true;
+        }
+
+        public async Task<Project> GetProjectByName(string name)
+        {
+            return await dataContext.Projects.SingleOrDefaultAsync(p => p.Name == name);
+        }
+
         public async Task<IEnumerable<Project>> GetProjectsAsync()
         {
             return await dataContext.Projects.ToListAsync();
@@ -59,6 +79,31 @@ namespace backAPI.Repositories.Implementation
         public async Task<bool> ProjectExistsByName(string name)
         {
             return await dataContext.Projects.AnyAsync(p => p.Name == name);
+        }
+
+        public async Task<bool> UpdateProject(string name, ProjectDto request)
+        {
+            var project = await GetProjectByName(name);
+
+            if(project == null)
+            {
+                return false;
+            }
+
+            project.Name = request.Name;
+            project.Description = request.Description;
+            project.Key = request.Key;
+            project.TypeId = projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName).Result.Id;
+            project.OwnerId = usersRepository.GetUserByUsername(request.OwnerUsername).Result.Id;
+            project.ParentId = request.ParentId;
+            project.CreationDate = request.CreationDate;
+            project.DueDate = request.DueDate;
+            project.Budget = request.Budget;
+            project.VisibilityId = projectVisibilitiesRepository.GetProjectVisibilityByNameAsync(request.VisibilityName).Result.Id;
+
+            await dataContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

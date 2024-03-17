@@ -12,5 +12,11 @@ namespace backAPI.Repositories.Interface
         Task<bool> ProjectExistsByKey(string key);
 
         Task<Project> CreateProject(ProjectDto request);
+
+        Task<bool> DeleteProject(string name);
+
+        Task<Project> GetProjectByName(string name);
+
+        Task<bool> UpdateProject(string name,ProjectDto request);
     }
 }
