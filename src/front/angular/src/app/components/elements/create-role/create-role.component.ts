@@ -4,6 +4,7 @@ import { AdminPageComponent } from '../../pages/admin-page/admin-page.component'
 import { CompanyroleService } from '../../../_service/companyrole.service';
 import { CompanyRole } from '../../../_models/company-role';
 import { RolePageComponent } from '../../pages/admin-page/role-page/role-page.component';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-create-role',
@@ -11,34 +12,7 @@ import { RolePageComponent } from '../../pages/admin-page/role-page/role-page.co
   styleUrl: './create-role.component.css'
 })
 export class CreateRoleComponent {
+  createdRole: CompanyRole | undefined;
 
-  role: CompanyRole = {
-    name: '',
-    workingHourPrice: 0,
-    overtimeHourPrice: 0,
-    weekendHourPrice: 0
-  }
-
-  constructor(public companyRoleService: CompanyroleService, private rolePage: RolePageComponent) { }
-  
-  //@Output() roleCreated = new EventEmitter<CompanyRole>();
-
-  create() {
-    this.companyRoleService.create(this.role).subscribe({
-      next: () => {
-        this.rolePage.showSuccess("Successfully created new role");
-        //this.roleCreated.emit(this.role);
-      },
-
-      error: () => {
-        // prikazi poruku greske
-        this.rolePage.showError("Unable to create new role with given parameters. Probably duplicate names");
-      }
-    })
-  }
-
-  // close_alerts() {
-  //   this.adminPage.close_all_alerts();
-  // }
-
+  constructor(public bsModalRef: BsModalRef) { }
 }

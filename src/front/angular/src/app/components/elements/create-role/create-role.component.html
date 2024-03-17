@@ -1,96 +1,47 @@
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoleModal">
-    Create Role
-</button>
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Create Role</h4>
+</div>
+<div class="modal-body">
+    <!-- Form -->
+    <form #createRoleForm="ngForm" id="formCreateRole" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
 
-<div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <!-- Form Header -->
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="createRoleModalLabel">User Create Role</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="col-12"> <!-- field za ime-->
+            <div class="form-floating mb-3">
+                <input type="text" id="name" name="name" class="form-control" placeholder="Name"
+                [(ngModel)]="createdRole!.name" required autocomplete="off">
+                <label for="name" class="form-label">Name</label>
             </div>
-            <!-- End of Form Header -->
-
-            <div class="modal-body">
-                <!-- Form -->
-                <form #createRoleForm="ngForm" (ngSubmit)="create()" id="formCreateRole" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
-
-                    <div class="col-12"> <!-- field za ime-->
-                        <div class="form-floating mb-3">
-                        <input 
-                            type="text"
-                            id="name"
-                            name="name"
-                            class="form-control"
-                            placeholder="Name"
-                            [(ngModel)]="role.name"
-                            required
-                            autocomplete="off"
-                            >
-                            <label for="name" class="form-label">Name</label>
-                        </div>
-                    </div>
-    
-                    <div class="col-12"> <!-- field za WorkingHourPrice-->
-                        <div class="form-floating mb-3">
-                        <input 
-                            type="number"
-                            id="WorkingHourPrice"
-                            name="WorkingHourPrice"
-                            class="form-control"
-                            placeholder="271.00"
-                            [(ngModel)]="role.workingHourPrice"
-                            required
-                            min="0"
-                            >
-                            <label for="WorkingHourPrice" class="form-label">Working Hour Price</label>
-                        </div>
-                    </div>
-    
-                    <div class="col-12"> <!-- field za OvertimeHourPrice-->
-                        <div class="form-floating mb-3">
-                        <input
-                            type="number"
-                            id="OvertimeHourPrice"
-                            name="OvertimeHourPrice"
-                            class="form-control"
-                            placeholder="300.00"
-                            [(ngModel)]="role.overtimeHourPrice"
-                            required
-                            min="0"
-                            >
-                            <label for="OvertimeHourPrice" class="form-label">Overtime Hour Price</label>
-                        </div>
-                    </div>
-    
-                    <div class="col-12"> <!-- field za WeekendHourPrice-->
-                        <div class="form-floating mb-3">
-                        <input 
-                            type="number"
-                            id="WeekendHourPrice"
-                            name="WeekendHourPrice"
-                            class="form-control"
-                            placeholder="350.00"
-                            [(ngModel)]="role.weekendHourPrice"
-                            required
-                            min="0"
-                            >
-                            <label for="WeekendHourPrice" class="form-label">Weekend Hour Price</label>
-                        </div>
-                    </div>
-
-                    
-
-                </form>
-                <!-- End of Form -->
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="formCreateRole" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
-            </div>
-            
         </div>
-    </div>
+
+        <div class="col-12"> <!-- field za WorkingHourPrice-->
+            <div class="form-floating mb-3">
+                <input type="number" id="WorkingHourPrice" name="WorkingHourPrice" class="form-control"
+                    placeholder="271.00" [(ngModel)]="createdRole!.workingHourPrice" required min="0">
+                <label for="WorkingHourPrice" class="form-label">Working Hour Price</label>
+            </div>
+        </div>
+
+        <div class="col-12"> <!-- field za OvertimeHourPrice-->
+            <div class="form-floating mb-3">
+                <input type="number" id="OvertimeHourPrice" name="OvertimeHourPrice" class="form-control"
+                    placeholder="300.00" [(ngModel)]="createdRole!.overtimeHourPrice" required min="0">
+                <label for="OvertimeHourPrice" class="form-label">Overtime Hour Price</label>
+            </div>
+        </div>
+
+        <div class="col-12"> <!-- field za WeekendHourPrice-->
+            <div class="form-floating mb-3">
+                <input type="number" id="WeekendHourPrice" name="WeekendHourPrice" class="form-control"
+                    placeholder="350.00" [(ngModel)]="createdRole!.workingHourPrice" required min="0">
+                <label for="WeekendHourPrice" class="form-label">Weekend Hour Price</label>
+            </div>
+        </div>
+
+    </form>
+    <!-- End of Form -->
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Create</button>
 </div>
