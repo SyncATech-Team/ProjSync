@@ -11,43 +11,11 @@
                 [(ngModel)]="createdRole!.name" required autocomplete="off">
                 <label for="name" class="form-label">Name</label>
             </div>
-            <!-- End of Form Header -->
-
-            <div class="modal-body">
-                <!-- Form -->
-                <form #createRoleForm="ngForm" (ngSubmit)="create()" id="formCreateRole" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
-
-                    <div class="col-12"> <!-- field za ime-->
-                        <div class="form-floating mb-3">
-                        <input 
-                            type="text"
-                            id="name"
-                            name="name"
-                            class="form-control"
-                            placeholder="Name"
-                            [(ngModel)]="role.name"
-                            required
-                            autocomplete="off"
-                            >
-                            <label for="name" class="form-label">Name</label>
-                        </div>
-                    </div>
-                    
-                </form>
-                <!-- End of Form -->
-            </div>
-        </div>
-
-        <div class="col-12"> <!-- field za WeekendHourPrice-->
-            <div class="form-floating mb-3">
-                <input type="number" id="WeekendHourPrice" name="WeekendHourPrice" class="form-control"
-                    placeholder="350.00" [(ngModel)]="createdRole!.workingHourPrice" required min="0">
-                <label for="WeekendHourPrice" class="form-label">Weekend Hour Price</label>
-            </div>
         </div>
 
     </form>
     <!-- End of Form -->
+
 </div>
 
 <div class="modal-footer">

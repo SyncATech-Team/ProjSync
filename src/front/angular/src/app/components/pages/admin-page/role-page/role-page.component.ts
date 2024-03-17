@@ -35,11 +35,9 @@ interface ExportColumn {
 export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
   bsModalRef: BsModalRef<CreateRoleComponent> = new BsModalRef<CreateRoleComponent>();
+  
   createdRole: CompanyRole = {
-    name: '',
-    workingHourPrice: 0,
-    overtimeHourPrice: 0,
-    weekendHourPrice: 0
+    name: ''
   }
 
   /* PODACI CLANOVI */
