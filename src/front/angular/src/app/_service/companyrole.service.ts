@@ -1,25 +1,48 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CreateCompanyRole } from '../_models/create-company-role';
 import { environment } from '../../environments/environment';
+import { Observable, map, of } from 'rxjs';
+import { CompanyRole } from '../_models/company-role';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyroleService {
   baseUrl = environment.apiUrl;
+  roles: CompanyRole[] = [];
 
   constructor(private http: HttpClient) { }
 
-  create(model: CreateCompanyRole) {
-    return this.http.post<CreateCompanyRole>(this.baseUrl + 'Companyroles', model);
+  public getAllCompanyRoleNames(): Observable<CompanyRole[]> {
+    if (this.roles.length > 0) return of(this.roles);
+
+    return this.http.get<CompanyRole[]>(this.baseUrl + 'Companyroles').pipe(
+
+      map(roles => {
+
+        this.roles = roles;
+        return roles;
+      })
+    );
   }
 
-  deleteRole(name: string) {
-    return this.http.delete<string>(this.baseUrl + "Companyroles/" + name);
+  create(role: CompanyRole) {
+    return this.http.post(this.baseUrl + 'Companyroles', role).pipe(
+
+      map(()=> {
+        const index = this.roles.length;
+        this.roles[index] = {...this.roles[index], ...role}
+      })
+    )
   }
 
-  getAllCompanyRoleNames() {
-    return this.http.get<string[]>(this.baseUrl + 'Companyroles');
+  deleteRole(role: CompanyRole) {
+    return this.http.delete<string>(this.baseUrl + "Companyroles/" + role.name).pipe(
+
+      map(() => {
+        const index =this.roles.indexOf(role);
+        this.roles.splice(index, 1);
+      })
+    )
   }
 }

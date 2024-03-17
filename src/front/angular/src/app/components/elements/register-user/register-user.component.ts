@@ -3,6 +3,8 @@ import { AccountService } from '../../../_service/account.service';
 import { RegisterModel } from '../../../_models/register-user';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
+import { Observable } from 'rxjs';
+import { CompanyRole } from '../../../_models/company-role';
 
 @Component({
   selector: 'app-register-user',
@@ -10,7 +12,7 @@ import { AdminPageComponent } from '../../pages/admin-page/admin-page.component'
   styleUrl: './register-user.component.css'
 })
 export class RegisterUserComponent implements OnInit {
-  roles: string[] = [];
+  roles$: Observable<CompanyRole[]> | undefined;
 
   registrationModel: RegisterModel = {
     firstName: '',
@@ -28,7 +30,7 @@ export class RegisterUserComponent implements OnInit {
   constructor(public accoutService: AccountService, public companyRoleService: CompanyroleService, private adminPage: AdminPageComponent) { }
 
   ngOnInit(): void {
-    this.getAllCompanyRoles();
+    this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
   }
 
   @Output() userCreated = new EventEmitter<RegisterModel>();
@@ -59,14 +61,14 @@ export class RegisterUserComponent implements OnInit {
     });
   }
   
-  // dohvati sva imena za company role
-  getAllCompanyRoles() {
-    this.companyRoleService.getAllCompanyRoleNames().subscribe({
-      next: response => this.roles = response,
-      error: (error) => {
-        console.log(error.error);
-      }
-    })
+  suggestUsername() {
+    let x = document.getElementById("input-email") as HTMLInputElement;
+    let y = document.getElementById("input-username") as HTMLInputElement;
+
+    if(x != null) {
+      let v = x.value.split("@")[0];
+      y.value = v;
+    }
   }
 
   // close_alerts() {

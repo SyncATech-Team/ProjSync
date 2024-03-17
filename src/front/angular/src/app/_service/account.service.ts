@@ -3,7 +3,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
 import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../_models/register-user';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

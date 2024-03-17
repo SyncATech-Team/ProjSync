@@ -48,27 +48,12 @@
                         </div>
                     </div>
     
-                    <div class="col-12"> <!-- field za username-->
-                        <div class="form-floating mb-3">
-                            <input 
-                                type="text"
-                                id="username"
-                                name="username"
-                                class="form-control"
-                                placeholder="username"
-                                [(ngModel)]="registrationModel.username"
-                                required
-                                autocomplete="off"
-                            >
-                            <label for="username" class="form-label">Username</label>
-                        </div>
-                    </div>
-    
                     <div class="col-12"> <!-- field za email-->
                         <div class="form-floating mb-3">
                             <input 
+                                (input)="suggestUsername()"
                                 type="email"
-                                id="email"
+                                id="input-email"
                                 name="email"
                                 class="form-control"
                                 placeholder="syncatechpmf@domain.com"
@@ -76,7 +61,23 @@
                                 required
                                 autocomplete="off"
                             >
-                            <label for="email" class="form-label">Email</label>
+                            <label for="input-email" class="form-label">Email</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12"> <!-- field za username-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="input-username"
+                                name="username"
+                                class="form-control"
+                                placeholder="username"
+                                [(ngModel)]="registrationModel.username"
+                                required
+                                autocomplete="off"
+                            >
+                            <label for="input-username" class="form-label">Username</label>
                         </div>
                     </div>
     
@@ -103,7 +104,7 @@
                     <div class="col-12"> <!-- field za companyRole-->
                         <div class="form-floating mb-3">
                             <select id="companyRoleId" class="form-select" aria-label="companyRoleId" [(ngModel)]="registrationModel.companyRole" name="companyRoleId">
-                                <option *ngFor="let role of roles" value="{{role}}">{{role}}</option>
+                                <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
                             </select>
                             <label for="companyRoleId" class="form-label">Company Role</label>
                         </div>
