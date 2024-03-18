@@ -34,6 +34,17 @@ export class AccountService {
   }
 
   getCurrentUser(): User | null {
+    
+    /**
+     * This modification ensures that the function gracefully handles
+     * scenarios where localStorage is not available, returning null in such cases.
+     * This approach is particularly useful when running TypeScript code in
+     * environments where browser-specific features like localStorage are not available.
+     */
+    if (typeof localStorage === 'undefined') {
+      return null; // localStorage is not available, return null
+    }
+    
     var storage = localStorage.getItem("user");
     if(!storage) return null;
 
