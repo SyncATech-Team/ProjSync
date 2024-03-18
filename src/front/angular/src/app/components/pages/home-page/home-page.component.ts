@@ -18,6 +18,10 @@ export class HomePageComponent implements OnInit {
   projectsShow: any[] = [];
 
   searchTerm: string = '';
+  
+  visibilityFilter: string = 'private';
+  first = 0;
+  rows = 10;
 
   constructor(public accoutService: AccountService,private projectService:ProjectService) { }
 
@@ -25,14 +29,11 @@ export class HomePageComponent implements OnInit {
     this.projectService.getAllProjects().subscribe({
       next: (response) => {
         this.projects = response;
-        console.log(this.projects);
         this.projects.forEach((project)=>{
           project.subProjects = this.projects.filter((subproject)=>  subproject.parentProjectName == project.name );
           project.isExtanded = false;
           project.isFavorite = false;
-          this.filterProjects('private');
-
-          console.log(project);
+          this.filterProjects(this.visibilityFilter);
         });
       },
       error: (error) => {
@@ -43,10 +44,6 @@ export class HomePageComponent implements OnInit {
   
   toProject():void {
     alert("TO DO");
-  }
-
-  toggleRow(project: any): void{
-    project.isExtanded = !project.isExtanded;
   }
 
   sortData(column: string) {
@@ -66,6 +63,7 @@ export class HomePageComponent implements OnInit {
   }
 
   filterProjects(filter :string ):void {
+    this.visibilityFilter = filter;
     if(filter=="stared")
     {
       this.projectsShow=this.projects.filter((project)=> project.isFavorite);
@@ -92,6 +90,20 @@ export class HomePageComponent implements OnInit {
     this.projectsShow = this.projects.filter(project =>
         project.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
+  }
+  getDefaultImagePath(): string {
+    // let x: number = this.getRandomInteger(1, 10);
+    let x: number = 1;
+    let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
+    
+    // console.log(path);
+
+    return path;
+  }
+
+  pageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
 }
   
 }
