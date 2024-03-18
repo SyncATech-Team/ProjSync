@@ -8,12 +8,12 @@ namespace backAPI.Controllers
 {
     public class NotificationController : BaseApiController
     {
-        public readonly INotificationsRepository notificationsRepository;
+        public readonly INotificationsRepository _notificationsRepository;
 
         //KONSTRUKTOR
         public NotificationController(INotificationsRepository notificationRepository)
         {
-            this.notificationsRepository = notificationsRepository;   
+            _notificationsRepository = notificationRepository;
         }
 
         [HttpGet]
@@ -21,7 +21,7 @@ namespace backAPI.Controllers
         {
             List<Notification> notifications = new List<Notification>();
 
-            var notifys = await notificationsRepository.GetAllNotificationsAsync();
+            var notifys = await _notificationsRepository.GetAllNotificationsAsync();
 
             if (notifys == null)
                 return BadRequest("There are no comany roles to fetch");

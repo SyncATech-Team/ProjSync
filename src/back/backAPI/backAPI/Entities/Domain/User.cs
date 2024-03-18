@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
 
 namespace backAPI.Entities.Domain
 {
@@ -11,18 +12,8 @@ namespace backAPI.Entities.Domain
     /// </summary>
 
     [Table("Users")]
-    public class User
+    public class User : IdentityUser<int>
     {
-        [Key]
-        public int Id { get; set; }
-        [Required, NotNull]
-        public string Username { get; set; }
-        [Required, NotNull]
-        public byte[] PasswordHash { get; set; }
-        [Required, NotNull]
-        public byte[] PasswordSalt { get; set; }
-        [Required, NotNull]
-        public string Email { get; set; }
         [Required, NotNull]
         public string FirstName { get; set; }
         [Required, NotNull]
@@ -36,5 +27,6 @@ namespace backAPI.Entities.Domain
         public string Status { get; set; }
         public bool IsVerified { get; set; } = false;
         public string PreferedLanguage { get; set; } = "engish";
+        public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

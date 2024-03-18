@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
 using backAPI.DTO.Login;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace backAPI.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IUsersRepository _usersRepository;
         private readonly ICompanyRolesRepository _companyRolesRepository;
         private readonly IEmailService _emailService;
 
-        public AccountController(DataContext context, ITokenService tokenService, 
+        public AccountController(UserManager<User> userManager, ITokenService tokenService, 
             IUsersRepository usersRepository, ICompanyRolesRepository companyRolesRepository,
             IEmailService emailService)
         {
-            _context = context;
+            _userManager = userManager;
             _tokenService = tokenService;
             _usersRepository = usersRepository;
             _companyRolesRepository = companyRolesRepository;
@@ -32,12 +34,8 @@ namespace backAPI.Controllers
         [HttpPost("register")] // POST: api/account/register
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            if (await _usersRepository.UserExistsByUsername(registerDto.Username))
-                return BadRequest("Username is taken");
-
-            if (await _usersRepository.UserExistsByEmail(registerDto.Email)) 
-                return BadRequest("Email is taken");
-
+            if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
+            
             // zameniti naziv role u id
             CompanyRole companyRole = await _companyRolesRepository.GetCompanyRoleByNameAsync(registerDto.CompanyRole);
             if (companyRole == null)
@@ -46,16 +44,10 @@ namespace backAPI.Controllers
             }
             int companyRoleId = companyRole.Id;
 
-            // hesirati sifru koja je stigla za registraciju i kreirati i salt kao Key generisan
-            // preko random vrednosti
-            using var hmac = new HMACSHA512();
-
             // kreiranje novog korisnika u tabeli User
             var user = new User
             {
-                Username = registerDto.Username,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key,
+                UserName = registerDto.UserName.ToLower(),
                 Email = registerDto.Email,
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
@@ -67,7 +59,11 @@ namespace backAPI.Controllers
             };
 
             // sacuvati korisnika u bazi
-            await _usersRepository.RegisterUser(user);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Worker");
+            if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
             // poslati registacioni mejl
             // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
@@ -79,27 +75,25 @@ namespace backAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponseDto>> Login(LoginDto loginDto)
         {
-            var user = await _usersRepository.GetUserByEmail(loginDto.Email);
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
             if (user == null) return Unauthorized("invalid credentials!");
 
-            // koristimo pass_salt sacuvan u bazi da bismo obezbedili da ce sifra na isti nacin biti hesirana
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                // ako nema potpunog poklapanja vratiti 401 Unauthorized
-                if (computedHash[i] != user.PasswordHash[i])
-                    return Unauthorized("invalid password");
-            }
+            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (!result) return Unauthorized();
 
             return new LoginResponseDto
             {
-                Username = user.Username,
-                Token = _tokenService.CreateToken(user)
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user)
             };
+        }
+
+        private async Task<bool> UserExists(string username)
+        {
+            // check if there is user in database already
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }
 }

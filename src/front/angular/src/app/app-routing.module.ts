@@ -8,27 +8,20 @@ import { UserPageComponent } from './components/pages/admin-page/user-page/user-
 import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
 import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
 import { authGuard } from './_guards/auth.guard';
+import { adminGuard } from './_guards/admin.guard';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
-  {path: 'home', component: HomePageComponent},
-  {path: 'admin', component: AdminPageComponent},
-  {path: 'admin/dashboard', component: DashboardPageComponent},
-  {path: 'admin/user', component: UserPageComponent},
-  {path: 'admin/role', component: RolePageComponent},
-  {path: 'password_reset', component: PasswordResetPageComponent},
-  
-  // CHECK - TO DO
   {path: '',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard],
     children: [
       {path: 'home', component: HomePageComponent},
-      {path: 'admin', component: AdminPageComponent},
-      {path: 'admin/dashboard', component: DashboardPageComponent},
-      {path: 'admin/user', component: UserPageComponent},
-      {path: 'admin/role', component: RolePageComponent},
-      {path: 'password_reset', component: PasswordResetPageComponent}
+      {path: 'password_reset', component: PasswordResetPageComponent},
+      {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
+      {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
+      {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
+      {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]}
     ]
   },
 

@@ -24,7 +24,7 @@ namespace backAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers() {
             List<UserDto> dTOUsers = new List<UserDto>();
-
+          
             var users = await _usersRepository.GetUsersAsync();
 
             foreach (var user in users) {
@@ -33,7 +33,7 @@ namespace backAPI.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
-                    Username = user.Username,
+                    Username = user.UserName,
                     CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name, // ??
                     Address = user.Address,
                     ContactPhone = user.ContactPhone,
@@ -63,7 +63,7 @@ namespace backAPI.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Username = user.Username,
+                Username = user.UserName,
                 CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name, // ??
                 Address = user.Address,
                 ContactPhone = user.ContactPhone,
