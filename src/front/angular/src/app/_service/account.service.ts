@@ -13,6 +13,7 @@ export class AccountService {
 
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
+  static currentUser$: any;
   
   constructor(private http: HttpClient) { }
 
@@ -26,11 +27,20 @@ export class AccountService {
 
         if (user) {
           // zapamti korisnika lokalno
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurentUser(user);
         }
       })
     )
+  }
+
+  setCurentUser(user: User) {
+    user.roles = [];
+    const roles = this.getDecodedToken(user.token).role;
+    // korisnik moze da ima jednu ili vise uloga, zato pravimo niz
+    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSource.next(user);
   }
 
   register(model: RegisterModel) {
@@ -43,5 +53,10 @@ export class AccountService {
     // izbrisati iz lokalne memorije
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+  }
+
+  getDecodedToken(token: string) {
+    // dekodujemo drugi deo tokena
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }

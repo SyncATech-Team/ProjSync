@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
 import { ContainerLoginComponent } from './components/elements/container-login/container-login.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NavBarComponent } from './components/elements/nav-bar/nav-bar.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
@@ -27,7 +27,7 @@ import { TagModule } from "primeng/tag";
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { MessageService } from 'primeng/api';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -63,7 +63,8 @@ import { MessageService } from 'primeng/api';
   ],
   providers: [
     provideClientHydration(),
-    provideHttpClient(withFetch())  // dodato kako bi se prevazisao warrning iz konzole
+    provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
