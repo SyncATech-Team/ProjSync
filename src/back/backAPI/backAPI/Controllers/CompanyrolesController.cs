@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backAPI.Controllers
 {
 
-    // TODO: ne ubacivati autorizaciju dok login nije gotov
+    [Authorize(Policy = "RequireAdminRole")]
     public class CompanyrolesController : BaseApiController {
 
         private readonly ICompanyRolesRepository companyRolesRepository;

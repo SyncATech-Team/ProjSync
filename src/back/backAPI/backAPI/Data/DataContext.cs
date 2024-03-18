@@ -1,11 +1,15 @@
 ﻿using backAPI.Entities.Domain;
 using backAPI.Other.Logger;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Task = backAPI.Entities.Domain.Task;
 
 namespace backAPI.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User, AppRole, int,
+        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
+        IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
@@ -16,17 +20,21 @@ namespace backAPI.Data
             optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddProvider(new ColoredConsoleLoggerProvider())));
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        {
+            base.OnModelCreating(modelBuilder);
 
-            // UNIQUE username
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username)
-                .IsUnique(true);
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
 
-            // UNIQUE User email
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique(true);
+            modelBuilder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
 
             // UNIQUE Company role name
             modelBuilder.Entity<CompanyRole>()
@@ -62,13 +70,9 @@ namespace backAPI.Data
             modelBuilder.Entity<ProjectVisibility>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
-
-
-
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<CompanyRole> Roles { get; set; }
+        public DbSet<CompanyRole> CRoles { get; set; }
         public DbSet<WorkingHours> WorkHours { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectVisibility> ProjectVisibilities { get; set; }

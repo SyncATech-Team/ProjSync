@@ -56,7 +56,7 @@ namespace backAPI.Repositories.Implementation {
          * GetUserByUsername
          * ********************************************************************************** */
         public async Task<User> GetUserByUsername(string username) {
-            return await dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
+            return await dataContext.Users.SingleOrDefaultAsync(user => user.UserName == username);
         }
 
         /* **********************************************************************************
@@ -87,7 +87,7 @@ namespace backAPI.Repositories.Implementation {
                 return false;
             }
 
-            user.Username = request.Username;
+            user.UserName = request.Username;
             user.Email = request.Email;
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
@@ -108,7 +108,7 @@ namespace backAPI.Repositories.Implementation {
          * UsernameToId
          * ********************************************************************************** */
         public async Task<int> UsernameToId(string username) {
-            var user = await dataContext.Users.FirstOrDefaultAsync(user => user.Username == username);
+            var user = await dataContext.Users.FirstOrDefaultAsync(user => user.UserName == username);
             if(user == null) {
                 return -1;
             }
@@ -130,13 +130,13 @@ namespace backAPI.Repositories.Implementation {
             if(user == null) {
                 return null;
             }
-            return user.Username;
+            return user.UserName;
         }
 
         // Implementacija metode za proveru da li korisnik postoji u bazi preko korisnickog imena
         public async Task<bool> UserExistsByUsername(string username)
         {
-            return await dataContext.Users.AnyAsync(x => x.Username == username);
+            return await dataContext.Users.AnyAsync(x => x.UserName == username);
         }
 
         // Implementacija metode za proveru da li korisnik postoji u bazi preko email-a
@@ -151,47 +151,6 @@ namespace backAPI.Repositories.Implementation {
         /* ****************************************************************************************************************************** */
         /* ****************************************************************************************************************************** */
 
-        /* **********************************************************************************
-         * Create password hash & salt
-         * ********************************************************************************** */
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt) {
-            using (var hmac = new HMACSHA512()) {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-        /* **********************************************************************************
-         * Check password hash
-         * ********************************************************************************** */
-        private Boolean CheckPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt) {
-            using (var hmac = new HMACSHA512(passwordSalt)) {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-        }
-        /* **********************************************************************************
-         * Create security token
-         * ********************************************************************************** */
-        private string CreateToken(User user) {
-            var fullName = user.FirstName + " " + user.LastName;
-            string uid = "" + user.Id;
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim("username",user.Username ),
-                new Claim("email",user.Email ),
-                new Claim("imeprezime",fullName),
-                new Claim("id",uid)
-            };
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings1:Token").Value));
-
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
-                signingCredentials: cred);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
-        }
         /* **********************************************************************************
          * Create email token
          * ********************************************************************************** */

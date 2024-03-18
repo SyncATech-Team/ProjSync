@@ -22,7 +22,7 @@ namespace backAPI.Repositories.Implementation
          * POST | Metod za kreiranje nove uloge u kompaniji
          * ************************************************************************** */
         public async Task<CompanyRole> CreateNewRoleAsync(CompanyRole companyRole) {
-            await dataContext.Roles.AddAsync(companyRole);
+            await dataContext.CRoles.AddAsync(companyRole);
             await dataContext.SaveChangesAsync();
 
             return companyRole;
@@ -33,7 +33,7 @@ namespace backAPI.Repositories.Implementation
         /// </summary>
         /// <returns></returns>
         public async Task<IEnumerable<CompanyRole>> GetCompanyRolesAsync() {
-            return await dataContext.Roles.ToListAsync();
+            return await dataContext.CRoles.ToListAsync();
         }
 
         /* **************************************************************************
@@ -42,13 +42,13 @@ namespace backAPI.Repositories.Implementation
         public async Task<bool> DeleteCompanyRole(string name) {
 
             var roleId = await GetCompanyRoleByNameAsync(name);
-            var role = await dataContext.Roles.FindAsync(roleId.Id);
+            var role = await dataContext.CRoles.FindAsync(roleId.Id);
             
             if(role == null) {
                 return false;
             }
 
-            dataContext.Roles.Remove(role);
+            dataContext.CRoles.Remove(role);
             await dataContext.SaveChangesAsync();
 
             return true;
@@ -70,19 +70,19 @@ namespace backAPI.Repositories.Implementation
         }
 
         public async Task<CompanyRole> GetCompanyRoleById(int id) {
-            return await dataContext.Roles.Where(role => role.Id == id).FirstAsync();
+            return await dataContext.CRoles.Where(role => role.Id == id).FirstAsync();
         }
 
         /* **************************************************************************
          * Provera da li u bazi vec postoji uloga koju zelimo da dodamo
          * ************************************************************************** */
         public async Task<bool> CheckCompanyRoleNameExistance(string name) {
-            return await dataContext.Roles.AnyAsync(role => role.Name.ToLower() == name.ToLower());
+            return await dataContext.CRoles.AnyAsync(role => role.Name.ToLower() == name.ToLower());
         }
 
         public async Task<CompanyRole> GetCompanyRoleByNameAsync(string companyRoleName)
         {
-            return await dataContext.Roles
+            return await dataContext.CRoles
                 .Where(x => x.Name == companyRoleName)
                 .SingleOrDefaultAsync();
         }
