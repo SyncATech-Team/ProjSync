@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateRoleComponent } from '../../../elements/create-role/create-role.component';
+import { MessagePopupService } from '../../../../_service/message-popup.service';
 
 interface Column {
   field: string;
@@ -29,8 +30,7 @@ interface ExportColumn {
 @Component({
   selector: 'app-role-page',
   templateUrl: './role-page.component.html',
-  styleUrl: './role-page.component.css',
-  providers: [MessageService]
+  styleUrl: './role-page.component.css'
 })
 export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
@@ -56,7 +56,7 @@ export class RolePageComponent implements OnInit {
    * Konstruktor
    * @param croleService 
    */
-  constructor(private companyRoleService: CompanyroleService, private messageService: MessageService,
+  constructor(private companyRoleService: CompanyroleService, private msgPopupSevice: MessagePopupService,
     private modalService: BsModalService) {
   }
 
@@ -90,9 +90,12 @@ export class RolePageComponent implements OnInit {
       next: () => {
         const createdRole = this.bsModalRef.content?.createdRole;
         this.companyRoleService.create(createdRole!).subscribe({
-          next: () => this.showSuccess("Successfully created new role"),
-          error: _ => 
-            this.showError("Unable to create new role with given parameters. Probably duplicate names")
+          next: () => {
+            this.msgPopupSevice.showSuccess("Successfully created new role")
+          },
+          error: _ => {
+            this.msgPopupSevice.showError("Unable to create new role with given parameters. Probably duplicate names")
+          }
         })
       }
     })
@@ -118,10 +121,10 @@ export class RolePageComponent implements OnInit {
         if(indexToRemoveBackup !== -1) {
           this.roles_backup.splice(indexToRemoveBackup, 1);
         }
-        this.showSuccess("Deleted role: " + argRole.name);
+        this.msgPopupSevice.showSuccess("Deleted role: " + argRole.name);
       },
       error: error => {
-        this.showError("Unable to delete choosen role. Probably in use.");
+        this.msgPopupSevice.showError("Unable to delete choosen role. Probably in use.");
       }
     });
 
@@ -239,15 +242,6 @@ export class RolePageComponent implements OnInit {
         type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-  }
-
-  // SHOW MESSAGE POPUP
-  showSuccess(message: string) {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
-  }
-
-  showError(message: string) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
   }
 
 }

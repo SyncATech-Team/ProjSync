@@ -12,25 +12,18 @@ import { adminGuard } from './_guards/admin.guard';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
-  {path: 'home', component: HomePageComponent},
-  {path: 'password_reset', component: PasswordResetPageComponent},
-  {path: 'admin', component: AdminPageComponent},
-  {path: 'admin/dashboard', component: DashboardPageComponent},
-  {path: 'admin/user', component: UserPageComponent},
-  {path: 'admin/role', component: RolePageComponent},
-  // {path: '',
-  //   runGuardsAndResolvers: 'always',
-  //   canActivate: [authGuard],
-  //   children: [
-  //     {path: 'home', component: HomePageComponent},
-  //     {path: 'password_reset', component: PasswordResetPageComponent},
-  //     {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
-  //     {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
-  //     {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
-  //     {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]}
-  //   ]
-  // },
-
+  {path: '',
+    runGuardsAndResolvers: 'pathParamsChange',
+    canActivate: [authGuard],
+    children: [
+      {path: 'home', component: HomePageComponent},
+      {path: 'password_reset', component: PasswordResetPageComponent},
+      {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
+      {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
+      {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
+      {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]}
+    ]
+  },
   {path: '**', component: LoginPageComponent, pathMatch: 'full'},
 ];
 

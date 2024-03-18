@@ -33,6 +33,18 @@ export class AccountService {
     )
   }
 
+  getCurrentUser(): User | null {
+    var storage = localStorage.getItem("user");
+    if(!storage) return null;
+
+    var user = JSON.parse(storage);
+    return {
+      username: user['username'],
+      token: user['token'],
+      roles: user['roles']
+    }
+  }
+
   setCurentUser(user: User) {
     user.roles = [];
     const roles = this.getDecodedToken(user.token).role;
