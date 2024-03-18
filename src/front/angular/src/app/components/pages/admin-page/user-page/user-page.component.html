@@ -107,9 +107,12 @@
                                     <!-- <span (click)="deleteUser(user.username)" class="pi pi-trash" 
                                         title="Delete user"></span> -->
 
-                                    <p-toast></p-toast>
                                     <p-confirmDialog></p-confirmDialog>
-                                    <p-button class="deleteBtn" (click)="deleteUser(user.username, $event)" icon="pi pi-trash" styleClass="p-button-danger"></p-button>
+                                    <div class="deleteBtn">
+                                        <button type="button" pButton pRipple icon="pi pi-trash" 
+                                            (click)="deleteUser(user.username, $event)"  class="p-button-danger mr-2" 
+                                            tooltipPosition="bottom"></button>
+                                    </div>
                                 </div>
 
                                 <div class="action">
