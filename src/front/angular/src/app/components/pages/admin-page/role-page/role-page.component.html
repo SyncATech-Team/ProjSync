@@ -102,7 +102,16 @@
                         <td><span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 <div class="action">
-                                    <span (click)="deleteCompanyRole(role)" class="pi pi-trash" title="Delete role"></span>
+                                    <!-- <span (click)="deleteCompanyRole(role)" class="pi pi-trash" title="Delete role"></span> -->
+
+                                    <p-toast></p-toast>
+                                    <p-confirmDialog></p-confirmDialog>
+                                    <div class="deleteBtn">
+                                        <button type="button" pButton pRipple icon="pi pi-trash" 
+                                            (click)="deleteCompanyRole(role, $event)"
+                                            class="p-button-danger mr-2" 
+                                            tooltipPosition="bottom"></button>
+                                    </div>
                                 </div>
 
                                 <div class="action">

@@ -101,7 +101,6 @@ export class UserPageComponent implements OnInit {
   // if(ans != username) console.log();  
 
   deleteUser(username: string, event: Event): void {
-
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'Do you want to delete this record?',
@@ -138,8 +137,6 @@ export class UserPageComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
         }
     });
-
-
   }
 
   /**

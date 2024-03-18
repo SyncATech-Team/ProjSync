@@ -4,9 +4,9 @@ import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs';
-import { MessageService } from 'primeng/api';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateRoleComponent } from '../../../elements/create-role/create-role.component';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 
 interface Column {
   field: string;
@@ -30,7 +30,7 @@ interface ExportColumn {
   selector: 'app-role-page',
   templateUrl: './role-page.component.html',
   styleUrl: './role-page.component.css',
-  providers: [MessageService]
+  providers: [ConfirmationService, MessageService]
 })
 export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
@@ -56,9 +56,11 @@ export class RolePageComponent implements OnInit {
    * Konstruktor
    * @param croleService 
    */
-  constructor(private companyRoleService: CompanyroleService, private messageService: MessageService,
-    private modalService: BsModalService) {
-  }
+  constructor(
+    private companyRoleService: CompanyroleService,
+    private messageService: MessageService,
+    private modalService: BsModalService,
+    private confirmationService: ConfirmationService) { }
 
   /**
    * OnInit
@@ -103,28 +105,44 @@ export class RolePageComponent implements OnInit {
    * @param name 
    * @returns 
    */
-  deleteCompanyRole(argRole: CompanyRole) {
-    const response = prompt("In order to delete role please enter [" + argRole.name + "]");
-    if(response != argRole.name) return;
+  deleteCompanyRole(argRole: CompanyRole, event: Event) {
+    // const response = prompt("In order to delete role please enter [" + argRole.name + "]");
+    // if(response != argRole.name) return;
 
-    this.companyRoleService.deleteRole(argRole).subscribe({
-      next: _ => {
-        const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
-        if (indexToRemove !== -1) {
-          this.roles.splice(indexToRemove, 1);
-        }
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      acceptIcon:"none",
+      rejectIcon:"none",
 
-        const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === argRole.name);
-        if(indexToRemoveBackup !== -1) {
-          this.roles_backup.splice(indexToRemoveBackup, 1);
-        }
-        this.showSuccess("Deleted role: " + argRole.name);
+      accept: (input: string) => {
+        this.companyRoleService.deleteRole(argRole).subscribe({
+          next: _ => {
+            const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
+            if (indexToRemove !== -1) {
+              this.roles.splice(indexToRemove, 1);
+            }
+    
+            const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === argRole.name);
+            if(indexToRemoveBackup !== -1) {
+              this.roles_backup.splice(indexToRemoveBackup, 1);
+            }
+            this.showSuccess("Deleted role: " + argRole.name);
+          },
+          error: error => {
+            this.showError("Unable to delete choosen role. Probably in use.");
+          }
+        });
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
       },
-      error: error => {
-        this.showError("Unable to delete choosen role. Probably in use.");
+      reject: () => {
+          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
       }
     });
-
   }
 
   /**
