@@ -1,9 +1,12 @@
 using backAPI.Data;
+using backAPI.Entities.Domain;
 using backAPI.Extensions;
 using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Implementation;
 using backAPI.Services.Interface;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,6 +72,41 @@ Console.ForegroundColor = ConsoleColor.White;
 
 app.UseAuthorization();
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+var context = services.GetRequiredService<DataContext>();
+if (!context.Roles.Any(r => r.Name == "Admin"))
+{
+    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    var roles = new List<AppRole>()
+    {
+        new AppRole{Name = "Admin"},
+        new AppRole{Name = "Worker"},
+        new AppRole{Name = "Guest"}
+    };
+
+    foreach (var role in roles)
+    {
+        await roleManager.CreateAsync(role);
+    }
+
+    context.CRoles.Add(new CompanyRole { Name = "Developer" });
+
+    var admin = new User 
+    { 
+        Email = "admin@gmail.com",
+        FirstName = "Admin",
+        LastName = "Admin",
+        UserName = "admin",
+        CompanyRoleId = 1
+    };
+
+    await userManager.CreateAsync(admin, "Pa$$w0rd");
+    await userManager.AddToRoleAsync(admin, "Admin");
+}
 
 app.Run();
 

@@ -7,12 +7,65 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationMySQL : Migration
+    public partial class IdentityAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false),
+                    LastName = table.Column<string>(type: "longtext", nullable: false),
+                    CompanyRoleId = table.Column<int>(type: "int", nullable: false),
+                    ProfilePhoto = table.Column<string>(type: "longtext", nullable: true),
+                    Address = table.Column<string>(type: "longtext", nullable: true),
+                    ContactPhone = table.Column<string>(type: "longtext", nullable: true),
+                    LinkedinProfile = table.Column<string>(type: "longtext", nullable: true),
+                    Status = table.Column<string>(type: "longtext", nullable: true),
+                    IsVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PreferedLanguage = table.Column<string>(type: "longtext", nullable: true),
+                    UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "longtext", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "longtext", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -199,33 +252,6 @@ namespace backAPI.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(type: "varchar(255)", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "longblob", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "longblob", nullable: false),
-                    Email = table.Column<string>(type: "varchar(255)", nullable: false),
-                    FirstName = table.Column<string>(type: "longtext", nullable: false),
-                    LastName = table.Column<string>(type: "longtext", nullable: false),
-                    CompanyRoleId = table.Column<int>(type: "int", nullable: false),
-                    ProfilePhoto = table.Column<string>(type: "longtext", nullable: true),
-                    Address = table.Column<string>(type: "longtext", nullable: true),
-                    ContactPhone = table.Column<string>(type: "longtext", nullable: true),
-                    LinkedinProfile = table.Column<string>(type: "longtext", nullable: true),
-                    Status = table.Column<string>(type: "longtext", nullable: true),
-                    IsVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PreferedLanguage = table.Column<string>(type: "longtext", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "UsersOnProjects",
                 columns: table => new
                 {
@@ -275,274 +301,215 @@ namespace backAPI.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
-            /* ************************************************************************************************************* */
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
-            migrationBuilder.Sql("ALTER TABLE Users ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE Projects ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE ProjectTypes ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE CompanyRoles ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE WorkingHours ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE ProjectDocumentations ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE ProjectRoles ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE ProjectVisibilities ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE Tasks ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE TaskComments ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE TaskPriorities ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE TaskTypes ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE UsersOnProjects ENGINE = InnoDB;");
-            migrationBuilder.Sql("ALTER TABLE UsersOnTasks ENGINE = InnoDB;");
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
-            // table USERS
-            migrationBuilder.AddForeignKey(
-                name: "FK_CompanyRole_ID_Users",
-                table: "Users",
-                column: "CompanyRoleId",
-                principalTable: "CompanyRoles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict,
-                onUpdate: ReferentialAction.Cascade
-            );
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "varchar(255)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
-            // table PROJECTS
-            migrationBuilder.AddForeignKey(
-                name: "FK_Project_type_Projects",
-                table: "Projects",
-                column: "TypeId",
-                principalTable: "ProjectTypes",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_owner_Projects",
-                table: "Projects",
-                column: "OwnerId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_project_id_Projects",
-                table: "Projects",
-                column: "ParentId",
-                principalTable: "Projects",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-           );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_visibility_Projects",
-                table: "Projects",
-                column: "VisibilityId",
-                principalTable: "ProjectVisibilities",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            // table WORKING HOURS
-            migrationBuilder.AddForeignKey(
-                name: "FK_User_WorkingHours",
-                table: "WorkingHours",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            // table PROJECT DOCUMENTATIONS
-            migrationBuilder.AddForeignKey(
-                name: "FK_project_ProjectDocumentation",
-                table: "ProjectDocumentations",
-                column: "ProjectId",
-                principalTable: "Projects",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            // table TASKS
-            migrationBuilder.AddForeignKey(
-                name: "FK_Users_Tasks",
-                table: "Tasks",
-                column: "CreatedBy",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Project_Tasks",
-                table: "Tasks",
-                column: "ProjectId",
-                principalTable: "Projects",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Priority_Tasks",
-                table: "Tasks",
-                column: "PriorityId",
-                principalTable: "TaskPriorities",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Type_Tasks",
-                table: "Tasks",
-                column: "TypeId",
-                principalTable: "TaskTypes",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            // table TASK COMMENTS
-            migrationBuilder.AddForeignKey(
-                name: "FK_User_TaskComments",
-                table: "TaskComments",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Task_TaskComments",
-                table: "TaskComments",
-                column: "TaskId",
-                principalTable: "Tasks",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            // table USERS ON PROJECTS
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_User_UsersOnProjects",
-                table: "UsersOnProjects",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Project_UsersOnProjects",
-                table: "UsersOnProjects",
-                column: "ProjectId",
-                principalTable: "Projects",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ProjectRole_UsersOnProjects",
-                table: "UsersOnProjects",
-                column: "ProjectRole",
-                principalTable: "ProjectRoles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            // table USERS ON TASKS
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_User_UsersOnTasks",
-                table: "UsersOnTasks",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Task_UsersOnTasks",
-                table: "UsersOnTasks",
-                column: "TaskId",
-                principalTable: "Tasks",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade,
-                onUpdate: ReferentialAction.Cascade
-            );
-
-            /* ************************************************************************************************************* */
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Value = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "CompanyRoles_Name",
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyRoles_Name",
                 table: "CompanyRoles",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ProjectRoles_Name",
+                name: "IX_ProjectRoles_Name",
                 table: "ProjectRoles",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "Projects_Key",
+                name: "IX_Projects_Key",
                 table: "Projects",
                 column: "Key",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ProjectTypes_Name",
+                name: "IX_ProjectTypes_Name",
                 table: "ProjectTypes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ProjectVisibilities_Name",
+                name: "IX_ProjectVisibilities_Name",
                 table: "ProjectVisibilities",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "TaskPriorities_Name",
+                name: "IX_TaskPriorities_Name",
                 table: "TaskPriorities",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "TaskTypes_Name",
+                name: "IX_TaskTypes_Name",
                 table: "TaskTypes",
                 column: "Name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "Users_Username",
-                table: "Users",
-                column: "Username",
-                unique: true);
-
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
             migrationBuilder.DropTable(
                 name: "CompanyRoles");
 
@@ -577,9 +544,6 @@ namespace backAPI.Migrations
                 name: "TaskTypes");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "UsersOnProjects");
 
             migrationBuilder.DropTable(
@@ -587,6 +551,12 @@ namespace backAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "WorkingHours");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
