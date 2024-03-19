@@ -42,3 +42,8 @@ th{
 .nav .nav-item{
     cursor: pointer;
 }
+
+.profilecontent img {
+    width: 20px;
+    height: 20px;
+}

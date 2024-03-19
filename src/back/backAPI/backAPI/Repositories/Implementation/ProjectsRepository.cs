@@ -28,7 +28,7 @@ namespace backAPI.Repositories.Implementation
             var user = await usersRepository.GetUserByUsername(request.OwnerUsername);
             var type = await projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName);
             var visibility = await projectVisibilitiesRepository.GetProjectVisibilityByNameAsync(request.VisibilityName);
-            var parent = await GetProjectByName(request.ParentProjectName);
+            
             var project = new Project {
                 Name = request.Name,
                 Key = request.Key,
@@ -36,7 +36,7 @@ namespace backAPI.Repositories.Implementation
                 CreationDate = request.CreationDate,
                 DueDate = request.DueDate,
                 OwnerId = user.Id,
-                ParentId = parent.Id,  // to do?
+                ParentId = (request.ParentProjectName == null) ? null : GetProjectByName(request.ParentProjectName).Result.Id,
                 Budget = request.Budget,
                 VisibilityId = visibility.Id,
                 TypeId = type.Id
