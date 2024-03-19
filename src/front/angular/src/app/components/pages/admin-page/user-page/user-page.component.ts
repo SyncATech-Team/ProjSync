@@ -34,6 +34,8 @@ export class UserPageComponent implements OnInit {
   users: UserGetter[] = [];
   users_backup: UserGetter[] = [];
 
+  searchTerm : string = '';
+
   cols!: Column[];
   exportColumns!: ExportColumn[];
 
@@ -51,6 +53,7 @@ export class UserPageComponent implements OnInit {
       this.userService.getAllUsers().subscribe({
         next: response => {
           this.users = response;
+          this.users_backup = response;
         },
         error: error => {
           console.log("ERROR: " + error.error);
@@ -165,11 +168,14 @@ export class UserPageComponent implements OnInit {
    * Filter po nazivu koji je unet; Prikaz samo onih uloga koje sadrze taj naziv
    * @param table 
    */
-  search(table: Table) {
-    this.users = this.users_backup;
-    let x = document.getElementById("search-input-term-users-global") as HTMLInputElement;
-    let searchTerm = x.value.toLowerCase();
-    this.users = this.users.filter(x => x.username.toLowerCase().includes(searchTerm));
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase();
+    if (searchTerm.trim() === '') {
+      //Kreira se novi niz za istim elementima 
+      this.users = [...this.users_backup];
+    } else {
+      this.users = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
+    }
   }
 
   /**

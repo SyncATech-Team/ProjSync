@@ -64,9 +64,11 @@
                         
                             <div class="p-input-icon-left ml-auto">
                                 <!-- <i class="pi pi-search"></i> -->
-                                <input pInputText id="search-input-term-users-global" 
+                                <!-- <input pInputText id="search-input-term-users-global" 
                                     #searchInput type="text" (input)="search(dt2)" 
-                                    placeholder="Search keyword"/>
+                                    placeholder="Search keyword"/> -->
+
+                                <input pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
                             </div>
                         </div>
                     </div>
