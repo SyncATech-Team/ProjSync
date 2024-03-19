@@ -69,16 +69,19 @@ export class RolePageComponent implements OnInit {
     this.loading = true;
     // Dohvati sve uloge koje postoje iz baze
     this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
-    this.roles$.subscribe(roles => this.roles = roles);
+    this.roles$.subscribe(roles => {
+        this.roles = roles;
+        this.roles_backup = roles;
+    });
 
     // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
     this.cols = [
-      { field: 'name', header: 'List of company roles', customExportHeader: 'Company role name' },
+        { field: 'name', header: 'List of company roles', customExportHeader: 'Company role name' },
     ];
 
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
     this.loading = false;
-  }
+}
 
   openRolesModal() {
     const config = {
@@ -172,10 +175,14 @@ export class RolePageComponent implements OnInit {
    * @param table 
    */
   search(table: Table) {
-    this.roles = this.roles_backup;
     let x = document.getElementById("search-input-term-roles-global") as HTMLInputElement;
     let searchTerm = x.value.toLowerCase();
-    this.roles = this.roles.filter(x => x.name.toLowerCase().includes(searchTerm));
+    if(searchTerm.trim() === ''){
+      this.roles = this.roles_backup;
+    }
+    else{
+      this.roles = this.roles.filter(x => x.name.toLowerCase().includes(searchTerm));
+    }
   }
 
   /**
