@@ -13,7 +13,7 @@ import { adminGuard } from './_guards/admin.guard';
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
   {path: '',
-    runGuardsAndResolvers: 'always',
+    runGuardsAndResolvers: 'pathParamsChange',
     canActivate: [authGuard],
     children: [
       {path: 'home', component: HomePageComponent},
@@ -24,7 +24,6 @@ const routes: Routes = [
       {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]}
     ]
   },
-
   {path: '**', component: LoginPageComponent, pathMatch: 'full'},
 ];
 
