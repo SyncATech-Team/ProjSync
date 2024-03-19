@@ -15,4 +15,8 @@ export class UserService {
   getAllUsers() {
     return this.http.get<UserGetter[]>(this.baseUrl + "Users");
   }
+
+  deleteUser(username: string){
+    return this.http.delete<void>(`${this.baseUrl}users/${username}`);
+  }
 }

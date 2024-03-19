@@ -4,9 +4,9 @@ import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs';
-import { MessageService } from 'primeng/api';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateRoleComponent } from '../../../elements/create-role/create-role.component';
+import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
 
 interface Column {
@@ -30,11 +30,15 @@ interface ExportColumn {
 @Component({
   selector: 'app-role-page',
   templateUrl: './role-page.component.html',
-  styleUrl: './role-page.component.css'
+  styleUrl: './role-page.component.css',
+  providers: [ConfirmationService]
 })
 export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
   bsModalRef: BsModalRef<CreateRoleComponent> = new BsModalRef<CreateRoleComponent>();
+  
+  //Cuva sta je uneto u search input
+  searchTerm: string = '';
   
   createdRole: CompanyRole = {
     name: ''
@@ -56,9 +60,11 @@ export class RolePageComponent implements OnInit {
    * Konstruktor
    * @param croleService 
    */
-  constructor(private companyRoleService: CompanyroleService, private msgPopupSevice: MessagePopupService,
-    private modalService: BsModalService) {
-  }
+  constructor(
+    private companyRoleService: CompanyroleService,
+    private msgPopupSevice: MessagePopupService,
+    private modalService: BsModalService,
+    private confirmationService: ConfirmationService) { }
 
   /**
    * OnInit
@@ -67,16 +73,19 @@ export class RolePageComponent implements OnInit {
     this.loading = true;
     // Dohvati sve uloge koje postoje iz baze
     this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
-    this.roles$.subscribe(roles => this.roles = roles);
+    this.roles$.subscribe(roles => {
+        this.roles = roles;
+        this.roles_backup = roles;
+    });
 
     // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
     this.cols = [
-      { field: 'name', header: 'List of company roles', customExportHeader: 'Company role name' },
+        { field: 'name', header: 'List of company roles', customExportHeader: 'Company role name' },
     ];
 
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
     this.loading = false;
-  }
+}
 
   openRolesModal() {
     const config = {
@@ -106,28 +115,45 @@ export class RolePageComponent implements OnInit {
    * @param name 
    * @returns 
    */
-  deleteCompanyRole(argRole: CompanyRole) {
-    const response = prompt("In order to delete role please enter [" + argRole.name + "]");
-    if(response != argRole.name) return;
+  deleteCompanyRole(argRole: CompanyRole, event: Event) {
+    // const response = prompt("In order to delete role please enter [" + argRole.name + "]");
+    // if(response != argRole.name) return;
 
-    this.companyRoleService.deleteRole(argRole).subscribe({
-      next: _ => {
-        const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
-        if (indexToRemove !== -1) {
-          this.roles.splice(indexToRemove, 1);
-        }
+    console.log(argRole);
 
-        const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === argRole.name);
-        if(indexToRemoveBackup !== -1) {
-          this.roles_backup.splice(indexToRemoveBackup, 1);
-        }
-        this.msgPopupSevice.showSuccess("Deleted role: " + argRole.name);
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      acceptIcon:"none",
+      rejectIcon:"none",
+
+      accept: (input: string) => {
+        this.companyRoleService.deleteRole(argRole).subscribe({
+          next: _ => {
+            const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
+            if (indexToRemove !== -1) {
+              this.roles = this.roles.splice(indexToRemove, 1);
+            }
+    
+            const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === argRole.name);
+            if(indexToRemoveBackup !== -1) {
+              this.roles_backup = this.roles_backup.splice(indexToRemoveBackup, 1);
+            }
+            this.msgPopupSevice.showSuccess("Role deleted");
+          },
+          error: error => {
+            this.msgPopupSevice.showError("Unable to delete choosen role. Probably in use.");
+          }
+        });
       },
-      error: error => {
-        this.msgPopupSevice.showError("Unable to delete choosen role. Probably in use.");
+      reject: () => {
+          this.msgPopupSevice.showError('You have rejected');
       }
     });
-
   }
 
   /**
@@ -156,12 +182,16 @@ export class RolePageComponent implements OnInit {
    * Filter po nazivu koji je unet; Prikaz samo onih uloga koje sadrze taj naziv
    * @param table 
    */
-  search(table: Table) {
-    this.roles = this.roles_backup;
-    let x = document.getElementById("search-input-term-roles-global") as HTMLInputElement;
-    let searchTerm = x.value.toLowerCase();
-    this.roles = this.roles.filter(x => x.name.toLowerCase().includes(searchTerm));
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase();
+    if (searchTerm.trim() === '') {
+      //Kreira se novi niz za istim elementima 
+      this.roles = [...this.roles_backup];
+    } else {
+      this.roles = this.roles_backup.filter(role => role.name.toLowerCase().includes(searchTerm));
+    }
   }
+  
 
   /**
    * Koristi se za prelazenje sa jedne stranice na drugu

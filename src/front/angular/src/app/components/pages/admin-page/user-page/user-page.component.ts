@@ -5,7 +5,8 @@ import { RegisterModel } from '../../../../_models/register-user';
 import { UserService } from '../../../../_service/user.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
+import { MessagePopupService } from '../../../../_service/message-popup.service';
 
 interface Column {
   field: string;
@@ -22,12 +23,15 @@ interface ExportColumn {
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css',
+  providers: [ConfirmationService]
 })
 export class UserPageComponent implements OnInit {
   
   /* PODACI CLANOVI */
   users: UserGetter[] = [];
   users_backup: UserGetter[] = [];
+
+  searchTerm : string = '';
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
@@ -38,12 +42,15 @@ export class UserPageComponent implements OnInit {
   activityValues: number[] = [0, 100];
 
   constructor(private http: HttpClient, 
-    private userService: UserService){ }
+    private userService: UserService, 
+    private msgPopupService: MessagePopupService,
+    private confirmationService: ConfirmationService){ }
 
   ngOnInit(): void {
       this.userService.getAllUsers().subscribe({
         next: response => {
           this.users = response;
+          this.users_backup = response;
         },
         error: error => {
           console.log("ERROR: " + error.error);
@@ -89,9 +96,46 @@ export class UserPageComponent implements OnInit {
 
     return path;
   }
+  
+  // let ans = prompt("Are you sure that you want to delete user " + username + " [TO DO! Zahtevati da korisnik unese username kao potvrdu]");
+  // if(ans != username) console.log();  
 
-  deleteUser(username: string): void {
-    let ans = prompt("Are you sure that you want to delete user " + username + " [TO DO! Zahtevati da korisnik unese username kao potvrdu]");
+  deleteUser(username: string, event: Event): void {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Do you want to delete this record?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass:"p-button-danger p-button-text",
+        rejectButtonStyleClass:"p-button-text p-button-text",
+        acceptIcon:"none",
+        rejectIcon:"none",
+
+        accept: (input: string) => {
+          this.userService.deleteUser(username).subscribe({
+            next: _=>{
+              const indexToRemove = this.users.findIndex(username => username === username);
+              
+              //Brisanje iz lokalnog niza
+              if (indexToRemove !== -1) {
+                this.users = this.users.splice(indexToRemove, 1);
+              }
+      
+              const indexToRemoveBackup = this.users_backup.findIndex(username => username === username);
+              if(indexToRemoveBackup !== -1) {
+                this.users_backup = this.users_backup.splice(indexToRemoveBackup, 1);
+              }
+              this.msgPopupService.showSuccess("User deleted");
+            },
+            error: error => {
+              this.msgPopupService.showError("Unable to delete user");
+            }
+          });
+        },
+        reject: () => {
+            this.msgPopupService.showError('You have rejected ');
+        }
+    });
   }
 
   /**
@@ -120,11 +164,14 @@ export class UserPageComponent implements OnInit {
    * Filter po nazivu koji je unet; Prikaz samo onih uloga koje sadrze taj naziv
    * @param table 
    */
-  search(table: Table) {
-    this.users = this.users_backup;
-    let x = document.getElementById("search-input-term-users-global") as HTMLInputElement;
-    let searchTerm = x.value.toLowerCase();
-    this.users = this.users.filter(x => x.username.toLowerCase().includes(searchTerm));
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase();
+    if (searchTerm.trim() === '') {
+      //Kreira se novi niz za istim elementima 
+      this.users = [...this.users_backup];
+    } else {
+      this.users = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
+    }
   }
 
   /**

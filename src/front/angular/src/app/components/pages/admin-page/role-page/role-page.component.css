@@ -44,6 +44,14 @@ th {
     background-color: #ec5941;
 }
 
+.deleteBtn button{
+    border-radius: 20%;
+    background-color: #ec5941;
+    width: 30px;
+    height: 30px;
+    color: black;
+}
+
 .action:last-child {
     background-color: lightblue;
 }

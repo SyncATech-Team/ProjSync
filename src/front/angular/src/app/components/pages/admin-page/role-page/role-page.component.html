@@ -10,6 +10,7 @@
     <div id="content">
         
         <p-toast></p-toast>
+        <p-confirmDialog></p-confirmDialog>
 
         <!-- Header strane -->
         <div id="description">
@@ -82,7 +83,8 @@
                         
                             <div class="p-input-icon-left ml-auto">
                                 <!-- <i class="pi pi-search"></i> -->
-                                <input pInputText id="search-input-term-roles-global"  #searchInput type="text" (input)="search(dt1)" placeholder="Search keyword"/>
+                                <!-- <input pInputText id="search-input-term-roles-global"  #searchInput type="text" (input)="search(dt1)" placeholder="Search keyword"/> -->
+                                <input pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
                             </div>
                         </div>
                     </div>
@@ -102,7 +104,14 @@
                         <td><span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 <div class="action">
-                                    <span (click)="deleteCompanyRole(role)" class="pi pi-trash" title="Delete role"></span>
+                                    <!-- <span (click)="deleteCompanyRole(role)" class="pi pi-trash" title="Delete role"></span> -->
+
+                                    <div class="deleteBtn">
+                                        <button type="button" pButton pRipple icon="pi pi-trash" 
+                                            (click)="deleteCompanyRole(role, $event)"
+                                            class="p-button-danger mr-2" 
+                                            tooltipPosition="bottom"></button>
+                                    </div>
                                 </div>
 
                                 <div class="action">

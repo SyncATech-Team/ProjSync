@@ -7,6 +7,7 @@
 
         <!-- Za obavestenja -->
         <p-toast></p-toast>
+        <p-confirmDialog></p-confirmDialog>
         
         <div id="description">
             <h4>Platform members</h4>
@@ -64,9 +65,11 @@
                         
                             <div class="p-input-icon-left ml-auto">
                                 <!-- <i class="pi pi-search"></i> -->
-                                <input pInputText id="search-input-term-users-global" 
+                                <!-- <input pInputText id="search-input-term-users-global" 
                                     #searchInput type="text" (input)="search(dt2)" 
-                                    placeholder="Search keyword"/>
+                                    placeholder="Search keyword"/> -->
+
+                                <input pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
                             </div>
                         </div>
                     </div>
@@ -104,8 +107,11 @@
                             <span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 <div class="action">
-                                    <span (click)="deleteUser(user.username)" class="pi pi-trash" 
-                                        title="Delete user"></span>
+                                    <div class="deleteBtn">
+                                        <button type="button" pButton pRipple icon="pi pi-trash" 
+                                            (click)="deleteUser(user.username, $event)"  class="p-button-danger mr-2" 
+                                            tooltipPosition="bottom"></button>
+                                    </div>
                                 </div>
 
                                 <div class="action">
