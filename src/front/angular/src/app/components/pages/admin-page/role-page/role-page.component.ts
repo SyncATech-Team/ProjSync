@@ -36,6 +36,9 @@ export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
   bsModalRef: BsModalRef<CreateRoleComponent> = new BsModalRef<CreateRoleComponent>();
   
+  //Cuva sta je uneto u search input
+  searchTerm: string = '';
+  
   createdRole: CompanyRole = {
     name: ''
   }
@@ -174,16 +177,16 @@ export class RolePageComponent implements OnInit {
    * Filter po nazivu koji je unet; Prikaz samo onih uloga koje sadrze taj naziv
    * @param table 
    */
-  search(table: Table) {
-    let x = document.getElementById("search-input-term-roles-global") as HTMLInputElement;
-    let searchTerm = x.value.toLowerCase();
-    if(searchTerm.trim() === ''){
-      this.roles = this.roles_backup;
-    }
-    else{
-      this.roles = this.roles.filter(x => x.name.toLowerCase().includes(searchTerm));
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase();
+    if (searchTerm.trim() === '') {
+      //Kreira se novi niz za istim elementima 
+      this.roles = [...this.roles_backup];
+    } else {
+      this.roles = this.roles_backup.filter(role => role.name.toLowerCase().includes(searchTerm));
     }
   }
+  
 
   /**
    * Koristi se za prelazenje sa jedne stranice na drugu
