@@ -28,6 +28,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

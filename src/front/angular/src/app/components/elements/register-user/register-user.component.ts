@@ -4,12 +4,12 @@ import { RegisterModel } from '../../../_models/register-user';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 import { Observable } from 'rxjs';
 import { CompanyRole } from '../../../_models/company-role';
-import { UserPageComponent } from '../../pages/admin-page/user-page/user-page.component';
+import { MessagePopupService } from '../../../_service/message-popup.service';
 
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',
-  styleUrl: './register-user.component.css'
+  styleUrl: './register-user.component.css',
 })
 export class RegisterUserComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
@@ -28,7 +28,7 @@ export class RegisterUserComponent implements OnInit {
   };
 
   constructor(public accoutService: AccountService, 
-    public companyRoleService: CompanyroleService, private userPage: UserPageComponent) { }
+    public companyRoleService: CompanyroleService, public msgPopupService: MessagePopupService) { }
 
   ngOnInit(): void {
     this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
@@ -40,13 +40,13 @@ export class RegisterUserComponent implements OnInit {
 
     this.accoutService.register(this.registrationModel).subscribe({
       next: () => {
-        this.userPage.showSuccess("Successfully registered new user!");
+        this.msgPopupService.showSuccess("Successfully registered new user!");
         this.userCreated.emit(this.registrationModel);
       },
 
       error: (error) => {
         // prikazi poruku greske
-        this.userPage.showError("Unable to register new user. Check input fields!");
+        this.msgPopupService.showError("Unable to register new user. Check input fields!");
       }
     });
   }
@@ -61,9 +61,5 @@ export class RegisterUserComponent implements OnInit {
       this.registrationModel.username = v;
     }
   }
-
-  // close_alerts() {
-  //   this.adminPage.close_all_alerts();
-  // }
 
 }

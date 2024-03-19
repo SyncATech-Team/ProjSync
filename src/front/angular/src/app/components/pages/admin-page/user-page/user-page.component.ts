@@ -18,15 +18,10 @@ interface ExportColumn {
   dataKey: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css',
-  providers: [MessageService]
 })
 export class UserPageComponent implements OnInit {
   
@@ -43,8 +38,7 @@ export class UserPageComponent implements OnInit {
   activityValues: number[] = [0, 100];
 
   constructor(private http: HttpClient, 
-    private userService: UserService, 
-    private messageService: MessageService){ }
+    private userService: UserService){ }
 
   ngOnInit(): void {
       this.userService.getAllUsers().subscribe({
@@ -212,15 +206,6 @@ export class UserPageComponent implements OnInit {
         type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-  }
-
-  // SHOW MESSAGE POPUP
-  showSuccess(message: string) {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
-  }
-
-  showError(message: string) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
   }
 
 }

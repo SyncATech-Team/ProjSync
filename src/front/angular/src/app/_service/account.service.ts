@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
 import { HttpClient } from '@angular/common/http';
@@ -10,10 +10,8 @@ import { environment } from '../../environments/environment';
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
-  static currentUser$: any;
   
   constructor(private http: HttpClient) { }
 
@@ -31,6 +29,29 @@ export class AccountService {
         }
       })
     )
+  }
+
+  getCurrentUser(): User | null {
+    
+    /**
+     * This modification ensures that the function gracefully handles
+     * scenarios where localStorage is not available, returning null in such cases.
+     * This approach is particularly useful when running TypeScript code in
+     * environments where browser-specific features like localStorage are not available.
+     */
+    if (typeof localStorage === 'undefined') {
+      return null; // localStorage is not available, return null
+    }
+    
+    var storage = localStorage.getItem("user");
+    if(!storage) return null;
+
+    var user = JSON.parse(storage);
+    return {
+      username: user['username'],
+      token: user['token'],
+      roles: user['roles']
+    }
   }
 
   setCurentUser(user: User) {
