@@ -9,9 +9,11 @@ import { RolePageComponent } from './components/pages/admin-page/role-page/role-
 import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
 import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
+import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
+  {path: 'account/confirm-email', component: ConfirmEmailComponent},
   {path: '',
     runGuardsAndResolvers: 'pathParamsChange',
     canActivate: [authGuard],
@@ -24,6 +26,7 @@ const routes: Routes = [
       {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]}
     ]
   },
+  
   {path: '**', component: LoginPageComponent, pathMatch: 'full'},
 ];
 

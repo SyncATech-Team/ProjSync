@@ -70,6 +70,12 @@ export class AccountService {
     return this.http.post<RegisterModel>(this.baseUrl + 'Account/register', model);
   }
 
+  confirmEmail(userId: string | null, token: string | null) {
+    if(!userId || !token) return;
+    console.log('verifikacija');
+    return this.http.post(this.baseUrl + `confirm-email?userId=${userId}&token=${token}`, {});
+  }
+
   logout() {
     // izbrisati iz lokalne memorije
     localStorage.removeItem('user');
