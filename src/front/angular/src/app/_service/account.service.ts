@@ -70,8 +70,8 @@ export class AccountService {
     return this.http.post<RegisterModel>(this.baseUrl + 'Account/register', model);
   }
 
-  confirmEmail(userId: string | null, token: string | null) {
-    return this.http.post(this.baseUrl + `account/confirm-email?userId=${userId}&token=${token}`, {});
+  confirmEmail(email: string | null, token: string | null) {
+    return this.http.post(this.baseUrl + `account/confirm-email?email=${email}&token=${token}`, {});
   }
 
   logout() {

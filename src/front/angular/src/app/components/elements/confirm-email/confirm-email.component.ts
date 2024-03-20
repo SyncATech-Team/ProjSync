@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AccountService } from '../../../_service/account.service';
 
 @Component({
@@ -10,17 +10,18 @@ import { AccountService } from '../../../_service/account.service';
 export class ConfirmEmailComponent implements OnInit {
   public hideResetPassword: boolean = true;
 
-  constructor(private route: ActivatedRoute, private accountService: AccountService) {
+  constructor(private activatedRoute: ActivatedRoute, private accountService: AccountService,
+    private router: Router) {
     
   }
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
-      const userId = params.get('userId');
+    this.activatedRoute.queryParamMap.subscribe(params => {
+      const email = params.get('email');
       const token = params.get('token');
-      this.accountService.confirmEmail(userId, token)?.subscribe({
+      this.accountService.confirmEmail(email, token)?.subscribe({
         next: () => {
-          console.log('proslo');
+          this.router.navigateByUrl("/password_reset")
         }
       })
     });

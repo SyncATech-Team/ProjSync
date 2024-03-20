@@ -70,10 +70,10 @@ namespace backAPI.Controllers
             var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             // Obavzeno enkodovati token!
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
-            var conformationLink = $"https://localhost:4200/api/account/confirm-email?email={registerDto.Email}&token={encodedToken}";
+            var conformationLink = $"http://localhost:4200/account/confirm-email?email={registerDto.Email}&token={encodedToken}";
 
             // poslati registacioni mejl
-            // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
+            // _emailService.SendToConfirmEmail(registerDto.Email, registerDto.UserName, conformationLink);
 
             return Ok(conformationLink);
         }
