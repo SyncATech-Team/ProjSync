@@ -71,9 +71,7 @@ export class AccountService {
   }
 
   confirmEmail(userId: string | null, token: string | null) {
-    if(!userId || !token) return;
-    console.log('verifikacija');
-    return this.http.post(this.baseUrl + `confirm-email?userId=${userId}&token=${token}`, {});
+    return this.http.post(this.baseUrl + `account/confirm-email?userId=${userId}&token=${token}`, {});
   }
 
   logout() {
