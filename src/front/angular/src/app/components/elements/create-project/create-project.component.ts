@@ -78,7 +78,7 @@ export class CreateProjectComponent implements OnInit{
     console.log(this.creationModel);
     this.projectService.createProject(this.creationModel).subscribe({
       next: (response)=>{
-        this.homePage.ngOnInit();
+        this.homePage.initializeProjects();
       },
       error: (error)=>{
         console.log(error);
