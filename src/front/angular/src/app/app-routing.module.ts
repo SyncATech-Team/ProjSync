@@ -9,6 +9,7 @@ import { RolePageComponent } from './components/pages/admin-page/role-page/role-
 import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
 import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
+import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
@@ -21,7 +22,8 @@ const routes: Routes = [
       {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
       {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
       {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
-      {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]}
+      {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]},
+      {path: 'home/projects', component: ProjectPageComponent, canActivate: [adminGuard]}
     ]
   },
   {path: '**', component: LoginPageComponent, pathMatch: 'full'},
