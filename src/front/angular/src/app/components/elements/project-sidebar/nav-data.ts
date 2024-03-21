@@ -6,11 +6,6 @@ export const navbarData = [
     },
     {
         routeLink : '',
-        icon: 'fa-solid fa-folder-tree',
-        label: 'Dependencies'
-    },
-    {
-        routeLink : '',
         icon: 'fa-solid fa-people-group',
         label: 'People'
     },
