@@ -119,7 +119,7 @@ export class RolePageComponent implements OnInit {
     // const response = prompt("In order to delete role please enter [" + argRole.name + "]");
     // if(response != argRole.name) return;
 
-    console.log(argRole);
+    // console.log(argRole);
 
     this.confirmationService.confirm({
       target: event.target as EventTarget,
@@ -136,12 +136,12 @@ export class RolePageComponent implements OnInit {
           next: _ => {
             const indexToRemove = this.roles.findIndex(role => role.name === argRole.name);
             if (indexToRemove !== -1) {
-              this.roles = this.roles.splice(indexToRemove, 1);
+              this.roles.splice(indexToRemove, 1);
             }
     
             const indexToRemoveBackup = this.roles_backup.findIndex(role => role.name === argRole.name);
             if(indexToRemoveBackup !== -1) {
-              this.roles_backup = this.roles_backup.splice(indexToRemoveBackup, 1);
+              this.roles_backup.splice(indexToRemoveBackup, 1);
             }
             this.msgPopupSevice.showSuccess("Role deleted");
           },

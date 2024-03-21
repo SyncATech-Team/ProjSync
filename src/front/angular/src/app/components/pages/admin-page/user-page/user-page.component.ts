@@ -114,16 +114,16 @@ export class UserPageComponent implements OnInit {
         accept: (input: string) => {
           this.userService.deleteUser(username).subscribe({
             next: _=>{
-              const indexToRemove = this.users.findIndex(username => username === username);
+              const indexToRemove = this.users.findIndex(user => user.username === username);
               
               //Brisanje iz lokalnog niza
               if (indexToRemove !== -1) {
-                this.users = this.users.splice(indexToRemove, 1);
+                this.users.splice(indexToRemove, 1);
               }
       
-              const indexToRemoveBackup = this.users_backup.findIndex(username => username === username);
+              const indexToRemoveBackup = this.users_backup.findIndex(user => user.username === username);
               if(indexToRemoveBackup !== -1) {
-                this.users_backup = this.users_backup.splice(indexToRemoveBackup, 1);
+                this.users_backup.splice(indexToRemoveBackup, 1);
               }
               this.msgPopupService.showSuccess("User deleted");
             },
