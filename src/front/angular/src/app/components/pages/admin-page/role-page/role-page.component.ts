@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { Table } from 'primeng/table';
@@ -36,6 +36,7 @@ interface ExportColumn {
 export class RolePageComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
   bsModalRef: BsModalRef<CreateRoleComponent> = new BsModalRef<CreateRoleComponent>();
+  @ViewChild(Table) table!:Table;
   
   //Cuva sta je uneto u search input
   searchTerm: string = '';
@@ -100,7 +101,8 @@ export class RolePageComponent implements OnInit {
         const createdRole = this.bsModalRef.content?.createdRole;
         this.companyRoleService.create(createdRole!).subscribe({
           next: () => {
-            this.msgPopupSevice.showSuccess("Successfully created new role")
+            this.msgPopupSevice.showSuccess("Successfully created new role");
+            this.table.reset();
           },
           error: _ => {
             this.msgPopupSevice.showError("Unable to create new role with given parameters. Probably duplicate names")
@@ -144,6 +146,7 @@ export class RolePageComponent implements OnInit {
               this.roles_backup.splice(indexToRemoveBackup, 1);
             }
             this.msgPopupSevice.showSuccess("Role deleted");
+            this.table.reset();
           },
           error: error => {
             this.msgPopupSevice.showError("Unable to delete choosen role. Probably in use.");
