@@ -30,6 +30,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { EditUserInfoAdminComponent } from './components/elements/edit-user-info-admin/edit-user-info-admin.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DashboardPageComponent,
     PasswordResetPageComponent,
     PasswordResetComponent,
-    NotificationComponent
+    NotificationComponent,
+    EditUserInfoAdminComponent
   ],
   imports: [
     BrowserModule,

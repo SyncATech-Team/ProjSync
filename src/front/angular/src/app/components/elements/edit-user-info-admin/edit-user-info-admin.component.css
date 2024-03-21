@@ -1,0 +1,26 @@
+.action {
+    background-color: lightblue;
+    border-radius: 20%;
+}
+
+.editUserInfo {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action span {
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    color: black;
+    cursor: pointer;
+}
+
+.pi-pencil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

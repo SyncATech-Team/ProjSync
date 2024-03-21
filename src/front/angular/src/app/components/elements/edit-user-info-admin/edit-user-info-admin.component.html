@@ -1,0 +1,112 @@
+<div class="action">
+    <div class="editUserInfo">
+        <span (click)="printConnected()" class="pi pi-pencil" data-bs-toggle="modal" data-bs-target="#modalEditInfo" title="Edit user">
+
+        </span>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditInfo" tabindex="-1" aria-labelledby="modalEditInfoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalEditInfoLabel">Edit user information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
+
+            <!-- Form body -->
+            <div class="modal-body">
+                <form #updateUserInfoForm="ngForm" id="formEditUserInfo" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
+
+                    <div class="col-md-6"> <!-- field za ime-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                class="form-control required-field"
+                                placeholder="John"
+                                [(ngModel)]="editUser.firstName"
+                                value="{{userForEdit?.firstName}}"
+                                required
+                            >
+                            <label for="firstName" class="form-label">First Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6"> <!-- field za prezime-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                class="form-control"
+                                placeholder="Doe"
+                                [(ngModel)]="editUser.lastName"
+                                value="{{userForEdit?.lastName}}"
+                                required
+                            >
+                            <label for="lastName" class="form-label">Last Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12"> <!-- field za email-->
+                        <div class="form-floating mb-3">
+                            <input
+                                type="email"
+                                id="input-email"
+                                name="email"
+                                class="form-control"
+                                placeholder="syncatechpmf@domain.com"
+                                [(ngModel)]="editUser.email"
+                                value="{{userForEdit?.email}}"
+                                required
+                                autocomplete="off"
+                            >
+                            <label for="input-email" class="form-label">Email</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12"> <!-- field za username-->
+                        <div class="form-floating mb-3">
+                            <input
+                                #input_username
+                                type="text"
+                                id="input-username"
+                                name="username"
+                                class="form-control"
+                                placeholder="username"
+                                [(ngModel)]="editUser.username"
+                                value="{{userForEdit?.username}}"
+                                required
+                                autocomplete="off"
+                            >
+                            <label for="input-username" class="form-label">Username</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12"> <!-- field za companyRole-->
+                        <div class="form-floating mb-3">
+                            <select id="companyRoleName" class="form-select" aria-label="companyRoleId" [(ngModel)]="editUser.companyRoleName" name="companyRoleName">
+                                <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
+                            </select>
+                            <label for="companyRoleId" class="form-label">Company Role</label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <!-- End of form body -->
+
+            <!-- Form footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="formRegisterUser" class="btn btn-primary" data-bs-dismiss="modal">Apply changes</button>
+            </div>
+            <!-- End of form footer -->
+
+        </div>
+    </div>
+</div>

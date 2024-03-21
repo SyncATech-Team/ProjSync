@@ -113,10 +113,11 @@
                                             tooltipPosition="bottom"></button>
                                     </div>
                                 </div>
-
-                                <div class="action">
-                                    <span class="pi pi-pencil" title="Edit user"></span>
+                                
+                                <div>
+                                    <app-edit-user-info-admin [className]="user.username" [users]="users"></app-edit-user-info-admin>
                                 </div>
+                                
                             </div>
                         </td>
                     </tr>
