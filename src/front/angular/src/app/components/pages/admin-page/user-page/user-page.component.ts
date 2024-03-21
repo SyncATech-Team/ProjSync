@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
 import { RegisterModel } from '../../../../_models/register-user';
 import { UserService } from '../../../../_service/user.service';
@@ -40,6 +40,7 @@ export class UserPageComponent implements OnInit {
   rows = 10;
   loading: boolean = true;
   activityValues: number[] = [0, 100];
+  @ViewChild(Table) table!:Table;
 
   constructor(private http: HttpClient, 
     private userService: UserService, 
@@ -81,6 +82,7 @@ export class UserPageComponent implements OnInit {
       preferedLanguage: "english"   // proveriti
     });  // Add the new user to the users array
     this.users_backup = this.users;
+    this.table.reset();
   }
 
   getRandomInteger(min: number, max: number): number {
@@ -126,6 +128,7 @@ export class UserPageComponent implements OnInit {
                 this.users_backup.splice(indexToRemoveBackup, 1);
               }
               this.msgPopupService.showSuccess("User deleted");
+              this.table.reset();
             },
             error: error => {
               this.msgPopupService.showError("Unable to delete user");
