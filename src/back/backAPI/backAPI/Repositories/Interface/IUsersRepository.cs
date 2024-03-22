@@ -44,7 +44,7 @@ namespace backAPI.Repositories.Interface {
         /// <param name="username"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<bool> UpdateUser(string username, UserDto user);
+        Task<string> UpdateUser(string username, UserDto user);
 
         /// <summary>
         /// Funkcija koja odredjuje id za prosledjeno korisnicko ime

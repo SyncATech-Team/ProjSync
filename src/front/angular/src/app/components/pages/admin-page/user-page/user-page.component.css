@@ -79,8 +79,9 @@ th {
 }
 
 .profilecontent img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 
 /* LINKS */
@@ -109,4 +110,19 @@ a:hover {
 .invalid-email {
     border-width: 2px;
     border-color: red;
+}
+
+/* Modal style */
+div.modal-content {
+    width: fit-content;
+}
+
+div.div-image {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+div.div-image img {
+    width: 100px;
+    border-radius: 50%;
 }

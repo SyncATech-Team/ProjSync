@@ -14,7 +14,7 @@
             You can invite a new member to your platform by creating their account.
         </div>
 
-        <div id="controls">
+        <div id="controls" style="float: right;">
             <!-- Dodati polja za search, filter etc. -->
             <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
         </div>
@@ -95,10 +95,10 @@
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Account</span>
                             <div class="profilecontent">
-                                <img *ngIf="1==1; else secondImageSource"
-                                src={{getDefaultImagePath(user.username)}} alt="user-default-image">
+                                <img draggable="false" *ngIf="1==1; else secondImageSource"
+                                src={{getUserImagePath(user.username)}} alt="user-default-image">
                                 <ng-template #secondImageSource>
-                                    <img src="{{getDefaultImagePath(user.username)}}" alt="user-image">
+                                    <img src="{{getUserImagePath(user.username)}}" alt="user-image">
                                 </ng-template>
                                 <span>{{ user.username }}</span>
                             </div>
@@ -153,6 +153,7 @@
 <div class="modal fade bd-example-modal-lg" id="modalEditInfo" tabindex="-1" aria-labelledby="modalEditInfoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
+            
             <!-- Form Header -->
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="modalEditInfoLabel">Edit user information</h1>
@@ -162,97 +163,105 @@
 
             <!-- Form body -->
             <div class="modal-body">
-                <form #updateUserInfoForm="ngForm" id="formEditUserInfo" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
+                <div class="div-image">
+                    <img draggable="false" class="user-image" src="" alt="User image">
+                </div>
+                <div class="form">
+                    <form #updateUserInfoForm="ngForm" id="formEditUserInfo" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
 
-                    <div class="col-md-6"> <!-- field za ime-->
-                        <div class="form-floating mb-3">
-                            <input 
-                                type="text"
-                                name="firstName"
-                                class="firstName form-control required-field"
-                                placeholder="John"
-                                [(ngModel)]="editUser.firstName"
-                                required
-                                spellcheck="false"
-                            >
-                            <label for="firstName" class="form-label">First Name</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6"> <!-- field za prezime-->
-                        <div class="form-floating mb-3">
-                            <input 
-                                type="text"
-                                name="lastName"
-                                class="lastName form-control required-field"
-                                placeholder="Doe"
-                                [(ngModel)]="editUser.lastName"
-                                required
-                            >
-                            <label for="lastName" class="form-label">Last Name</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12"> <!-- field za email-->
-                        <div class="form-floating mb-3">
-                            <input
-                                type="email"
-                                id="input-email"
-                                name="input-email"
-                                class="email form-control required-field"
-                                placeholder="syncatechpmf@domain.com"
-                                [(ngModel)]="editUser.email"
-                                (change)="emailFormatCheck(editUser.email)"
-                                required
-                                autocomplete="off"
-                            >
-                            <label for="input-email" class="form-label">Email</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12"> <!-- field za username-->
-                        <div class="form-floating mb-3">
-                            <input
-                                #input_username
-                                type="text"
-                                name="username"
-                                class="username form-control required-field"
-                                placeholder="username"
-                                [(ngModel)]="editUser.username"
-                                required
-                                autocomplete="off"
-                            >
-                            <label for="input-username" class="form-label">Username</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12"> <!-- field za companyRole-->
-                        <div class="form-floating mb-3">
-                            <select id="companyRoleName" class="companyRoles form-select" [(ngModel)]="editUser.companyRoleName" aria-label="companyRoleId" name="companyRoleName">
-                                <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
-                            </select>
-                            <label for="companyRoleId" class="form-label">Company Role</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-floating mb-3">
-                            <input
-                                type="text"
-                                name="address"
-                                id="address-input"
-                                class="address form-control required-field"
-                                placeholder="Address"
-                                [(ngModel)]="editUser.address"
-                                required
-                                autocomplete="off"
-                                spellcheck="false"
+                        <div class="col-md-6"> <!-- field za ime-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    name="firstName"
+                                    class="firstName form-control required-field"
+                                    placeholder="John"
+                                    [(ngModel)]="editUser.firstName"
+                                    required
+                                    spellcheck="false"
                                 >
-                            <label for="address-input" class="form-label">Address</label>
+                                <label for="firstName" class="form-label">First Name</label>
+                            </div>
                         </div>
-                    </div>
-
-                </form>
+    
+                        <div class="col-md-6"> <!-- field za prezime-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    name="lastName"
+                                    class="lastName form-control required-field"
+                                    placeholder="Doe"
+                                    [(ngModel)]="editUser.lastName"
+                                    required
+                                    spellcheck="false"
+                                >
+                                <label for="lastName" class="form-label">Last Name</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za email-->
+                            <div class="form-floating mb-3">
+                                <input
+                                    type="email"
+                                    id="input-email"
+                                    name="input-email"
+                                    class="email form-control required-field"
+                                    placeholder="syncatechpmf@domain.com"
+                                    [(ngModel)]="editUser.email"
+                                    (change)="emailFormatCheck(editUser.email)"
+                                    required
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                                <label for="input-email" class="form-label">Email</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za username-->
+                            <div class="form-floating mb-3">
+                                <input
+                                    #input_username
+                                    type="text"
+                                    name="username"
+                                    class="username form-control required-field"
+                                    placeholder="username"
+                                    [(ngModel)]="editUser.username"
+                                    required
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                                <label for="input-username" class="form-label">Username</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za companyRole-->
+                            <div class="form-floating mb-3">
+                                <select id="companyRoleName" class="companyRoles form-select" [(ngModel)]="editUser.companyRoleName" aria-label="companyRoleId" name="companyRoleName">
+                                    <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
+                                </select>
+                                <label for="companyRoleId" class="form-label">Company Role</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za adresu -->
+                            <div class="form-floating mb-3">
+                                <input
+                                    type="text"
+                                    name="address"
+                                    id="address-input"
+                                    class="address form-control required-field"
+                                    placeholder="Address"
+                                    [(ngModel)]="editUser.address"
+                                    required
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                    >
+                                <label for="address-input" class="form-label">Address</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
             </div>
             <!-- End of form body -->
 

@@ -79,12 +79,20 @@ namespace backAPI.Repositories.Implementation {
         /* **********************************************************************************
          * Update user
          * ********************************************************************************** */
-        public async Task<bool> UpdateUser(string username, UserDto request) {
+        public async Task<string> UpdateUser(string username, UserDto request) {
             var user = await GetUserByUsername(username);
 
             // ne postoji user
             if (user == null) {
-                return false;
+                return "User not found";
+            }
+
+            if(user.UserName != request.Username) {
+                if(await UserExistsByUsername(request.Username)) return "Username already in use";
+            }
+
+            if(user.Email != request.Email) {
+                if(await UserExistsByEmail(request.Email)) return "Email address already in use";
             }
 
             user.UserName = request.Username;
@@ -102,7 +110,7 @@ namespace backAPI.Repositories.Implementation {
 
             await dataContext.SaveChangesAsync();
 
-            return true;
+            return "OK";
         }
         /* **********************************************************************************
          * UsernameToId
