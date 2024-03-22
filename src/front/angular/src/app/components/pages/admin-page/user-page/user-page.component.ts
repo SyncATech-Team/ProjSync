@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
 import { RegisterModel } from '../../../../_models/register-user';
 import { UserService } from '../../../../_service/user.service';
@@ -7,6 +7,9 @@ import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
+import { Observable } from 'rxjs';
+import { CompanyRole } from '../../../../_models/company-role';
+import { CompanyroleService } from '../../../../_service/companyrole.service';
 
 interface Column {
   field: string;
@@ -31,6 +34,21 @@ export class UserPageComponent implements OnInit {
   users: UserGetter[] = [];
   users_backup: UserGetter[] = [];
 
+  roles$: Observable<CompanyRole[]> | undefined;
+
+  editUser: UserGetter = {
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    companyRoleName: '',
+    contactPhone: '',
+    linkedinProfile: '',
+    status: '',
+    isVerified: false,
+    preferedLanguage: ''
+  };
+
   searchTerm : string = '';
 
   cols!: Column[];
@@ -44,7 +62,8 @@ export class UserPageComponent implements OnInit {
   constructor(private http: HttpClient, 
     private userService: UserService, 
     private msgPopupService: MessagePopupService,
-    private confirmationService: ConfirmationService){ }
+    private confirmationService: ConfirmationService,
+    private companyRoleService: CompanyroleService){ }
 
   ngOnInit(): void {
       this.userService.getAllUsers().subscribe({
@@ -63,6 +82,8 @@ export class UserPageComponent implements OnInit {
         { field: 'email', header: 'Email address', customExportHeader: 'Email' },
         { field: 'companyRoleName', header: 'Company position', customExportHeader: 'Position' },
       ];
+
+      this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
 
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
   }
@@ -253,6 +274,45 @@ export class UserPageComponent implements OnInit {
         type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  showModalForUser(user: UserGetter) {
+    let firstNameField = document.getElementsByClassName("firstName")[0] as HTMLInputElement;
+    let lastNameField = document.getElementsByClassName("lastName")[0] as HTMLInputElement;
+    let emailAddress = document.getElementsByClassName("email")[0] as HTMLInputElement;
+    let username = document.getElementsByClassName("username")[0] as HTMLInputElement;
+    let rolesSelect = document.getElementsByClassName("companyRoles")[0] as HTMLSelectElement;
+
+    if(firstNameField) { 
+      firstNameField.value = user.firstName; 
+      this.editUser.firstName = user.firstName;
+    }
+    if(lastNameField) { 
+      lastNameField.value = user.lastName;
+      this.editUser.lastName = user.lastName;
+     }
+    if(emailAddress) { 
+      emailAddress.value = user.email;
+      this.editUser.email = user.email;
+     }
+    if(username) { 
+      username.value = user.username; 
+      this.editUser.username = user.username;
+    }
+    if(rolesSelect) {
+      for (let index = 0; index < rolesSelect.children.length; index++) {
+        let element = rolesSelect.children[index] as HTMLOptionElement;
+        if(element.textContent === user.companyRoleName) {
+          element.selected = true;
+          this.editUser.companyRoleName = user.companyRoleName;
+          break;
+        }
+      }
+    }
+  }
+
+  applyEditChanges() {
+    console.log(this.editUser);
   }
 
 }
