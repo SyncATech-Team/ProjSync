@@ -20,6 +20,9 @@
         </div>
 
         <div id="users">
+
+            <!-- Dugmici za prebacivanje stranice i vracanje na prvu -->
+            
             <div class="mb-1">
                 <p-button 
                     type="button" icon="pi pi-chevron-left" (click)="prev()" 
@@ -29,6 +32,7 @@
                 <p-button type="button" icon="pi pi-chevron-right" (click)="next()"
                     [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
             </div>
+
 
             <!-- Table start -->
             <p-table
@@ -53,6 +57,9 @@
                  -->
                 <ng-template pTemplate="caption" class="align-content-center justify-content-around">
                     <div id="header-content" class="flex">
+
+                        <!-- Dugmici za exportovanje fajlova -->
+
                         <div class="exportFileOptions">
                             <button type="button" pButton pRipple icon="pi pi-file-excel" 
                                 (click)="exportExcel()"  class="p-button-success mr-2" 
