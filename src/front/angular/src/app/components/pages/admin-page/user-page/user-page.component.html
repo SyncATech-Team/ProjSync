@@ -20,6 +20,9 @@
         </div>
 
         <div id="users">
+
+            <!-- Dugmici za prebacivanje stranice i vracanje na prvu -->
+            
             <div class="mb-1">
                 <p-button 
                     type="button" icon="pi pi-chevron-left" (click)="prev()" 
@@ -29,6 +32,8 @@
                 <p-button type="button" icon="pi pi-chevron-right" (click)="next()"
                     [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
             </div>
+
+            <!-- Promena kolicine redova unutar tabele -->
             <p-table
                 #dt2
                 [value]="users"
@@ -47,6 +52,9 @@
                 
                 <ng-template pTemplate="caption" class="align-content-center justify-content-around">
                     <div id="header-content" class="flex">
+
+                        <!-- Dugmici za exportovanje fajlova -->
+
                         <div class="exportFileOptions">
                             <button type="button" pButton pRipple icon="pi pi-file-excel" 
                                 (click)="exportExcel()"  class="p-button-success mr-2" 
@@ -84,8 +92,11 @@
                     </tr>
                 </ng-template>
 
+                <!-- Redovi Usera unutar tabele -->
+                
                 <ng-template pTemplate="body" let-user>
                     <tr>
+                        <!-- Slika Usera i Username -->
                         <td><span class="p-column-title" style="font-weight: bold;">Account</span>
                             <div class="profilecontent">
                                 <img *ngIf="1==1; else secondImageSource"
@@ -96,13 +107,16 @@
                                 <span>{{ user.username }}</span>
                             </div>
                         </td>
+                        <!-- Email -->
                         <td><span class="p-column-title" style="font-weight: bold;">Email</span>
                             <a href="mailto:{{user.email}}"> {{user.email}}</a>
                         </td>
+                        <!-- Company Role -->
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Company role</span>
                             {{ user.companyRoleName }}
                         </td>
+                        <!-- Delete i Edit Actions -->
                         <td>
                             <span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
@@ -123,5 +137,7 @@
                 </ng-template>
             </p-table>
         </div>
+        <!-- End of Users div -->
     </div>
+    <!-- End of Content -->
 </div>

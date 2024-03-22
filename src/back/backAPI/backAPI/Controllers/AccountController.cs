@@ -66,7 +66,7 @@ namespace backAPI.Controllers
             if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
             // poslati registacioni mejl
-            // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.Username);
+            // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.UserName);
 
             return Ok();
         }
