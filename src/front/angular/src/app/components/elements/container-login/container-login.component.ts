@@ -15,15 +15,20 @@ export class ContainerLoginComponent {
     password:  ""
   }
 
-  constructor(public accountService: AccountService, private router: Router) { }
-
   showPassword: boolean = false;
+  emailValid: boolean = false;
+
+  constructor(public accountService: AccountService, private router: Router) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
   login() {
+    if (!this.emailValid) {
+      return;
+    }
+
     // dobili smo Observable, moramo da uradimo subscribe da bismo koristili
     this.accountService.login(this.user).subscribe({
       next: () => {
@@ -36,7 +41,7 @@ export class ContainerLoginComponent {
         let x = document.getElementById("invalid_login_div");
         if(x != null) x.hidden = false;
       }
-    })
+    });
   }
 
   hasAdminRole() {
@@ -48,5 +53,12 @@ export class ContainerLoginComponent {
 
     return false;
   }
+
+  validateEmail(email: string): boolean {
+    const regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+    this.emailValid = regex.test(email);
+    return this.emailValid;
+  }
+
 
 }

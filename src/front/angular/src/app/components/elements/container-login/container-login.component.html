@@ -22,7 +22,7 @@
                         type="email" 
                         placeholder="syncatechpmf@domain.com" 
                         [(ngModel)]="user.email"
-                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                        (ngModelChange)="validateEmail(user.email)"
                         spellcheck="false"
                         required
                         autocomplete="off">
@@ -64,7 +64,8 @@
 
                 <!-- Submit button -->
                 <div id="login-btn-div" class="form-group">
-                    <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="loginForm.invalid">Login</button>
+                    <!-- <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="loginForm.invalid">Login</button> -->
+                    <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="!emailValid || loginForm.invalid">Login</button>
                 </div>
                 <!-- End of Submit button -->
 
