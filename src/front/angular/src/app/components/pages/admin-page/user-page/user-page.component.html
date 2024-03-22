@@ -89,9 +89,9 @@
                             <span class="p-column-title" style="font-weight: bold;">Account</span>
                             <div class="profilecontent">
                                 <img *ngIf="1==1; else secondImageSource"
-                                src={{getDefaultImagePath()}} alt="user-default-image">
+                                src={{getDefaultImagePath(user.username)}} alt="user-default-image">
                                 <ng-template #secondImageSource>
-                                    <img src="{{getDefaultImagePath()}}" alt="user-image">
+                                    <img src="{{getDefaultImagePath(user.username)}}" alt="user-image">
                                 </ng-template>
                                 <span>{{ user.username }}</span>
                             </div>
