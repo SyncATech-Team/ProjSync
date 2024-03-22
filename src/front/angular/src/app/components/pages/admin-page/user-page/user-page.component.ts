@@ -156,7 +156,7 @@ export class UserPageComponent implements OnInit {
    * @param username 
    * @returns 
    */
-  getDefaultImagePath(username: string): string {
+  getUserImagePath(username: string): string {
     let usernameSumOfCharacters: number = 0;
     for (let index = 0; index < username.length; index++) {
       usernameSumOfCharacters += username.charCodeAt(index);
@@ -341,6 +341,8 @@ export class UserPageComponent implements OnInit {
     let rolesSelect = document.getElementsByClassName("companyRoles")[0] as HTMLSelectElement;
     let address = document.getElementsByClassName("address")[0] as HTMLInputElement;
 
+    let img = document.getElementsByClassName("user-image")[0] as HTMLImageElement;
+
     if(firstNameField) { 
       firstNameField.value = user.firstName; 
       this.editUser.firstName = user.firstName;
@@ -370,6 +372,9 @@ export class UserPageComponent implements OnInit {
     if(address) {
       address.value = user.address;
       this.editUser.address = user.address;
+    }
+    if(img) {
+      img.src = this.getUserImagePath(user.username);
     }
   }
   /**
