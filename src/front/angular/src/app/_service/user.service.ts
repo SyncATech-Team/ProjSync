@@ -19,4 +19,9 @@ export class UserService {
   deleteUser(username: string){
     return this.http.delete<void>(`${this.baseUrl}users/${username}`);
   }
+
+  updateUserInfo(username: string, model: UserGetter) {
+    return this.http.put<void>(`${this.baseUrl}users/${username}`, model);
+  }
+
 }

@@ -7,6 +7,10 @@ import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
+import { Observable } from 'rxjs';
+import { CompanyRole } from '../../../../_models/company-role';
+import { CompanyroleService } from '../../../../_service/companyrole.service';
+import { response } from 'express';
 
 interface Column {
   field: string;
@@ -31,6 +35,24 @@ export class UserPageComponent implements OnInit {
   users: UserGetter[] = [];
   users_backup: UserGetter[] = [];
 
+  roles$: Observable<CompanyRole[]> | undefined;
+
+  initialUsername: string = '';
+  editUser: UserGetter = {
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    companyRoleName: '',
+    contactPhone: '',
+    profilePhoto: '',
+    address: '',
+    linkedinProfile: '',
+    status: '',
+    isVerified: false,
+    preferedLanguage: ''
+  };
+
   searchTerm : string = '';
 
   cols!: Column[];
@@ -45,7 +67,8 @@ export class UserPageComponent implements OnInit {
   constructor(private http: HttpClient, 
     private userService: UserService, 
     private msgPopupService: MessagePopupService,
-    private confirmationService: ConfirmationService){ }
+    private confirmationService: ConfirmationService,
+    private companyRoleService: CompanyroleService){ }
 
   ngOnInit(): void {
       this.userService.getAllUsers().subscribe({
@@ -65,6 +88,8 @@ export class UserPageComponent implements OnInit {
         { field: 'companyRoleName', header: 'Company position', customExportHeader: 'Position' },
       ];
 
+      this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
+
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
   }
 
@@ -76,6 +101,8 @@ export class UserPageComponent implements OnInit {
       lastName: user.lastName,
       companyRoleName: user.companyRole,
       contactPhone: user.contactPhone,
+      profilePhoto: '',
+      address: user.address,
       linkedinProfile: user.linkedinProfile,
       status: user.status,
       isVerified: false,            // proveriti
@@ -257,6 +284,54 @@ export class UserPageComponent implements OnInit {
         type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  showModalForUser(user: UserGetter) {
+    this.initialUsername = user.username;
+    let firstNameField = document.getElementsByClassName("firstName")[0] as HTMLInputElement;
+    let lastNameField = document.getElementsByClassName("lastName")[0] as HTMLInputElement;
+    let emailAddress = document.getElementsByClassName("email")[0] as HTMLInputElement;
+    let username = document.getElementsByClassName("username")[0] as HTMLInputElement;
+    let rolesSelect = document.getElementsByClassName("companyRoles")[0] as HTMLSelectElement;
+
+    if(firstNameField) { 
+      firstNameField.value = user.firstName; 
+      this.editUser.firstName = user.firstName;
+    }
+    if(lastNameField) { 
+      lastNameField.value = user.lastName;
+      this.editUser.lastName = user.lastName;
+     }
+    if(emailAddress) { 
+      emailAddress.value = user.email;
+      this.editUser.email = user.email;
+     }
+    if(username) { 
+      username.value = user.username; 
+      this.editUser.username = user.username;
+    }
+    if(rolesSelect) {
+      for (let index = 0; index < rolesSelect.children.length; index++) {
+        let element = rolesSelect.children[index] as HTMLOptionElement;
+        if(element.textContent === user.companyRoleName) {
+          element.selected = true;
+          this.editUser.companyRoleName = user.companyRoleName;
+          break;
+        }
+      }
+    }
+  }
+
+  applyEditChanges() {
+    this.userService.updateUserInfo(this.initialUsername, this.editUser).subscribe({
+      next: response => {
+        this.msgPopupService.showSuccess("Successfully edited user info");
+        this.ngOnInit();
+      },
+      error: error => {
+        this.msgPopupService.showError("Unable to edit user");
+      }
+    });
   }
 
 }
