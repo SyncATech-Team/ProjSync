@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 import { navbarData } from './nav-data';
 import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
@@ -22,7 +22,25 @@ export class ProjectSidebarComponent {
   screenWidth = 0;
   navData = navbarData;
 
-  constructor(public accoutService: AccountService, private router: Router) { }
+  constructor(public accoutService: AccountService, private router: Router) { 
+    this.screenWidth = window.innerWidth;
+    this.setCollapsedState();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.screenWidth = window.innerWidth;
+    this.setCollapsedState();
+  }
+
+  setCollapsedState() {
+    if (this.screenWidth > 960) {
+      this.collapsed = true;
+    } else {
+      this.collapsed = false;
+    }
+    this.emitToggleEvent();
+  }
 
   toggleCollapse() {
     this.collapsed = !this.collapsed;
@@ -31,6 +49,10 @@ export class ProjectSidebarComponent {
 
   closeSidenav() {
     this.collapsed = false;
+    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+  }
+
+  emitToggleEvent() {
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 }

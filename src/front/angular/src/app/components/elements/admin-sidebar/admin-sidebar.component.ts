@@ -1,13 +1,13 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { AdminPageComponent } from '../../pages/admin-page/admin-page.component';
+import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { navbarData } from './nav-data';
 import { Router } from '@angular/router';
 
-interface SideNavToggle{
-  screenWidth : number;
+interface SideNavToggle {
+  screenWidth: number;
   collapsed: boolean;
 }
+
 @Component({
   selector: 'app-admin-sidebar',
   templateUrl: './admin-sidebar.component.html',
@@ -19,11 +19,29 @@ export class AdminSidebarComponent {
 
   //TRUE -> otvoren side nav
   //FALSE -> zatvoren side nav
-  collapsed : boolean = false;
+  collapsed: boolean = false;
   screenWidth = 0;
   navData = navbarData;
 
-  constructor(public accoutService: AccountService, private router: Router) { }
+  constructor(public accountService: AccountService, private router: Router) {
+    this.screenWidth = window.innerWidth;
+    this.setCollapsedState();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.screenWidth = window.innerWidth;
+    this.setCollapsedState();
+  }
+
+  setCollapsedState() {
+    if (this.screenWidth > 960) {
+      this.collapsed = true;
+    } else {
+      this.collapsed = false;
+    }
+    this.emitToggleEvent();
+  }
 
   toggleCollapse() {
     this.collapsed = !this.collapsed;
@@ -35,8 +53,12 @@ export class AdminSidebarComponent {
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 
+  emitToggleEvent() {
+    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+  }
+
   logout() {
-    this.accoutService.logout();
+    this.accountService.logout();
     this.router.navigateByUrl('/');
   }
 }
