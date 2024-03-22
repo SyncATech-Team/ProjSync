@@ -5,6 +5,8 @@ export interface UserGetter {
     firstName: string;
     lastName: string;
     companyRoleName: string;
+    profilePhoto: string;
+    address: string;
     contactPhone: string;
     linkedinProfile: string;
     status: string;
