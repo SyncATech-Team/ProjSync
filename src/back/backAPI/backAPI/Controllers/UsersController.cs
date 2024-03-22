@@ -74,13 +74,15 @@ namespace backAPI.Controllers
                 PreferedLanguage = user.PreferedLanguage
             });
         }
-
+        /* *****************************************************************************
+         * Ubdate user for given username
+         * ***************************************************************************** */
         [HttpPut("{username}")]
         public async Task<ActionResult<string>> UpdateUser(string username, UserDto request) {
             
             var updated = await _usersRepository.UpdateUser(username, request);
-            if(!updated) {
-                return BadRequest();
+            if(updated != "OK") {
+                return BadRequest(updated);
             }
 
             return Ok();

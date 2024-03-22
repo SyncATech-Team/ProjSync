@@ -14,7 +14,7 @@
             You can invite a new member to your platform by creating their account.
         </div>
 
-        <div id="controls">
+        <div id="controls" style="float: right;">
             <!-- Dodati polja za search, filter etc. -->
             <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
         </div>
@@ -193,6 +193,7 @@
                                     placeholder="Doe"
                                     [(ngModel)]="editUser.lastName"
                                     required
+                                    spellcheck="false"
                                 >
                                 <label for="lastName" class="form-label">Last Name</label>
                             </div>
@@ -210,6 +211,7 @@
                                     (change)="emailFormatCheck(editUser.email)"
                                     required
                                     autocomplete="off"
+                                    spellcheck="false"
                                 >
                                 <label for="input-email" class="form-label">Email</label>
                             </div>
@@ -226,6 +228,7 @@
                                     [(ngModel)]="editUser.username"
                                     required
                                     autocomplete="off"
+                                    spellcheck="false"
                                 >
                                 <label for="input-username" class="form-label">Username</label>
                             </div>
@@ -240,7 +243,7 @@
                             </div>
                         </div>
     
-                        <div class="col-12">
+                        <div class="col-12"> <!-- field za adresu -->
                             <div class="form-floating mb-3">
                                 <input
                                     type="text"
