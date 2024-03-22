@@ -30,18 +30,19 @@ namespace backAPI.Controllers
             foreach (var user in users) {
                 // Enkapsuliraj podatke o korisniku u DTO objekat
                 dTOUsers.Add(new UserDto {
+                    Username = user.UserName,
+                    Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Email = user.Email,
-                    Username = user.UserName,
                     CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name, // ??
+                    ProfilePhoto = user.ProfilePhoto,
                     Address = user.Address,
                     ContactPhone = user.ContactPhone,
-                    LinkedinProfile = user.LinkedinProfile,
                     Status = user.Status,
-                    ProfilePhoto = user.ProfilePhoto,
                     IsVerified = user.IsVerified,
-                    PreferedLanguage = user.PreferedLanguage
+                    PreferedLanguage = user.PreferedLanguage,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt
                 });
             }
 
@@ -60,18 +61,19 @@ namespace backAPI.Controllers
             }
 
             return Ok(new UserDto {
+                Username = user.UserName,
+                Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email,
-                Username = user.UserName,
                 CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name, // ??
+                ProfilePhoto = user.ProfilePhoto,
                 Address = user.Address,
                 ContactPhone = user.ContactPhone,
-                LinkedinProfile = user.LinkedinProfile,
                 Status = user.Status,
-                ProfilePhoto = user.ProfilePhoto,
                 IsVerified = user.IsVerified,
-                PreferedLanguage = user.PreferedLanguage
+                PreferedLanguage = user.PreferedLanguage,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
             });
         }
         /* *****************************************************************************

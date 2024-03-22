@@ -84,6 +84,8 @@
                         <th>Account</th>
                         <th>Email address</th>
                         <th>Company role</th>
+                        <th>Created</th>
+                        <th>Updated</th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
@@ -112,6 +114,16 @@
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Company role</span>
                             {{ user.companyRoleName }}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Created</span>
+                            {{ getPrettierDate(user.createdAt) }}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Updated</span>
+                            {{ getPrettierDate(user.updatedAt) }}
                         </td>
 
                         <td>

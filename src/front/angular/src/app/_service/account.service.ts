@@ -4,6 +4,7 @@ import { User } from '../_models/user';
 import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../_models/register-user';
 import { environment } from '../../environments/environment';
+import { UserGetter } from '../_models/user-getter';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,7 @@ export class AccountService {
   register(model: RegisterModel) {
     // POST: http://localhost:5000/api/Account/register, model se salje preko body-ja
     // od http klijenta dobijamo Observable i vraca nam se UserDto
-    return this.http.post<RegisterModel>(this.baseUrl + 'Account/register', model);
+    return this.http.post<UserGetter>(this.baseUrl + 'Account/register', model);
   }
 
   logout() {

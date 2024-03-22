@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
-import { RegisterModel } from '../../../../_models/register-user';
 import { UserService } from '../../../../_service/user.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
@@ -53,7 +52,6 @@ export class UserPageComponent implements OnInit {
     contactPhone: '',
     profilePhoto: '',
     address: '',
-    linkedinProfile: '',
     status: '',
     isVerified: false,
     preferedLanguage: ''
@@ -108,7 +106,7 @@ export class UserPageComponent implements OnInit {
       this.cols = [
         { field: 'username', header: 'Username', customExportHeader: 'Usernames' },
         { field: 'email', header: 'Email address', customExportHeader: 'Email' },
-        { field: 'companyRoleName', header: 'Company position', customExportHeader: 'Position' },
+        { field: 'companyRoleName', header: 'Company position', customExportHeader: 'Position' }
       ];
 
       // Dovuci kreirane uloge u kompaniji
@@ -121,20 +119,21 @@ export class UserPageComponent implements OnInit {
    * Omogucava azuriranje nizova users i users_backup kako bi i oni sadrzali novog usera.
    * @param user 
    */
-  onUserCreated(user: RegisterModel) {
+  onUserCreated(user: UserGetter) {
     this.users_backup.push({
       username: user.username,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      companyRoleName: user.companyRole,
+      companyRoleName: user.companyRoleName,
       contactPhone: user.contactPhone,
       profilePhoto: '',
       address: user.address,
-      linkedinProfile: '',
       status: '',
-      isVerified: false,            // proveriti
-      preferedLanguage: "english"   // proveriti
+      isVerified: false,            // proveriti !!! - hardcode
+      preferedLanguage: "english",   // proveriti !!! - hardcode
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
     });  // Add the new user to the users array
     this.users = this.users_backup;
     this.searchTerm='';
@@ -412,7 +411,10 @@ export class UserPageComponent implements OnInit {
       mailInput.classList.add("invalid-email");
     }
   }
-
+  getPrettierDate(date: string) {
+    let d = new Date(date);
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  }
   //#endregion
 
 }
