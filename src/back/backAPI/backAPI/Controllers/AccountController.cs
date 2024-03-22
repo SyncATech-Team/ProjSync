@@ -4,8 +4,6 @@ using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Text;
 using backAPI.DTO.Login;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -54,8 +52,10 @@ namespace backAPI.Controllers
                 CompanyRoleId = companyRoleId,
                 Address = registerDto.Address,
                 ContactPhone = registerDto.ContactPhone,
-                LinkedinProfile = registerDto.LinkedinProfile,
-                Status = registerDto.Status
+                IsVerified = false,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                IsActive = true
             };
 
             // sacuvati korisnika u bazi
@@ -68,7 +68,18 @@ namespace backAPI.Controllers
             // poslati registacioni mejl
             // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.UserName);
 
-            return Ok();
+            return Ok(new UserDto {
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CompanyRoleName = registerDto.CompanyRole,
+                Address = user.Address,
+                ContactPhone = user.ContactPhone,
+                IsVerified = user.IsVerified,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
+            });
         }
 
 

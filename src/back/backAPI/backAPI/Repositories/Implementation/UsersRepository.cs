@@ -3,15 +3,9 @@ using backAPI.Entities.Domain;
 using backAPI.DTO;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Repositories.Implementation {
     public class UsersRepository : IUsersRepository {
@@ -103,10 +97,11 @@ namespace backAPI.Repositories.Implementation {
             user.ProfilePhoto = request.ProfilePhoto;
             user.Address = request.Address;
             user.ContactPhone = request.ContactPhone;
-            user.LinkedinProfile = request.LinkedinProfile;
             user.Status = request.Status;
             user.IsVerified = request.IsVerified;
             user.PreferedLanguage = request.PreferedLanguage;
+            user.CreatedAt = user.CreatedAt;
+            user.UpdatedAt = DateTime.Now;
 
             await dataContext.SaveChangesAsync();
 
