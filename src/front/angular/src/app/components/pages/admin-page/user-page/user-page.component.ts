@@ -10,8 +10,11 @@ import { MessagePopupService } from '../../../../_service/message-popup.service'
 import { Observable } from 'rxjs';
 import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
-import { response } from 'express';
+import { EmailValidationService } from '../../../../_service/email_validator.service';
 
+/**
+ * Interfejs koji predstavlja jednu kolonu u tabeli koju eksportujemo
+ */
 interface Column {
   field: string;
   header: string;
@@ -68,7 +71,9 @@ export class UserPageComponent implements OnInit {
     private userService: UserService, 
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
-    private companyRoleService: CompanyroleService){ }
+    private companyRoleService: CompanyroleService,
+    private emailValidationService: EmailValidationService
+    ){ }
 
   ngOnInit(): void {
       this.userService.getAllUsers().subscribe({
@@ -103,8 +108,8 @@ export class UserPageComponent implements OnInit {
       contactPhone: user.contactPhone,
       profilePhoto: '',
       address: user.address,
-      linkedinProfile: user.linkedinProfile,
-      status: user.status,
+      linkedinProfile: '',
+      status: '',
       isVerified: false,            // proveriti
       preferedLanguage: "english"   // proveriti
     });  // Add the new user to the users array
@@ -293,6 +298,7 @@ export class UserPageComponent implements OnInit {
     let emailAddress = document.getElementsByClassName("email")[0] as HTMLInputElement;
     let username = document.getElementsByClassName("username")[0] as HTMLInputElement;
     let rolesSelect = document.getElementsByClassName("companyRoles")[0] as HTMLSelectElement;
+    let address = document.getElementsByClassName("address")[0] as HTMLInputElement;
 
     if(firstNameField) { 
       firstNameField.value = user.firstName; 
@@ -320,6 +326,10 @@ export class UserPageComponent implements OnInit {
         }
       }
     }
+    if(address) {
+      address.value = user.address;
+      this.editUser.address = user.address;
+    }
   }
 
   applyEditChanges() {
@@ -332,6 +342,22 @@ export class UserPageComponent implements OnInit {
         this.msgPopupService.showError("Unable to edit user");
       }
     });
+  } 
+
+  emailFormatCheck(email: string) {
+    console.log("Checking: " + email);
+    let isValid: boolean = this.emailValidationService.isValidEmailAddress(email);
+    let mailInput: HTMLInputElement = document.getElementsByClassName("email")[0] as HTMLInputElement;
+    
+    mailInput.classList.remove("valid-email");
+    mailInput.classList.remove("invalid-email");
+    
+    if(isValid) {
+      mailInput.classList.add("valid-email");
+    }
+    else {
+      mailInput.classList.add("invalid-email");
+    }
   }
 
 }

@@ -1,10 +1,12 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { RegisterModel } from '../../../_models/register-user';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 import { Observable } from 'rxjs';
 import { CompanyRole } from '../../../_models/company-role';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { NgForm } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-register-user',
@@ -13,6 +15,7 @@ import { MessagePopupService } from '../../../_service/message-popup.service';
 })
 export class RegisterUserComponent implements OnInit {
   roles$: Observable<CompanyRole[]> | undefined;
+  @ViewChild('registerForm') formRecipe?: NgForm; 
 
   registrationModel: RegisterModel = {
     firstName: '',
@@ -22,13 +25,12 @@ export class RegisterUserComponent implements OnInit {
     password: '',
     companyRole: '',
     address: '',
-    contactPhone: '',
-    linkedinProfile: '',
-    status: ''
+    contactPhone: ''
   };
 
   constructor(public accoutService: AccountService, 
-    public companyRoleService: CompanyroleService, public msgPopupService: MessagePopupService) { }
+    public companyRoleService: CompanyroleService, public msgPopupService: MessagePopupService,
+    private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
@@ -42,6 +44,7 @@ export class RegisterUserComponent implements OnInit {
       next: () => {
         this.msgPopupService.showSuccess("Successfully registered new user!");
         this.userCreated.emit(this.registrationModel);
+        this.onSuccessfulRegistration();
       },
 
       error: (error) => {
@@ -51,6 +54,11 @@ export class RegisterUserComponent implements OnInit {
     });
   }
   
+  onSuccessfulRegistration(){
+    this.formRecipe?.reset();
+    this.changeDetectorRef.detectChanges();
+   }
+
   suggestUsername() {
     let x = document.getElementById("input-email") as HTMLInputElement;
     let y = document.getElementById("input-username") as HTMLInputElement;

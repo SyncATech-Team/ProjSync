@@ -64,7 +64,7 @@
 
                         <div class="filterTableOptions">
                             <div class="p-input-icon-left ml-auto">
-                                <input pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
+                                <input id="search-users-by-username" pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalEditInfo" tabindex="-1" aria-labelledby="modalEditInfoLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="modalEditInfo" tabindex="-1" aria-labelledby="modalEditInfoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <!-- Form Header -->
@@ -195,6 +195,7 @@
                                 class="email form-control required-field"
                                 placeholder="syncatechpmf@domain.com"
                                 [(ngModel)]="editUser.email"
+                                (change)="emailFormatCheck(editUser.email)"
                                 required
                                 autocomplete="off"
                             >
@@ -224,6 +225,23 @@
                                 <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
                             </select>
                             <label for="companyRoleId" class="form-label">Company Role</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <input
+                                type="text"
+                                name="address"
+                                id="address-input"
+                                class="address form-control required-field"
+                                placeholder="Address"
+                                [(ngModel)]="editUser.address"
+                                required
+                                autocomplete="off"
+                                spellcheck="false"
+                                >
+                            <label for="address-input" class="form-label">Address</label>
                         </div>
                     </div>
 
