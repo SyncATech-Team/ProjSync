@@ -102,6 +102,8 @@ export class RolePageComponent implements OnInit {
         this.companyRoleService.create(createdRole!).subscribe({
           next: () => {
             this.msgPopupSevice.showSuccess("Successfully created new role");
+            this.searchTerm='';
+            this.search();
             this.table.reset();
           },
           error: _ => {
