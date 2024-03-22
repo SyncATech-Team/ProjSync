@@ -110,11 +110,13 @@
                         <td>
                             <span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
+                                
                                 <div class="action">
                                     <div class="deleteBtn">
                                         <button type="button" pButton pRipple icon="pi pi-trash" 
                                             (click)="deleteUser(user.username, $event)"  class="p-button-danger mr-2" 
-                                            tooltipPosition="bottom"></button>
+                                            tooltipPosition="bottom"
+                                            title="Delete record"></button>
                                     </div>
                                 </div>
                                 
@@ -124,6 +126,7 @@
                                             data-bs-target="#modalEditInfo" data-whatever="@user"
                                             id="buttonUser_{{user.username}}"
                                             (click)="showModalForUser(user)"
+                                            title="Edit record"
                                         ></button>    
                                     </div>
                                 </div>

@@ -10,6 +10,7 @@ import { MessagePopupService } from '../../../../_service/message-popup.service'
 import { Observable } from 'rxjs';
 import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
+import { response } from 'express';
 
 interface Column {
   field: string;
@@ -36,6 +37,7 @@ export class UserPageComponent implements OnInit {
 
   roles$: Observable<CompanyRole[]> | undefined;
 
+  initialUsername: string = '';
   editUser: UserGetter = {
     username: '',
     email: '',
@@ -43,6 +45,8 @@ export class UserPageComponent implements OnInit {
     lastName: '',
     companyRoleName: '',
     contactPhone: '',
+    profilePhoto: '',
+    address: '',
     linkedinProfile: '',
     status: '',
     isVerified: false,
@@ -96,6 +100,8 @@ export class UserPageComponent implements OnInit {
       lastName: user.lastName,
       companyRoleName: user.companyRole,
       contactPhone: user.contactPhone,
+      profilePhoto: '',
+      address: user.address,
       linkedinProfile: user.linkedinProfile,
       status: user.status,
       isVerified: false,            // proveriti
@@ -277,6 +283,7 @@ export class UserPageComponent implements OnInit {
   }
 
   showModalForUser(user: UserGetter) {
+    this.initialUsername = user.username;
     let firstNameField = document.getElementsByClassName("firstName")[0] as HTMLInputElement;
     let lastNameField = document.getElementsByClassName("lastName")[0] as HTMLInputElement;
     let emailAddress = document.getElementsByClassName("email")[0] as HTMLInputElement;
@@ -312,7 +319,15 @@ export class UserPageComponent implements OnInit {
   }
 
   applyEditChanges() {
-    console.log(this.editUser);
+    this.userService.updateUserInfo(this.initialUsername, this.editUser).subscribe({
+      next: response => {
+        this.msgPopupService.showSuccess("Successfully edited user info");
+        this.ngOnInit();
+      },
+      error: error => {
+        this.msgPopupService.showError("Unable to edit user");
+      }
+    });
   }
 
 }
