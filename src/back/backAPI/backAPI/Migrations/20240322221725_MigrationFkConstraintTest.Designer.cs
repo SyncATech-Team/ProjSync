@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240318003112_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20240322221725_MigrationFkConstraintTest")]
+    partial class MigrationFkConstraintTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,9 +141,14 @@ namespace backAPI.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -444,6 +449,9 @@ namespace backAPI.Migrations
                     b.Property<string>("ContactPhone")
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
@@ -455,14 +463,14 @@ namespace backAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("IsVerified")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("LinkedinProfile")
                         .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
@@ -502,6 +510,9 @@ namespace backAPI.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -631,11 +642,15 @@ namespace backAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backAPI.Entities.Domain.User", "User")
-                        .WithMany("UserRoles")
+                    b.HasOne("backAPI.Entities.Domain.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Role");
 
@@ -643,11 +658,6 @@ namespace backAPI.Migrations
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.AppRole", b =>
-                {
-                    b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("backAPI.Entities.Domain.User", b =>
                 {
                     b.Navigation("UserRoles");
                 });

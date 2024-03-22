@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backAPI.Controllers
 {
 
-    [Authorize(Policy = "RequireAdminRole")]
+    //[Authorize(Policy = "RequireAdminRole")]
     public class CompanyrolesController : BaseApiController {
 
         private readonly ICompanyRolesRepository companyRolesRepository;

@@ -7,6 +7,7 @@ import { CompanyRole } from '../../../_models/company-role';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { NgForm } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
+import { UserGetter } from '../../../_models/user-getter';
 
 @Component({
   selector: 'app-register-user',
@@ -36,14 +37,14 @@ export class RegisterUserComponent implements OnInit {
     this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
   }
 
-  @Output() userCreated = new EventEmitter<RegisterModel>();
+  @Output() userCreated = new EventEmitter<UserGetter>();
 
   register() {
 
     this.accoutService.register(this.registrationModel).subscribe({
-      next: () => {
+      next: (response) => {
         this.msgPopupService.showSuccess("Successfully registered new user!");
-        this.userCreated.emit(this.registrationModel);
+        this.userCreated.emit(response);
         this.onSuccessfulRegistration();
       },
 
