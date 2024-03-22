@@ -28,6 +28,7 @@
                                 placeholder="John"
                                 [(ngModel)]="registrationModel.firstName"
                                 required
+                                spellcheck="false"
                             >
                             <label for="firstName" class="form-label">First Name</label>
                         </div>
@@ -43,6 +44,7 @@
                                 placeholder="Doe"
                                 [(ngModel)]="registrationModel.lastName"
                                 required
+                                spellcheck="false"
                             >
                             <label for="lastName" class="form-label">Last Name</label>
                         </div>
@@ -60,6 +62,7 @@
                                 [(ngModel)]="registrationModel.email"
                                 required
                                 autocomplete="off"
+                                spellcheck="false"
                             >
                             <label for="input-email" class="form-label">Email</label>
                         </div>
@@ -77,6 +80,7 @@
                                 [(ngModel)]="registrationModel.username"
                                 required
                                 autocomplete="off"
+                                spellcheck="false"
                             >
                             <label for="input-username" class="form-label">Username</label>
                         </div>
@@ -92,6 +96,7 @@
                                 placeholder="12345"
                                 [(ngModel)]="registrationModel.password"
                                 required
+                                spellcheck="false"
                             >
                             <label for="password" class="form-label">Password</label>
                         </div>
@@ -121,6 +126,7 @@
                                 class="form-control"
                                 placeholder="Radoja Domanovica 12"
                                 [(ngModel)]="registrationModel.address"
+                                spellcheck="false"
                             >
                             <label for="addres" class="form-label">Address</label>
                         </div>
@@ -135,39 +141,11 @@
                                 class="form-control"
                                 placeholder="0612345678"
                                 [(ngModel)]="registrationModel.contactPhone"
+                                spellcheck="false"
                             >
                             <label for="contactPhone" class="form-label">Phone</label>
                         </div>
                         
-                    </div>
-    
-                    <div class="col-12"> <!-- field za linkedinProfile-->
-                        <div class="form-floating mb-3">
-                            <input 
-                                type="text"
-                                id="linkedinProfile"
-                                name="linkedinProfile"
-                                class="form-control"
-                                placeholder="ProfileName"
-                                [(ngModel)]="registrationModel.linkedinProfile"
-                            >
-                            <label for="linkedinProfile" class="form-label">LinkedIn Profile</label>
-                        </div>
-                        
-                    </div>
-    
-                    <div class="col-12"> <!-- field za status-->
-                        <div class="form-floating mb-3">
-                            <input 
-                                type="text"
-                                id="status"
-                                name="status"
-                                class="form-control"
-                                placeholder="status"
-                                [(ngModel)]="registrationModel.status"
-                            >
-                            <label for="status" class="form-label">Status</label>
-                        </div>
                     </div>
                 </form>
                 <!-- End of Form -->
