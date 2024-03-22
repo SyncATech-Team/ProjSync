@@ -69,7 +69,7 @@ export class UserPageComponent implements OnInit {
   }
 
   onUserCreated(user: RegisterModel) {
-    this.users.push({
+    this.users_backup.push({
       username: user.username,
       email: user.email,
       firstName: user.firstName,
@@ -81,7 +81,8 @@ export class UserPageComponent implements OnInit {
       isVerified: false,            // proveriti
       preferedLanguage: "english"   // proveriti
     });  // Add the new user to the users array
-    this.users_backup = this.users;
+    this.users = this.users_backup;
+    this.searchTerm='';
     this.table.reset();
   }
 
