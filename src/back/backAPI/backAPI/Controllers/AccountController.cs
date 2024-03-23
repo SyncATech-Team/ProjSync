@@ -166,9 +166,7 @@ namespace backAPI.Controllers
                 LastName = registerDto.LastName,
                 CompanyRoleId = companyRoleId,
                 Address = registerDto.Address,
-                ContactPhone = registerDto.ContactPhone,
-                LinkedinProfile = registerDto.LinkedinProfile,
-                Status = registerDto.Status
+                ContactPhone = registerDto.ContactPhone
             };
 
             // sacuvati korisnika u bazi
