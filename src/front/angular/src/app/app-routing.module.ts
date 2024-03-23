@@ -10,6 +10,7 @@ import { PasswordResetPageComponent } from './components/pages/password-reset-pa
 import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
+import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
@@ -23,7 +24,8 @@ const routes: Routes = [
       {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
       {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
       {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
-      {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]}
+      {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]},
+      {path: 'home/projects', component: ProjectPageComponent}
     ]
   },
   

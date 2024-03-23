@@ -26,6 +26,10 @@ export class HomePageComponent implements OnInit {
   constructor(public accoutService: AccountService,private projectService:ProjectService) { }
 
   ngOnInit(): void {
+    this.initializeProjects();
+  }
+
+  initializeProjects(): void {
     this.projectService.getAllProjects().subscribe({
       next: (response) => {
         this.projects = response;

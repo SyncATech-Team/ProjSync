@@ -151,7 +151,7 @@ namespace backAPI.Services.Implementation {
                           <li>Explore the many features of ProjSync.</li>
                         </ul>
                         <p>Get started by logging in to your account: <a href='[login_link]'>Login Here</a></p>
-                        <p>If you have any questions, don't hesitate to contact our support team at <a href='mailto:syncatech@outlook.com'>syncatech@outlook.com</a>.</p>
+                        <p>If you have any questions, don't hesitate to contact our support team at <a href='mailto:syncatech@hotmail.com'>syncatech@hotmail.com</a>.</p>
                         <p>Happy Projecting!</p>
                         <p>The ProjSync Team</p>
                       </div>

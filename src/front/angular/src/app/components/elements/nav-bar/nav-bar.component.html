@@ -1,8 +1,7 @@
 <nav class="navbar navbar-expand-lg navigation navbar-custom-color px-4">
   <div class="container-fluid">
     <div class="logo">
-      <a class="navbar-brand">ProjSync</a><br>
-      <small class="navbar-sub-brand">Powered by SyncATech</small>
+      <a class="navbar-brand" routerLink="/home">ProjSync</a>
     </div>
     <button class="navbar-toggler button-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -43,7 +42,7 @@
         <div class="dropdown" dropdown>
           <a class="nav-link dropdown-toggle item-nav" dropdownToggle>Projects</a>
             <ul class="dropdown-menu" *dropdownMenu>
-              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" [routerLink]="['/home/projects']">Projects</a></li>
               <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
               <li class="divider dropdown-divider"></li>
               <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>

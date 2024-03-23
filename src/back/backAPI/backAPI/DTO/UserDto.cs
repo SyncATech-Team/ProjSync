@@ -13,9 +13,10 @@
         public string ProfilePhoto { get; set; }
         public string Address { get; set; }
         public string ContactPhone { get; set; }
-        public string LinkedinProfile { get; set; }
         public string Status { get; set; }
         public bool IsVerified { get; set; }
         public string PreferedLanguage { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

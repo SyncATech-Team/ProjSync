@@ -79,10 +79,10 @@
                         <th>
                             <i class="fa-solid fa-star" style="color: #000;"></i>
                         </th>
-                        <th>Name</th>
-                        <th>Key</th>
-                        <th>Description</th>
-                        <th>Owner</th>
+                        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="key">Key<p-sortIcon field="key"></p-sortIcon></th>
+                        <th pSortableColumn="type">Type<p-sortIcon field="type"></p-sortIcon></th>
+                        <th pSortableColumn="ownerUsername">Owner<p-sortIcon field="ownerUsername"></p-sortIcon></th>
                         <th>Expand</th>
                     </tr>
                 </ng-template>
@@ -100,14 +100,14 @@
                                 <ng-template #secondImageSource>
                                     <img src="{{getDefaultImagePath()}}" alt="user-image">
                                 </ng-template>
-                                <span>{{ project.name }}</span>
+                                <a style="text-decoration: none;" routerLink="projects">{{ project.name }}</a>
                             </div>
                         </td>
                         <td><span class="p-column-title" style="font-weight: bold;">Key</span>
                             {{ project.key }}
                         </td>
                         <td>
-                            <span class="p-column-title" style="font-weight: bold;">Description</span>
+                            <span class="p-column-title" style="font-weight: bold;">Type</span>
                             {{ project.typeName }}
                         </td>
                         <td>

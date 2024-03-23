@@ -1,13 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
-import { RegisterModel } from '../../../../_models/register-user';
 import { UserService } from '../../../../_service/user.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
+import { Observable } from 'rxjs';
+import { CompanyRole } from '../../../../_models/company-role';
+import { CompanyroleService } from '../../../../_service/companyrole.service';
+import { EmailValidationService } from '../../../../_service/email_validator.service';
 
+/**
+ * Interfejs koji predstavlja jednu kolonu u tabeli koju eksportujemo
+ */
 interface Column {
   field: string;
   header: string;
@@ -27,9 +32,30 @@ interface ExportColumn {
 })
 export class UserPageComponent implements OnInit {
   
-  /* PODACI CLANOVI */
+  //#region PODACI CLANOVI
+  /* ******************************************* PODACI CLANOVI ******************************************* */
+  /* ****************************************************************************************************** */
+  private MAX_NUMBER_OF_DEFAULT_IMAGES: number = 10;
+  
   users: UserGetter[] = [];
   users_backup: UserGetter[] = [];
+
+  roles$: Observable<CompanyRole[]> | undefined;
+
+  initialUsername: string = '';
+  editUser: UserGetter = {
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    companyRoleName: '',
+    contactPhone: '',
+    profilePhoto: '',
+    address: '',
+    status: '',
+    isVerified: false,
+    preferedLanguage: ''
+  };
 
   searchTerm : string = '';
 
@@ -40,13 +66,32 @@ export class UserPageComponent implements OnInit {
   rows = 10;
   loading: boolean = true;
   activityValues: number[] = [0, 100];
+  @ViewChild(Table) table!:Table;
 
-  constructor(private http: HttpClient, 
+  //#endregion
+
+  //#region METODE
+  /* *********************************************** METODE *********************************************** */
+  /* ****************************************************************************************************** */
+  constructor(
     private userService: UserService, 
     private msgPopupService: MessagePopupService,
-    private confirmationService: ConfirmationService){ }
+    private confirmationService: ConfirmationService,
+    private companyRoleService: CompanyroleService,
+    private emailValidationService: EmailValidationService
+    ){ }
 
+  /**
+   * OnInit metod:
+   * 
+   * 1. Poziva se jednom, odmah nakon sto se komponenta kreira. Idealno mesto za inicijalizaciju varijabli,
+   * ucitavanje podataka iz API-ja i sl.
+   * 
+   * 2. Poziva se kada se komponenta ponovo kreira, npr. ako je promenjena ruta
+   */
   ngOnInit(): void {
+
+      // Dovuci registrovane korisnike iz baze putem servisa
       this.userService.getAllUsers().subscribe({
         next: response => {
           this.users = response;
@@ -61,45 +106,71 @@ export class UserPageComponent implements OnInit {
       this.cols = [
         { field: 'username', header: 'Username', customExportHeader: 'Usernames' },
         { field: 'email', header: 'Email address', customExportHeader: 'Email' },
-        { field: 'companyRoleName', header: 'Company position', customExportHeader: 'Position' },
+        { field: 'companyRoleName', header: 'Company position', customExportHeader: 'Position' }
       ];
+
+      // Dovuci kreirane uloge u kompaniji
+      this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
 
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
   }
-
-  onUserCreated(user: RegisterModel) {
-    this.users.push({
+  /**
+   * Poziva se kada se pomocu komponente za registraciju user-a doda novi user.
+   * Omogucava azuriranje nizova users i users_backup kako bi i oni sadrzali novog usera.
+   * @param user 
+   */
+  onUserCreated(user: UserGetter) {
+    this.users_backup.push({
       username: user.username,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      companyRoleName: user.companyRole,
+      companyRoleName: user.companyRoleName,
       contactPhone: user.contactPhone,
-      linkedinProfile: user.linkedinProfile,
-      status: user.status,
-      isVerified: false,            // proveriti
-      preferedLanguage: "english"   // proveriti
+      profilePhoto: '',
+      address: user.address,
+      status: '',
+      isVerified: false,            // proveriti !!! - hardcode
+      preferedLanguage: "english",   // proveriti !!! - hardcode
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
     });  // Add the new user to the users array
-    this.users_backup = this.users;
+    this.users = this.users_backup;
+    this.searchTerm='';
+    this.table.reset();
   }
-
+  /**
+   * Funkcija koja vraca random generisani broj u opsegu min-max
+   * @param min minimum
+   * @param max maksimum
+   * @returns generisani random broj
+   */
   getRandomInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min)) + min;
   }
+  /**
+   * Osnovna ideja ove funkcije je da vrati putanju predefinisanu za korisnika koji nema uploadovanu profilnu sliku.
+   * Kako bi se dodatno postigla raznolikost defaultnih profilnih slika, one se mogu odrediti na osnovu korisnickog imena
+   * kao ostatak pri deljenju sume svih karaktera i broja predefinisanih slika
+   * @param username 
+   * @returns 
+   */
+  getUserImagePath(username: string): string {
+    let usernameSumOfCharacters: number = 0;
+    for (let index = 0; index < username.length; index++) {
+      usernameSumOfCharacters += username.charCodeAt(index);
+    }
 
-  getDefaultImagePath(): string {
-    // let x: number = this.getRandomInteger(1, 10);
-    let x: number = 1;
-    let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
-    
-    // console.log(path);
+    let defaultImageNumber = usernameSumOfCharacters % this.MAX_NUMBER_OF_DEFAULT_IMAGES + 1;
+    let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + defaultImageNumber + ".png";
 
     return path;
   }
-  
-  // let ans = prompt("Are you sure that you want to delete user " + username + " [TO DO! Zahtevati da korisnik unese username kao potvrdu]");
-  // if(ans != username) console.log();  
-
+  /**
+   * Metod koji brise korisnika za prosledjeno korisnicko ime
+   * @param username 
+   * @param event 
+   */
   deleteUser(username: string, event: Event): void {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
@@ -114,18 +185,19 @@ export class UserPageComponent implements OnInit {
         accept: (input: string) => {
           this.userService.deleteUser(username).subscribe({
             next: _=>{
-              const indexToRemove = this.users.findIndex(username => username === username);
+              const indexToRemove = this.users.findIndex(user => user.username === username);
               
               //Brisanje iz lokalnog niza
               if (indexToRemove !== -1) {
-                this.users = this.users.splice(indexToRemove, 1);
+                this.users.splice(indexToRemove, 1);
               }
       
-              const indexToRemoveBackup = this.users_backup.findIndex(username => username === username);
+              const indexToRemoveBackup = this.users_backup.findIndex(user => user.username === username);
               if(indexToRemoveBackup !== -1) {
-                this.users_backup = this.users_backup.splice(indexToRemoveBackup, 1);
+                this.users_backup.splice(indexToRemoveBackup, 1);
               }
               this.msgPopupService.showSuccess("User deleted");
+              this.table.reset();
             },
             error: error => {
               this.msgPopupService.showError("Unable to delete user");
@@ -254,5 +326,95 @@ export class UserPageComponent implements OnInit {
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
+  /**
+   * Metod koji dinamicki popunjava podatke modala za izmenu korisnickih podataka u odnosu na to o kom
+   * korisniku se radi.
+   * @param user 
+   */
+  showModalForUser(user: UserGetter) {
+    this.initialUsername = user.username;
+    let firstNameField = document.getElementsByClassName("firstName")[0] as HTMLInputElement;
+    let lastNameField = document.getElementsByClassName("lastName")[0] as HTMLInputElement;
+    let emailAddress = document.getElementsByClassName("email")[0] as HTMLInputElement;
+    let username = document.getElementsByClassName("username")[0] as HTMLInputElement;
+    let rolesSelect = document.getElementsByClassName("companyRoles")[0] as HTMLSelectElement;
+    let address = document.getElementsByClassName("address")[0] as HTMLInputElement;
+
+    let img = document.getElementsByClassName("user-image")[0] as HTMLImageElement;
+
+    if(firstNameField) { 
+      firstNameField.value = user.firstName; 
+      this.editUser.firstName = user.firstName;
+    }
+    if(lastNameField) { 
+      lastNameField.value = user.lastName;
+      this.editUser.lastName = user.lastName;
+     }
+    if(emailAddress) { 
+      emailAddress.value = user.email;
+      this.editUser.email = user.email;
+     }
+    if(username) { 
+      username.value = user.username; 
+      this.editUser.username = user.username;
+    }
+    if(rolesSelect) {
+      for (let index = 0; index < rolesSelect.children.length; index++) {
+        let element = rolesSelect.children[index] as HTMLOptionElement;
+        if(element.textContent === user.companyRoleName) {
+          element.selected = true;
+          this.editUser.companyRoleName = user.companyRoleName;
+          break;
+        }
+      }
+    }
+    if(address) {
+      address.value = user.address;
+      this.editUser.address = user.address;
+    }
+    if(img) {
+      img.src = this.getUserImagePath(user.username);
+    }
+  }
+  /**
+   * Metod koji se poziva na klik dugmeta za promenu podataka korisnika.
+   * Izvrsava provere da li su novi podaci validni i poziva servis za izmenu podataka.
+   */
+  applyEditChanges() {
+    this.userService.updateUserInfo(this.initialUsername, this.editUser).subscribe({
+      next: response => {
+        this.msgPopupService.showSuccess("Successfully edited user info");
+        this.ngOnInit();
+      },
+      error: error => {
+        this.msgPopupService.showError("Unable to edit user");
+      }
+    });
+  } 
+  /**
+   * Metod za proveru email adrese koja se unosi u input polju za promenu korisnickog emaila.
+   * Provera se vrsi na onChange zarad boljih performansi i manjeg broja proveravanja
+   * @param email 
+   */
+  emailFormatCheck(email: string) {
+    console.log("Checking: " + email);
+    let isValid: boolean = this.emailValidationService.isValidEmailAddress(email);
+    let mailInput: HTMLInputElement = document.getElementsByClassName("email")[0] as HTMLInputElement;
+    
+    mailInput.classList.remove("valid-email");
+    mailInput.classList.remove("invalid-email");
+    
+    if(isValid) {
+      mailInput.classList.add("valid-email");
+    }
+    else {
+      mailInput.classList.add("invalid-email");
+    }
+  }
+  getPrettierDate(date: string) {
+    let d = new Date(date);
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  }
+  //#endregion
 
 }

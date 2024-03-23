@@ -1,0 +1,26 @@
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : '' ">
+    <!-- Header od sidenav -->
+    <div class="logo-container">
+        <img class="logo" (click)="toggleCollapse()" src="../../../../assets/Icons/ProjectImg.png">
+        <div class="logo-header" *ngIf="collapsed">
+            <div class="logo-text">Project Name</div>
+            <p>Project type</p>
+            <p>Project key: PN</p>
+        </div>
+        <button class="button-close" *ngIf="collapsed" (click)="closeSidenav()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <!-- Linkovi -->
+    <ul class="sidenav-nav">
+        <li class="sidenav-nav-item" *ngFor="let data of navData">
+            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact:true}">
+                <i [class]="data.icon" class="sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{ data.label }}</span>
+            </a>
+        </li>
+    </ul>
+</div>

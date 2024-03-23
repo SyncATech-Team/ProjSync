@@ -79,3 +79,8 @@ th {
 .exportFileOptions button {
     border-radius: 20%;
 }
+
+#search-role{
+    padding: 4px 34px;
+    border-radius: 6px;
+}

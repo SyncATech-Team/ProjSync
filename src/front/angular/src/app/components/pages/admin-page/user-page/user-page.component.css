@@ -4,6 +4,7 @@
 
 #content {
     margin-left: 1%;
+    padding-right: 1%;
     /* margin-right: 1%; */
     height: 100vh;
     width: 100%;
@@ -57,12 +58,12 @@ th {
     color: black;
 }
 
-.action span {
-    margin: 5px;
-    width: 20px;
-    height: 20px;
+.editUser button {
+    border-radius: 20%;
+    background-color: lightblue;
+    width: 30px;
+    height: 30px;
     color: black;
-    cursor: pointer;
 }
 
 .pi-trash {
@@ -78,8 +79,9 @@ th {
 }
 
 .profilecontent img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 
 /* LINKS */
@@ -100,141 +102,32 @@ a:hover {
     border-radius: 20%;
 }
 
-/* *********************************************************************************************** */
-/* TABLE STYLING */
-/* *********************************************************************************************** */
-/* .custom-table {
-    width: 100%;
-    border-collapse: collapse;
-} */
-
-/* .table-header {
-    background-color: #e0e0e0;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-} */
-
-/* .table-row:nth-child(even) {
-    background-color: #f8f8f8;
-} */
-/* 
-.table-row {
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+.valid-email {
+    border-width: 2px;
+    border-color: green;
 }
 
-.table-row:hover {
-    background-color: #eee;
+.invalid-email {
+    border-width: 2px;
+    border-color: red;
 }
 
-.action-icon {
-    font-size: 18px; 
-    color: #000; 
-    cursor: pointer; 
-}
-
-.flexdiv-custom {
-    display: flex;
-    align-items: left;
-    justify-content: space-around;
-}
-
-.cardDescription {
-    font-weight: bold;
-}
-
-@media (max-width: 600px) {
-    .table-row, .table-header {
-      padding: 5px; 
-    }
-    td {
-      font-size: 18px;
-    }
-    .cardDescription {
-        display: block;
-    }
-    .table-header {
-        visibility: hidden;
-    }
-    #users {
-        width: 100vh;
-    }
-}
-
-@media (min-width: 600px) {
-    .cardDescription {
-        display: none;
-    }
-    .table-header {
-        visibility: visible;
-    }
-} */
-
-/* LINKS */
-/* a,
-a:link,
-a:active,
-a:visited,
-a:hover {
-    color:           rgb(35, 118, 196);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-} */
-
-/* END LINKS */
-
-/* .flexdiv-custom span {
-    border-radius: 10px;
-}
-
-.flexdiv-custom span:nth-child(1) {
-    background-color: #ec5941;
-}
-
-.flexdiv-custom span:nth-child(2) {
-    background-color: blue;
-}
-
-.flexdiv-custom span i {
-    padding: 10px;
-}
-
-div .profilecontent img {
-    width: 20px;
-    height: 20px;
-    display: block;
-}
-
-.profilecontent {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-}
-
-td {
+/* Modal style */
+div.modal-content {
     width: fit-content;
 }
 
-tr {
-    margin-top: 1%;
-    margin-bottom: 1%;
+div.div-image {
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-select {
-    width: 200px;
+div.div-image img {
+    width: 100px;
+    border-radius: 50%;
 }
 
-.user-profile {
-    margin-left: 1%;
+#search-users-by-username{
+    padding: 4px 34px;
+    border-radius: 6px;
 }
-
-.user-profile:hover {
-    text-decoration: underline;
-    cursor: pointer;
-} */

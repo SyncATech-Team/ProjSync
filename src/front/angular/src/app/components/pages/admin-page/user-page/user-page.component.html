@@ -14,12 +14,15 @@
             You can invite a new member to your platform by creating their account.
         </div>
 
-        <div id="controls">
+        <div id="controls" style="float: right;">
             <!-- Dodati polja za search, filter etc. -->
             <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
         </div>
 
         <div id="users">
+
+            <!-- Dugmici za prebacivanje stranice i vracanje na prvu -->
+            
             <div class="mb-1">
                 <p-button 
                     type="button" icon="pi pi-chevron-left" (click)="prev()" 
@@ -29,6 +32,9 @@
                 <p-button type="button" icon="pi pi-chevron-right" (click)="next()"
                     [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
             </div>
+
+
+            <!-- Table start -->
             <p-table
                 #dt2
                 [value]="users"
@@ -45,8 +51,15 @@
                 responsiveLayout="stack" [breakpoint]="'960px'"
                 styleClass="p-datatable-striped">
                 
+                <!-- 
+                    Opcije za export dokumenata
+                    Filteri
+                 -->
                 <ng-template pTemplate="caption" class="align-content-center justify-content-around">
                     <div id="header-content" class="flex">
+
+                        <!-- Dugmici za exportovanje fajlova -->
+
                         <div class="exportFileOptions">
                             <button type="button" pButton pRipple icon="pi pi-file-excel" 
                                 (click)="exportExcel()"  class="p-button-success mr-2" 
@@ -57,71 +70,222 @@
                         </div>
 
                         <div class="filterTableOptions">
-                            <!-- <button
-                                pButton label="Clear"
-                                class="p-button-outlined"
-                                icon="pi pi-filter-slash" (click)="clear(dt2)">
-                            </button> -->
-                        
                             <div class="p-input-icon-left ml-auto">
-                                <!-- <i class="pi pi-search"></i> -->
-                                <!-- <input pInputText id="search-input-term-users-global" 
-                                    #searchInput type="text" (input)="search(dt2)" 
-                                    placeholder="Search keyword"/> -->
-
-                                <input pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
+                                <i class="pi pi-search"></i>
+                                <input id="search-users-by-username" pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
                             </div>
                         </div>
                     </div>
                 </ng-template>
+                <!-- End -->
 
+                <!-- Table header -->
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Account</th>
                         <th>Email address</th>
                         <th>Company role</th>
+                        <th>Created</th>
+                        <th>Updated</th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
+                <!-- End of table header -->
 
+                <!-- Table body -->
                 <ng-template pTemplate="body" let-user>
                     <tr>
-                        <td><span class="p-column-title" style="font-weight: bold;">Account</span>
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Account</span>
                             <div class="profilecontent">
-                                <img *ngIf="1==1; else secondImageSource"
-                                src={{getDefaultImagePath()}} alt="user-default-image">
+                                <img draggable="false" *ngIf="1==1; else secondImageSource"
+                                src={{getUserImagePath(user.username)}} alt="user-default-image">
                                 <ng-template #secondImageSource>
-                                    <img src="{{getDefaultImagePath()}}" alt="user-image">
+                                    <img src="{{getUserImagePath(user.username)}}" alt="user-image">
                                 </ng-template>
                                 <span>{{ user.username }}</span>
                             </div>
                         </td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Email</span>
+
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Email</span>
                             <a href="mailto:{{user.email}}"> {{user.email}}</a>
                         </td>
+
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Company role</span>
                             {{ user.companyRoleName }}
                         </td>
+
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Created</span>
+                            {{ getPrettierDate(user.createdAt) }}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Updated</span>
+                            {{ getPrettierDate(user.updatedAt) }}
+                        </td>
+
                         <td>
                             <span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
+                                
                                 <div class="action">
                                     <div class="deleteBtn">
                                         <button type="button" pButton pRipple icon="pi pi-trash" 
                                             (click)="deleteUser(user.username, $event)"  class="p-button-danger mr-2" 
-                                            tooltipPosition="bottom"></button>
+                                            tooltipPosition="bottom"
+                                            title="Delete record"></button>
                                     </div>
                                 </div>
-
+                                
                                 <div class="action">
-                                    <span class="pi pi-pencil" title="Edit user"></span>
+                                    <div class="editUser">
+                                        <button type="button" class="pi pi-pencil" data-bs-toggle="modal"
+                                            data-bs-target="#modalEditInfo" data-whatever="@user"
+                                            id="buttonUser_{{user.username}}"
+                                            (click)="showModalForUser(user)"
+                                            title="Edit record"
+                                        ></button>    
+                                    </div>
                                 </div>
+                                
                             </div>
                         </td>
                     </tr>
                 </ng-template>
+                <!-- End table body -->
             </p-table>
+            <!-- Table end -->
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="modalEditInfo" tabindex="-1" aria-labelledby="modalEditInfoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalEditInfoLabel">Edit user information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
+
+            <!-- Form body -->
+            <div class="modal-body">
+                <div class="div-image">
+                    <img draggable="false" class="user-image" src="" alt="User image">
+                </div>
+                <div class="form">
+                    <form #updateUserInfoForm="ngForm" id="formEditUserInfo" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
+
+                        <div class="col-md-6"> <!-- field za ime-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    name="firstName"
+                                    class="firstName form-control required-field"
+                                    placeholder="John"
+                                    [(ngModel)]="editUser.firstName"
+                                    required
+                                    spellcheck="false"
+                                >
+                                <label for="firstName" class="form-label">First Name</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- field za prezime-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    name="lastName"
+                                    class="lastName form-control required-field"
+                                    placeholder="Doe"
+                                    [(ngModel)]="editUser.lastName"
+                                    required
+                                    spellcheck="false"
+                                >
+                                <label for="lastName" class="form-label">Last Name</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za email-->
+                            <div class="form-floating mb-3">
+                                <input
+                                    type="email"
+                                    id="input-email"
+                                    name="input-email"
+                                    class="email form-control required-field"
+                                    placeholder="syncatechpmf@domain.com"
+                                    [(ngModel)]="editUser.email"
+                                    (change)="emailFormatCheck(editUser.email)"
+                                    required
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                                <label for="input-email" class="form-label">Email</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za username-->
+                            <div class="form-floating mb-3">
+                                <input
+                                    #input_username
+                                    type="text"
+                                    name="username"
+                                    class="username form-control required-field"
+                                    placeholder="username"
+                                    [(ngModel)]="editUser.username"
+                                    required
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                                <label for="input-username" class="form-label">Username</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za companyRole-->
+                            <div class="form-floating mb-3">
+                                <select id="companyRoleName" class="companyRoles form-select" [(ngModel)]="editUser.companyRoleName" aria-label="companyRoleId" name="companyRoleName">
+                                    <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
+                                </select>
+                                <label for="companyRoleId" class="form-label">Company Role</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-12"> <!-- field za adresu -->
+                            <div class="form-floating mb-3">
+                                <input
+                                    type="text"
+                                    name="address"
+                                    id="address-input"
+                                    class="address form-control required-field"
+                                    placeholder="Address"
+                                    [(ngModel)]="editUser.address"
+                                    required
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                    >
+                                <label for="address-input" class="form-label">Address</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+            <!-- End of form body -->
+
+            <!-- Form footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="updateUserInfoForm" class="btn btn-primary" data-bs-dismiss="modal" (click)="applyEditChanges()">Apply changes</button>
+            </div>
+            <!-- End of form footer -->
+
+        </div>
+    </div>
+</div>
+<!-- End of modal -->

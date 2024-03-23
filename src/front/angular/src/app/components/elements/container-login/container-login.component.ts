@@ -3,6 +3,7 @@ import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import { User } from '../../../_models/user';
+import { EmailValidationService } from '../../../_service/email_validator.service';
 
 @Component({
   selector: 'container-login',
@@ -15,15 +16,24 @@ export class ContainerLoginComponent {
     password:  ""
   }
 
-  constructor(public accountService: AccountService, private router: Router) { }
-
   showPassword: boolean = false;
+  emailValid: boolean = false;
+
+  constructor(
+    public accountService: AccountService, 
+    private router: Router,
+    private mailValidationService: EmailValidationService
+  ) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
   login() {
+    if (!this.emailValid) {
+      return;
+    }
+
     // dobili smo Observable, moramo da uradimo subscribe da bismo koristili
     this.accountService.login(this.user).subscribe({
       next: () => {
@@ -36,7 +46,7 @@ export class ContainerLoginComponent {
         let x = document.getElementById("invalid_login_div");
         if(x != null) x.hidden = false;
       }
-    })
+    });
   }
 
   hasAdminRole() {
@@ -48,5 +58,11 @@ export class ContainerLoginComponent {
 
     return false;
   }
+
+  validateEmail(email: string): boolean {
+    this.emailValid = this.mailValidationService.isValidEmailAddress(email);
+    return this.emailValid;
+  }
+
 
 }

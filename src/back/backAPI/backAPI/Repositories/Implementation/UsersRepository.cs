@@ -3,15 +3,9 @@ using backAPI.Entities.Domain;
 using backAPI.DTO;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Repositories.Implementation {
     public class UsersRepository : IUsersRepository {
@@ -71,7 +65,7 @@ namespace backAPI.Repositories.Implementation {
 
             // TO DO: Potrebno obezbediti kaskadno brisanje podataka vezanih za ovog korisnika
 
-            dataContext.Users.Remove(user);
+            user.IsActive = false;
             await dataContext.SaveChangesAsync(true);
 
             return true;
@@ -79,12 +73,20 @@ namespace backAPI.Repositories.Implementation {
         /* **********************************************************************************
          * Update user
          * ********************************************************************************** */
-        public async Task<bool> UpdateUser(string username, UserDto request) {
+        public async Task<string> UpdateUser(string username, UserDto request) {
             var user = await GetUserByUsername(username);
 
             // ne postoji user
             if (user == null) {
-                return false;
+                return "User not found";
+            }
+
+            if(user.UserName != request.Username) {
+                if(await UserExistsByUsername(request.Username)) return "Username already in use";
+            }
+
+            if(user.Email != request.Email) {
+                if(await UserExistsByEmail(request.Email)) return "Email address already in use";
             }
 
             user.UserName = request.Username;
@@ -95,14 +97,15 @@ namespace backAPI.Repositories.Implementation {
             user.ProfilePhoto = request.ProfilePhoto;
             user.Address = request.Address;
             user.ContactPhone = request.ContactPhone;
-            user.LinkedinProfile = request.LinkedinProfile;
             user.Status = request.Status;
             user.IsVerified = request.IsVerified;
             user.PreferedLanguage = request.PreferedLanguage;
+            user.CreatedAt = user.CreatedAt;
+            user.UpdatedAt = DateTime.Now;
 
             await dataContext.SaveChangesAsync();
 
-            return true;
+            return "OK";
         }
         /* **********************************************************************************
          * UsernameToId

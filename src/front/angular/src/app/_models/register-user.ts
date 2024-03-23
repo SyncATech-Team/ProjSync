@@ -8,6 +8,4 @@ export interface RegisterModel {
     companyRole: string
     address: string
     contactPhone: string
-    linkedinProfile: string
-    status: string
   }

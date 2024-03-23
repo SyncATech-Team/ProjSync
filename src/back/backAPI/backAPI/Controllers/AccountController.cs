@@ -4,12 +4,11 @@ using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Text;
 using backAPI.DTO.Login;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace backAPI.Controllers
 {
@@ -55,8 +54,9 @@ namespace backAPI.Controllers
                 CompanyRoleId = companyRoleId,
                 Address = registerDto.Address,
                 ContactPhone = registerDto.ContactPhone,
-                LinkedinProfile = registerDto.LinkedinProfile,
-                Status = registerDto.Status
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                IsActive = true
             };
 
             // sacuvati korisnika u bazi
@@ -74,6 +74,19 @@ namespace backAPI.Controllers
 
             // poslati registacioni mejl
             // _emailService.SendToConfirmEmail(registerDto.Email, registerDto.UserName, conformationLink);
+
+            /*            return Ok(new UserDto {
+                            Username = user.UserName,
+                            Email = user.Email,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            CompanyRoleName = registerDto.CompanyRole,
+                            Address = user.Address,
+                            ContactPhone = user.ContactPhone,
+                            IsVerified = user.IsVerified,
+                            CreatedAt = user.CreatedAt,
+                            UpdatedAt = user.UpdatedAt
+                        });*/
 
             return Ok(conformationLink);
         }
@@ -106,6 +119,7 @@ namespace backAPI.Controllers
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
             if (user == null) return Unauthorized("invalid credentials!");
+            if (user.IsActive == false) return Unauthorized("User is not active");
 
             if (user.EmailConfirmed)
             {

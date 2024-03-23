@@ -24,11 +24,75 @@ namespace backAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            /*
+            // FK Company role in User
             modelBuilder.Entity<User>()
-                .HasMany(ur => ur.UserRoles)
-                .WithOne(u => u.User)
-                .HasForeignKey(ur => ur.UserId)
-                .IsRequired();
+                .HasOne(u => u.CompanyRole)                 // User has one CompanyRole
+                .WithMany()                                 // Inverse relationship (optional, for clarity)
+                .HasForeignKey(u => u.CompanyRoleId)
+                .OnDelete(DeleteBehavior.Restrict);         // Restrict deletion if a User is referenced by a CompanyRole
+            */
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli Project
+             * ************************************************************************** */
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectType)
+                .WithMany()
+                .HasForeignKey(p => p.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectParent)
+                .WithMany()
+                .HasForeignKey(p => p.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectVisibility)
+                .WithMany()
+                .HasForeignKey(p => p.VisibilityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli Task
+             * ************************************************************************** */
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskPriority)
+                .WithMany()
+                .HasForeignKey(t => t.PriorityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskType)
+                .WithMany()
+                .HasForeignKey(t => t.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.DependentTask)
+                .WithMany()
+                .HasForeignKey(t => t.DependentOn)
+                .OnDelete(DeleteBehavior.Restrict);
+            
 
             modelBuilder.Entity<AppRole>()
                 .HasMany(ur => ur.UserRoles)

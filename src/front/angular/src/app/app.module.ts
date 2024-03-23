@@ -10,7 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } fro
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NavBarComponent } from './components/elements/nav-bar/nav-bar.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
 import { RegisterUserComponent } from './components/elements/register-user/register-user.component';
 import { CreateRoleComponent } from './components/elements/create-role/create-role.component';
@@ -31,6 +31,8 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
+import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
+import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
     PasswordResetPageComponent,
     PasswordResetComponent,
     NotificationComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    ProjectSidebarComponent,
+    ProjectPageComponent
   ],
   imports: [
     BrowserModule,

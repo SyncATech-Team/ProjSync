@@ -1,29 +1,28 @@
 import { Component, Output, EventEmitter, HostListener } from '@angular/core';
-import { AccountService } from '../../../_service/account.service';
 import { navbarData } from './nav-data';
+import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 
-interface SideNavToggle {
-  screenWidth: number;
+interface SideNavToggle{
+  screenWidth : number;
   collapsed: boolean;
 }
 
 @Component({
-  selector: 'app-admin-sidebar',
-  templateUrl: './admin-sidebar.component.html',
-  styleUrl: './admin-sidebar.component.css'
+  selector: 'app-project-sidebar',
+  templateUrl: './project-sidebar.component.html',
+  styleUrl: './project-sidebar.component.css'
 })
-export class AdminSidebarComponent {
-
+export class ProjectSidebarComponent {
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
 
   //TRUE -> otvoren side nav
   //FALSE -> zatvoren side nav
-  collapsed: boolean = false;
+  collapsed : boolean = false;
   screenWidth = 0;
   navData = navbarData;
 
-  constructor(public accountService: AccountService, private router: Router) {
+  constructor(public accoutService: AccountService, private router: Router) { 
     this.screenWidth = window.innerWidth;
     this.setCollapsedState();
   }
@@ -55,10 +54,5 @@ export class AdminSidebarComponent {
 
   emitToggleEvent() {
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
-  }
-
-  logout() {
-    this.accountService.logout();
-    this.router.navigateByUrl('/');
   }
 }
