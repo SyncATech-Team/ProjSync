@@ -95,7 +95,6 @@ export class UserPageComponent implements OnInit {
         next: response => {
           this.users = response;
           this.users_backup = response;
-          console.log(this.users);
         },
         error: error => {
           console.log("ERROR: " + error.error);
@@ -133,7 +132,8 @@ export class UserPageComponent implements OnInit {
       isVerified: false,            // proveriti !!! - hardcode
       preferedLanguage: "english",   // proveriti !!! - hardcode
       createdAt: user.createdAt,
-      updatedAt: user.updatedAt
+      updatedAt: user.updatedAt,
+      isActive : true
     });  // Add the new user to the users array
     this.users = this.users_backup;
     this.searchTerm='';
