@@ -65,7 +65,7 @@ namespace backAPI.Repositories.Implementation {
 
             // TO DO: Potrebno obezbediti kaskadno brisanje podataka vezanih za ovog korisnika
 
-            dataContext.Users.Remove(user);
+            user.IsActive = false;
             await dataContext.SaveChangesAsync(true);
 
             return true;
