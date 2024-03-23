@@ -90,6 +90,7 @@ namespace backAPI.Controllers
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
             if (user == null) return Unauthorized("invalid credentials!");
+            if (user.IsActive == false) return Unauthorized("User is not active");
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!result) return Unauthorized();
