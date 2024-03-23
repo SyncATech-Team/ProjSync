@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace backAPI.Repositories.Implementation {
     public class UsersRepository : IUsersRepository {
@@ -13,14 +14,16 @@ namespace backAPI.Repositories.Implementation {
         private readonly DataContext dataContext;
         private readonly IConfiguration configuration;
         private readonly ICompanyRolesRepository companyRolesRepository;
+        private readonly UserManager<User> userManager;
 
         /* **********************************************************************************
          * Konstruktor
          * ********************************************************************************** */
-        public UsersRepository(DataContext dataContext, IConfiguration configuration, ICompanyRolesRepository companyRolesRepository) { 
+        public UsersRepository(DataContext dataContext, IConfiguration configuration, ICompanyRolesRepository companyRolesRepository, UserManager<User> userManager) { 
             this.dataContext = dataContext;
             this.configuration = configuration;
             this.companyRolesRepository = companyRolesRepository;
+            this.userManager = userManager;
         }
         /* **********************************************************************************
          * GetUsersAsync
@@ -103,7 +106,7 @@ namespace backAPI.Repositories.Implementation {
             user.CreatedAt = user.CreatedAt;
             user.UpdatedAt = DateTime.Now;
 
-            await dataContext.SaveChangesAsync();
+            await userManager.UpdateAsync(user);
 
             return "OK";
         }

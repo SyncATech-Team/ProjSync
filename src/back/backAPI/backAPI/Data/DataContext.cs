@@ -24,14 +24,13 @@ namespace backAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            /*
+
             // FK Company role in User
             modelBuilder.Entity<User>()
                 .HasOne(u => u.CompanyRole)                 // User has one CompanyRole
                 .WithMany()                                 // Inverse relationship (optional, for clarity)
                 .HasForeignKey(u => u.CompanyRoleId)
                 .OnDelete(DeleteBehavior.Restrict);         // Restrict deletion if a User is referenced by a CompanyRole
-            */
 
             /* **************************************************************************
              * Strani kljucevi u tabeli Project

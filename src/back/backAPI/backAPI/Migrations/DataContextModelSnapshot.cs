@@ -535,6 +535,8 @@ namespace backAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyRoleId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -746,6 +748,17 @@ namespace backAPI.Migrations
                     b.Navigation("TaskType");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.User", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.CompanyRole", "CompanyRole")
+                        .WithMany()
+                        .HasForeignKey("CompanyRoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CompanyRole");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.AppRole", b =>
