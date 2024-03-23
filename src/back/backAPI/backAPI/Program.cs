@@ -77,6 +77,27 @@ using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 
 var context = services.GetRequiredService<DataContext>();
+
+// Seed project type
+if (!context.ProjectTypes.Any()) {
+    await context.ProjectTypes.AddRangeAsync(
+        new ProjectType { Id = 1, Name = "Software development" },
+        new ProjectType { Id = 2, Name = "Marketing" },
+        new ProjectType { Id = 3, Name = "Business" },
+        new ProjectType { Id = 4, Name = "IT" },
+        new ProjectType { Id = 5, Name = "Health care" }
+    );
+}
+
+// Seed project visibility
+if(!context.ProjectVisibilities.Any()) {
+    await context.ProjectVisibilities.AddRangeAsync(
+        new ProjectVisibility { Id = 1, Name = "Public" },
+        new ProjectVisibility { Id = 2, Name = "Private" },
+        new ProjectVisibility { Id = 3, Name = "Archived" }
+    );
+}
+
 if (!context.Roles.Any(r => r.Name == "Admin"))
 {
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();

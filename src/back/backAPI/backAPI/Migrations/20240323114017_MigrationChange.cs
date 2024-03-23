@@ -4,8 +4,6 @@ using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
@@ -445,28 +443,6 @@ namespace backAPI.Migrations
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.InsertData(
-                table: "ProjectTypes",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Software development" },
-                    { 2, "Marketing" },
-                    { 3, "Business" },
-                    { 4, "IT" },
-                    { 5, "Health care" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ProjectVisibilities",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Public" },
-                    { 2, "Private" },
-                    { 3, "Archived" }
-                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

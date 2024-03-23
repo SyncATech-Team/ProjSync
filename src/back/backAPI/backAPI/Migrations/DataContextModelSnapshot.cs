@@ -308,33 +308,6 @@ namespace backAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("ProjectTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Software development"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Marketing"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Business"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "IT"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Health care"
-                        });
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.ProjectVisibility", b =>
@@ -353,23 +326,6 @@ namespace backAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("ProjectVisibilities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Public"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Private"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Archived"
-                        });
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Task", b =>

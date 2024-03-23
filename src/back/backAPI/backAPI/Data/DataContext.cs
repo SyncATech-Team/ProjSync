@@ -99,25 +99,6 @@ namespace backAPI.Data
             modelBuilder.Entity<ProjectVisibility>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
-
-            // SEED DATA
-            modelBuilder.Entity<ProjectType>()
-                .HasData(
-                    new ProjectType { Id = 1, Name = "Software development" },
-                    new ProjectType { Id = 2, Name = "Marketing" },
-                    new ProjectType { Id = 3, Name = "Business"},
-                    new ProjectType { Id = 4, Name = "IT"},
-                    new ProjectType { Id = 5, Name = "Health care"}
-                );
-
-            modelBuilder.Entity<ProjectVisibility>()
-                .HasData(
-                    new ProjectVisibility { Id = 1, Name = "Public"},
-                    new ProjectVisibility { Id = 2, Name = "Private"},
-                    new ProjectVisibility { Id = 3, Name = "Archived"}
-                );
-
-
         }
 
         public DbSet<CompanyRole> CRoles { get; set; }
