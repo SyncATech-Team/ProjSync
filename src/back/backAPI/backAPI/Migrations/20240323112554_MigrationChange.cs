@@ -4,10 +4,12 @@ using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationFkConstraintTest : Migration
+    public partial class MigrationChange : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -129,30 +131,6 @@ namespace backAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectRoles", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Projects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Key = table.Column<string>(type: "varchar(255)", nullable: false),
-                    TypeId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: true),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    IconPath = table.Column<string>(type: "longtext", nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Budget = table.Column<double>(type: "double", nullable: true),
-                    VisibilityId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Projects", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -420,6 +398,76 @@ namespace backAPI.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Key = table.Column<string>(type: "varchar(255)", nullable: false),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: true),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    IconPath = table.Column<string>(type: "longtext", nullable: true),
+                    ParentId = table.Column<int>(type: "int", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Budget = table.Column<double>(type: "double", nullable: true),
+                    VisibilityId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Projects_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Projects_ProjectTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ProjectTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Projects_ProjectVisibilities_VisibilityId",
+                        column: x => x.VisibilityId,
+                        principalTable: "ProjectVisibilities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Projects_Projects_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "ProjectTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Software development" },
+                    { 2, "Marketing" },
+                    { 3, "Business" },
+                    { 4, "IT" },
+                    { 5, "Health care" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProjectVisibilities",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Public" },
+                    { 2, "Private" },
+                    { 3, "Archived" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -481,6 +529,26 @@ namespace backAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Projects_OwnerId",
+                table: "Projects",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_ParentId",
+                table: "Projects",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_TypeId",
+                table: "Projects",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_VisibilityId",
+                table: "Projects",
+                column: "VisibilityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProjectTypes_Name",
                 table: "ProjectTypes",
                 column: "Name",
@@ -539,12 +607,6 @@ namespace backAPI.Migrations
                 name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "ProjectTypes");
-
-            migrationBuilder.DropTable(
-                name: "ProjectVisibilities");
-
-            migrationBuilder.DropTable(
                 name: "TaskComments");
 
             migrationBuilder.DropTable(
@@ -570,6 +632,12 @@ namespace backAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ProjectTypes");
+
+            migrationBuilder.DropTable(
+                name: "ProjectVisibilities");
         }
     }
 }

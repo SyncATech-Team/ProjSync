@@ -11,20 +11,30 @@ namespace backAPI.Entities.Domain {
         public string Name { get; set; }
         [Required]
         public string Key { get; set; }
-        [ForeignKey("ProjectType")]
         public int TypeId { get; set; }
         public string Description { get; set; }
-        [ForeignKey("User")]
         public int OwnerId {  get; set; }
         public string IconPath { get; set; }
-        [ForeignKey("Project"), AllowNull]
         public int? ParentId { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
         [Required]
         public DateTime DueDate { get; set; }
         public double? Budget { get; set; } = 0.0;
-        [ForeignKey("ProjectVisibility")]
         public int VisibilityId { get; set; }
+
+
+        [ForeignKey("TypeId")]
+        public ProjectType ProjectType { get; set; }
+
+        [ForeignKey("OwnerId")]
+        public User User { get; set; }
+
+        [ForeignKey("ParentId"), AllowNull]
+        public Project ProjectParent { get; set; }
+
+        [ForeignKey("VisibilityId")]
+        public ProjectVisibility ProjectVisibility { get; set; }
+
     }
 }

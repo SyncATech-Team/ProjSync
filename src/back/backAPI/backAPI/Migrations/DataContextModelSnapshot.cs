@@ -235,6 +235,14 @@ namespace backAPI.Migrations
                     b.HasIndex("Key")
                         .IsUnique();
 
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("VisibilityId");
+
                     b.ToTable("Projects");
                 });
 
@@ -300,6 +308,33 @@ namespace backAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("ProjectTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Software development"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Marketing"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Business"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "IT"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Health care"
+                        });
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.ProjectVisibility", b =>
@@ -318,6 +353,23 @@ namespace backAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("ProjectVisibilities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Public"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Private"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Archived"
+                        });
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Task", b =>
@@ -650,6 +702,40 @@ namespace backAPI.Migrations
                         .HasForeignKey("UserId1");
 
                     b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.Project", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.Project", "ProjectParent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("backAPI.Entities.Domain.ProjectType", "ProjectType")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.ProjectVisibility", "ProjectVisibility")
+                        .WithMany()
+                        .HasForeignKey("VisibilityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ProjectParent");
+
+                    b.Navigation("ProjectType");
+
+                    b.Navigation("ProjectVisibility");
 
                     b.Navigation("User");
                 });
