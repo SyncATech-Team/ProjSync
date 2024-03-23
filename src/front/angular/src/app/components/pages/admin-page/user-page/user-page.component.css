@@ -126,3 +126,8 @@ div.div-image img {
     width: 100px;
     border-radius: 50%;
 }
+
+#search-users-by-username{
+    padding: 4px 34px;
+    border-radius: 6px;
+}
