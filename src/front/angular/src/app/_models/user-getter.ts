@@ -12,4 +12,5 @@ export interface UserGetter {
     preferedLanguage: string;
     createdAt?: Date;
     updatedAt?: Date;
+    isActive?: boolean;
 }

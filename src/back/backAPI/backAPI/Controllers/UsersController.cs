@@ -42,7 +42,8 @@ namespace backAPI.Controllers
                     IsVerified = user.IsVerified,
                     PreferedLanguage = user.PreferedLanguage,
                     CreatedAt = user.CreatedAt,
-                    UpdatedAt = user.UpdatedAt
+                    UpdatedAt = user.UpdatedAt,
+                    isActive = user.IsActive
                 });
             }
 

@@ -102,6 +102,7 @@ namespace backAPI.Repositories.Implementation {
             user.PreferedLanguage = request.PreferedLanguage;
             user.CreatedAt = user.CreatedAt;
             user.UpdatedAt = DateTime.Now;
+            user.IsActive = request.isActive;
 
             await dataContext.SaveChangesAsync();
 

@@ -131,3 +131,11 @@ div.div-image img {
     padding: 4px 34px;
     border-radius: 6px;
 }
+
+.inactive-user {
+    background-color: red;
+}
+
+.active-user {
+    background-color: green;
+}

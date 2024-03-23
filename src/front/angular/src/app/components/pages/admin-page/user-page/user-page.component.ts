@@ -90,12 +90,12 @@ export class UserPageComponent implements OnInit {
    * 2. Poziva se kada se komponenta ponovo kreira, npr. ako je promenjena ruta
    */
   ngOnInit(): void {
-
       // Dovuci registrovane korisnike iz baze putem servisa
       this.userService.getAllUsers().subscribe({
         next: response => {
           this.users = response;
           this.users_backup = response;
+          console.log(this.users);
         },
         error: error => {
           console.log("ERROR: " + error.error);
@@ -174,8 +174,8 @@ export class UserPageComponent implements OnInit {
   deleteUser(username: string, event: Event): void {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
-        message: 'Do you want to delete this record?',
-        header: 'Delete Confirmation',
+        message: 'Do you want to deactivate this record?',
+        header: 'Deactivate Confirmation',
         icon: 'pi pi-info-circle',
         acceptButtonStyleClass:"p-button-danger p-button-text",
         rejectButtonStyleClass:"p-button-text p-button-text",
@@ -185,27 +185,27 @@ export class UserPageComponent implements OnInit {
         accept: (input: string) => {
           this.userService.deleteUser(username).subscribe({
             next: _=>{
-              const indexToRemove = this.users.findIndex(user => user.username === username);
-              
-              //Brisanje iz lokalnog niza
-              if (indexToRemove !== -1) {
-                this.users.splice(indexToRemove, 1);
+              const userIndex = this.users.findIndex(user => user.username === username);
+
+              this.users[userIndex].isActive = !this.users[userIndex].isActive;
+
+              this.userService.updateUserInfo(this.users[userIndex].username, this.users[userIndex]).subscribe({});
+
+              if(this.users[userIndex].isActive == true){
+                this.msgPopupService.showSuccess("User activated");
               }
-      
-              const indexToRemoveBackup = this.users_backup.findIndex(user => user.username === username);
-              if(indexToRemoveBackup !== -1) {
-                this.users_backup.splice(indexToRemoveBackup, 1);
+              else{
+                this.msgPopupService.showSuccess("User deactivated");
               }
-              this.msgPopupService.showSuccess("User deleted");
               this.table.reset();
             },
             error: error => {
-              this.msgPopupService.showError("Unable to delete user");
+              this.msgPopupService.showError("Unable to deactive user");
             }
           });
         },
         reject: () => {
-            this.msgPopupService.showError('You have rejected ');
+            this.msgPopupService.showError('You have rejected');
         }
     });
   }
