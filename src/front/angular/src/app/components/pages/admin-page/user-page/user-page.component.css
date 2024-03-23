@@ -132,18 +132,18 @@ div.div-image img {
     border-radius: 6px;
 }
 
-.inactive-user {
-    background-color: red;
-}
-
-.active-user {
-    background-color: green;
-}
-
 .deleteBtn button.active {
     background-color: #4CAF50;
 }
 
 .deleteBtn button.inactive {
     background-color: #f44336;
+}
+
+.active-user {
+    opacity: 1;
+}
+
+.inactive-user {
+    opacity: 0.5;
 }

@@ -94,7 +94,7 @@
 
                 <!-- Table body -->
                 <ng-template pTemplate="body" let-user>
-                    <tr>
+                    <tr [ngClass]="{'active-user' : user.isActive, 'inactive-user': !user.isActive}">
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Account</span>
                             <div class="profilecontent">
