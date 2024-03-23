@@ -139,3 +139,11 @@ div.div-image img {
 .active-user {
     background-color: green;
 }
+
+.deleteBtn button.active {
+    background-color: #4CAF50;
+}
+
+.deleteBtn button.inactive {
+    background-color: #f44336;
+}

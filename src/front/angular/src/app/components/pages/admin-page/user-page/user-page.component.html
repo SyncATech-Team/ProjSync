@@ -133,10 +133,13 @@
                                 
                                 <div class="action">
                                     <div class="deleteBtn">
-                                        <button type="button" pButton pRipple icon="fa-solid fa-lock" 
-                                            (click)="deleteUser(user.username, $event)"  class="p-button-danger mr-2" 
+                                        <button [ngClass]="{'active p-button-success': user.isActive, 'inactive p-button-danger': !user.isActive}" 
+                                            type="button" pButton pRipple 
+                                            [icon]="user.isActive ? 'fa-solid fa-lock-open' : 'fa-solid fa-lock'" 
+                                            (click)="deleteUser(user.username, $event)"  
                                             tooltipPosition="bottom"
-                                            title="Delete record"></button>
+                                            title="Delete record">
+                                        </button>
                                     </div>
                                 </div>
                                 
