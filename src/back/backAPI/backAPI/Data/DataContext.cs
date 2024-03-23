@@ -33,7 +33,9 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Restrict);         // Restrict deletion if a User is referenced by a CompanyRole
             */
 
-            // Strani kljucevi u tabeli Project
+            /* **************************************************************************
+             * Strani kljucevi u tabeli Project
+             * ************************************************************************** */
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.User)
                 .WithMany()
@@ -57,7 +59,40 @@ namespace backAPI.Data
                 .WithMany()
                 .HasForeignKey(p => p.VisibilityId)
                 .OnDelete(DeleteBehavior.Restrict);
-            ////
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli Task
+             * ************************************************************************** */
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskPriority)
+                .WithMany()
+                .HasForeignKey(t => t.PriorityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskType)
+                .WithMany()
+                .HasForeignKey(t => t.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.DependentTask)
+                .WithMany()
+                .HasForeignKey(t => t.DependentOn)
+                .OnDelete(DeleteBehavior.Restrict);
+            
 
             modelBuilder.Entity<AppRole>()
                 .HasMany(ur => ur.UserRoles)
@@ -99,25 +134,6 @@ namespace backAPI.Data
             modelBuilder.Entity<ProjectVisibility>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
-
-            // SEED DATA
-            modelBuilder.Entity<ProjectType>()
-                .HasData(
-                    new ProjectType { Id = 1, Name = "Software development" },
-                    new ProjectType { Id = 2, Name = "Marketing" },
-                    new ProjectType { Id = 3, Name = "Business"},
-                    new ProjectType { Id = 4, Name = "IT"},
-                    new ProjectType { Id = 5, Name = "Health care"}
-                );
-
-            modelBuilder.Entity<ProjectVisibility>()
-                .HasData(
-                    new ProjectVisibility { Id = 1, Name = "Public"},
-                    new ProjectVisibility { Id = 2, Name = "Private"},
-                    new ProjectVisibility { Id = 3, Name = "Archived"}
-                );
-
-
         }
 
         public DbSet<CompanyRole> CRoles { get; set; }

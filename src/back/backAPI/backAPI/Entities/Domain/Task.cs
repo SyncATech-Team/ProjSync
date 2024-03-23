@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backAPI.Entities.Domain {
@@ -14,14 +15,32 @@ namespace backAPI.Entities.Domain {
         [Required]
         public DateTime DueDate { get; set; }
         public string Description { get; set; }
-        [ForeignKey("Users")]
         public int CreatedBy { get; set; }
-        [ForeignKey("Projects")]
         public int ProjectId { get; set; }
-        public int DependentOn { get; set; }
-        [ForeignKey("TaskPriority")]
+        public int? DependentOn { get; set; }
         public int PriorityId { get; set; }
-        [ForeignKey("TaskType")]
         public int TypeId { get; set; }
+
+
+
+        [ForeignKey("CreatedBy")]
+        public User User { get; set; }
+
+        
+        [ForeignKey("ProjectId")]
+        public Project Project { get; set; }
+
+
+        [ForeignKey("PriorityId")]
+        public TaskPriority TaskPriority { get; set; }
+
+
+        [ForeignKey("TypeId")]
+        public TaskType TaskType { get; set; }
+
+
+        [ForeignKey("DependentOn")]
+        public Task DependentTask { get; set; }
+
     }
 }
