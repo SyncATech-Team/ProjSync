@@ -78,10 +78,7 @@ namespace backAPI.Entities.Domain
         /// </summary>
         public bool IsActive { get; set; } = true;
 
-
-        /*
         [ForeignKey("CompanyRoleId")]
         public CompanyRole CompanyRole { get; set; }
-        */
     }
 }

@@ -84,11 +84,11 @@ var context = services.GetRequiredService<DataContext>();
 // Seed project type
 if (!context.ProjectTypes.Any()) {
     await context.ProjectTypes.AddRangeAsync(
-        new ProjectType { Id = 1, Name = "Software development" },
-        new ProjectType { Id = 2, Name = "Marketing" },
-        new ProjectType { Id = 3, Name = "Business" },
-        new ProjectType { Id = 4, Name = "IT" },
-        new ProjectType { Id = 5, Name = "Health care" }
+        new ProjectType { Name = "Software development" },
+        new ProjectType { Name = "Marketing" },
+        new ProjectType { Name = "Business" },
+        new ProjectType { Name = "IT" },
+        new ProjectType { Name = "Health care" }
     );
 }
 
@@ -121,6 +121,10 @@ if(!context.TaskTypes.Any()) {
     );
 }
 
+if(!context.CRoles.Any()) {
+    await context.CRoles.AddAsync(new CompanyRole { Name = "Developer" });
+}
+
 if (!context.Roles.Any(r => r.Name == "Admin"))
 {
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
@@ -136,8 +140,6 @@ if (!context.Roles.Any(r => r.Name == "Admin"))
     {
         await roleManager.CreateAsync(role);
     }
-
-    context.CRoles.Add(new CompanyRole { Name = "Developer" });
 
     var admin = new User 
     { 
