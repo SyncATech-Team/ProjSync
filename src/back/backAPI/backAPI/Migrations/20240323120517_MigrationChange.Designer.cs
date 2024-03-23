@@ -11,7 +11,7 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240323114017_MigrationChange")]
+    [Migration("20240323120517_MigrationChange")]
     partial class MigrationChange
     {
         /// <inheritdoc />
@@ -343,7 +343,7 @@ namespace backAPI.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("DependentOn")
+                    b.Property<int?>("DependentOn")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -369,6 +369,16 @@ namespace backAPI.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DependentOn");
+
+                    b.HasIndex("PriorityId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Tasks");
                 });
@@ -695,6 +705,48 @@ namespace backAPI.Migrations
                     b.Navigation("ProjectType");
 
                     b.Navigation("ProjectVisibility");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.Task", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.Task", "DependentTask")
+                        .WithMany()
+                        .HasForeignKey("DependentOn")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("backAPI.Entities.Domain.TaskPriority", "TaskPriority")
+                        .WithMany()
+                        .HasForeignKey("PriorityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.TaskType", "TaskType")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DependentTask");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("TaskPriority");
+
+                    b.Navigation("TaskType");
 
                     b.Navigation("User");
                 });

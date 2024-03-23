@@ -33,7 +33,9 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Restrict);         // Restrict deletion if a User is referenced by a CompanyRole
             */
 
-            // Strani kljucevi u tabeli Project
+            /* **************************************************************************
+             * Strani kljucevi u tabeli Project
+             * ************************************************************************** */
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.User)
                 .WithMany()
@@ -57,7 +59,40 @@ namespace backAPI.Data
                 .WithMany()
                 .HasForeignKey(p => p.VisibilityId)
                 .OnDelete(DeleteBehavior.Restrict);
-            ////
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli Task
+             * ************************************************************************** */
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskPriority)
+                .WithMany()
+                .HasForeignKey(t => t.PriorityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskType)
+                .WithMany()
+                .HasForeignKey(t => t.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.DependentTask)
+                .WithMany()
+                .HasForeignKey(t => t.DependentOn)
+                .OnDelete(DeleteBehavior.Restrict);
+            
 
             modelBuilder.Entity<AppRole>()
                 .HasMany(ur => ur.UserRoles)

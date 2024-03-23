@@ -76,6 +76,9 @@ app.MapControllers();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 
+/* ********************************************************************************************
+ * SEED DATABASE
+ * ******************************************************************************************** */
 var context = services.GetRequiredService<DataContext>();
 
 // Seed project type
@@ -95,6 +98,26 @@ if(!context.ProjectVisibilities.Any()) {
         new ProjectVisibility { Id = 1, Name = "Public" },
         new ProjectVisibility { Id = 2, Name = "Private" },
         new ProjectVisibility { Id = 3, Name = "Archived" }
+    );
+}
+
+// Seed task priority
+if (!context.TaskPriority.Any()) {
+    await context.TaskPriority.AddRangeAsync(
+        new TaskPriority { Id = 1, Name = "Lowest" },
+        new TaskPriority { Id = 2, Name = "Low" },
+        new TaskPriority { Id = 3, Name = "Medium" },
+        new TaskPriority { Id = 4, Name = "High" },
+        new TaskPriority { Id = 5, Name = "Highest" }
+    );
+}
+
+// Seed task type
+if(!context.TaskTypes.Any()) {
+    await context.TaskTypes.AddRangeAsync(
+        new TaskType { Id = 1, Name = "Task"},
+        new TaskType { Id = 2, Name = "Problem"},
+        new TaskType { Id = 3, Name = "Story"}
     );
 }
 
@@ -130,5 +153,3 @@ if (!context.Roles.Any(r => r.Name == "Admin"))
 }
 
 app.Run();
-
-// test commit
