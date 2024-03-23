@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-project-page',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './project-page.component.css'
 })
 export class ProjectPageComponent {
+  
 
+  constructor(private route: ActivatedRoute) {
+    console.log("Constructor " + this.route.snapshot.paramMap.get('projectName'));
+  }
 }

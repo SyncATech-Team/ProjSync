@@ -23,7 +23,8 @@ const routes: Routes = [
       {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
       {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
       {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]},
-      {path: 'home/projects', component: ProjectPageComponent}
+      {path: 'home/projects', component: ProjectPageComponent},
+      {path: 'home/projects/:projectName', component: ProjectPageComponent}
     ]
   },
   {path: '**', component: LoginPageComponent, pathMatch: 'full'},
