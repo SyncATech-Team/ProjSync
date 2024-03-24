@@ -9,16 +9,19 @@ import { RolePageComponent } from './components/pages/admin-page/role-page/role-
 import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
 import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
+import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
+  {path: 'account/confirm-email', component: ConfirmEmailComponent},
+  {path: 'account/password-reset', component: PasswordResetPageComponent},
   {path: '',
     runGuardsAndResolvers: 'pathParamsChange',
     canActivate: [authGuard],
     children: [
       {path: 'home', component: HomePageComponent},
-      {path: 'password_reset', component: PasswordResetPageComponent},
+      
       {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
       {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
       {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
@@ -27,6 +30,7 @@ const routes: Routes = [
       {path: 'home/projects/:projectName', component: ProjectPageComponent}
     ]
   },
+  
   {path: '**', component: LoginPageComponent, pathMatch: 'full'},
 ];
 

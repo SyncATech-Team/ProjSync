@@ -8,4 +8,4 @@ export interface RegisterModel {
     companyRole: string
     address: string
     contactPhone: string
-  }
+}

@@ -30,6 +30,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 
@@ -51,6 +52,7 @@ import { ProjectPageComponent } from './components/pages/project-page/project-pa
     PasswordResetPageComponent,
     PasswordResetComponent,
     NotificationComponent,
+    ConfirmEmailComponent,
     ProjectSidebarComponent,
     ProjectPageComponent
   ],

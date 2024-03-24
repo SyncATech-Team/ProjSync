@@ -5,14 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../_models/register-user';
 import { environment } from '../../environments/environment';
 import { UserGetter } from '../_models/user-getter';
+import { ResetPassword } from '../_models/reset-password';
+import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  private currentUserSource = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSource.asObservable();
   
   constructor(private http: HttpClient) { }
 
@@ -62,7 +62,6 @@ export class AccountService {
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
 
     localStorage.setItem('user', JSON.stringify(user));
-    this.currentUserSource.next(user);
   }
 
   register(model: RegisterModel) {
@@ -71,10 +70,31 @@ export class AccountService {
     return this.http.post<UserGetter>(this.baseUrl + 'Account/register', model);
   }
 
+  confirmEmail(email: string | null, token: string | null) {
+    return this.http.post<ResetPasswordAfterEmailConformation>(this.baseUrl + `account/confirm-email?email=${email}&token=${token}`, {})
+      .pipe(
+        map((response: ResetPasswordAfterEmailConformation) => {
+          localStorage.setItem('pass-reset', JSON.stringify(response));
+        })
+      );
+  }
+
+  resetPassword(model: ResetPassword) {
+    return this.http.post<User>(this.baseUrl + `Account/reset-password`, model).pipe(
+      map((response: User) => {
+        const user = response;
+
+        if (user) {
+          // zapamti korisnika lokalno
+          this.setCurentUser(user);
+        }
+      })
+    );
+  }
+
   logout() {
     // izbrisati iz lokalne memorije
     localStorage.removeItem('user');
-    this.currentUserSource.next(null);
   }
 
   getDecodedToken(token: string) {
