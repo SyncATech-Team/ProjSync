@@ -15,12 +15,13 @@ import { ProjectPageComponent } from './components/pages/project-page/project-pa
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
   {path: 'account/confirm-email', component: ConfirmEmailComponent},
+  {path: 'account/password-reset', component: PasswordResetPageComponent},
   {path: '',
     runGuardsAndResolvers: 'pathParamsChange',
     canActivate: [authGuard],
     children: [
       {path: 'home', component: HomePageComponent},
-      {path: 'password_reset', component: PasswordResetPageComponent},
+      
       {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
       {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
       {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
