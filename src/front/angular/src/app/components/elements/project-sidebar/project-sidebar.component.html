@@ -15,7 +15,7 @@
     <!-- Linkovi -->
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]"
+            <a class="sidenav-nav-link" [routerLink]="[data.routeLink + projectName]"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact:true}">
                 <i [class]="data.icon" class="sidenav-link-icon"></i>

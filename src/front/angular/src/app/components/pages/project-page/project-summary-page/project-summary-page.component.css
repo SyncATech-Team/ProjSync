@@ -1,0 +1,14 @@
+#contentPages {
+    display: flex;
+}
+
+#content {
+    margin: 1%;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.profilecontent img {
+    width: 20px;
+    height: 20px;
+}

@@ -1,6 +1,6 @@
 export const navbarData = [
     {
-        routeLink : '',
+        routeLink : '/home/projects/summary/',
         icon: 'fa-solid fa-clipboard-list',
         label: 'Summary'
     },

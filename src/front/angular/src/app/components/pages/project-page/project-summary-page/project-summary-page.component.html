@@ -1,0 +1,34 @@
+<div id="pageWraper">
+    <app-nav-bar></app-nav-bar>
+    <div id="contentPages">
+
+        <app-project-sidebar></app-project-sidebar>
+
+        <div id="content">
+            
+            
+            
+            <div class="profilecontent">
+                <img *ngIf="1==1; else secondImageSource"
+                src={{getDefaultImagePath()}} alt="user-default-image">
+                <ng-template #secondImageSource>
+                    <img src="{{getDefaultImagePath()}}" alt="user-image">
+                </ng-template>
+                <h1>{{project.name}}</h1>
+            </div>
+                
+                
+            <p>Key: {{project.key}}</p>
+            <p>Project type name: {{project.typeName}}</p>
+            <p>Description: {{project.description}}</p>
+            <p>Owner: {{project.ownerUsername}}</p>
+            <p>Creation date: {{project.creationDate}}</p>
+            <p>Due date: {{project.dueDate}}</p>
+            <p>Bugdet: {{project.budget}}</p>
+            <p>Project visibility: {{project.visibilityName}}</p>
+        </div>
+        
+    </div>
+</div>
+
+

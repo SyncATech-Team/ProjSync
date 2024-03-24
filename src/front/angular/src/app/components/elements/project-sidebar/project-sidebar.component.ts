@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 import { navbarData } from './nav-data';
 import { AccountService } from '../../../_service/account.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface SideNavToggle{
   screenWidth : number;
@@ -21,10 +21,12 @@ export class ProjectSidebarComponent {
   collapsed : boolean = false;
   screenWidth = 0;
   navData = navbarData;
+  projectName: string | null = '';
 
-  constructor(public accoutService: AccountService, private router: Router) { 
+  constructor(public accoutService: AccountService, private router: Router,private route: ActivatedRoute) { 
     this.screenWidth = window.innerWidth;
     this.setCollapsedState();
+    this.projectName = route.snapshot.paramMap.get('projectName');
   }
 
   @HostListener('window:resize', ['$event'])

@@ -11,6 +11,7 @@ import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
+import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
@@ -27,7 +28,8 @@ const routes: Routes = [
       {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
       {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]},
       {path: 'home/projects', component: ProjectPageComponent},
-      {path: 'home/projects/:projectName', component: ProjectPageComponent}
+      {path: 'home/projects/:projectName', component: ProjectPageComponent},
+      {path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent}
     ]
   },
   
