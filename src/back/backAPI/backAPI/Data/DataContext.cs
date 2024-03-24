@@ -24,16 +24,25 @@ namespace backAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-
-            // FK Company role in User
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.CompanyRole)                 // User has one CompanyRole
-                .WithMany()                                 // Inverse relationship (optional, for clarity)
-                .HasForeignKey(u => u.CompanyRoleId)
-                .OnDelete(DeleteBehavior.Restrict);         // Restrict deletion if a User is referenced by a CompanyRole
+            /* *******************************************************************************************************************
+             * *******************************************************************************************************************
+             * *******************************************************************************************************************
+             * SPECIFIKACIJA STRANIH KLJUCEVA
+             * *******************************************************************************************************************
+             * *******************************************************************************************************************
+             * ******************************************************************************************************************* */
 
             /* **************************************************************************
-             * Strani kljucevi u tabeli Project
+             * Strani kljucevi u tabeli >> User <<
+             * ************************************************************************** */
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.CompanyRole)
+                .WithMany()
+                .HasForeignKey(u => u.CompanyRoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> Project <<
              * ************************************************************************** */
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.User)
@@ -60,80 +69,201 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             /* **************************************************************************
-             * Strani kljucevi u tabeli Task
+             * Strani kljucevi u tabeli >> Task <<
              * ************************************************************************** */
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.User)
                 .WithMany()
                 .HasForeignKey(t => t.CreatedBy)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // FK owner
 
             modelBuilder.Entity<Task>()
-                .HasOne(t => t.Project)
+                .HasOne(t => t.TaskGroup)
                 .WithMany()
-                .HasForeignKey(t => t.ProjectId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(t => t.GroupId)
+                .OnDelete(DeleteBehavior.Restrict); // FK group
             
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.TaskPriority)
                 .WithMany()
                 .HasForeignKey(t => t.PriorityId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // FK priority
 
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.TaskType)
                 .WithMany()
                 .HasForeignKey(t => t.TypeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // FK type
 
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.DependentTask)
                 .WithMany()
                 .HasForeignKey(t => t.DependentOn)
-                .OnDelete(DeleteBehavior.Restrict);
-            
+                .OnDelete(DeleteBehavior.Restrict); // FK parent task
 
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> ProjectDocumentation <<
+             * ************************************************************************** */
+            modelBuilder.Entity<ProjectDocumentation>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict); // nece se brisati projekti
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> AppRole <<
+             * ************************************************************************** */
             modelBuilder.Entity<AppRole>()
                 .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
 
-            // UNIQUE Company role name
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> TaskGroup <<
+             * ************************************************************************** */
+            modelBuilder.Entity<TaskGroup>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju grupe brisu se svi taskovi koji pripadaju toj grupi
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> GroupsOnProject <<
+             * ************************************************************************** */
+            modelBuilder.Entity<GroupsOnProject>()
+                .HasOne(t => t.TaskGroup)
+                .WithMany()
+                .HasForeignKey(t => t.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju grupe brisu se sve veze koje se nalaze ovde
+
+            modelBuilder.Entity<GroupsOnProject>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju projekta (koje se nece desiti) brisu se grupe
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> TaskComment <<
+             * ************************************************************************** */
+            modelBuilder.Entity<TaskComment>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // pri brisanju korisnika (koje se nece desiti) brisu se komentari
+
+            modelBuilder.Entity<TaskComment>()
+                .HasOne(t => t.Task)
+                .WithMany()
+                .HasForeignKey(t => t.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju komentara brisu se komentari za taj task
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> WorkingHours <<
+             * ************************************************************************** */
+            modelBuilder.Entity<WorkingHours>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);  // nece se brisati korisnici
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> Notifications <<
+             * ************************************************************************** */
+            modelBuilder.Entity<Notification>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);  // nece se brisati korisnici
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> UsersOnProject <<
+             * ************************************************************************** */
+            modelBuilder.Entity<UsersOnProject>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UsersOnProject>()
+                .HasOne(t => t.Project)
+                .WithMany()
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> UsersOnTasks <<
+             * ************************************************************************** */
+            modelBuilder.Entity<UsersOnTasks>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UsersOnTasks>()
+                .HasOne(t => t.Task)
+                .WithMany()
+                .HasForeignKey(t => t.TaskId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            /* *******************************************************************************************************************
+             * *******************************************************************************************************************
+             * *******************************************************************************************************************
+             * UNIQUE OGRANICENJA
+             * *******************************************************************************************************************
+             * *******************************************************************************************************************
+             * ******************************************************************************************************************* */
+
+            // UNIQUE - CompanyRole - Name
             modelBuilder.Entity<CompanyRole>()
                 .HasIndex(c => c.Name)
                 .IsUnique(true);
 
-            // UNIQUE task type name
+            // UNIQUE - TaskType - Name
             modelBuilder.Entity<TaskType>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
 
-            // UNIQUE task priority name
+            // UNIQUE - TaskPriority - Name
             modelBuilder.Entity<TaskPriority>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
 
-            // UNIQUE project key
+            // UNIQUE - Project - Name
+            modelBuilder.Entity<Project>()
+                .HasIndex(t => t.Name)
+                .IsUnique(true);
+
+            // UNIQUE - Project - Key
             modelBuilder.Entity<Project>()
                 .HasIndex(t => t.Key)
                 .IsUnique(true);
 
-            // UNIQUE project roles name
+            // UNIQUE project roles name                    [DEPRECATED?]
             modelBuilder.Entity<ProjectRoles>()
                 .HasIndex(r => r.Name)
                 .IsUnique(true);
 
-            // UNIQUE project type name
+            // UNIQUE - ProjectType - Name
             modelBuilder.Entity<ProjectType>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
 
-            // UNIQUE visibility name
+            // UNIQUE - ProjectVisibility - Name
             modelBuilder.Entity<ProjectVisibility>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
+
+
         }
+
+        /* *******************************************************************************************************************
+        * *******************************************************************************************************************
+        * *******************************************************************************************************************
+        * KOLEKCIJE
+        * *******************************************************************************************************************
+        * *******************************************************************************************************************
+        * ******************************************************************************************************************* */
 
         public DbSet<CompanyRole> CRoles { get; set; }
         public DbSet<WorkingHours> WorkHours { get; set; }
@@ -149,5 +279,7 @@ namespace backAPI.Data
         public DbSet<ProjectDocumentation> ProjectDocumentation { get; set; }
         public DbSet<TaskComment> TaskComment { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<TaskGroup> TaskGroups { get; set; }
+        public DbSet<GroupsOnProject> GroupsOnProjects { get; set; }
     }
 }
