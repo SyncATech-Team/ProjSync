@@ -1,6 +1,4 @@
-using backAPI.Data;
 using backAPI.DTO;
-using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using backAPI.DTO.ResetPassword;
+using backAPI.Entities.Domain;
 
 namespace backAPI.Controllers
 {

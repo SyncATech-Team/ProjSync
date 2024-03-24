@@ -3,7 +3,6 @@ using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation
 {
@@ -11,23 +10,24 @@ namespace backAPI.Repositories.Implementation
 
         private readonly DataContext dataContext;
 
-        /* **************************************************************************
-         * Konstruktor
-         * ************************************************************************** */
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="dataContext"></param>
         public CompanyRolesRepository(DataContext dataContext) {
             this.dataContext = dataContext;
         }
-
-        /* **************************************************************************
-         * POST | Metod za kreiranje nove uloge u kompaniji
-         * ************************************************************************** */
+        /// <summary>
+        /// Metod za kreiranje nove uloge u kompaniji
+        /// </summary>
+        /// <param name="companyRole"></param>
+        /// <returns>CompanyRole - kreirana uloga</returns>
         public async Task<CompanyRole> CreateNewRoleAsync(CompanyRole companyRole) {
             await dataContext.CRoles.AddAsync(companyRole);
             await dataContext.SaveChangesAsync();
 
             return companyRole;
         }
-
         /// <summary>
         /// Dohvatanje svih objekata iz baze
         /// </summary>
@@ -35,10 +35,11 @@ namespace backAPI.Repositories.Implementation
         public async Task<IEnumerable<CompanyRole>> GetCompanyRolesAsync() {
             return await dataContext.CRoles.ToListAsync();
         }
-
-        /* **************************************************************************
-         * DELETE | Obrisi ulogu za prosledjeni naziv
-         * ************************************************************************** */
+        /// <summary>
+        /// Brisanje uloge sa odredjenim nazivom
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteCompanyRole(string name) {
 
             var roleId = await GetCompanyRoleByNameAsync(name);
@@ -53,9 +54,12 @@ namespace backAPI.Repositories.Implementation
 
             return true;
         }
-        /* **************************************************************************
-         * PUT | Izmeni entitet za prosledjeno ime
-         * ************************************************************************** */
+        /// <summary>
+        /// Izmeni entitet za prosledjeno ime
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateCompanyRole(string name, CompanyRoleDto request) {
             var role = await GetCompanyRoleByNameAsync(name);
 
@@ -64,22 +68,37 @@ namespace backAPI.Repositories.Implementation
             }
 
             role.Name = request.Name;
+            role.CanUpdateTaskProgress = request.CanUpdateTaskProgress;
+            role.CanManageProjects = request.CanManageProjects;
+            role.CanManageTasks = request.CanManageTasks;
+            role.CanUploadFiles = request.CanUploadFiles;
+            role.CanLeaveComments = request.CanLeaveComments;
+
             await dataContext.SaveChangesAsync();
 
             return true;
         }
-
+        /// <summary>
+        /// Dohvatanje role za prosledjeni ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<CompanyRole> GetCompanyRoleById(int id) {
             return await dataContext.CRoles.Where(role => role.Id == id).FirstAsync();
         }
-
-        /* **************************************************************************
-         * Provera da li u bazi vec postoji uloga koju zelimo da dodamo
-         * ************************************************************************** */
+        /// <summary>
+        /// Provera da li u bazi vec postoji uloga koju zelimo da dodamo
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<bool> CheckCompanyRoleNameExistance(string name) {
             return await dataContext.CRoles.AnyAsync(role => role.Name.ToLower() == name.ToLower());
         }
-
+        /// <summary>
+        /// Dohvatanje role za prosledjeno ime
+        /// </summary>
+        /// <param name="companyRoleName"></param>
+        /// <returns></returns>
         public async Task<CompanyRole> GetCompanyRoleByNameAsync(string companyRoleName)
         {
             return await dataContext.CRoles

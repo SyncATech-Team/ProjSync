@@ -30,9 +30,7 @@ namespace backAPI.Controllers
                 result.Add(new ApiWorkingHours {
                     UserId = workHour.UserId,
                     SpecificDate = workHour.SpecificDate,
-                    HoursWorking = workHour.HoursWorking,
-                    Weekend = workHour.Weekend,
-                    Overtime = workHour.Overtime
+                    HoursWorking = workHour.HoursWorking
                 });
             }
 
