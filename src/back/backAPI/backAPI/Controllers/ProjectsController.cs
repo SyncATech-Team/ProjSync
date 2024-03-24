@@ -22,7 +22,9 @@ namespace backAPI.Controllers
             _projectTypesRepository = projectTypesRepository;
             _projectVisibilitiesRepository = projectVisibilitiesRepository;
         }
-
+        /* ***************************************************************************************
+         * Get all projects
+         * *************************************************************************************** */
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAllProjects()
         {
@@ -56,7 +58,36 @@ namespace backAPI.Controllers
             }
             return result;
         }
+        /* ***************************************************************************************
+         * Get project by name
+         * *************************************************************************************** */
+        [HttpGet("{projectName}")]
+        public async Task<ActionResult<ProjectDto>> GetProjectByName(string projectName) {
+            var project = _projectsRepository.GetProjectByName(projectName);
 
+            if(project.Result == null) {
+                return NotFound("There is no project with specified name");
+            }
+
+            var type = await _projectTypesRepository.GetProjectTypeById(project.Result.TypeId);
+            var visibility = await _projectVisibilitiesRepository.GetProjectVisibilityByIdAsync(project.Result.VisibilityId);
+            var owner = await _usersRepository.IdToUsername(project.Result.OwnerId);
+
+            return new ProjectDto {
+                Name = project.Result.Name,
+                Key = project.Result.Key,
+                Description = project.Result.Description,
+                TypeName = type.Name,
+                OwnerUsername = owner,
+                CreationDate = project.Result.CreationDate,
+                DueDate = project.Result.DueDate,
+                Budget = project.Result.Budget,
+                VisibilityName = visibility.Name
+            };
+        }
+        /* ***************************************************************************************
+         * Create new project
+         * *************************************************************************************** */
         [HttpPost]
         public async Task<ActionResult> CreateProject(ProjectDto projectDto)
         {
@@ -75,7 +106,9 @@ namespace backAPI.Controllers
 
             return Ok();
         }
-
+        /* ***************************************************************************************
+         * Update project with the given name
+         * *************************************************************************************** */
         [HttpPut("{name}")]
         public async Task<ActionResult<string>> UpdateProject(string name,ProjectDto request)
         {
@@ -88,10 +121,9 @@ namespace backAPI.Controllers
 
             return Ok();
         }
-
-
-
-
+        /* ***************************************************************************************
+         * Delete project with the given name
+         * *************************************************************************************** */
         [HttpDelete("{name}")]
         public async Task<ActionResult<string>> DeleteProject(string name)
         {
