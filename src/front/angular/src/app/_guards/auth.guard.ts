@@ -1,15 +1,20 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AccountService } from '../_service/account.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const accountService = inject(AccountService);
   const router = inject(Router);
 
-  var user = accountService.getCurrentUser();
-  if(user) return true;
+  if (typeof localStorage === 'undefined') {
+    return false; // localStorage is not available, return null
+  }
+  
+  var storage = localStorage.getItem("user");
+    if(!storage) return false;
 
-  router.navigateByUrl('');
+  var user = JSON.parse(storage);
+  if (user['token']) {
+    return true;
+  }
   return false;
 
 };
