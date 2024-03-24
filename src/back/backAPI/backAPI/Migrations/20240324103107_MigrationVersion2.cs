@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationChange : Migration
+    public partial class MigrationVersion2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,7 +37,12 @@ namespace backAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: true),
+                    CanManageProjects = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CanManageTasks = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CanUpdateTaskProgress = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CanLeaveComments = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CanUploadFiles = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {

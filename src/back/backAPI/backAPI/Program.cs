@@ -122,7 +122,14 @@ if(!context.TaskTypes.Any()) {
 }
 
 if(!context.CRoles.Any()) {
-    await context.CRoles.AddAsync(new CompanyRole { Name = "Developer" });
+    await context.CRoles.AddAsync(new CompanyRole {
+        Name = "Administrator",
+        CanLeaveComments = false,
+        CanUploadFiles = false,
+        CanManageProjects = false,
+        CanUpdateTaskProgress = false,
+        CanManageTasks = false
+    });
 }
 
 if (!context.Roles.Any(r => r.Name == "Admin"))

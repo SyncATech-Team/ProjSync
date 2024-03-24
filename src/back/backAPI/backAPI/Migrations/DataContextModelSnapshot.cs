@@ -156,8 +156,22 @@ namespace backAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<bool>("CanLeaveComments")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanManageProjects")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanManageTasks")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanUpdateTaskProgress")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanUploadFiles")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");

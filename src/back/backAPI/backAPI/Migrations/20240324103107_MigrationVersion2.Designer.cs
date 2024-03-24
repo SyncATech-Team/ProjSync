@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240323194323_MigrationChange")]
-    partial class MigrationChange
+    [Migration("20240324103107_MigrationVersion2")]
+    partial class MigrationVersion2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,8 +159,22 @@ namespace backAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<bool>("CanLeaveComments")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanManageProjects")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanManageTasks")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanUpdateTaskProgress")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanUploadFiles")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");

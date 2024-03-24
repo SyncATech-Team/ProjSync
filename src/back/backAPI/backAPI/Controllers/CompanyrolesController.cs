@@ -1,8 +1,6 @@
 ﻿using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
@@ -13,13 +11,17 @@ namespace backAPI.Controllers
 
         private readonly ICompanyRolesRepository companyRolesRepository;
 
-        /* *****************************************************************************
-         * Konstruktor
-         * ***************************************************************************** */
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="companyRolesRepository"></param>
         public CompanyrolesController(ICompanyRolesRepository companyRolesRepository) {
             this.companyRolesRepository = companyRolesRepository;
         }
-
+        /// <summary>
+        /// Dovlacenje svih uloga
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompanyRoleDto>>> GetCompanyRoles() {
             List<CompanyRoleDto> companyRoles = new List<CompanyRoleDto>();
@@ -33,17 +35,23 @@ namespace backAPI.Controllers
             {
                 var companyRoleDto = new CompanyRoleDto
                 {
-                    Name = role.Name
+                    Name = role.Name,
+                    CanManageProjects = role.CanManageProjects,
+                    CanManageTasks = role.CanManageTasks,
+                    CanUpdateTaskProgress = role.CanUpdateTaskProgress,
+                    CanLeaveComments = role.CanLeaveComments,
+                    CanUploadFiles = role.CanUploadFiles
                 };
                 companyRoles.Add(companyRoleDto);
             }
             
             return Ok(companyRoles);
         }
-
-        /* *****************************************************************************
-         * GET{name} | Get company role by Name
-         * ***************************************************************************** */
+        /// <summary>
+        /// Dovlacenje uloge po imenu
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet("{name}")]
         public async Task<ActionResult<CompanyRoleDto>> GetCompanyRole(string name) {
             var roles = await companyRolesRepository.GetCompanyRolesAsync();
@@ -54,12 +62,19 @@ namespace backAPI.Controllers
             }
 
             return new CompanyRoleDto {
-                Name = role.Name
+                Name = role.Name,
+                CanManageProjects = role.CanManageProjects,
+                CanManageTasks = role.CanManageTasks,
+                CanUpdateTaskProgress = role.CanUpdateTaskProgress,
+                CanLeaveComments = role.CanLeaveComments,
+                CanUploadFiles = role.CanUploadFiles
             };
         }
-        /* *****************************************************************************
-         * POST | Create new company role
-         * ***************************************************************************** */
+        /// <summary>
+        /// Kreiranje nove uloge
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> CreateCompanyRole(CompanyRoleDto role) {
 
@@ -69,7 +84,12 @@ namespace backAPI.Controllers
 
             // Convert DTO to Domain Model
             var companyRole = new CompanyRole {
-                Name = role.Name
+                Name = role.Name,
+                CanManageProjects = role.CanManageProjects,
+                CanManageTasks = role.CanManageTasks,
+                CanLeaveComments = role.CanLeaveComments,
+                CanUploadFiles = role.CanUploadFiles,
+                CanUpdateTaskProgress = role.CanUpdateTaskProgress
             };
 
             // save to database
@@ -77,9 +97,12 @@ namespace backAPI.Controllers
 
             return NoContent();
         }
-        /* *****************************************************************************
-         * PUT{name} | Update company role for the given name
-         * ***************************************************************************** */
+        /// <summary>
+        /// Update uloge po imenu
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("{name}")]
         public async Task<ActionResult> UpdateCompanyRole(string name, CompanyRoleDto request) {
             var updated = await companyRolesRepository.UpdateCompanyRole(name, request);
@@ -90,9 +113,11 @@ namespace backAPI.Controllers
 
             return NoContent();
         }
-        /* *****************************************************************************
-         * DELETE{name} | Delete company role
-         * ***************************************************************************** */
+        /// <summary>
+        /// Brisanje uloge po imenu
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpDelete("{name}")]
         public async Task<ActionResult> DeleteCompanyRole(string name) {
             var deleted = await companyRolesRepository.DeleteCompanyRole(name);
