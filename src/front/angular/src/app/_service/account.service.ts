@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { map } from 'rxjs';
 import { User } from '../_models/user';
 import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../_models/register-user';
