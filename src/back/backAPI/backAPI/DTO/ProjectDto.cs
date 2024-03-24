@@ -7,7 +7,7 @@
         public string Key {  get; set; }
         public string TypeName { get; set; }
         public string OwnerUsername { get; set; }
-        public string? ParentProjectName {  get; set; }
+        public string? ParentProjectName {  get; set; } // bice uklonjeno
         public DateTime CreationDate { get; set; }
         public DateTime DueDate { get; set; }
         public double? Budget {  get; set; }
