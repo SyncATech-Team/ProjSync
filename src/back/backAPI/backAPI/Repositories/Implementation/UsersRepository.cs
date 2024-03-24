@@ -1,5 +1,4 @@
 ﻿using backAPI.Data;
-using backAPI.Entities.Domain;
 using backAPI.DTO;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using backAPI.Entities.Domain;
 
-namespace backAPI.Repositories.Implementation {
+namespace backAPI.Repositories.Implementation
+{
     public class UsersRepository : IUsersRepository {
 
         private readonly DataContext dataContext;

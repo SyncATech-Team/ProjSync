@@ -43,7 +43,7 @@ namespace backAPI.Repositories.Implementation
 
         public async Task<Notification> GetNotificationByUserIdAsync(int userId)
         {
-            return await dataContext.Notifications.SingleOrDefaultAsync(notification => notification.User_Id == userId);
+            return await dataContext.Notifications.SingleOrDefaultAsync(notification => notification.UserId == userId);
         }
     }
 }

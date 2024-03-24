@@ -8,8 +8,6 @@ namespace backAPI.DTO
         public int UserId { get; set; }
         public DateTime SpecificDate { get; set; }
         public double HoursWorking { get; set; }
-        public bool? Weekend { get; set; }
-        public bool? Overtime { get; set; }
 
     }
 }

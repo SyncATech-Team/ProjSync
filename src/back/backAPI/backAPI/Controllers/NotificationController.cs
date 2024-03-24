@@ -1,8 +1,6 @@
 ﻿using backAPI.Entities.Domain;
-using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace backAPI.Controllers
 {

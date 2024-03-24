@@ -10,14 +10,10 @@ namespace backAPI.Entities.Domain
     {
         [Key]
         public int Id { get; set; }
-
-        [Required, NotNull]
-        public int User_Id { get; set; }
-
-        [Required, NotNull]
+        public int UserId { get; set; }
         public string Message { get; set; }
-
-        [Required, NotNull]
         public DateTime DateCreated { get; set; }
+
+        [ForeignKey("UserId")] public User User { get; set; }
     }
 }

@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240324103107_MigrationVersion2")]
-    partial class MigrationVersion2
+    [Migration("20240324125105_MigrationEdit")]
+    partial class MigrationEdit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -185,6 +185,27 @@ namespace backAPI.Migrations
                     b.ToTable("CompanyRoles");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.GroupsOnProject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("GroupsOnProjects");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -195,13 +216,14 @@ namespace backAPI.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Message")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("User_Id")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });
@@ -228,12 +250,10 @@ namespace backAPI.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Key")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
@@ -250,6 +270,9 @@ namespace backAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
                         .IsUnique();
 
                     b.HasIndex("OwnerId");
@@ -273,17 +296,17 @@ namespace backAPI.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Path")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectDocumentations");
                 });
@@ -295,7 +318,6 @@ namespace backAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("RoleLevel")
@@ -316,7 +338,6 @@ namespace backAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
@@ -334,7 +355,6 @@ namespace backAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
@@ -366,14 +386,13 @@ namespace backAPI.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("PriorityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeId")
@@ -388,9 +407,9 @@ namespace backAPI.Migrations
 
                     b.HasIndex("DependentOn");
 
-                    b.HasIndex("PriorityId");
+                    b.HasIndex("GroupId");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("PriorityId");
 
                     b.HasIndex("TypeId");
 
@@ -420,7 +439,30 @@ namespace backAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("TaskComments");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.TaskGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("TaskGroups");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskPriority", b =>
@@ -430,7 +472,6 @@ namespace backAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
@@ -448,7 +489,6 @@ namespace backAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
@@ -492,7 +532,6 @@ namespace backAPI.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("IsActive")
@@ -502,7 +541,6 @@ namespace backAPI.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
@@ -573,13 +611,14 @@ namespace backAPI.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProjectRole")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UsersOnProjects");
                 });
@@ -604,28 +643,25 @@ namespace backAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("UsersOnTasks");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.WorkingHours", b =>
                 {
                     b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnOrder(1);
 
                     b.Property<double>("HoursWorking")
                         .HasColumnType("double");
 
-                    b.Property<bool?>("Overtime")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime>("SpecificDate")
                         .HasColumnType("datetime(6)")
                         .HasColumnOrder(2);
-
-                    b.Property<bool?>("Weekend")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("UserId");
 
@@ -691,6 +727,36 @@ namespace backAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.GroupsOnProject", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.TaskGroup", "TaskGroup")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("TaskGroup");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.Project", b =>
                 {
                     b.HasOne("backAPI.Entities.Domain.User", "User")
@@ -725,6 +791,17 @@ namespace backAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.ProjectDocumentation", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.Task", b =>
                 {
                     b.HasOne("backAPI.Entities.Domain.User", "User")
@@ -738,15 +815,15 @@ namespace backAPI.Migrations
                         .HasForeignKey("DependentOn")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("backAPI.Entities.Domain.TaskPriority", "TaskPriority")
+                    b.HasOne("backAPI.Entities.Domain.TaskGroup", "TaskGroup")
                         .WithMany()
-                        .HasForeignKey("PriorityId")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                    b.HasOne("backAPI.Entities.Domain.TaskPriority", "TaskPriority")
                         .WithMany()
-                        .HasForeignKey("ProjectId")
+                        .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -758,13 +835,43 @@ namespace backAPI.Migrations
 
                     b.Navigation("DependentTask");
 
-                    b.Navigation("Project");
+                    b.Navigation("TaskGroup");
 
                     b.Navigation("TaskPriority");
 
                     b.Navigation("TaskType");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.TaskComment", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Task", "Task")
+                        .WithMany()
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.TaskGroup", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.User", b =>
@@ -776,6 +883,55 @@ namespace backAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("CompanyRole");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.UsersOnProject", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.UsersOnTasks", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Task", "Task")
+                        .WithMany()
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.WorkingHours", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.AppRole", b =>
