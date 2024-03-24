@@ -73,10 +73,13 @@ namespace backAPI.Controllers
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
             var conformationLink = $"http://localhost:4200/account/confirm-email?email={registerDto.Email}&token={encodedToken}";
 
+            // Samo trenutno dok se potpuno ne osposobi email servis
+            Console.WriteLine("[conformationLink]: " + confirmationToken);
+
             // poslati registacioni mejl
             // _emailService.SendToConfirmEmail(registerDto.Email, registerDto.UserName, conformationLink);
 
-/*            return Ok(new UserDto
+            return Ok(new UserDto
             {
                 Username = user.UserName,
                 Email = user.Email,
@@ -88,9 +91,7 @@ namespace backAPI.Controllers
                 IsVerified = user.IsVerified,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
-            });*/
-
-            return Ok(conformationLink);
+            });
         }
 
         [HttpPost("confirm-email")]
@@ -129,7 +130,7 @@ namespace backAPI.Controllers
             if (user == null) return Unauthorized("invalid credentials!");
             if (user.IsActive == false) return Unauthorized("User is not active");
 
-            if (user.EmailConfirmed)
+            if (true /*user.EmailConfirmed zakomentarisano samo dok ne proradi email servis!*/)
             {
                 var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
                 if (!result) return Unauthorized();
