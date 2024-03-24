@@ -40,7 +40,6 @@ export class RegisterUserComponent implements OnInit {
   @Output() userCreated = new EventEmitter<UserGetter>();
 
   register() {
-
     this.accoutService.register(this.registrationModel).subscribe({
       next: (response) => {
         this.msgPopupService.showSuccess("Successfully registered new user!");

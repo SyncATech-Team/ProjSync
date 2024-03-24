@@ -41,9 +41,9 @@ export class RolePageComponent implements OnInit {
   //Cuva sta je uneto u search input
   searchTerm: string = '';
   
-  createdRole: CompanyRole = {
-    name: ''
-  }
+  // createdRole: CompanyRole = {
+  //   name: ''
+  // }
 
   /* PODACI CLANOVI */
   roles: CompanyRole[] = [];
@@ -88,31 +88,31 @@ export class RolePageComponent implements OnInit {
     this.loading = false;
 }
 
-  openRolesModal() {
-    const config = {
-      class: 'modal-dialog-centered',
-      initialState: {
-        createdRole: this.createdRole
-      }
-    }
-    this.bsModalRef = this.modalService.show(CreateRoleComponent, config);
-    this.bsModalRef.onHide?.subscribe({
-      next: () => {
-        const createdRole = this.bsModalRef.content?.createdRole;
-        this.companyRoleService.create(createdRole!).subscribe({
-          next: () => {
-            this.msgPopupSevice.showSuccess("Successfully created new role");
-            this.searchTerm='';
-            this.search();
-            this.table.reset();
-          },
-          error: _ => {
-            this.msgPopupSevice.showError("Unable to create new role with given parameters. Probably duplicate names")
-          }
-        })
-      }
-    })
-  }
+  // openRolesModal() {
+  //   const config = {
+  //     class: 'modal-dialog-centered',
+  //     initialState: {
+  //       createdRole: this.createdRole
+  //     }
+  //   }
+  //   this.bsModalRef = this.modalService.show(CreateRoleComponent, config);
+  //   this.bsModalRef.onHide?.subscribe({
+  //     next: () => {
+  //       const createdRole = this.bsModalRef.content?.createdRole;
+  //       this.companyRoleService.create(createdRole!).subscribe({
+  //         next: () => {
+  //           this.msgPopupSevice.showSuccess("Successfully created new role");
+  //           this.searchTerm='';
+  //           this.search();
+  //           this.table.reset();
+  //         },
+  //         error: _ => {
+  //           this.msgPopupSevice.showError("Unable to create new role with given parameters. Probably duplicate names")
+  //         }
+  //       })
+  //     }
+  //   })
+  // }
 
   /**
    * Metod za brisanje uloge u kompaniji [potencijalno treba unaprediti error-handleing]
