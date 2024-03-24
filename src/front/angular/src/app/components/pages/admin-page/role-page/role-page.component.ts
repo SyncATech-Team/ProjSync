@@ -279,4 +279,16 @@ export class RolePageComponent implements OnInit {
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
 
+  getTooltipForRole(role: CompanyRole) {
+    let s = "List of granted permissions:";
+    if(role.canManageProjects) s += "\nAble to manage projects";
+    if(role.canManageTasks) s += "\nAble to manage tasks";
+    if(role.canLeaveComments) s += "\nAble to leave comments";
+    if(role.canUpdateTaskProgress) s += "\nAble to update task completion percentage";
+    if(role.canUploadFiles) s += "\nAble to upload files";
+    
+
+    return s;
+  }
+
 }

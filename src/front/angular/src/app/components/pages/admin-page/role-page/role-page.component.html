@@ -27,7 +27,9 @@
         <!-- Controls -->
         <div id="controls">
             <!-- Add filers, controls, etc here -->
-            <app-create-role></app-create-role>
+            <div class="role-create" style="float: right;">
+                <app-create-role></app-create-role>
+            </div>
             <!-- <button (click)="openRolesModal()" class="btn btn-info">Create Role</button> -->
         </div>
         <!-- End of controls -->
@@ -68,10 +70,14 @@
                         <!-- Export options -->
                         <div class="exportFileOptions">
                             <!-- Export to CSV -->
-                            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"  class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom" title="Export as Excel"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-excel" 
+                                (click)="exportExcel()"  class="p-button-success mr-2" pTooltip="XLS" 
+                                tooltipPosition="bottom" title="Export as Excel"></button>
                             
                             <!-- Export to PDF -->
-                            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom" title="Export as PDF"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                                class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom" 
+                                title="Export as PDF"></button>
                         </div>
                         <!-- End of export options -->
 
@@ -101,7 +107,13 @@
 
                 <ng-template pTemplate="body" let-role>
                     <tr>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name</span>{{ role.name }}</td>
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Name</span>
+                            {{ role.name }}
+                            <i class="pi pi-question-circle" style="color: black"
+                                title="{{getTooltipForRole(role)}}">
+                            </i>
+                        </td>
                         <td><span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 <div class="action">
