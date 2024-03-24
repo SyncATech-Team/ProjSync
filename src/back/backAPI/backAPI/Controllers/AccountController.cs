@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using backAPI.DTO.Login;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using backAPI.DTO.ResetPassword;
 
 namespace backAPI.Controllers
 {
@@ -30,7 +33,7 @@ namespace backAPI.Controllers
         }
 
         [HttpPost("register")] // POST: api/account/register
-        public async Task<ActionResult> Register(RegisterDto registerDto)
+        public async Task<ActionResult<string>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
             
@@ -52,7 +55,6 @@ namespace backAPI.Controllers
                 CompanyRoleId = companyRoleId,
                 Address = registerDto.Address,
                 ContactPhone = registerDto.ContactPhone,
-                IsVerified = false,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 IsActive = true
@@ -65,10 +67,17 @@ namespace backAPI.Controllers
             var roleResult = await _userManager.AddToRoleAsync(user, "Worker");
             if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
-            // poslati registacioni mejl
-            // _emailService.SendSuccessfullRegistrationEmail(user.Email, user.UserName);
+            // kreiranje tokena za verifikaciju email-a
+            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            // Obavzeno enkodovati token!
+            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
+            var conformationLink = $"http://localhost:4200/account/confirm-email?email={registerDto.Email}&token={encodedToken}";
 
-            return Ok(new UserDto {
+            // poslati registacioni mejl [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS]
+            // _emailService.SendToConfirmEmail(registerDto.Email, registerDto.UserName, conformationLink);
+
+            return Ok(new UserDto
+            {
                 Username = user.UserName,
                 Email = user.Email,
                 FirstName = user.FirstName,
@@ -82,30 +91,77 @@ namespace backAPI.Controllers
             });
         }
 
+        [HttpPost("confirm-email")]
+        public async Task<ActionResult<ResetPasswordAfterEmailConfirmationDto>> ConfirmEmail([FromQuery]string email, [FromQuery]string token)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                // enkodovan token dekodirati
+                var decodedToken = System.Text.Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+
+                var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+                if (result.Succeeded)
+                {
+                    // posto je sve u redu, nastaviti sa resetovanje sifre
+                    var resetPassToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    ResetPasswordAfterEmailConfirmationDto response = new ResetPasswordAfterEmailConfirmationDto
+                    {
+                        Token = resetPassToken,
+                        Email = email
+                    };
+                    return response;
+                }
+                else return BadRequest(result.Errors);
+            }
+
+            return BadRequest("Failed to confirm mail");
+        }
 
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponseDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
             if (user == null) return Unauthorized("invalid credentials!");
             if (user.IsActive == false) return Unauthorized("User is not active");
 
-            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-            if (!result) return Unauthorized();
-
-            return new LoginResponseDto
+            if (true /*user.EmailConfirmed [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS] */)
             {
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user)
-            };
+                var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+                if (!result) return Unauthorized();
+
+                return new LoginResponseDto
+                {
+                    Username = user.UserName,
+                    Token = await _tokenService.CreateToken(user)
+                };
+            }
+            else return Unauthorized("Email is not verified");
         }
 
         private async Task<bool> UserExists(string username)
         {
             // check if there is user in database already
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<ActionResult<LoginResponseDto>> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+
+            if (user == null) return BadRequest("User is not valid");
+
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
+            if (!resetPassResult.Succeeded) return BadRequest("Failed to reset password");
+
+            return new LoginResponseDto
+            {
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user)
+            };
         }
     }
 }
