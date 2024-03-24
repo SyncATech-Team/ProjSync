@@ -13,25 +13,26 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 
 const routes: Routes = [
-  {path: '', component: LoginPageComponent},
-  {path: 'account/confirm-email', component: ConfirmEmailComponent},
-  {path: 'account/password-reset', component: PasswordResetPageComponent},
-  {path: '',
-    runGuardsAndResolvers: 'pathParamsChange',
+  { path: "", redirectTo: "login", pathMatch: "full" },
+  { path: 'login', component: LoginPageComponent },
+  { path: 'account/confirm-email', component: ConfirmEmailComponent },
+  { path: 'account/password-reset', component: PasswordResetPageComponent },
+  {
+    path: '',
+    runGuardsAndResolvers: 'paramsChange',
     canActivate: [authGuard],
     children: [
-      {path: 'home', component: HomePageComponent},
-      
-      {path: 'admin', component: AdminPageComponent, canActivate: [adminGuard]},
-      {path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard]},
-      {path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard]},
-      {path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard]},
-      {path: 'home/projects', component: ProjectPageComponent},
-      {path: 'home/projects/:projectName', component: ProjectPageComponent}
+      { path: 'home', component: HomePageComponent },
+      { path: 'home/projects', component: ProjectPageComponent },
+      { path: 'home/projects/:projectName', component: ProjectPageComponent },
+      { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
+      { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
+      { path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard] },
+      { path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard] }
     ]
   },
   
-  {path: '**', component: LoginPageComponent, pathMatch: 'full'},
+  { path: '**', component: LoginPageComponent, pathMatch: 'full' },
 ];
 
 @NgModule({
