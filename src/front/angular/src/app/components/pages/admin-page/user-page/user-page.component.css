@@ -131,3 +131,19 @@ div.div-image img {
     padding: 4px 34px;
     border-radius: 6px;
 }
+
+.deleteBtn button.active {
+    background-color: #4CAF50;
+}
+
+.deleteBtn button.inactive {
+    background-color: #f44336;
+}
+
+.active-user {
+    opacity: 1;
+}
+
+.inactive-user {
+    opacity: 0.5;
+}
