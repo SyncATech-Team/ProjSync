@@ -138,7 +138,7 @@
                                             [icon]="user.isActive ? 'fa-solid fa-lock-open' : 'fa-solid fa-lock'" 
                                             (click)="deleteUser(user.username, $event)"  
                                             tooltipPosition="bottom"
-                                            title="Delete record">
+                                            [title]="user.isActive ? 'Deactivate account' : 'Activate account'">
                                         </button>
                                     </div>
                                 </div>
