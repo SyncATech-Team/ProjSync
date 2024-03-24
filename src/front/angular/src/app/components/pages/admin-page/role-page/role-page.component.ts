@@ -280,13 +280,16 @@ export class RolePageComponent implements OnInit {
   }
 
   getTooltipForRole(role: CompanyRole) {
+    let count: number = 0;
     let s = "List of granted permissions:";
-    if(role.canManageProjects) s += "\nAble to manage projects";
-    if(role.canManageTasks) s += "\nAble to manage tasks";
-    if(role.canLeaveComments) s += "\nAble to leave comments";
-    if(role.canUpdateTaskProgress) s += "\nAble to update task completion percentage";
-    if(role.canUploadFiles) s += "\nAble to upload files";
+
+    if(role.canManageProjects) { s += "\nAble to manage projects"; count += 1; }
+    if(role.canManageTasks) { s += "\nAble to manage tasks"; count += 1; }
+    if(role.canLeaveComments) { s += "\nAble to leave comments"; count += 1; }
+    if(role.canUpdateTaskProgress) { s += "\nAble to update task completion percentage"; count += 1;}
+    if(role.canUploadFiles) { s += "\nAble to upload files"; count += 1; }
     
+    if(count === 0) s += "\nNone";
 
     return s;
   }
