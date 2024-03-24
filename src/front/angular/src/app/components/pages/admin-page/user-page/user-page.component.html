@@ -94,7 +94,7 @@
 
                 <!-- Table body -->
                 <ng-template pTemplate="body" let-user>
-                    <tr>
+                    <tr [ngClass]="{'active-user' : user.isActive, 'inactive-user': !user.isActive}">
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Account</span>
                             <div class="profilecontent">
@@ -133,10 +133,13 @@
                                 
                                 <div class="action">
                                     <div class="deleteBtn">
-                                        <button type="button" pButton pRipple icon="pi pi-trash" 
-                                            (click)="deleteUser(user.username, $event)"  class="p-button-danger mr-2" 
+                                        <button [ngClass]="{'active p-button-success': user.isActive, 'inactive p-button-danger': !user.isActive}" 
+                                            type="button" pButton pRipple 
+                                            [icon]="user.isActive ? 'fa-solid fa-lock-open' : 'fa-solid fa-lock'" 
+                                            (click)="deleteUser(user.username, $event)"  
                                             tooltipPosition="bottom"
-                                            title="Delete record"></button>
+                                            title="Delete record">
+                                        </button>
                                     </div>
                                 </div>
                                 

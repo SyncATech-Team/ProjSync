@@ -18,5 +18,7 @@
         public string PreferedLanguage { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        public Boolean isActive { get; set; }
     }
 }
