@@ -11,6 +11,7 @@ import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
+import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: 'home', component: HomePageComponent },
       { path: 'home/projects', component: ProjectPageComponent },
       { path: 'home/projects/:projectName', component: ProjectPageComponent },
+      { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent},
       { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
       { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
       { path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard] },

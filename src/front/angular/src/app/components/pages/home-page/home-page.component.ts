@@ -13,8 +13,6 @@ export class HomePageComponent implements OnInit {
 
   projects: Project[]=[];
   
-  sortedColumn: string = '';
-  isAscending: boolean = true;
   projectsShow: any[] = [];
 
   searchTerm: string = '';
@@ -46,26 +44,6 @@ export class HomePageComponent implements OnInit {
     });
   }
   
-  toProject():void {
-    alert("TO DO");
-  }
-
-  sortData(column: string) {
-    if (this.sortedColumn === column) {
-      this.isAscending = !this.isAscending;
-    } else {
-      this.sortedColumn = column;
-      this.isAscending = true;
-    }
-
-    this.projectsShow.sort((a, b) => {
-      const direction = this.isAscending ? 1 : -1;
-      if (a[column] < b[column]) return -1 * direction;
-      if (a[column] > b[column]) return 1 * direction;
-      return 0;
-    });
-  }
-
   filterProjects(filter :string ):void {
     this.visibilityFilter = filter;
     if(filter=="stared")
