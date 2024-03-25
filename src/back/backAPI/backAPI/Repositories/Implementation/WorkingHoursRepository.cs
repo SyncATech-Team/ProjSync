@@ -3,7 +3,8 @@ using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace backAPI.Repositories.Implementation {
+namespace backAPI.Repositories.Implementation
+{
     public class WorkingHoursRepository : IWorkingHoursRepository {
         
         private readonly DataContext dataContext;

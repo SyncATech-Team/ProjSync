@@ -17,20 +17,18 @@ namespace backAPI.Entities.Domain
         /// <summary>
         /// Ime
         /// </summary>
-        [Required, NotNull]
         public string FirstName { get; set; }
-        
+
         /// <summary>
         /// Prezime
         /// </summary>
-        [Required, NotNull]
         public string LastName { get; set; }
 
         /// <summary>
         /// Id uloge u kompaniji koju poseduje registrovani korisnik
         /// </summary>
         public int CompanyRoleId { get; set; }
-        
+
         /// <summary>
         /// Putanja do profilne slike korisnika
         /// </summary>
@@ -45,7 +43,7 @@ namespace backAPI.Entities.Domain
         /// Kontakt telefon
         /// </summary>
         public string ContactPhone { get; set; }
-        
+
         /// <summary>
         /// Status korisnika
         /// </summary>
