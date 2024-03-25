@@ -109,10 +109,12 @@
                     <tr>
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Name</span>
-                            {{ role.name }}
-                            <i class="pi pi-question-circle" style="color: black"
-                                title="{{getTooltipForRole(role)}}">
-                            </i>
+                            <span>
+                                {{ role.name }}
+                                <i class="pi pi-question-circle" style="color: black"
+                                    title="{{getTooltipForRole(role)}}">
+                                </i>
+                            </span>
                         </td>
                         <td><span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
