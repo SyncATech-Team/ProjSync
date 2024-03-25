@@ -110,7 +110,7 @@ export class UserPageComponent implements OnInit {
       ];
 
       // Dovuci kreirane uloge u kompaniji
-      this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
+      this.roles$ = this.companyRoleService.getAllCompanyRoles();
 
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
   }

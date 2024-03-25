@@ -57,6 +57,16 @@ export class RolePageComponent implements OnInit {
   loading: boolean = true;
   activityValues: number[] = [0, 100];
 
+  initialRoleName: string = '';
+  editRole: CompanyRole = {
+    name: '',
+    canManageProjects: false,
+    canManageTasks: false,
+    canLeaveComments: false,
+    canUpdateTaskProgress: false,
+    canUploadFiles: false
+  };
+
   /**
    * Konstruktor
    * @param croleService 
@@ -64,8 +74,8 @@ export class RolePageComponent implements OnInit {
   constructor(
     private companyRoleService: CompanyroleService,
     private msgPopupSevice: MessagePopupService,
-    private modalService: BsModalService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+    private msgPopupService: MessagePopupService) { }
 
   /**
    * OnInit
@@ -73,7 +83,7 @@ export class RolePageComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     // Dohvati sve uloge koje postoje iz baze
-    this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
+    this.roles$ = this.companyRoleService.getAllCompanyRoles();
     this.roles$.subscribe(roles => {
         this.roles = roles;
         this.roles_backup = roles;
@@ -293,5 +303,52 @@ export class RolePageComponent implements OnInit {
 
     return s;
   }
+
+  showModalForRole(role: CompanyRole) {
+    this.initialRoleName = role.name;
+    let nameField = document.getElementsByClassName("roleName")[0] as HTMLInputElement;
+    let canManageProjectsCheckbox = document.getElementsByClassName("canManageProjects")[0] as HTMLInputElement;
+    let canManageTasksCheckbox = document.getElementsByClassName("canManageTasks")[0] as HTMLInputElement;
+    let canLeaveCommentsCheckbox = document.getElementsByClassName("canLeaveComments")[0] as HTMLInputElement;
+    let canUpdateTaskProgressCheckbox = document.getElementsByClassName("canUpdateTaskProgress")[0] as HTMLInputElement;
+    let canUploadFilesCheckbox = document.getElementsByClassName("canUploadFiles")[0] as HTMLInputElement;
+
+    if(nameField) { 
+      nameField.value = role.name;
+      this.editRole.name = role.name;
+    }
+    if(canManageProjectsCheckbox) { 
+      canManageProjectsCheckbox.checked = role.canManageProjects;
+      this.editRole.canManageProjects = role.canManageProjects;
+     }
+    if(canManageTasksCheckbox) { 
+      canManageTasksCheckbox.checked = role.canManageTasks;
+      this.editRole.canManageTasks = role.canManageTasks;
+     }
+    if(canLeaveCommentsCheckbox) { 
+      canLeaveCommentsCheckbox.checked = role.canLeaveComments; 
+      this.editRole.canLeaveComments = role.canLeaveComments;
+    }
+    if(canUpdateTaskProgressCheckbox) {
+      canUpdateTaskProgressCheckbox.checked = role.canUpdateTaskProgress;
+      this.editRole.canUpdateTaskProgress = role.canUpdateTaskProgress;
+    }
+    if(canUploadFilesCheckbox) {
+      canUploadFilesCheckbox.checked = role.canUploadFiles;
+      this.editRole.canUploadFiles = role.canUploadFiles;
+    }
+  }
+
+  applyEditChanges() {
+    this.companyRoleService.updateRole(this.initialRoleName, this.editRole).subscribe({
+      next: () => {
+        this.msgPopupService.showSuccess("Successfully edited role");
+        this.ngOnInit();
+      },
+      error: () => {
+        this.msgPopupService.showError("Unable to edit role");
+      }
+    });
+  } 
 
 }

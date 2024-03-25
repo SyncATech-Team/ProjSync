@@ -34,7 +34,7 @@ export class RegisterUserComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
+    this.roles$ = this.companyRoleService.getAllCompanyRoles();
   }
 
   @Output() userCreated = new EventEmitter<UserGetter>();
