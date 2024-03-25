@@ -9,6 +9,8 @@ import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectVisibility } from '../../../_models/project-visibility';
 import { ProjectVisibilityService } from '../../../_service/project-visibility.service';
 import { UserService } from '../../../_service/user.service';
+import { AccountService } from '../../../_service/account.service';
+import { FormGroup, FormControl, ReactiveFormsModule  } from '@angular/forms';
 
 
 @Component({
@@ -19,6 +21,8 @@ import { UserService } from '../../../_service/user.service';
 })
 export class CreateProjectComponent implements OnInit{
 
+  currentDate = new Date()
+  currentUser = '';
   users: UserGetter []= [];
   projectTypes: ProjectType []=[];
   projectVisibilities: ProjectVisibility[]=[];
@@ -33,7 +37,6 @@ export class CreateProjectComponent implements OnInit{
     dueDate: new Date(),
     budget: 0,
     visibilityName: "",
-    parentProjectName: null
   }
 
   projects: Project[]=[];
@@ -42,6 +45,15 @@ export class CreateProjectComponent implements OnInit{
     private homePage: HomePageComponent,private datePipe:DatePipe,private projectService: ProjectService) {}
 
   ngOnInit(): void {
+
+    // Pronalazenje trenutnog usera
+    var storage = localStorage.getItem("user");
+    if(!storage) user = 'UserNotFound';
+    else var user = JSON.parse(storage);
+
+    this.currentUser = user['username'];
+    // Kraj pronalazenja 
+
     this.userService.getAllUsers().subscribe({
       next: (response)=>{
         this.users=response;
@@ -76,13 +88,48 @@ export class CreateProjectComponent implements OnInit{
 
   create():void{
     console.log(this.creationModel);
-    this.projectService.createProject(this.creationModel).subscribe({
-      next: (response)=>{
-        this.homePage.initializeProjects();
-      },
-      error: (error)=>{
-        console.log(error);
-      }
-    });
+    this.creationModel.ownerUsername = this.currentUser;
+    if(this.creationModel.dueDate < this.creationModel.creationDate){
+      console.log("due date je pre creaton date");
+    }
+    else if(this.creationModel.dueDate < this.currentDate){
+      console.log("user nije pronadjen");
+    }
+    else if(this.creationModel.ownerUsername == 'UserNotFound'){
+      console.log("user nije pronadjen");
+    }
+    else{
+      this.projectService.createProject(this.creationModel).subscribe({
+        next: (response)=>{
+          this.homePage.initializeProjects();
+          // this.formCreateProject.reset();
+        },
+        error: (error)=>{
+          console.log(error);
+        }
+      });
+    }
   }
+
+  /* TODO 
+     
+    -Errors
+    -provera due date < current date
+    -
+  
+  */
+
+
+  /* ----------- RESET POJA UNUTAR CREATE PROJECT ---------------- */
+  // createForm = new FormGroup({
+  //   name: new FormControl(''),
+  //   key: new FormControl(''),
+  //   type: new FormControl(''),
+  //   description: new FormControl(''),
+  //   owner: new FormControl(''),
+  //   startDate: new FormControl(Date),
+  //   dueDate: new FormControl(Date),
+  //   budget: new FormControl(Number),
+  //   visibility: new FormControl(Number),
+  // });
 }

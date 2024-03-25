@@ -11,7 +11,7 @@
             </div>
 
             <div class="modal-body">
-                <form #createProjectForm="ngForm" (ngSubmit)="create()" id="formCreateProject" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
+                <form  #createProjectForm="ngForm" (ngSubmit)="create()" id="formCreateProject" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
 
                     <div class="col-12">
                         <div class="form-floating mb-3">
@@ -69,15 +69,29 @@
                         </div>
                     </div>
 
-                    <div class="col-12"> 
+                    <!-- <div class="col-12"> 
                         <div class="form-floating mb-3">
                             <select id="owner" class="form-select" aria-label="owner" [(ngModel)]="creationModel.ownerUsername" name="owner">
                                 <option *ngFor="let user of users" value="{{user.username}}">{{user.firstName}} {{user.lastName}}</option>
                             </select>
                             <label for="owner" class="form-label">Owner</label>
                         </div>
-                    </div>
+                    </div> -->
                     
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="date"
+                            id="startDate"
+                            name="startDate"
+                            class="form-control"
+                            [(ngModel)]="creationModel.creationDate"
+                            required
+                            >
+                            <label for="startDate" class="form-label">Start date</label>
+                        </div>
+                    </div>
+
                     <div class="col-12">
                         <div class="form-floating mb-3">
                         <input 
@@ -116,16 +130,6 @@
                             <label for="projectVisibility" class="form-label">Project visibility</label>
                         </div>
                     </div>
-
-                    <div class="col-12"> 
-                        <div class="form-floating mb-3">
-                            <select id="projectParent" class="form-select" aria-label="projectParent" [(ngModel)]="creationModel.parentProjectName" name="projectParent">
-                                <option *ngFor="let project of projects" value="{{project.name}}">{{project.name}}</option>
-                            </select>
-                            <label for="projectParent" class="form-label">Parent</label>
-                        </div>
-                    </div>
-
                 </form>
                 
             </div>

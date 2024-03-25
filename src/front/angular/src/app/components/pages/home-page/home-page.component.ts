@@ -33,8 +33,7 @@ export class HomePageComponent implements OnInit {
     this.projectService.getAllProjects().subscribe({
       next: (response) => {
         this.projects = response;
-        this.projects.forEach((project)=>{
-          project.subProjects = this.projects.filter((subproject)=>  subproject.parentProjectName == project.name );
+        this.projects.forEach((project)=>{ 
           project.isExtanded = false;
           project.isFavorite = false;
           this.filterProjects(this.visibilityFilter);
