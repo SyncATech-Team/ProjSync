@@ -51,5 +51,21 @@ namespace backAPI.Controllers
 
             return Ok("User added on project");
         }
+
+        [HttpDelete]
+
+        public async Task<IActionResult> DeleteUserFromProject(string projectName, UserOnProjectDto request)
+        {
+            var removed = await _userOnProjectRepository.RemoveUserFromProjectAsync(projectName, request);
+
+            if (removed)
+            {
+                return Ok("User removed from project successfully");
+            }
+            else
+            {
+                return BadRequest("Failed to remove user from project");
+            }
+        }
     }
 }

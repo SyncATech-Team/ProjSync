@@ -63,9 +63,25 @@ namespace backAPI.Repositories.Implementation
                 .ToListAsync();
         }
 
-        public Task<bool> RemoveUserFromProjectAsync(string projectName, UserOnProjectDto userDto)
+        public async Task<bool> RemoveUserFromProjectAsync(string projectName, UserOnProjectDto userDto)
         {
-            throw new NotImplementedException();
+            var project = await projectsRepository.GetProjectByName(projectName);
+            var user = await usersRepository.GetUserByUsername(userDto.Username);
+
+            if(user == null || project == null) {
+                return false;
+            }
+
+            var userOnProject = await dataContext.UsersOnProjects.FirstOrDefaultAsync(up => up.UserId == user.Id && up.ProjectId == project.Id);
+            if(userOnProject == null)
+            {
+                return false;
+            }
+
+            dataContext.UsersOnProjects.Remove(userOnProject);
+            await dataContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }
