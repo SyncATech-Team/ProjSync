@@ -10,6 +10,7 @@ import { ProjectService } from '../../../../_service/project.service';
 })
 export class ProjectSummaryPageComponent implements OnInit{
   projectName: string | null = '';
+  isLoading: boolean = true;
   project: Project = {
     name: "",
     key: "",
@@ -30,11 +31,13 @@ export class ProjectSummaryPageComponent implements OnInit{
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response)=>{
         this.project= response;
+        this.isLoading = false; 
       },
       error: (error)=>{
         console.log();
       }
-    })
+    });
+
   }
 
   getDefaultImagePath(): string {
