@@ -11,7 +11,9 @@ import { UserOnProjectService } from '../../../../_service/userOnProject.service
 export class ProjectPeoplePageComponent implements OnInit{
   private MAX_NUMBER_OF_DEFAULT_IMAGES: number = 10;
   users: UserGetter[] = [];
+  users_backup : UserGetter[] = [];
   projectName: string = '';
+  searchTerm: string = '';
 
   constructor(private route: ActivatedRoute, private userOnProjectService: UserOnProjectService) {}
 
@@ -25,6 +27,7 @@ export class ProjectPeoplePageComponent implements OnInit{
     this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
       next: (response) => {
         this.users = response;
+        this.users_backup = response;
       },
       error: (error) => {
         console.log(error);
@@ -42,5 +45,15 @@ export class ProjectPeoplePageComponent implements OnInit{
     let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + defaultImageNumber + ".png";
 
     return path;
+  }
+
+  //Radi se pretraga po userName
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase();
+    if (searchTerm.trim() === '') {
+      this.users = [...this.users_backup];
+    } else {
+      this.users = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
+    }
   }
 }

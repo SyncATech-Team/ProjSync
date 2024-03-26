@@ -24,7 +24,7 @@
                         <div class="p-input-icon-left ml-auto">
                             <i class="pi pi-search"></i>
                             <!-- Dodati search TO Do -->
-                            <input id="search-users-by-username" pInputText placeholder="Search keyword"/>
+                            <input id="search-users-by-username" [(ngModel)]="searchTerm" (input)="search()" pInputText placeholder="Search keyword"/>
                         </div>
                     </div>
                 </div>
