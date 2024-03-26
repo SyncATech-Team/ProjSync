@@ -9,7 +9,7 @@ namespace backAPI.Repositories.Interface
         Task<IEnumerable<CompanyRole>> GetCompanyRolesAsync();
         Task<CompanyRole> GetCompanyRoleByNameAsync(string companyRoleName);
         Task<bool> DeleteCompanyRole(string name);
-        Task<bool> UpdateCompanyRole(string name, CompanyRoleDto request);
+        Task<string> UpdateCompanyRole(string name, CompanyRoleDto request);
         Task<bool> CheckCompanyRoleNameExistance(string name);
         Task<CompanyRole> GetCompanyRoleById(int id);
     }

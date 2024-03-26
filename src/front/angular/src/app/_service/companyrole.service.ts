@@ -13,8 +13,8 @@ export class CompanyroleService {
 
   constructor(private http: HttpClient) { }
 
-  public getAllCompanyRoleNames(): Observable<CompanyRole[]> {
-    if (this.roles.length > 0) return of(this.roles);
+  public getAllCompanyRoles(): Observable<CompanyRole[]> {
+    // if (this.roles.length > 0) return of(this.roles); // kada se updateuje rola onda ce vratiti stare vrednosti koje su sacuvane
 
     return this.http.get<CompanyRole[]>(this.baseUrl + 'Companyroles').pipe(
 
@@ -44,5 +44,9 @@ export class CompanyroleService {
         this.roles.splice(index, 1);
       })
     )
+  }
+
+  updateRole(name: string, model: CompanyRole) {
+    return this.http.put<void>(`${this.baseUrl}Companyroles/${name}`, model)
   }
 }

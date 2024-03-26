@@ -27,7 +27,10 @@
         <!-- Controls -->
         <div id="controls">
             <!-- Add filers, controls, etc here -->
-            <button (click)="openRolesModal()" class="btn btn-info">Create Role</button>
+            <div class="role-create" style="float: right;">
+                <app-create-role></app-create-role>
+            </div>
+            <!-- <button (click)="openRolesModal()" class="btn btn-info">Create Role</button> -->
         </div>
         <!-- End of controls -->
 
@@ -67,10 +70,14 @@
                         <!-- Export options -->
                         <div class="exportFileOptions">
                             <!-- Export to CSV -->
-                            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"  class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom" title="Export as Excel"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-excel" 
+                                (click)="exportExcel()"  class="p-button-success mr-2" pTooltip="XLS" 
+                                tooltipPosition="bottom" title="Export as Excel"></button>
                             
                             <!-- Export to PDF -->
-                            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom" title="Export as PDF"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                                class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom" 
+                                title="Export as PDF"></button>
                         </div>
                         <!-- End of export options -->
 
@@ -100,7 +107,15 @@
 
                 <ng-template pTemplate="body" let-role>
                     <tr>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name</span>{{ role.name }}</td>
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Name</span>
+                            <span>
+                                {{ role.name }}
+                                <i class="pi pi-question-circle" style="color: black"
+                                    title="{{getTooltipForRole(role)}}">
+                                </i>
+                            </span>
+                        </td>
                         <td><span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 <div class="action">
@@ -115,7 +130,14 @@
                                 </div>
 
                                 <div class="action">
-                                    <span class="pi pi-pencil" title="Edit role"></span>
+                                    <div class="editRole">
+                                        <button type="button" class="pi pi-pencil" data-bs-toggle="modal"
+                                            data-bs-target="#modalEditInfo" data-whatever="@role"
+                                            id="buttonRole_{{role.name}}"
+                                            (click)="showModalForRole(role)"
+                                            title="Edit role">
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -138,3 +160,109 @@
     <!-- End of content -->
 
 </div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="modalEditInfo" tabindex="-1" aria-labelledby="modalEditInfoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit company role</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
+
+            <div class="modal-body">
+                <!-- Form -->
+                <form #createRoleForm="ngForm" id="createRoleForm" class="row g-3" 
+                    autocomplete="off" style="margin-bottom: 10%;">
+
+                    <div class="rolename">
+                        <div class="col-md-6"> <!-- field za ime role -->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    id="roleNameId"
+                                    name="roleName"
+                                    class="roleName form-control required-field"
+                                    [(ngModel)]="editRole.name"
+                                    required
+                                    spellcheck="false"
+                                >
+                                <label for="roleNameId" form-label>Role name</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="permissions">
+                        <div class="col-md-6"> <!-- checkbox za canManageProjects -->
+                            <input 
+                                type="checkbox"
+                                id="canManageProjects"
+                                class="canManageProjects"
+                                name="canManageProjects"
+                                [(ngModel)]="editRole.canManageProjects"
+                                [value]="false"
+                            >
+                            <label for="canManageProjects">Can manage projects</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canManageTasks -->
+                            <input 
+                                type="checkbox"
+                                id="canManageTasks"
+                                class="canManageTasks"
+                                name="canManageTasks"
+                                [(ngModel)]="editRole.canManageTasks"
+                            >
+                            <label for="canManageTasks">Can manage tasks</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canUpdateTaskProgress -->
+                            <input 
+                                type="checkbox"
+                                id="canUpdateTaskProgress"
+                                class="canUpdateTaskProgress"
+                                name="canUpdateTaskProgress"
+                                [(ngModel)]="editRole.canUpdateTaskProgress"
+                            >
+                            <label for="canUpdateTaskProgress">Can update task progress</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canLeaveComments -->
+                            <input 
+                                type="checkbox"
+                                id="canLeaveComments"
+                                class="canLeaveComments"
+                                name="canLeaveComments"
+                                [(ngModel)]="editRole.canLeaveComments"
+                            >
+                            <label for="canLeaveComments">Can leave comments</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canUploadFiles -->
+                            <input 
+                                type="checkbox"
+                                id="canUploadFiles"
+                                class="canUploadFiles"
+                                name="canUploadFiles"
+                                [(ngModel)]="editRole.canUploadFiles"
+                            >
+                            <label for="canUploadFiles">Can upload files</label>
+                        </div>
+                    </div>
+
+                </form>
+                <!-- End of Form -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="formRegisterUser" class="btn btn-primary" data-bs-dismiss="modal" (click)="applyEditChanges()">Apply changes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End of modal -->

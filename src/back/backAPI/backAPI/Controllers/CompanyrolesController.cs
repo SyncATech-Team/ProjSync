@@ -107,11 +107,11 @@ namespace backAPI.Controllers
         public async Task<ActionResult> UpdateCompanyRole(string name, CompanyRoleDto request) {
             var updated = await companyRolesRepository.UpdateCompanyRole(name, request);
 
-            if(!updated) {
-                return BadRequest("Cannot update the role!");
+            if(updated != "OK") {
+                return BadRequest(updated);
             }
 
-            return NoContent();
+            return Ok();
         }
         /// <summary>
         /// Brisanje uloge po imenu
