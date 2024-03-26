@@ -41,9 +41,9 @@ export class RolePageComponent implements OnInit {
   //Cuva sta je uneto u search input
   searchTerm: string = '';
   
-  createdRole: CompanyRole = {
-    name: ''
-  }
+  // createdRole: CompanyRole = {
+  //   name: ''
+  // }
 
   /* PODACI CLANOVI */
   roles: CompanyRole[] = [];
@@ -57,6 +57,16 @@ export class RolePageComponent implements OnInit {
   loading: boolean = true;
   activityValues: number[] = [0, 100];
 
+  initialRoleName: string = '';
+  editRole: CompanyRole = {
+    name: '',
+    canManageProjects: false,
+    canManageTasks: false,
+    canLeaveComments: false,
+    canUpdateTaskProgress: false,
+    canUploadFiles: false
+  };
+
   /**
    * Konstruktor
    * @param croleService 
@@ -64,8 +74,8 @@ export class RolePageComponent implements OnInit {
   constructor(
     private companyRoleService: CompanyroleService,
     private msgPopupSevice: MessagePopupService,
-    private modalService: BsModalService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+    private msgPopupService: MessagePopupService) { }
 
   /**
    * OnInit
@@ -73,7 +83,7 @@ export class RolePageComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     // Dohvati sve uloge koje postoje iz baze
-    this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
+    this.roles$ = this.companyRoleService.getAllCompanyRoles();
     this.roles$.subscribe(roles => {
         this.roles = roles;
         this.roles_backup = roles;
@@ -88,31 +98,31 @@ export class RolePageComponent implements OnInit {
     this.loading = false;
 }
 
-  openRolesModal() {
-    const config = {
-      class: 'modal-dialog-centered',
-      initialState: {
-        createdRole: this.createdRole
-      }
-    }
-    this.bsModalRef = this.modalService.show(CreateRoleComponent, config);
-    this.bsModalRef.onHide?.subscribe({
-      next: () => {
-        const createdRole = this.bsModalRef.content?.createdRole;
-        this.companyRoleService.create(createdRole!).subscribe({
-          next: () => {
-            this.msgPopupSevice.showSuccess("Successfully created new role");
-            this.searchTerm='';
-            this.search();
-            this.table.reset();
-          },
-          error: _ => {
-            this.msgPopupSevice.showError("Unable to create new role with given parameters. Probably duplicate names")
-          }
-        })
-      }
-    })
-  }
+  // openRolesModal() {
+  //   const config = {
+  //     class: 'modal-dialog-centered',
+  //     initialState: {
+  //       createdRole: this.createdRole
+  //     }
+  //   }
+  //   this.bsModalRef = this.modalService.show(CreateRoleComponent, config);
+  //   this.bsModalRef.onHide?.subscribe({
+  //     next: () => {
+  //       const createdRole = this.bsModalRef.content?.createdRole;
+  //       this.companyRoleService.create(createdRole!).subscribe({
+  //         next: () => {
+  //           this.msgPopupSevice.showSuccess("Successfully created new role");
+  //           this.searchTerm='';
+  //           this.search();
+  //           this.table.reset();
+  //         },
+  //         error: _ => {
+  //           this.msgPopupSevice.showError("Unable to create new role with given parameters. Probably duplicate names")
+  //         }
+  //       })
+  //     }
+  //   })
+  // }
 
   /**
    * Metod za brisanje uloge u kompaniji [potencijalno treba unaprediti error-handleing]
@@ -278,5 +288,67 @@ export class RolePageComponent implements OnInit {
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
+
+  getTooltipForRole(role: CompanyRole) {
+    let count: number = 0;
+    let s = "List of granted permissions:";
+
+    if(role.canManageProjects) { s += "\nAble to manage projects"; count += 1; }
+    if(role.canManageTasks) { s += "\nAble to manage tasks"; count += 1; }
+    if(role.canLeaveComments) { s += "\nAble to leave comments"; count += 1; }
+    if(role.canUpdateTaskProgress) { s += "\nAble to update task completion percentage"; count += 1;}
+    if(role.canUploadFiles) { s += "\nAble to upload files"; count += 1; }
+    
+    if(count === 0) s += "\nNone";
+
+    return s;
+  }
+
+  showModalForRole(role: CompanyRole) {
+    this.initialRoleName = role.name;
+    let nameField = document.getElementsByClassName("roleName")[0] as HTMLInputElement;
+    let canManageProjectsCheckbox = document.getElementsByClassName("canManageProjects")[0] as HTMLInputElement;
+    let canManageTasksCheckbox = document.getElementsByClassName("canManageTasks")[0] as HTMLInputElement;
+    let canLeaveCommentsCheckbox = document.getElementsByClassName("canLeaveComments")[0] as HTMLInputElement;
+    let canUpdateTaskProgressCheckbox = document.getElementsByClassName("canUpdateTaskProgress")[0] as HTMLInputElement;
+    let canUploadFilesCheckbox = document.getElementsByClassName("canUploadFiles")[0] as HTMLInputElement;
+
+    if(nameField) { 
+      nameField.value = role.name;
+      this.editRole.name = role.name;
+    }
+    if(canManageProjectsCheckbox) { 
+      canManageProjectsCheckbox.checked = role.canManageProjects;
+      this.editRole.canManageProjects = role.canManageProjects;
+     }
+    if(canManageTasksCheckbox) { 
+      canManageTasksCheckbox.checked = role.canManageTasks;
+      this.editRole.canManageTasks = role.canManageTasks;
+     }
+    if(canLeaveCommentsCheckbox) { 
+      canLeaveCommentsCheckbox.checked = role.canLeaveComments; 
+      this.editRole.canLeaveComments = role.canLeaveComments;
+    }
+    if(canUpdateTaskProgressCheckbox) {
+      canUpdateTaskProgressCheckbox.checked = role.canUpdateTaskProgress;
+      this.editRole.canUpdateTaskProgress = role.canUpdateTaskProgress;
+    }
+    if(canUploadFilesCheckbox) {
+      canUploadFilesCheckbox.checked = role.canUploadFiles;
+      this.editRole.canUploadFiles = role.canUploadFiles;
+    }
+  }
+
+  applyEditChanges() {
+    this.companyRoleService.updateRole(this.initialRoleName, this.editRole).subscribe({
+      next: () => {
+        this.msgPopupService.showSuccess("Successfully edited role");
+        this.ngOnInit();
+      },
+      error: () => {
+        this.msgPopupService.showError("Unable to edit role");
+      }
+    });
+  } 
 
 }
