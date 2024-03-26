@@ -20,5 +20,7 @@ namespace backAPI.Repositories.Interface
         Task<bool> UpdateProject(string name,ProjectDto request);
         
         Task<Project> GetProjectById(int id);
+
+        Task<IEnumerable<int>> GetTaskGroupIds(int projectId);
     }
 }

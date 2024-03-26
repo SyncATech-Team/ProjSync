@@ -25,9 +25,6 @@ namespace backAPI.Repositories.Interface {
         /// <returns></returns>
         Task<bool> DeleteGroupFromProjectAsync(int groupId);
 
-
-
-
         /// <summary>
         /// Metoda koja proverava da li postoji grupa sa istim imenom u okviru projekta
         /// </summary>

@@ -108,7 +108,7 @@ namespace backAPI.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TaskStatus",
+                name: "TaskStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -117,7 +117,7 @@ namespace backAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskStatus", x => x.Id);
+                    table.PrimaryKey("PK_TaskStatuses", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -528,9 +528,9 @@ namespace backAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Tasks_TaskStatus_StatusId",
+                        name: "FK_Tasks_TaskStatuses_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "TaskStatus",
+                        principalTable: "TaskStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -863,7 +863,7 @@ namespace backAPI.Migrations
                 name: "TaskPriorities");
 
             migrationBuilder.DropTable(
-                name: "TaskStatus");
+                name: "TaskStatuses");
 
             migrationBuilder.DropTable(
                 name: "TaskTypes");

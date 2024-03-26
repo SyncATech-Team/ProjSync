@@ -504,7 +504,7 @@ namespace backAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskStatus");
+                    b.ToTable("TaskStatuses");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskType", b =>

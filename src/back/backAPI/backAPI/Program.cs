@@ -7,6 +7,7 @@ using backAPI.Services.Implementation;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TaskStatus = backAPI.Entities.Domain.TaskStatus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,7 @@ builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<IProjectTypesRepository, ProjectTypesRepository>();
 builder.Services.AddScoped<IProjectVisibilitiesRepository, ProjectVisibilitiesRepository>();
 builder.Services.AddScoped<ITaskGroupRepository, TaskGroupRepository>();
+builder.Services.AddScoped<ITasksRepository, TasksRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
@@ -119,6 +121,15 @@ if(!context.TaskTypes.Any()) {
         new TaskType { Id = 1, Name = "Task"},
         new TaskType { Id = 2, Name = "Problem"},
         new TaskType { Id = 3, Name = "Story"}
+    );
+}
+
+// Seed task statuses
+if(!context.TaskStatuses.Any()) {
+    await context.TaskStatuses.AddRangeAsync(
+        new TaskStatus { Id = 1, Name = "Planning" },
+        new TaskStatus { Id = 2, Name = "In progress" },
+        new TaskStatus { Id = 3, Name = "Done" }
     );
 }
 

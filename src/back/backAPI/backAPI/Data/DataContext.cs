@@ -277,9 +277,10 @@ namespace backAPI.Data
         public DbSet<UsersOnTasks> UsersOnTasks { get; set; }
         public DbSet<UsersOnProject> UsersOnProjects { get; set; }
         public DbSet<ProjectDocumentation> ProjectDocumentation { get; set; }
-        public DbSet<TaskComment> TaskComment { get; set; }
+        public DbSet<TaskComment> TaskComments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<TaskGroup> TaskGroups { get; set; }
         public DbSet<GroupsOnProject> GroupsOnProjects { get; set; }
+        public DbSet<Entities.Domain.TaskStatus> TaskStatuses { get; set; }
     }
 }

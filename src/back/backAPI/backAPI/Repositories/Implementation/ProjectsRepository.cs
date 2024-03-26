@@ -12,14 +12,17 @@ namespace backAPI.Repositories.Implementation
         private readonly IUsersRepository usersRepository;
         private readonly IProjectTypesRepository projectTypesRepository;
         private readonly IProjectVisibilitiesRepository projectVisibilitiesRepository;
+        private readonly ITaskGroupRepository taskGroupRepository;
 
         public ProjectsRepository(DataContext dataContext, IUsersRepository usersRepository, 
-            IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository)
+            IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository,
+            ITaskGroupRepository taskGroupRepository)
         {
             this.dataContext = dataContext;
             this.usersRepository = usersRepository;
             this.projectTypesRepository = projectTypesRepository;
             this.projectVisibilitiesRepository = projectVisibilitiesRepository;
+            this.taskGroupRepository = taskGroupRepository;
         }
 
         public async Task<Project> CreateProject(ProjectDto request)
@@ -110,6 +113,15 @@ namespace backAPI.Repositories.Implementation
             await dataContext.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<IEnumerable<int>> GetTaskGroupIds(int projectId) {
+            var groups = await taskGroupRepository.GetGroupsAsync(projectId);
+            List<int> groupids = new List<int>();
+            foreach (var group in groups) {
+                groupids.Add(group.Id);
+            }
+            return groupids;
         }
     }
 }

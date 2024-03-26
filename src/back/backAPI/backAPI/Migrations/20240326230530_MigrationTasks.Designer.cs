@@ -11,7 +11,7 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240326222348_MigrationTasks")]
+    [Migration("20240326230530_MigrationTasks")]
     partial class MigrationTasks
     {
         /// <inheritdoc />
@@ -507,7 +507,7 @@ namespace backAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskStatus");
+                    b.ToTable("TaskStatuses");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskType", b =>
