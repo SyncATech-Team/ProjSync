@@ -23,8 +23,8 @@
                     <div class="filterTableOptions">
                         <div class="p-input-icon-left ml-auto">
                             <i class="pi pi-search"></i>
-                            <!-- Dodati search TO Do -->
                             <input id="search-users-by-username" [(ngModel)]="searchTerm" (input)="search()" pInputText placeholder="Search keyword"/>
+                            <p-cascadeSelect [options]="userRoleName" optionLabel="name" optionGroupLabel="name" [style]="{minWidth: '14rem'}" placeholder="Select role"></p-cascadeSelect>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                 </tr>
             </ng-template>
             
-            <ng-template pTemplate="body" let-user>
+            <ng-template class="table-users" pTemplate="body" let-user>
                 <tr [ngClass]="{'active-user' : user.isActive, 'inactive-user': !user.isActive}">
                     <td>
                         <span class="p-column-title" style="font-weight: bold;">Account</span>
@@ -56,12 +56,12 @@
 
                     <td>
                         <span class="p-column-title" style="font-weight: bold;">Email</span>
-                        <a href="mailto:{{user.email}}"> {{user.email}}</a>
+                        <a class="mail" href="mailto:{{user.email}}"> {{user.email}}</a>
                     </td>
 
                     <td>
                         <span class="p-column-title" style="font-weight: bold;">Username</span>
-                        <a href="mailto:{{user.email}}"> {{user.username }}</a>
+                        <a class="username" href="mailto:{{user.email}}"> {{user.username }}</a>
                     </td>
 
                     <td>

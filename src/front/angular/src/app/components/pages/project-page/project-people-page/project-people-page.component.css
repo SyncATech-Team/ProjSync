@@ -12,3 +12,7 @@
     padding: 4px 34px;
     border-radius: 6px;
 }
+
+.mail, .username{
+    text-decoration: none;
+}
