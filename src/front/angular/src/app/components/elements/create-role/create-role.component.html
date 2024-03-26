@@ -1,24 +1,103 @@
-<div class="modal-header">
-    <h4 class="modal-title pull-left">Create Role</h4>
-</div>
-<div class="modal-body">
-    <!-- Form -->
-    <form #createRoleForm="ngForm" id="formCreateRole" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreateRole">
+    Create Role
+</button>
 
-        <div class="col-12"> <!-- field za ime-->
-            <div class="form-floating mb-3">
-                <input type="text" id="name" name="name" class="form-control" placeholder="Name"
-                [(ngModel)]="createdRole!.name" required autocomplete="off">
-                <label for="name" class="form-label">Name</label>
+<div class="modal fade" id="modalCreateRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create new company role</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <!-- End of Form Header -->
+
+            <div class="modal-body">
+                <!-- Form -->
+                <form #createRoleForm="ngForm" id="createRoleForm" class="row g-3" (ngSubmit)="createRole()" 
+                    autocomplete="off" style="margin-bottom: 10%;">
+
+                    <div class="rolename">
+                        <div class="col-md-6"> <!-- field za ime role -->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    id="roleName"
+                                    name="roleName"
+                                    class="form-control required-field"
+                                    placeholder="Developer"
+                                    [(ngModel)]="roleToCreate.name"
+                                    required
+                                    spellcheck="false"
+                                >
+                                <label for="roleName" class="form-label">Role name</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="permissions">
+                        <div class="col-md-6"> <!-- checkbox za canManageProjects -->
+                            <input 
+                                type="checkbox"
+                                id="canManageProjects"
+                                name="canManageProjects"
+                                [(ngModel)]="roleToCreate.canManageProjects"
+                                [value]="false"
+                            >
+                            <label for="canManageProjects">Can manage projects</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canManageTasks -->
+                            <input 
+                                type="checkbox"
+                                id="canManageTasks"
+                                name="canManageTasks"
+                                [(ngModel)]="roleToCreate.canManageTasks"
+                            >
+                            <label for="canManageTasks">Can manage tasks</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canUpdateTaskProgress -->
+                            <input 
+                                type="checkbox"
+                                id="canUpdateTaskProgress"
+                                name="canUpdateTaskProgress"
+                                [(ngModel)]="roleToCreate.canUpdateTaskProgress"
+                            >
+                            <label for="canUpdateTaskProgress">Can update task progress</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canLeaveComments -->
+                            <input 
+                                type="checkbox"
+                                id="canLeaveComments"
+                                name="canLeaveComments"
+                                [(ngModel)]="roleToCreate.canLeaveComments"
+                            >
+                            <label for="canLeaveComments">Can leave comments</label>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- checkbox za canUploadFiles -->
+                            <input 
+                                type="checkbox"
+                                id="canUploadFiles"
+                                name="canUploadFiles"
+                                [(ngModel)]="roleToCreate.canUploadFiles"
+                            >
+                            <label for="canUploadFiles">Can upload files</label>
+                        </div>
+                    </div>
+
+                </form>
+                <!-- End of Form -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="formRegisterUser" class="btn btn-primary" data-bs-dismiss="modal" (click)="createRole()">Create new</button>
+            </div>
+
         </div>
-
-    </form>
-    <!-- End of Form -->
-
-</div>
-
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Create</button>
+    </div>
 </div>

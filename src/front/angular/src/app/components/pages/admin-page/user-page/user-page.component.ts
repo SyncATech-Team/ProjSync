@@ -95,6 +95,7 @@ export class UserPageComponent implements OnInit {
         next: response => {
           this.users = response;
           this.users_backup = response;
+          // console.log(this.users);
         },
         error: error => {
           console.log("ERROR: " + error.error);
@@ -109,7 +110,7 @@ export class UserPageComponent implements OnInit {
       ];
 
       // Dovuci kreirane uloge u kompaniji
-      this.roles$ = this.companyRoleService.getAllCompanyRoleNames();
+      this.roles$ = this.companyRoleService.getAllCompanyRoles();
 
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
   }
@@ -171,42 +172,47 @@ export class UserPageComponent implements OnInit {
    * @param username 
    * @param event 
    */
+  
   deleteUser(username: string, event: Event): void {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Do you want to deactivate this record?',
-        header: 'Deactivate Confirmation',
-        icon: 'pi pi-info-circle',
-        acceptButtonStyleClass:"p-button-danger p-button-text",
-        rejectButtonStyleClass:"p-button-text p-button-text",
-        acceptIcon:"none",
-        rejectIcon:"none",
+    
+    let usrIndex = this.users.findIndex(user => user.username === username);
+    let usr = this.users[usrIndex];
 
-        accept: (input: string) => {
-          this.userService.deleteUser(username).subscribe({
-            next: _=>{
-              const userIndex = this.users.findIndex(user => user.username === username);
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: usr.isActive ? 'Do you want to deactivate this account?' : 'Do you want to activate this account?',
+      header: usr.isActive ? 'Deactivate Confirmation' : 'Activate Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      acceptIcon:"none",
+      rejectIcon:"none",
 
-              this.users[userIndex].isActive = !this.users[userIndex].isActive;
+      accept: (input: string) => {
+        this.userService.deleteUser(username).subscribe({
+          next: _=>{
+            const userIndex = this.users.findIndex(user => user.username === username);
 
-              this.userService.updateUserInfo(this.users[userIndex].username, this.users[userIndex]).subscribe({});
+            this.users[userIndex].isActive = !this.users[userIndex].isActive;
 
-              if(this.users[userIndex].isActive == true){
-                this.msgPopupService.showSuccess("User activated");
-              }
-              else{
-                this.msgPopupService.showSuccess("User deactivated");
-              }
-              this.table.reset();
-            },
-            error: error => {
-              this.msgPopupService.showError("Unable to deactive user");
+            this.userService.updateUserInfo(this.users[userIndex].username, this.users[userIndex]).subscribe({});
+
+            if(this.users[userIndex].isActive == true){
+              this.msgPopupService.showSuccess("User activated");
             }
-          });
-        },
-        reject: () => {
-            this.msgPopupService.showError('You have rejected');
-        }
+            else{
+              this.msgPopupService.showSuccess("User deactivated");
+            }
+            this.table.reset();
+          },
+          error: error => {
+            this.msgPopupService.showError("Unable to deactive user");
+          }
+        });
+      },
+      reject: () => {
+          this.msgPopupService.showError('You have rejected');
+      }
     });
   }
 
@@ -381,6 +387,7 @@ export class UserPageComponent implements OnInit {
    * Izvrsava provere da li su novi podaci validni i poziva servis za izmenu podataka.
    */
   applyEditChanges() {
+    this.editUser.isActive = this.users.filter(user => user.username == this.initialUsername).at(0)?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
     this.userService.updateUserInfo(this.initialUsername, this.editUser).subscribe({
       next: response => {
         this.msgPopupService.showSuccess("Successfully edited user info");

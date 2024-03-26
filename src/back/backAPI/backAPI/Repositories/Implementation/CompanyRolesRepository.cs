@@ -60,11 +60,15 @@ namespace backAPI.Repositories.Implementation
         /// <param name="name"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateCompanyRole(string name, CompanyRoleDto request) {
+        public async Task<string> UpdateCompanyRole(string name, CompanyRoleDto request) {
             var role = await GetCompanyRoleByNameAsync(name);
 
-            if (role == null || await CheckCompanyRoleNameExistance(request.Name) == true) {
-                return false;
+            if (role == null) {
+                return "Role not found";
+            }
+
+            if(role.Name != request.Name) { // ako zelimo da promenimo ime
+                if (await CheckCompanyRoleNameExistance(request.Name)) return "Name already exists";
             }
 
             role.Name = request.Name;
@@ -76,7 +80,7 @@ namespace backAPI.Repositories.Implementation
 
             await dataContext.SaveChangesAsync();
 
-            return true;
+            return "OK";
         }
         /// <summary>
         /// Dohvatanje role za prosledjeni ID
