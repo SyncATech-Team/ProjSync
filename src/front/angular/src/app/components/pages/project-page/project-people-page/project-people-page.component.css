@@ -1,3 +1,13 @@
 .wrapper{
     display: flex;
 }
+
+.header{
+    border-top: 2px solid black;
+}
+
+.profilecontent img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}

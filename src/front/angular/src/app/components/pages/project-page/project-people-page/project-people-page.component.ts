@@ -9,6 +9,7 @@ import { UserOnProjectService } from '../../../../_service/userOnProject.service
   styleUrl: './project-people-page.component.css'
 })
 export class ProjectPeoplePageComponent implements OnInit{
+  private MAX_NUMBER_OF_DEFAULT_IMAGES: number = 10;
   users: UserGetter[] = [];
   projectName: string = '';
 
@@ -29,5 +30,17 @@ export class ProjectPeoplePageComponent implements OnInit{
         console.log(error);
       }
     });
+  }
+
+  getUserImagePath(username : string){
+    let usernameSumOfCharacters: number = 0;
+    for (let index = 0; index < username.length; index++) {
+      usernameSumOfCharacters += username.charCodeAt(index);
+    }
+
+    let defaultImageNumber = usernameSumOfCharacters % this.MAX_NUMBER_OF_DEFAULT_IMAGES + 1;
+    let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + defaultImageNumber + ".png";
+
+    return path;
   }
 }

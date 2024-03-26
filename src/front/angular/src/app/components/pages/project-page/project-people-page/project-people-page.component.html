@@ -2,73 +2,74 @@
 <div class="wrapper">
     <app-project-sidebar></app-project-sidebar>
     
+    <div class="container">
     <!-- Numeracija strana -->
-    <p-table
-        #dt
-        [value]="users"
-        dataKey="id"
-        [rowHover]="true"
-        [rows]="10"
-        [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        [paginator]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [filterDelay]="0"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-    >
-        <!-- Pretraga korisnika -->
-        <ng-template pTemplate="caption">
-            <div class="table-header">
-                <div class="filterTableOptions">
-                    <div class="p-input-icon-left ml-auto">
-                        <i class="pi pi-search"></i>
-                        <!-- Dodati search TO Do -->
-                        <input id="search-users-by-username" pInputText placeholder="Search keyword"/>
+        <p-table
+            #dt
+            [value]="users"
+            dataKey="id"
+            [rowHover]="true"
+            [rows]="5"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[5,10, 25, 50]"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+        >
+            <!-- Pretraga korisnika -->
+            <ng-template pTemplate="caption">
+                <div class="table-header">
+                    <div class="filterTableOptions">
+                        <div class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <!-- Dodati search TO Do -->
+                            <input id="search-users-by-username" pInputText placeholder="Search keyword"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </ng-template>
+            </ng-template>
 
-        <!-- Table header -->
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Firstname</th>
-                <th>Email address</th>
-                <th>Username</th>
-                <th>Role</th>
-            </tr>
-        </ng-template>
-        
-        <ng-template pTemplate="body" let-user>
-            <tr [ngClass]="{'active-user' : user.isActive, 'inactive-user': !user.isActive}">
-                <td>
-                    <span class="p-column-title" style="font-weight: bold;">Account</span>
-                    <div class="profilecontent">
-                        <!-- <img draggable="false" *ngIf="1==1; else secondImageSource"
-                        src={{getUserImagePath(user.username)}} alt="user-default-image"> -->
-                        <ng-template #secondImageSource>
-                            <!-- src="{{getUserImagePath(user.username)}}"  -->
-                            <img alt="user-image">
-                        </ng-template>
-                        <span>{{ user.firstName }}</span>
-                    </div>
-                </td>
+            <!-- Table header -->
+            <ng-template pTemplate="header">
+                <tr class="header">
+                    <th>Firstname</th>
+                    <th>Email address</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                </tr>
+            </ng-template>
+            
+            <ng-template pTemplate="body" let-user>
+                <tr [ngClass]="{'active-user' : user.isActive, 'inactive-user': !user.isActive}">
+                    <td>
+                        <span class="p-column-title" style="font-weight: bold;">Account</span>
+                        <div class="profilecontent">
+                            <img draggable="false" *ngIf="1==1; else secondImageSource"
+                            src={{getUserImagePath(user.username)}} alt="user-default-image">
+                            <ng-template #secondImageSource>
+                                <img alt="user-image">
+                            </ng-template>
+                            <span>{{ user.firstName }}</span>
+                        </div>
+                    </td>
 
-                <td>
-                    <span class="p-column-title" style="font-weight: bold;">Email</span>
-                    <a href="mailto:{{user.email}}"> {{user.email}}</a>
-                </td>
+                    <td>
+                        <span class="p-column-title" style="font-weight: bold;">Email</span>
+                        <a href="mailto:{{user.email}}"> {{user.email}}</a>
+                    </td>
 
-                <td>
-                    <span class="p-column-title" style="font-weight: bold;">Username</span>
-                    <a href="mailto:{{user.email}}"> {{user.username }}</a>
-                </td>
+                    <td>
+                        <span class="p-column-title" style="font-weight: bold;">Username</span>
+                        <a href="mailto:{{user.email}}"> {{user.username }}</a>
+                    </td>
 
-                <td>
-                    <span class="p-column-title" style="font-weight: bold;">Company role</span>
-                    {{ user.companyRoleName }}
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+                    <td>
+                        <span class="p-column-title" style="font-weight: bold;">Company role</span>
+                        {{ user.companyRoleName }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>
