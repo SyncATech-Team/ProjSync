@@ -9,18 +9,20 @@ namespace backAPI.Controllers
     {
         private readonly IUserOnProjectRepository _userOnProjectRepository;
         private readonly IProjectsRepository _projectRepository;
+        private readonly ICompanyRolesRepository _companyRolesRepository;
 
-        public UserOnProjectController(IUserOnProjectRepository userOnProjectRepository, IProjectsRepository projectRepository)
+        public UserOnProjectController(IUserOnProjectRepository userOnProjectRepository, IProjectsRepository projectRepository, ICompanyRolesRepository companyRolesRepository)
         {
             _userOnProjectRepository = userOnProjectRepository;
             _projectRepository = projectRepository;
+            _companyRolesRepository = companyRolesRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUsersOnProject(string projectName)
         {
             var project = await _projectRepository.GetProjectByName(projectName);
-            List<UserOnProjectDto> dTOUsers = new List<UserOnProjectDto>();
+            List<UserDto> dTOUsers = new List<UserDto>();
 
             if (project == null)
             {
@@ -30,9 +32,22 @@ namespace backAPI.Controllers
             var users = await _userOnProjectRepository.GetUsersOnProjectAsync(project.Name);
             foreach(var user in users)
             {
-                dTOUsers.Add(new UserOnProjectDto
+                dTOUsers.Add(new UserDto
                 {
-                    Username = user.UserName
+                    Username = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name,
+                    ProfilePhoto = user.ProfilePhoto,
+                    Address = user.Address,
+                    ContactPhone = user.ContactPhone,
+                    Status = user.Status,
+                    IsVerified = user.IsVerified,
+                    PreferedLanguage = user.PreferedLanguage,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt,
+                    isActive = user.IsActive
                 });
             }
             
