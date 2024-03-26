@@ -34,6 +34,14 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
+import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
+import { AddIssueModalComponent } from './components/elements/add-issue-modal/add-issue-modal.component';
+import { IssueAssigneesSelectComponent } from './components/elements/add-issue-modal/issue-assignees-select/issue-assignees-select.component';
+import { IssuePrioritySelectComponent } from './components/elements/add-issue-modal/issue-priority-select/issue-priority-select.component';
+import { IssueReporterSelectComponent } from './components/elements/add-issue-modal/issue-reporter-select/issue-reporter-select.component';
+import { IssueTypeSelectComponent } from './components/elements/add-issue-modal/issue-type-select/issue-type-select.component';
+import { NzIconModule } from "ng-zorro-antd/icon";
+import { NzSpinModule } from "ng-zorro-antd/spin";
 
 @NgModule({
   declarations: [
@@ -56,7 +64,13 @@ import { ProjectSummaryPageComponent } from './components/pages/project-page/pro
     ConfirmEmailComponent,
     ProjectSidebarComponent,
     ProjectPageComponent,
-    ProjectSummaryPageComponent
+    ProjectSummaryPageComponent,
+    ProjectTasksPageComponent,
+    AddIssueModalComponent,
+    IssueAssigneesSelectComponent,
+    IssuePrioritySelectComponent,
+    IssueReporterSelectComponent,
+    IssueTypeSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +84,9 @@ import { ProjectSummaryPageComponent } from './components/pages/project-page/pro
     ButtonModule,
     ToastModule,
     ModalModule.forRoot(),
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    NzSpinModule,
+    NzIconModule.forRoot([])
   ],
   providers: [
     provideClientHydration(),

@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationEdit : Migration
+    public partial class MigrationTasks : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -104,6 +104,20 @@ namespace backAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TaskPriorities", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TaskStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaskStatus", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -478,22 +492,26 @@ namespace backAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: true),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    PriorityId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: true),
+                    Estimate = table.Column<int>(type: "int", nullable: false),
+                    TimeSpent = table.Column<int>(type: "int", nullable: false),
+                    TimeRemaining = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: true),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    ReporterId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
-                    DependentOn = table.Column<int>(type: "int", nullable: true),
-                    PriorityId = table.Column<int>(type: "int", nullable: false),
-                    TypeId = table.Column<int>(type: "int", nullable: false)
+                    DependentOn = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_AspNetUsers_CreatedBy",
-                        column: x => x.CreatedBy,
+                        name: "FK_Tasks_AspNetUsers_ReporterId",
+                        column: x => x.ReporterId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -509,6 +527,12 @@ namespace backAPI.Migrations
                         principalTable: "TaskPriorities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tasks_TaskStatus_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "TaskStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tasks_TaskTypes_TypeId",
                         column: x => x.TypeId,
@@ -728,11 +752,6 @@ namespace backAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_CreatedBy",
-                table: "Tasks",
-                column: "CreatedBy");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tasks_DependentOn",
                 table: "Tasks",
                 column: "DependentOn");
@@ -746,6 +765,16 @@ namespace backAPI.Migrations
                 name: "IX_Tasks_PriorityId",
                 table: "Tasks",
                 column: "PriorityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_ReporterId",
+                table: "Tasks",
+                column: "ReporterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_StatusId",
+                table: "Tasks",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_TypeId",
@@ -832,6 +861,9 @@ namespace backAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "TaskPriorities");
+
+            migrationBuilder.DropTable(
+                name: "TaskStatus");
 
             migrationBuilder.DropTable(
                 name: "TaskTypes");

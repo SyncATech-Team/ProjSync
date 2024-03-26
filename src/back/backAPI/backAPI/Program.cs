@@ -38,6 +38,7 @@ builder.Services.AddScoped<IUserOnProjectRepository, UserOnProjectRepository>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<IProjectTypesRepository, ProjectTypesRepository>();
 builder.Services.AddScoped<IProjectVisibilitiesRepository, ProjectVisibilitiesRepository>();
+builder.Services.AddScoped<ITaskGroupRepository, TaskGroupRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 

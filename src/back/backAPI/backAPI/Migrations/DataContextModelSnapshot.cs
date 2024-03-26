@@ -368,9 +368,6 @@ namespace backAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
@@ -383,6 +380,9 @@ namespace backAPI.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("Estimate")
+                        .HasColumnType("int");
+
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
@@ -390,6 +390,18 @@ namespace backAPI.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<int>("PriorityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReporterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeRemaining")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeSpent")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeId")
@@ -400,13 +412,15 @@ namespace backAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
-
                     b.HasIndex("DependentOn");
 
                     b.HasIndex("GroupId");
 
                     b.HasIndex("PriorityId");
+
+                    b.HasIndex("ReporterId");
+
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("TypeId");
 
@@ -477,6 +491,20 @@ namespace backAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("TaskPriorities");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.TaskStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskStatus");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskType", b =>
@@ -801,12 +829,6 @@ namespace backAPI.Migrations
 
             modelBuilder.Entity("backAPI.Entities.Domain.Task", b =>
                 {
-                    b.HasOne("backAPI.Entities.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("backAPI.Entities.Domain.Task", "DependentTask")
                         .WithMany()
                         .HasForeignKey("DependentOn")
@@ -824,6 +846,18 @@ namespace backAPI.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.TaskStatus", "TaskStatus")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("backAPI.Entities.Domain.TaskType", "TaskType")
                         .WithMany()
                         .HasForeignKey("TypeId")
@@ -835,6 +869,8 @@ namespace backAPI.Migrations
                     b.Navigation("TaskGroup");
 
                     b.Navigation("TaskPriority");
+
+                    b.Navigation("TaskStatus");
 
                     b.Navigation("TaskType");
 
