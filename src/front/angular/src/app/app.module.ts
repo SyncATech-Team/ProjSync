@@ -34,6 +34,7 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
+import { ProjectPeoplePageComponent } from './components/pages/project-page/project-people-page/project-people-page.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ProjectSummaryPageComponent } from './components/pages/project-page/pro
     ConfirmEmailComponent,
     ProjectSidebarComponent,
     ProjectPageComponent,
-    ProjectSummaryPageComponent
+    ProjectSummaryPageComponent,
+    ProjectPeoplePageComponent
   ],
   imports: [
     BrowserModule,
