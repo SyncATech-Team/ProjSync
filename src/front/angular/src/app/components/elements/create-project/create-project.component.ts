@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HomePageComponent } from '../../pages/home-page/home-page.component';
 import { DatePipe } from '@angular/common';
 import { ProjectService } from '../../../_service/project.service';
@@ -10,7 +10,9 @@ import { ProjectVisibility } from '../../../_models/project-visibility';
 import { ProjectVisibilityService } from '../../../_service/project-visibility.service';
 import { UserService } from '../../../_service/user.service';
 import { AccountService } from '../../../_service/account.service';
-import { FormGroup, FormControl, ReactiveFormsModule  } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+import { MessagePopupService } from '../../../_service/message-popup.service';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -20,6 +22,8 @@ import { FormGroup, FormControl, ReactiveFormsModule  } from '@angular/forms';
   providers: [DatePipe]
 })
 export class CreateProjectComponent implements OnInit{
+
+  @ViewChild('createProjectForm') formRecipe?: NgForm; 
 
   currentDate = new Date()
   currentUser = '';
@@ -42,17 +46,14 @@ export class CreateProjectComponent implements OnInit{
   projects: Project[]=[];
 
   constructor(private projectVisibilityService: ProjectVisibilityService, private projectTypeService: ProjectTypeService, private userService: UserService,
-    private homePage: HomePageComponent,private datePipe:DatePipe,private projectService: ProjectService) {}
+    private homePage: HomePageComponent,private projectService: ProjectService, private accountServis: AccountService, private msgPopUpService: MessagePopupService,
+    private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
 
     // Pronalazenje trenutnog usera
-    var storage = localStorage.getItem("user");
-    if(!storage) user = 'UserNotFound';
-    else var user = JSON.parse(storage);
-
-    this.currentUser = user['username'];
-    // Kraj pronalazenja 
+    var user = this.accountServis.getCurrentUser();
+    this.currentUser = user?.username!;
 
     this.userService.getAllUsers().subscribe({
       next: (response)=>{
@@ -86,26 +87,34 @@ export class CreateProjectComponent implements OnInit{
     this.projects=this.homePage.projects;
   }
 
+  onSuccessfulCreation(){
+    this.formRecipe?.reset();
+    this.changeDetectorRef.detectChanges();
+   }
+
   create():void{
-    console.log(this.creationModel);
+    var DueDateFormated = new Date(this.creationModel.dueDate);
     this.creationModel.ownerUsername = this.currentUser;
+
     if(this.creationModel.dueDate < this.creationModel.creationDate){
-      console.log("due date je pre creaton date");
+      this.msgPopUpService.showError("Unable to create project, due date is before creation date");
     }
-    else if(this.creationModel.dueDate < this.currentDate){
-      console.log("user nije pronadjen");
+    else if(DueDateFormated < this.currentDate){
+      this.msgPopUpService.showError("Unable to create project, due date is before current date");
     }
-    else if(this.creationModel.ownerUsername == 'UserNotFound'){
-      console.log("user nije pronadjen");
+    else if(this.currentUser == ''){
+      this.msgPopUpService.showError("Unable to create project, user not found");
     }
     else{
       this.projectService.createProject(this.creationModel).subscribe({
         next: (response)=>{
           this.homePage.initializeProjects();
+          this.msgPopUpService.showSuccess("Project successfully created");
+          this.onSuccessfulCreation();
           // this.formCreateProject.reset();
         },
         error: (error)=>{
-          console.log(error);
+          this.msgPopUpService.showError("Unable to create project");
         }
       });
     }
@@ -115,21 +124,15 @@ export class CreateProjectComponent implements OnInit{
      
     -Errors
     -provera due date < current date
-    -
+    -reset poja unutar forme nakon uspesnog pravljenja zadatka
+    -key (back?)
+    
+    - your -> private || YOUR
+    - stared -> favorite
+    - expend -> complition bar & time icon
+    - odma videti sve MOJE projekte/taskove
+
   
   */
 
-
-  /* ----------- RESET POJA UNUTAR CREATE PROJECT ---------------- */
-  // createForm = new FormGroup({
-  //   name: new FormControl(''),
-  //   key: new FormControl(''),
-  //   type: new FormControl(''),
-  //   description: new FormControl(''),
-  //   owner: new FormControl(''),
-  //   startDate: new FormControl(Date),
-  //   dueDate: new FormControl(Date),
-  //   budget: new FormControl(Number),
-  //   visibility: new FormControl(Number),
-  // });
 }

@@ -91,7 +91,8 @@ export class HomePageComponent implements OnInit {
     }
 
     this.projectsShow = this.projects.filter(project =>
-        project.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        project.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.key.toLowerCase().includes(this.searchTerm.toLowerCase())
+        || project.ownerUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) 
     );
   }
   getDefaultImagePath(): string {

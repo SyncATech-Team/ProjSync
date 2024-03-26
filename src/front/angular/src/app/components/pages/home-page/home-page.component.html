@@ -1,5 +1,7 @@
 <div id="page-wrapper">
 
+    <p-toast></p-toast>
+
     <app-nav-bar></app-nav-bar>
 
     <!-- Div container -->
@@ -11,8 +13,9 @@
         <div class="row" style="margin-bottom: 20px;">
             
             <!-- Search -->
-            <div class="col-md-2 col-3">
-                <input id="home-projects-search" name="projects-serach" class="form-control" 
+            <div class="p-input-icon-left ml-auto col-md-2 col-3" style="padding-left: 0%; ">
+                <i class="pi pi-search"></i>
+                <input id="home-projects-search" name="projects-serach" class="form-control" style="padding-left: 17%;"
                     type="search" placeholder="Search" aria-label="Search" 
                     [(ngModel)]="searchTerm" (input)="filterProjectsByName()">
             </div>
