@@ -50,7 +50,7 @@ namespace backAPI.Controllers
                     new TaskDto {
                         Id = task.Id,
                         Name = task.Name,
-                        TypeName = task.TypeId,
+                        //TypeName = task.TypeId,
                     }
                 );
             }
