@@ -18,10 +18,10 @@ namespace backAPI.Repositories.Implementation
             this.usersRepository = usersRepository;
             this.projectsRepository = projectsRepository;
         }
-        public async Task<bool> AddUserToProjectAsync(string projectName, UserOnProjectDto userDto)
+        public async Task<bool> AddUserToProjectAsync(string projectName, string username)
         {
             var idProject = await projectsRepository.GetProjectByName(projectName);
-            var idUser = await usersRepository.GetUserByUsername(userDto.Username);
+            var idUser = await usersRepository.GetUserByUsername(username);
 
             if (idProject == null || idUser == null)
             {

@@ -2,6 +2,11 @@
     display: flex;
 }
 
+.table-header{
+    display: flex;
+    justify-content: space-between;
+}
+
 .profilecontent img {
     width: 30px;
     height: 30px;

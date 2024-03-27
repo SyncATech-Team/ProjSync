@@ -57,15 +57,15 @@ namespace backAPI.Controllers
 
         [HttpPost]
         
-        public async Task<IActionResult> AddUserOnProject(string projectName, UserOnProjectDto request)
+        public async Task<IActionResult> AddUserOnProject(string projectName, string username)
         {
-            var added = _userOnProjectRepository.AddUserToProjectAsync(projectName, request).Result;
+            var added = _userOnProjectRepository.AddUserToProjectAsync(projectName, username).Result;
             if (added == false)
             {
-                return BadRequest("Unable to add user to project");
+                return BadRequest( new {message = "Unable to add user to project"});
             }
 
-            return Ok("User added on project");
+            return Ok(new { message = "User added on project"});
         }
 
         [HttpDelete]

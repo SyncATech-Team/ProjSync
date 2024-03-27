@@ -3,6 +3,10 @@ import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { UserGetter } from "../_models/user-getter";
 
+interface UserOnProjectData {
+    projectName: string;
+    username: string;
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -18,5 +22,14 @@ export class UserOnProjectService {
 
     removeUserFromProject(projectName : string, username : string){
         return this.http.delete<void>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}`);
+    }
+
+    addUserOnProject(projectName : string, username : string){
+        const body: UserOnProjectData = {
+            projectName: projectName,
+            username: username
+        };
+
+        return this.http.post<UserGetter>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}`, body);
     }
 }

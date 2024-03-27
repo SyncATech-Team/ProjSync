@@ -6,7 +6,7 @@ import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { CompanyRole } from '../../../../_models/company-role';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
-import { Table } from 'primeng/table';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-project-people-page',
@@ -24,7 +24,9 @@ export class ProjectPeoplePageComponent implements OnInit{
   projectName: string = '';
   searchTerm: string = '';
 
-  @ViewChild(Table) table!:Table;
+  userForAdd: string = '';
+
+  @ViewChild('createRoleForm') formRecipe?: NgForm;
 
   constructor(
     private route: ActivatedRoute, 
@@ -88,10 +90,6 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
   
   deleteUserFromProject(event: Event, username: string) {
-    // const response = prompt("In order to delete role please enter [" + argRole.name + "]");
-    // if(response != argRole.name) return;
-
-    // console.log(argRole);
 
     this.confirmationService.confirm({
       target: event.target as EventTarget,
@@ -127,5 +125,26 @@ export class ProjectPeoplePageComponent implements OnInit{
           this.msgPopupService.showError('You have rejected');
       }
     });
+  }
+
+  addUser() {
+    this.userOnProjectService.addUserOnProject(this.projectName, this.userForAdd).subscribe({
+      next: (response) => {
+        this.msgPopupService.showSuccess("Successfully added new user!");
+
+        this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
+          next: (response) => {
+            this.users = response;
+            this.users_backup = response;
+          },
+          error: (error) => {
+            console.log(error);
+          }
+        });
+      },
+      error: (error) => {
+        this.msgPopupService.showError("Unable to add new user! Make sure there are no duplicate names.")
+      }
+    })
   }
 }
