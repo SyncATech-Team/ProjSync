@@ -6,17 +6,24 @@ import { Component } from '@angular/core';
   styleUrl: './not-found-page.component.css'
 })
 export class NotFoundPageComponent {
-  logged:boolean=false;
-  isAdmin:boolean=false;
+  path:string='';
+  page:string='';
   constructor(){
     if (typeof localStorage != 'undefined') {
       var storage = localStorage.getItem("user");
       if(storage) {
         var user = JSON.parse(storage);
-        if (user['token']) 
-          this.logged = true;
-        if (user.roles.includes("Admin"))
-          this.isAdmin = true;
+        if (user['token']) {
+          this.page = "home page";
+          this.path = "/home";
+        }
+        if (user.roles.includes("Admin")){
+          this.page = "admin page";
+          this.path = "/admin"
+        }
+      }
+      else{
+        this.page = "login page";
       }
     }
   }
