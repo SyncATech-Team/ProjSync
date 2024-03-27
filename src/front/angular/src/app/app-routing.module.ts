@@ -13,6 +13,8 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
+import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
+
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
@@ -35,8 +37,8 @@ const routes: Routes = [
       { path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard] }
     ]
   },
-  
-  { path: '**', component: LoginPageComponent, pathMatch: 'full' },
+  { path: 'pageNotFound', component: NotFoundPageComponent },
+  { path: '**', redirectTo: '/pageNotFound', pathMatch: 'full' },
 ];
 
 @NgModule({
