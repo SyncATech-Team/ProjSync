@@ -15,4 +15,8 @@ export class UserOnProjectService {
     getAllUsersOnProject(projectName: string) {
         return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject?projectName=${projectName}`);
     }
+
+    removeUserFromProject(projectName : string, username : string){
+        return this.http.delete<void>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}`);
+    }
 }

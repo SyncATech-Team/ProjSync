@@ -1,6 +1,8 @@
     <app-nav-bar></app-nav-bar>
     <div class="wrapper">
         <app-project-sidebar></app-project-sidebar>
+        <p-toast></p-toast>
+        <p-confirmDialog></p-confirmDialog>
         
         <div class="container">
         <!-- Numeracija strana -->
@@ -24,7 +26,7 @@
                             <div class="search">
                                 <span class="p-input-icon-right">
                                     <i class="pi pi-search"></i>
-                                    <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}"/>
+                                    <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
                                 </span>
                             </div>
                             <p-dropdown class="dropdown" [options]="userRole" (onChange)="search()" [(ngModel)]="selectedRole" optionLabel="name" [style]="{minWidth: '14rem'}" placeholder="Select role" [showClear]="true"></p-dropdown>
@@ -76,6 +78,17 @@
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Company role</span>
                             {{ user.companyRoleName }}
+                        </td>
+
+                        <td><span class="p-column-title" style="font-weight: bold">Actions</span>
+                            <div class="action">
+                                <div class="deleteBtn">
+                                    <button type="button" pButton pRipple icon="fa-solid fa-right-from-bracket" 
+                                        (click)="deleteUserFromProject($event, user.username)"
+                                        class="p-button-danger mr-2" 
+                                        tooltipPosition="bottom"></button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </ng-template>

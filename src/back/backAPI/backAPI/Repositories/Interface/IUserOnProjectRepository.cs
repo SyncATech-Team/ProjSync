@@ -7,6 +7,6 @@ namespace backAPI.Repositories.Interface
     {
         Task<IEnumerable<User>> GetUsersOnProjectAsync(string projectName);
         Task<bool> AddUserToProjectAsync(string projectName, UserOnProjectDto userDto);
-        Task<bool> RemoveUserFromProjectAsync(string projectName, UserOnProjectDto userDto);
+        Task<bool> RemoveUserFromProjectAsync(string projectName, string username);
     }
 }

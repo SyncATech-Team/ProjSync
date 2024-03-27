@@ -1,4 +1,5 @@
 ﻿using backAPI.DTO;
+using backAPI.Entities.Domain;
 using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -69,17 +70,18 @@ namespace backAPI.Controllers
 
         [HttpDelete]
 
-        public async Task<IActionResult> DeleteUserFromProject(string projectName, UserOnProjectDto request)
+        public async Task<IActionResult> DeleteUserFromProject(string projectName, string username)
         {
-            var removed = await _userOnProjectRepository.RemoveUserFromProjectAsync(projectName, request);
+            var removed = await _userOnProjectRepository.RemoveUserFromProjectAsync(projectName, username);
 
             if (removed)
             {
-                return Ok("User removed from project successfully");
+                return Ok(new { message = "User removed from project successfully." });
+                
             }
             else
             {
-                return BadRequest("Failed to remove user from project");
+                return BadRequest(new { message = "Failed to remove user from project" });
             }
         }
     }

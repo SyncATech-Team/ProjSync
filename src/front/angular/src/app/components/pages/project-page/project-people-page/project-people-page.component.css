@@ -21,3 +21,11 @@
     padding: 11px;
     border-radius: 5px;
 }
+
+.deleteBtn button{
+    border-radius: 20%;
+    background-color: #ec5941;
+    width: 30px;
+    height: 30px;
+    color: black;
+}

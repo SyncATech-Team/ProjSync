@@ -63,10 +63,10 @@ namespace backAPI.Repositories.Implementation
                 .ToListAsync();
         }
 
-        public async Task<bool> RemoveUserFromProjectAsync(string projectName, UserOnProjectDto userDto)
+        public async Task<bool> RemoveUserFromProjectAsync(string projectName, string username)
         {
             var project = await projectsRepository.GetProjectByName(projectName);
-            var user = await usersRepository.GetUserByUsername(userDto.Username);
+            var user = await usersRepository.GetUserByUsername(username);
 
             if(user == null || project == null) {
                 return false;
