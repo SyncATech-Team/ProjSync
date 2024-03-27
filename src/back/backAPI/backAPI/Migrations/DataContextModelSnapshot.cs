@@ -179,7 +179,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("CompanyRoles");
+                    b.ToTable("CompanyRoles", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.GroupsOnProject", b =>
@@ -200,7 +200,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("GroupsOnProjects");
+                    b.ToTable("GroupsOnProjects", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
@@ -222,7 +222,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Project", b =>
@@ -280,7 +280,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("VisibilityId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.ProjectDocumentation", b =>
@@ -305,7 +305,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ProjectDocumentations");
+                    b.ToTable("ProjectDocumentations", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.ProjectRoles", b =>
@@ -325,7 +325,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ProjectRoles");
+                    b.ToTable("ProjectRoles", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.ProjectType", b =>
@@ -342,7 +342,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ProjectTypes");
+                    b.ToTable("ProjectTypes", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.ProjectVisibility", b =>
@@ -359,7 +359,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ProjectVisibilities");
+                    b.ToTable("ProjectVisibilities", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Task", b =>
@@ -416,7 +416,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskComment", b =>
@@ -446,7 +446,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TaskComments");
+                    b.ToTable("TaskComments", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskGroup", b =>
@@ -465,7 +465,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("TaskGroups");
+                    b.ToTable("TaskGroups", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskPriority", b =>
@@ -482,7 +482,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("TaskPriorities");
+                    b.ToTable("TaskPriorities", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskStatus", b =>
@@ -496,7 +496,7 @@ namespace backAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskStatuses");
+                    b.ToTable("TaskStatuses", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.TaskType", b =>
@@ -513,7 +513,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("TaskTypes");
+                    b.ToTable("TaskTypes", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.User", b =>
@@ -637,7 +637,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersOnProjects");
+                    b.ToTable("UsersOnProjects", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.UsersOnTasks", b =>
@@ -664,7 +664,7 @@ namespace backAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersOnTasks");
+                    b.ToTable("UsersOnTasks", (string)null);
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.WorkingHours", b =>
@@ -682,7 +682,7 @@ namespace backAPI.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("WorkingHours");
+                    b.ToTable("WorkingHours", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

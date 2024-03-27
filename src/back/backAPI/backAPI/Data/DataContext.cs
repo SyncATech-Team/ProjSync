@@ -3,7 +3,7 @@ using backAPI.Other.Logger;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Task = backAPI.Entities.Domain.Task;
+using Issue = backAPI.Entities.Domain.Issue;
 
 namespace backAPI.Data
 {
@@ -71,37 +71,37 @@ namespace backAPI.Data
             /* **************************************************************************
              * Strani kljucevi u tabeli >> Task <<
              * ************************************************************************** */
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<Issue>()
                 .HasOne(t => t.User)
                 .WithMany()
                 .HasForeignKey(t => t.ReporterId)
                 .OnDelete(DeleteBehavior.Restrict); // FK owner
 
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<Issue>()
                 .HasOne(t => t.TaskGroup)
                 .WithMany()
                 .HasForeignKey(t => t.GroupId)
                 .OnDelete(DeleteBehavior.Cascade); // FK group -> ukoliko brisemo grupu brisemo i sve taskove iz te grupe
             
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<Issue>()
                 .HasOne(t => t.TaskPriority)
                 .WithMany()
                 .HasForeignKey(t => t.PriorityId)
                 .OnDelete(DeleteBehavior.Restrict); // FK priority
 
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<Issue>()
                 .HasOne(t => t.TaskType)
                 .WithMany()
                 .HasForeignKey(t => t.TypeId)
                 .OnDelete(DeleteBehavior.Restrict); // FK type
 
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<Issue>()
                 .HasOne(t => t.DependentTask)
                 .WithMany()
                 .HasForeignKey(t => t.DependentOn)
                 .OnDelete(DeleteBehavior.Restrict); // FK parent task
 
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<Issue>()
                 .HasOne(t => t.TaskStatus)
                 .WithMany()
                 .HasForeignKey(t => t.StatusId)
@@ -276,7 +276,7 @@ namespace backAPI.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectVisibility> ProjectVisibilities { get; set; }
         public DbSet<ProjectType> ProjectTypes { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Issue> Tasks { get; set; }
         public DbSet<TaskType> TaskTypes { get; set; }
         public DbSet<TaskPriority> TaskPriority { get; set; }
         public DbSet<ProjectRoles> ProjectRoles { get; set; }

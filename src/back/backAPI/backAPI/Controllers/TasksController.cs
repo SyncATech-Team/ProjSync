@@ -3,7 +3,7 @@ using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using backAPI.Repositories.Interface.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Task = backAPI.Entities.Domain.Task;
+using Task = backAPI.Entities.Domain.Issue;
 
 namespace backAPI.Controllers
 {
@@ -45,8 +45,7 @@ namespace backAPI.Controllers
             var tasks = await _tasksRepository.GetAllTasksForGivenGroup( groupId );
             List<TaskDto> result = new List<TaskDto>();
 
-            /* TO DO !!!!! */
-            /*foreach( var task in tasks ) {
+            foreach( var task in tasks ) {
                 result.Add(
                     new TaskDto {
                         Id = task.Id,
@@ -54,7 +53,7 @@ namespace backAPI.Controllers
                         TypeName = task.TypeId,
                     }
                 );
-            }*/
+            }
 
             return null;
         }

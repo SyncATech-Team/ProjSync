@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace backAPI.Entities.Domain
 {
     [Table("Tasks")]
-    public class Task
+    public class Issue
     {
         [Key] public int Id { get; set; }
         [Required] public string Name { get; set; }
@@ -31,7 +31,7 @@ namespace backAPI.Entities.Domain
 
         [ForeignKey("TypeId")] public TaskType TaskType { get; set; }
 
-        [ForeignKey("DependentOn")] public Task DependentTask { get; set; }
+        [ForeignKey("DependentOn")] public Issue DependentTask { get; set; }
 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using backAPI.Entities.Domain;
-using Task = backAPI.Entities.Domain.Task;
 
 namespace backAPI.Repositories.Interface.Tasks
 {
@@ -11,12 +10,12 @@ namespace backAPI.Repositories.Interface.Tasks
         /// </summary>
         /// <param name="groupId"></param>
         /// <returns></returns>
-        Task<IEnumerable<Task>> GetAllTasksForGivenGroup(int groupId);
+        Task<IEnumerable<Issue>> GetAllTasksForGivenGroup(int groupId);
         /// <summary>
         /// Funkcija za kreiranje novog zadatka
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
-        Task<Task> CreateTaskAsync(Task task);
+        Task<Issue> CreateTaskAsync(Issue task);
     }
 }

@@ -19,7 +19,7 @@ namespace backAPI.Repositories.Implementation.Tasks
         /* *****************************************************************************************
         * Dohvati sve zadatke za odredjenu grupu
         * ***************************************************************************************** */
-        public async Task<IEnumerable<Entities.Domain.Task>> GetAllTasksForGivenGroup(int groupId)
+        public async Task<IEnumerable<Entities.Domain.Issue>> GetAllTasksForGivenGroup(int groupId)
         {
             var tasks = await _dataContext.Tasks.Where(t => t.GroupId == groupId).ToListAsync();
 
@@ -28,7 +28,7 @@ namespace backAPI.Repositories.Implementation.Tasks
         /* *****************************************************************************************
         * Kreiranje zadatka
         * ***************************************************************************************** */
-        public async Task<Entities.Domain.Task> CreateTaskAsync(Entities.Domain.Task task)
+        public async Task<Entities.Domain.Issue> CreateTaskAsync(Entities.Domain.Issue task)
         {
             var anyother = await _dataContext.Tasks.FirstOrDefaultAsync(t => t.GroupId == task.GroupId && t.Name == task.Name);
             if (anyother != null)
