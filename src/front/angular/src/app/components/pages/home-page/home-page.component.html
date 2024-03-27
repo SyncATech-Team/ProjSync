@@ -22,8 +22,7 @@
             
             <!-- Filter -->
             <div class="col-md-2 col-3">
-                <input id="home-projects-filter" class="form-control" type="search"
-                    placeholder="Filter" aria-label="Filter">
+                <app-filter-project></app-filter-project>
             </div>
             
             <!-- Create project option -->
@@ -79,112 +78,59 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>
-                            <i class="fa-solid fa-star" style="color: #000;"></i>
-                        </th>
+
                         <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
                         <th pSortableColumn="key">Key<p-sortIcon field="key"></p-sortIcon></th>
-                        <th pSortableColumn="type">Type<p-sortIcon field="type"></p-sortIcon></th>
+                        <th pSortableColumn="typeName">Type<p-sortIcon field="typeName"></p-sortIcon></th>
                         <th pSortableColumn="ownerUsername">Owner<p-sortIcon field="ownerUsername"></p-sortIcon></th>
-                        <th>Expand</th>
+                        <th pSortableColumn="creationDate">Creation Date<p-sortIcon field="creationDate"></p-sortIcon></th>
+                        <th pSortableColumn="dueDate">Due Date<p-sortIcon field="dueDate"></p-sortIcon></th>
+                        <th>Progress</th>
                     </tr>
                 </ng-template>
 
                 <ng-template pTemplate="body" let-project>
                     <tr>
-                        <td colspan="1">
-                            <input type="checkbox" [checked]="project.isFavorite"
-                                (change)="project.isFavorite=!project.isFavorite">
-                        </td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Name</span>
+
+                        <td style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                             <div class="profilecontent">
                                 <img *ngIf="1==1; else secondImageSource"
                                 src={{getDefaultImagePath()}} alt="user-default-image">
                                 <ng-template #secondImageSource>
                                     <img src="{{getDefaultImagePath()}}" alt="user-image">
                                 </ng-template>
+                            </div>
+                            <div>
                                 <a style="text-decoration: none;" routerLink="projects/{{project.name}}">{{ project.name }}</a>
                             </div>
                         </td>
-                        <td><span class="p-column-title" style="font-weight: bold;">Key</span>
+                        <td style="width: 13vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
                             {{ project.key }}
                         </td>
-                        <td>
+                        <td style="width: 23vh;">
                             <span class="p-column-title" style="font-weight: bold;">Type</span>
                             {{ project.typeName }}
                         </td>
-                        <td>
+                        <td style="width: 20vh; ">
                             <span class="p-column-title" style="font-weight: bold">Owner</span>
                             {{ project.ownerUsername }}
                         </td>
-                        <td>
-                            <button type="button" pButton pRipple [pRowToggler]="project" 
-                            class="p-button-text p-button-rounded p-button-plain"  
-                            [icon]="project.isExtanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
-                            (click)="project.isExtanded = !project.isExtanded"></button>
+                        <td style="width: 20vh; ">
+                            <span class="p-column-title" style="font-weight: bold">Creation Date</span>
+                            {{ dateFormat(project.creationDate) }}
+                        </td>
+                        <td style="width: 20vh; ">
+                            <span class="p-column-title" style="font-weight: bold">Due Date</span>
+                            {{ dateFormat(project.dueDate) }}
+                        </td>
+                        <td style="display: block; ">
+                            <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
+                            
+                            <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>
                         </td>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="rowexpansion" let-project>
-                    <tr>
-                        <td colspan="6">
-                            <p-table 
-                                [value]="project.subProjects"
-                                dataKey="name"
-                                [tableStyle]="{'width': '100%'}"
-                                responsiveLayout="stack"
-                                [breakpoint]="'460px'"
-                                styleClass="p-datatable-striped">
-
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th>
-                                            <i class="fa-solid fa-star" style="color: #000;"></i>
-                                        </th>
-                                        <th>Name</th>
-                                        <th>Key</th>
-                                        <th>Description</th>
-                                        <th>Owner</th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-subproject>
-                                    <tr>
-                                        <td colspan="1">
-                                            <input type="checkbox" [checked]="subproject.isFavorite"
-                                                (change)="subproject.isFavorite=!subproject.isFavorite">
-                                        </td>
-                                        <td><span class="p-column-title" style="font-weight: bold;">Name</span>
-                                            <div class="profilecontent">
-                                                <img *ngIf="1==1; else secondImageSource"
-                                                src={{getDefaultImagePath()}} alt="user-default-image">
-                                                <ng-template #secondImageSource>
-                                                    <img src="{{getDefaultImagePath()}}" alt="user-image">
-                                                </ng-template>
-                                                <span>{{ subproject.name }}</span>
-                                            </div>
-                                        </td>
-                                        <td><span class="p-column-title" style="font-weight: bold;">Key</span>
-                                            {{ subproject.key }}
-                                        </td>
-                                        <td>
-                                            <span class="p-column-title" style="font-weight: bold;">Description</span>
-                                            {{ subproject.typeName }}
-                                        </td>
-                                        <td>
-                                            <span class="p-column-title" style="font-weight: bold">Owner</span>
-                                            {{ subproject.ownerUsername }}
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="emptymessage">
-                                    <tr>
-                                        <td colspan="5">This project has no subprojects.</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                        </td>
-                    </tr>
-                </ng-template>
+               
             </p-table>
         </div>
     </div>

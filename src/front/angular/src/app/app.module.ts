@@ -33,6 +33,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
+import { FilterProjectComponent } from './components/elements/filter-project/filter-project.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ProjectPageComponent } from './components/pages/project-page/project-pa
     NotificationComponent,
     ConfirmEmailComponent,
     ProjectSidebarComponent,
-    ProjectPageComponent
+    ProjectPageComponent,
+    FilterProjectComponent
   ],
   imports: [
     BrowserModule,

@@ -16,12 +16,11 @@ import { NgForm } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-create-project',
-  templateUrl: './create-project.component.html',
-  styleUrl: './create-project.component.css',
-  providers: [DatePipe]
+  selector: 'app-filter-project',
+  templateUrl: './filter-project.component.html',
+  styleUrl: './filter-project.component.css'
 })
-export class CreateProjectComponent implements OnInit{
+export class FilterProjectComponent implements OnInit{
 
   @ViewChild('createProjectForm') formRecipe?: NgForm; 
   
@@ -83,7 +82,7 @@ export class CreateProjectComponent implements OnInit{
     });
   }
 
-  initializeProjects():void {
+  initializeFilters():void {
     this.projects=this.homePage.projects;
   }
 
