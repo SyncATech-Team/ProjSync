@@ -14,8 +14,9 @@ export class ProjectPeoplePageComponent implements OnInit{
   private MAX_NUMBER_OF_DEFAULT_IMAGES: number = 10;
   users: UserGetter[] = [];
   users_backup : UserGetter[] = [];
+  users_mid_array : UserGetter[] = [];
   userRole : CompanyRole[] = [];
-  userRoleName: string[] = [];
+  selectedRole: string = '';
     
   projectName: string = '';
   searchTerm: string = '';
@@ -42,10 +43,9 @@ export class ProjectPeoplePageComponent implements OnInit{
       }
     });
 
-    this.companyRole.getAllCompanyRoleNames().subscribe({
+    this.companyRole.getAllCompanyRoles().subscribe({
       next: (response) => {
         this.userRole = response;
-        this.userRoleName = this.userRole.map(role => role.name);
       },
       error: (error) => {
         console.log(error);
@@ -66,12 +66,19 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
 
   search() {
-    let searchTerm = this.searchTerm.toLowerCase();
-    if (searchTerm.trim() === '') {
-      this.users = [...this.users_backup];
-    } else {
-      this.users = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
-      console.log(this.userRoleName);
+    let searchTerm = this.searchTerm.toLowerCase().trim();
+    let filteredUsers = [...this.users_backup];
+  
+    if (this.selectedRole && (this.selectedRole as any).name) {
+      filteredUsers = filteredUsers.filter(user => user.companyRoleName === (this.selectedRole as any).name);
     }
+  
+    if (searchTerm) {
+      filteredUsers = filteredUsers.filter(user => user.username.toLowerCase().includes(searchTerm));
+    }
+    
+    this.users = filteredUsers;
   }
+  
+  
 }

@@ -35,7 +35,7 @@ import { ProjectSidebarComponent } from './components/elements/project-sidebar/p
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { ProjectPeoplePageComponent } from './components/pages/project-page/project-people-page/project-people-page.component';
-import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,7 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
     ToastModule,
     ModalModule.forRoot(),
     ConfirmDialogModule,
-    CascadeSelectModule
+    DropdownModule
   ],
   providers: [
     provideClientHydration(),
