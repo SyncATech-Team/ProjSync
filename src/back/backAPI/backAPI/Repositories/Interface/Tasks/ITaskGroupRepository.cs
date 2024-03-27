@@ -1,7 +1,10 @@
-﻿using backAPI.Entities.Domain;
+﻿using backAPI.DTO.Tasks;
+using backAPI.Entities.Domain;
 
-namespace backAPI.Repositories.Interface {
-    public interface ITaskGroupRepository {
+namespace backAPI.Repositories.Interface.Tasks
+{
+    public interface ITaskGroupRepository
+    {
 
         /// <summary>
         /// Funkcija koja za prosledjeni id projekta dohvata grupe taskova na tom projektu
@@ -26,10 +29,19 @@ namespace backAPI.Repositories.Interface {
         Task<bool> DeleteGroupFromProjectAsync(int groupId);
 
         /// <summary>
+        /// Funkcija koja pronalazi grupu za date id-jeve projekta i grupe
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        Task<TGroupResponse> GetGroupForNameInProject(int projectId, int groupId);
+
+
+        /// <summary>
         /// Metoda koja proverava da li postoji grupa sa istim imenom u okviru projekta
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        bool GroupNameExistsWithinTheSameProject(int projectId, string name);
+        Task<bool> GroupNameExistsWithinTheSameProject(int projectId, string name);
     }
 }

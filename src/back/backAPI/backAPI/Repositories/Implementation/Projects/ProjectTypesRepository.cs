@@ -1,9 +1,9 @@
 ﻿using backAPI.Data;
 using backAPI.Entities.Domain;
-using backAPI.Repositories.Interface;
+using backAPI.Repositories.Interface.Projects;
 using Microsoft.EntityFrameworkCore;
 
-namespace backAPI.Repositories.Implementation
+namespace backAPI.Repositories.Implementation.Projects
 {
     public class ProjectTypesRepository : IProjectTypesRepository
     {
@@ -18,11 +18,13 @@ namespace backAPI.Repositories.Implementation
             return await dataContext.ProjectTypes.ToListAsync();
         }
 
-        public async Task<ProjectType> GetProjectTypeByNameAsync(string name) {
+        public async Task<ProjectType> GetProjectTypeByNameAsync(string name)
+        {
             return await dataContext.ProjectTypes.FirstOrDefaultAsync(x => x.Name == name);
         }
 
-        public async Task<ProjectType> GetProjectTypeById(int id) {
+        public async Task<ProjectType> GetProjectTypeById(int id)
+        {
             return await dataContext.ProjectTypes.FirstOrDefaultAsync(x => x.Id == id);
         }
     }

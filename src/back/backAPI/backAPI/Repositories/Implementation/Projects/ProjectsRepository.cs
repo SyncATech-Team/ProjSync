@@ -1,10 +1,12 @@
 ﻿using backAPI.Data;
-using backAPI.DTO;
+using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
+using backAPI.Repositories.Interface.Projects;
+using backAPI.Repositories.Interface.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace backAPI.Repositories.Implementation
+namespace backAPI.Repositories.Implementation.Projects
 {
     public class ProjectsRepository : IProjectsRepository
     {
@@ -14,7 +16,7 @@ namespace backAPI.Repositories.Implementation
         private readonly IProjectVisibilitiesRepository projectVisibilitiesRepository;
         private readonly ITaskGroupRepository taskGroupRepository;
 
-        public ProjectsRepository(DataContext dataContext, IUsersRepository usersRepository, 
+        public ProjectsRepository(DataContext dataContext, IUsersRepository usersRepository,
             IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository,
             ITaskGroupRepository taskGroupRepository)
         {
@@ -30,15 +32,16 @@ namespace backAPI.Repositories.Implementation
             var user = await usersRepository.GetUserByUsername(request.OwnerUsername);
             var type = await projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName);
             var visibility = await projectVisibilitiesRepository.GetProjectVisibilityByNameAsync(request.VisibilityName);
-            
-            var project = new Project {
+
+            var project = new Project
+            {
                 Name = request.Name,
                 Key = request.Key,
                 Description = request.Description,
                 CreationDate = request.CreationDate,
                 DueDate = request.DueDate,
                 OwnerId = user.Id,
-                ParentId = (request.ParentProjectName == null) ? null : GetProjectByName(request.ParentProjectName).Result.Id,
+                ParentId = request.ParentProjectName == null ? null : GetProjectByName(request.ParentProjectName).Result.Id,
                 Budget = request.Budget,
                 VisibilityId = visibility.Id,
                 TypeId = type.Id
@@ -53,7 +56,7 @@ namespace backAPI.Repositories.Implementation
         public async Task<bool> DeleteProject(string name)
         {
             var project = await GetProjectByName(name);
-            
+
             if (project == null)
             {
                 return false;
@@ -61,7 +64,7 @@ namespace backAPI.Repositories.Implementation
 
             dataContext.Projects.Remove(project);
             await dataContext.SaveChangesAsync(true);
-            
+
             return true;
         }
 
@@ -76,7 +79,8 @@ namespace backAPI.Repositories.Implementation
         }
 
 
-        public async Task<Project> GetProjectById(int id) {
+        public async Task<Project> GetProjectById(int id)
+        {
             return await dataContext.Projects.FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -94,7 +98,7 @@ namespace backAPI.Repositories.Implementation
         {
             var project = await GetProjectByName(name);
 
-            if(project == null)
+            if (project == null)
             {
                 return false;
             }
@@ -104,7 +108,7 @@ namespace backAPI.Repositories.Implementation
             project.Key = request.Key;
             project.TypeId = projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName).Result.Id;
             project.OwnerId = usersRepository.GetUserByUsername(request.OwnerUsername).Result.Id;
-            project.ParentId = (request.ParentProjectName == null) ? null : GetProjectByName(request.ParentProjectName).Result.Id;
+            project.ParentId = request.ParentProjectName == null ? null : GetProjectByName(request.ParentProjectName).Result.Id;
             project.CreationDate = request.CreationDate;
             project.DueDate = request.DueDate;
             project.Budget = request.Budget;
@@ -115,10 +119,12 @@ namespace backAPI.Repositories.Implementation
             return true;
         }
 
-        public async Task<IEnumerable<int>> GetTaskGroupIds(int projectId) {
+        public async Task<IEnumerable<int>> GetTaskGroupIds(int projectId)
+        {
             var groups = await taskGroupRepository.GetGroupsAsync(projectId);
             List<int> groupids = new List<int>();
-            foreach (var group in groups) {
+            foreach (var group in groups)
+            {
                 groupids.Add(group.Id);
             }
             return groupids;

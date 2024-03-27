@@ -491,14 +491,11 @@ namespace backAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
                     TypeId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     PriorityId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: true),
-                    Estimate = table.Column<int>(type: "int", nullable: false),
-                    TimeSpent = table.Column<int>(type: "int", nullable: false),
-                    TimeRemaining = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -520,7 +517,7 @@ namespace backAPI.Migrations
                         column: x => x.GroupId,
                         principalTable: "TaskGroups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tasks_TaskPriorities_PriorityId",
                         column: x => x.PriorityId,
@@ -532,7 +529,7 @@ namespace backAPI.Migrations
                         column: x => x.StatusId,
                         principalTable: "TaskStatuses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tasks_TaskTypes_TypeId",
                         column: x => x.TypeId,

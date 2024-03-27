@@ -1,9 +1,11 @@
-﻿using backAPI.DTO;
+﻿using backAPI.DTO.Tasks;
 using backAPI.Entities.Domain;
-using backAPI.Repositories.Interface;
+using backAPI.Repositories.Interface.Projects;
+using backAPI.Repositories.Interface.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backAPI.Controllers {
+namespace backAPI.Controllers
+{
     public class TaskGroupController : BaseApiController {
     
         private readonly ITaskGroupRepository _taskGroupRepository;
@@ -18,17 +20,17 @@ namespace backAPI.Controllers {
          * Get all groups on a project
          * ****************************************************************************** */
         [HttpGet("projectName")]
-        public async Task<ActionResult<IEnumerable<TaskGroupCreateDto>>> GetGroupsForProject(string projectName) {
+        public async Task<ActionResult<IEnumerable<TGroupResponse>>> GetGroupsForProject(string projectName) {
             var project = _projectsRepository.GetProjectByName(projectName).Result;
             if(project  == null) {
                 return BadRequest("No project with the given name");
             }
             var groups = await _taskGroupRepository.GetGroupsAsync(project.Id);
 
-            List<TaskGroupCreateDto> result = new List<TaskGroupCreateDto>();
+            List<TGroupResponse> result = new List<TGroupResponse>();
 
             foreach (var group in groups) {
-                result.Add(new TaskGroupCreateDto {
+                result.Add(new TGroupResponse {
                     Id = group.Id,
                     Name = group.Name
                 });
@@ -40,14 +42,14 @@ namespace backAPI.Controllers {
          * Create new group on a project
          * ****************************************************************************** */
         [HttpPost]
-        public async Task<ActionResult> CreateGroupOnProject(string projectName, TaskGroupCreateDto group) {
+        public async Task<ActionResult> CreateGroupOnProject(string projectName, TGroupCreate group) {
 
             var project = _projectsRepository.GetProjectByName(projectName).Result;
             if(project == null) {
                 return BadRequest("No project with the given name");
             }
 
-            var nameExists = _taskGroupRepository.GroupNameExistsWithinTheSameProject(project.Id, group.Name);
+            var nameExists = await _taskGroupRepository.GroupNameExistsWithinTheSameProject(project.Id, group.Name);
             if(nameExists == true) {
                 return BadRequest("There is already a group with the same name in this project");
             }

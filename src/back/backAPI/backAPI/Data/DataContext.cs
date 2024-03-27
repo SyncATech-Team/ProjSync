@@ -81,7 +81,7 @@ namespace backAPI.Data
                 .HasOne(t => t.TaskGroup)
                 .WithMany()
                 .HasForeignKey(t => t.GroupId)
-                .OnDelete(DeleteBehavior.Restrict); // FK group
+                .OnDelete(DeleteBehavior.Cascade); // FK group -> ukoliko brisemo grupu brisemo i sve taskove iz te grupe
             
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.TaskPriority)
@@ -100,6 +100,12 @@ namespace backAPI.Data
                 .WithMany()
                 .HasForeignKey(t => t.DependentOn)
                 .OnDelete(DeleteBehavior.Restrict); // FK parent task
+
+            modelBuilder.Entity<Task>()
+                .HasOne(t => t.TaskStatus)
+                .WithMany()
+                .HasForeignKey(t => t.StatusId)
+                .OnDelete(DeleteBehavior.Restrict); // FK status
 
             /* **************************************************************************
              * Strani kljucevi u tabeli >> ProjectDocumentation <<

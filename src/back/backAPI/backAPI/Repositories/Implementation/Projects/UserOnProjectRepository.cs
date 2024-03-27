@@ -2,9 +2,10 @@
 using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
+using backAPI.Repositories.Interface.Projects;
 using Microsoft.EntityFrameworkCore;
 
-namespace backAPI.Repositories.Implementation
+namespace backAPI.Repositories.Implementation.Projects
 {
     public class UserOnProjectRepository : IUserOnProjectRepository
     {
@@ -30,8 +31,9 @@ namespace backAPI.Repositories.Implementation
 
             //Provera da li korisnik vec postoji na projektu
             var existingEntry = await dataContext.UsersOnProjects
-                .FirstOrDefaultAsync(up => up.UserId == idUser.Id &&  up.ProjectId == idProject.Id);
-            if (existingEntry != null) {
+                .FirstOrDefaultAsync(up => up.UserId == idUser.Id && up.ProjectId == idProject.Id);
+            if (existingEntry != null)
+            {
                 return false;
             }
 
@@ -57,7 +59,7 @@ namespace backAPI.Repositories.Implementation
                 .Join(dataContext.Projects,
                     up => up.UserProject.ProjectId,
                     p => p.Id,
-                    (up, p) => new { User = up.User, Project = p })
+                    (up, p) => new { up.User, Project = p })
                 .Where(x => x.Project.Name == projectName)
                 .Select(x => x.User)
                 .ToListAsync();
@@ -68,12 +70,13 @@ namespace backAPI.Repositories.Implementation
             var project = await projectsRepository.GetProjectByName(projectName);
             var user = await usersRepository.GetUserByUsername(userDto.Username);
 
-            if(user == null || project == null) {
+            if (user == null || project == null)
+            {
                 return false;
             }
 
             var userOnProject = await dataContext.UsersOnProjects.FirstOrDefaultAsync(up => up.UserId == user.Id && up.ProjectId == project.Id);
-            if(userOnProject == null)
+            if (userOnProject == null)
             {
                 return false;
             }

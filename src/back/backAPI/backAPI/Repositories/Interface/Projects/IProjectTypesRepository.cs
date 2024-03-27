@@ -1,6 +1,6 @@
 ﻿using backAPI.Entities.Domain;
 
-namespace backAPI.Repositories.Interface
+namespace backAPI.Repositories.Interface.Projects
 {
     public interface IProjectTypesRepository
     {

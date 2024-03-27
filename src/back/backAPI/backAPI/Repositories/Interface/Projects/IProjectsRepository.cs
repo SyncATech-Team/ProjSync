@@ -1,7 +1,7 @@
-﻿using backAPI.DTO;
+﻿using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
 
-namespace backAPI.Repositories.Interface
+namespace backAPI.Repositories.Interface.Projects
 {
     public interface IProjectsRepository
     {
@@ -17,8 +17,8 @@ namespace backAPI.Repositories.Interface
 
         Task<Project> GetProjectByName(string name);
 
-        Task<bool> UpdateProject(string name,ProjectDto request);
-        
+        Task<bool> UpdateProject(string name, ProjectDto request);
+
         Task<Project> GetProjectById(int id);
 
         Task<IEnumerable<int>> GetTaskGroupIds(int projectId);

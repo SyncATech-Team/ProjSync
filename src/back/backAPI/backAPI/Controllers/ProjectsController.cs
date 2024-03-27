@@ -1,8 +1,7 @@
-﻿
-
-using backAPI.DTO;
+﻿using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
+using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers

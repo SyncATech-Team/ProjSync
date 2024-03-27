@@ -1,8 +1,10 @@
 ﻿using backAPI.Entities.Domain;
 using Task = backAPI.Entities.Domain.Task;
 
-namespace backAPI.Repositories.Interface {
-    public interface ITasksRepository {
+namespace backAPI.Repositories.Interface.Tasks
+{
+    public interface ITasksRepository
+    {
 
         /// <summary>
         /// Funkcija koja dohvata sve zadatke u odredjenoj grupi

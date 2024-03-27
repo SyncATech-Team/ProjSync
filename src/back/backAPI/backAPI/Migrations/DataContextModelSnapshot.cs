@@ -380,13 +380,11 @@ namespace backAPI.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Estimate")
-                        .HasColumnType("int");
-
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("PriorityId")
@@ -396,12 +394,6 @@ namespace backAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimeRemaining")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimeSpent")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeId")
@@ -837,7 +829,7 @@ namespace backAPI.Migrations
                     b.HasOne("backAPI.Entities.Domain.TaskGroup", "TaskGroup")
                         .WithMany()
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backAPI.Entities.Domain.TaskPriority", "TaskPriority")
@@ -855,7 +847,7 @@ namespace backAPI.Migrations
                     b.HasOne("backAPI.Entities.Domain.TaskStatus", "TaskStatus")
                         .WithMany()
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("backAPI.Entities.Domain.TaskType", "TaskType")
