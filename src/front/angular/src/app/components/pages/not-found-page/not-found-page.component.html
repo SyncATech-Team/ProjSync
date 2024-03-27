@@ -1,0 +1,4 @@
+<h1>Page not found!</h1>
+<a *ngIf="logged && !isAdmin" routerLink="/home">home page</a>
+<a *ngIf="!logged" routerLink="/login">login page</a>
+<a *ngIf="isAdmin" routerLink="/admin">admin page</a>
