@@ -24,4 +24,7 @@ export class UserService {
     return this.http.put<void>(`${this.baseUrl}users/${username}`, model);
   }
 
+  getUser(username: string) {
+    return this.http.get<UserGetter>(this.baseUrl + "Users/"+username);
+  }
 }

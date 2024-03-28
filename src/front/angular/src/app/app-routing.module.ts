@@ -13,6 +13,7 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
+import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
@@ -25,6 +26,7 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'home', component: HomePageComponent },
+      { path: 'home/edit-profile', component: EditProfilePageComponent },
       { path: 'home/projects', component: ProjectPageComponent },
       { path: 'home/projects/:projectName', component: ProjectPageComponent },
       { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent},
