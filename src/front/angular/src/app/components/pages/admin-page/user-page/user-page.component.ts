@@ -399,6 +399,7 @@ export class UserPageComponent implements OnInit {
    */
   applyEditChanges() {
     this.editUser.isActive = this.users.filter(user => user.username == this.initialUsername).at(0)?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
+    this.editUser.profilePhoto = this.users.filter(user => user.username == this.initialUsername).at(0)?.profilePhoto;
     this.userService.updateUserInfo(this.initialUsername, this.editUser).subscribe({
       next: response => {
         this.msgPopupService.showSuccess("Successfully edited user info");

@@ -4,7 +4,7 @@ export interface UserGetter {
     firstName: string;
     lastName: string;
     companyRoleName: string;
-    profilePhoto: string;
+    profilePhoto?: string;
     address: string;
     contactPhone: string;
     status: string;
