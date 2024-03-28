@@ -1,6 +1,5 @@
 ﻿using backAPI.DTO;
-using backAPI.Entities.Domain;
-using backAPI.Repositories.Implementation;
+using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
 
