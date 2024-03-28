@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class TasksController : BaseApiController {
 
         private readonly ITasksRepository _tasksRepository;

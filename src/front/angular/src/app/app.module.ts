@@ -41,6 +41,7 @@ import { NzSpinModule } from "ng-zorro-antd/spin";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
+import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     ProjectSummaryPageComponent,
     NotFoundPageComponent,
     ProjectSettingsPageComponent,
-    EditProfilePageComponent
+    EditProfilePageComponent,
+    ProjectTasksPageComponent
   ],
   imports: [
     BrowserModule,
