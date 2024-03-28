@@ -18,6 +18,7 @@
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [filterDelay]="0"
             [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+            responsiveLayout="stack" [breakpoint]="'960px'"
         >
             <!-- Pretraga korisnika -->
             <ng-template pTemplate="caption">
