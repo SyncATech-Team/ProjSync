@@ -21,8 +21,7 @@ export class ProjectSettingsPageComponent implements OnInit {
     creationDate: new Date(), 
     dueDate: new Date(),
     budget: 0,
-    visibilityName: "",
-    parentProjectName: null
+    visibilityName: ""
   }
 
   constructor (private route: ActivatedRoute,private projectService: ProjectService,private router:Router,private msgPopupService: MessagePopupService){
