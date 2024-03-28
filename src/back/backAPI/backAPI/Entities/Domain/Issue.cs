@@ -20,7 +20,6 @@ namespace backAPI.Entities.Domain
         public int GroupId { get; set; }
         public int? DependentOn { get; set; }
         
-
         [ForeignKey("StatusId")] public TaskStatus TaskStatus { get; set; }
 
         [ForeignKey("ReporterId")] public User User { get; set; }

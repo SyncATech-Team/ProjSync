@@ -3,6 +3,8 @@ using backAPI.DTO.Tasks;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Mysqlx.Crud;
+using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation.Tasks
 {
@@ -72,6 +74,16 @@ namespace backAPI.Repositories.Implementation.Tasks
             if (x == null) { return false; }
 
             return true;
+        }
+
+        public async Task<TaskGroup> GetGroupByNameAsync(int projectId, string name)
+        {
+            return await dataContext.TaskGroups.Where(group => group.ProjectId == projectId && group.Name == name).FirstOrDefaultAsync();
+        }
+
+        public async Task<TaskGroup> GetGroupAsync(int id)
+        {
+            return await dataContext.TaskGroups.Where(group => group.Id == id).FirstOrDefaultAsync();
         }
     }
 }

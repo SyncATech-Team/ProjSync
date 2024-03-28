@@ -14,6 +14,21 @@ namespace backAPI.Repositories.Interface.Tasks
         Task<IEnumerable<TaskGroup>> GetGroupsAsync(int projectId);
 
         /// <summary>
+        /// Funkcija koja za prosledjeni id dohvati TaskGroup
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        Task<TaskGroup> GetGroupAsync(int id);
+
+        /// <summary>
+        /// Funkcija koja vraca TaskGroup po imenu koji se nalazi u nekom projektu
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<TaskGroup> GetGroupByNameAsync(int projectId, string name);
+
+        /// <summary>
         /// Funkcija koja kreira grupu na odredjenom projektu
         /// </summary>
         /// <param name="projectId"></param>

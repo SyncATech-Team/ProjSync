@@ -1,9 +1,9 @@
 ﻿using backAPI.DTO.Tasks;
+using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using backAPI.Repositories.Interface.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Task = backAPI.Entities.Domain.Issue;
 
 namespace backAPI.Controllers
 {
@@ -41,21 +41,33 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("groupId")]
-        public async Task<IEnumerable<ActionResult<TaskDto>>> GetTasksFromGroupAsync(int groupId) {
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksFromGroupAsync(int groupId) {
             var tasks = await _tasksRepository.GetAllTasksForGivenGroup( groupId );
             List<TaskDto> result = new List<TaskDto>();
 
-            foreach( var task in tasks ) {
-                result.Add(
-                    new TaskDto {
-                        Id = task.Id,
-                        Name = task.Name,
-                        //TypeName = task.TypeId,
-                    }
-                );
+            foreach( var task in tasks )
+            {
+                var ttype = await _taskTypeRepository.GetTaskTypeById(task.TypeId);
+                var tpriority = await _taskPriorityRepository.GetTaskPriorityById(task.StatusId);
+                var tstatus = await _taskStatusRepository.GetTaskTypeById(task.StatusId);
+                var taskGroup = await _taskGroupRepository.GetGroupAsync(task.Id);
+                TaskDto taskDto = new()
+                {
+                    Name = task.Name,
+                    TypeName = ttype.Name,
+                    StatusName = tstatus.Name,
+                    PriorityName = tpriority.Name,
+                    Description = task.Description,
+                    CreatedDate = task.CreatedDate,
+                    UpdatedDate = task.UpdatedDate,
+                    DueDate = task.DueDate,
+                    GroupName = taskGroup.Name,
+                    DependentOn = task.DependentOn
+                };
+                result.Add(taskDto);
             }
 
-            return null;
+            return Ok(result);
         }
 
         [HttpPost]
@@ -66,9 +78,9 @@ namespace backAPI.Controllers
             var treporter = await _usersRepository.UsernameToId(task.ReporterUsername);
             var tpriority = await _taskPriorityRepository.GetTaskPriorityByName(task.PriorityName);
             var project = await _projectsRepository.GetProjectByName(task.ProjectName);
+            var taskGroup = await _taskGroupRepository.GetGroupByNameAsync(project.Id, task.GroupName);
 
-            var created = await _tasksRepository.CreateTaskAsync(new Task {
-                Id = task.Id,
+        var created = await _tasksRepository.CreateTaskAsync(new Issue {
                 Name = task.Name,
                 TypeId = ttype.Id,
                 StatusId = tstatus.Id,
@@ -78,7 +90,8 @@ namespace backAPI.Controllers
                 UpdatedDate = task.UpdatedDate,
                 DueDate = task.DueDate,
                 ReporterId = treporter,
-                DependentOn = task.DependentOn
+                DependentOn = task.DependentOn == -1 ? null : task.DependentOn,
+                GroupId = taskGroup.Id
             });
 
             if (created == null) {
