@@ -35,6 +35,7 @@ import { ProjectSidebarComponent } from './components/elements/project-sidebar/p
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
+import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
     ProjectSidebarComponent,
     ProjectPageComponent,
     ProjectSummaryPageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    ProjectSettingsPageComponent
   ],
   imports: [
     BrowserModule,

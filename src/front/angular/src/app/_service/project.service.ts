@@ -22,4 +22,8 @@ export class ProjectService {
   createProject(model: Project){
     return this.http.post<Project>(this.baseUrl + "Projects", model);
   }
+
+  updateProject(projectName: string,model: Project){
+    return this.http.put<Project>(this.baseUrl + `Projects/${projectName}`,model);
+  }
 }
