@@ -30,7 +30,7 @@ export const navbarData = [
         label: 'Reports'
     },
     {
-        routeLink : '',
+        routeLink : '/home/projects/settings/',
         icon: 'fa-solid fa-wrench',
         label: 'Project settings'
     }

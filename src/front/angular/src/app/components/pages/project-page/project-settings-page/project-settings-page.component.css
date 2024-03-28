@@ -1,0 +1,23 @@
+#contentPages {
+    display: flex;
+}
+
+#content {
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+}
+
+#projectIconUpdate{
+    display: flex;
+    align-items: center;
+}
+
+#projectIconUpdate img {
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+}

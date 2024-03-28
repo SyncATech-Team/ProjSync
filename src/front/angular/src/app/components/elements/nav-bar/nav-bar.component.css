@@ -40,6 +40,8 @@
 
 .right--side{
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .right--side button{
@@ -57,4 +59,41 @@
 
 .notification-wrap {
     position: relative;
+}
+
+#profile-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.underline:hover {
+    text-decoration: 2px underline;
+    cursor: pointer;
+}
+
+.biggerImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+#dropdown-user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.clickable {
+    font-size: 14px;
+}
+
+.clickable:hover {
+    text-decoration: 2pt underline;
+    cursor: pointer;
+}
+
+.email {
+    font-size: 12px;
 }

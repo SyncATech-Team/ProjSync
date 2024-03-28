@@ -139,6 +139,7 @@ export class UserPageComponent implements OnInit {
     this.users = this.users_backup;
     this.searchTerm='';
     this.table.reset();
+    this.ngOnInit();  // proveriti da li moze bolje - ovako je radjeno da bi se prikazivala slika korisnika
   }
   /**
    * Funkcija koja vraca random generisani broj u opsegu min-max
@@ -156,15 +157,25 @@ export class UserPageComponent implements OnInit {
    * @param username 
    * @returns 
    */
-  getUserImagePath(username: string): string {
-    let usernameSumOfCharacters: number = 0;
-    for (let index = 0; index < username.length; index++) {
-      usernameSumOfCharacters += username.charCodeAt(index);
+  getUserImagePath(username: string) {
+    var index = this.users.findIndex(user => user.username === username);
+    if(index == -1) return "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
+    var user = this.users[index];
+    let path = "";
+
+    if(user.profilePhoto == null) {
+      let usernameSumOfCharacters: number = 0;
+      for (let index = 0; index < username.length; index++) {
+        usernameSumOfCharacters += username.charCodeAt(index);
+      }
+
+      let defaultImageNumber = usernameSumOfCharacters % this.MAX_NUMBER_OF_DEFAULT_IMAGES + 1;
+      path = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" 
+          + defaultImageNumber + ".png";
     }
-
-    let defaultImageNumber = usernameSumOfCharacters % this.MAX_NUMBER_OF_DEFAULT_IMAGES + 1;
-    let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + defaultImageNumber + ".png";
-
+    else {
+      path = "../../../../../assets/images/UserProfileImages/" + user.profilePhoto;
+    }
     return path;
   }
   /**

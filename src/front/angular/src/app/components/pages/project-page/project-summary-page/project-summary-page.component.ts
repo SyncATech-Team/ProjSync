@@ -34,7 +34,7 @@ export class ProjectSummaryPageComponent implements OnInit{
         this.isLoading = false; 
       },
       error: (error)=>{
-        console.log();
+        console.log(error);
       }
     });
 
