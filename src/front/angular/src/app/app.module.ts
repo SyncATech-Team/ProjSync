@@ -35,6 +35,7 @@ import { ProjectSidebarComponent } from './components/elements/project-sidebar/p
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
+import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzSpinModule } from "ng-zorro-antd/spin";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -64,6 +65,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     ProjectPageComponent,
     ProjectSummaryPageComponent,
     NotFoundPageComponent,
+    ProjectSettingsPageComponent,
     EditProfilePageComponent
   ],
   imports: [

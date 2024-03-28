@@ -30,7 +30,8 @@ export class EditProfilePageComponent implements OnInit {
     address: '',
     status: '',
     isVerified: false,
-    preferedLanguage: ''
+    preferedLanguage: '',
+    isActive: false
   };
 
   constructor(private userService: UserService, private messageService: MessageService,

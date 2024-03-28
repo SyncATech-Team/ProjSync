@@ -111,6 +111,11 @@ namespace backAPI.Controllers
         [HttpPut("{name}")]
         public async Task<ActionResult<string>> UpdateProject(string name,ProjectDto request)
         {
+            if (await _projectsRepository.ProjectExistsByName(request.Name))
+            {
+                return BadRequest("Project name is taken");
+            }
+
             var updated = await _projectsRepository.UpdateProject(name, request);
 
             if(updated == false)

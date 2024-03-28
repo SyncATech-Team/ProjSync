@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener, Input } from '@angular/core';
 import { navbarData } from './nav-data';
 import { AccountService } from '../../../_service/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,7 @@ export class ProjectSidebarComponent {
   collapsed : boolean = false;
   screenWidth = 0;
   navData = navbarData;
-  projectName: string | null = '';
+  @Input() projectName: string | null = '';
 
   constructor(public accoutService: AccountService, private router: Router,private route: ActivatedRoute) { 
     this.screenWidth = window.innerWidth;
