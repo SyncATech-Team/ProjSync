@@ -15,7 +15,7 @@ export const navbarData = [
         label: 'Documents'
     },
     {
-        routeLink : '',
+        routeLink : '/home/projects/tasks/',
         icon: 'fa-solid fa-list-check',
         label: 'Tasks'
     },

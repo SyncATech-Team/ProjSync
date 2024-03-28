@@ -13,6 +13,6 @@ namespace backAPI.Entities.Domain
         public double CompletionLevel { get; set; } = 0.0;
 
         [ForeignKey("UserId")] public User User { get; set; }
-        [ForeignKey("TaskId")] public Task Task { get; set; }
+        [ForeignKey("TaskId")] public Issue Task { get; set; }
     }
 }

@@ -1,0 +1,19 @@
+<div id="pageWraper">
+    <app-nav-bar></app-nav-bar>
+    <div id="contentPages">
+        <app-project-sidebar></app-project-sidebar>
+        <div id="content">
+            <h2>Tasks</h2>
+            <ul *ngIf="tasksInGroup">
+                <li *ngFor="let task of tasksInGroup">
+                    <ul>
+                        <ol>{{task.name}}</ol>
+                        <ol>{{task.dueDate}}</ol>
+                        <ol>{{task.statusName}}</ol>
+                        <ol>{{task.priorityName}}</ol>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

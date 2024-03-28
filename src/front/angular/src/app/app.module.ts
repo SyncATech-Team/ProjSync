@@ -36,9 +36,12 @@ import { ProjectPageComponent } from './components/pages/project-page/project-pa
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
+import { NzIconModule } from "ng-zorro-antd/icon";
+import { NzSpinModule } from "ng-zorro-antd/spin";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
+import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     ProjectSummaryPageComponent,
     NotFoundPageComponent,
     ProjectSettingsPageComponent,
-    EditProfilePageComponent
+    EditProfilePageComponent,
+    ProjectTasksPageComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +83,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     ToastModule,
     ModalModule.forRoot(),
     ConfirmDialogModule,
+    NzSpinModule,
+    NzIconModule.forRoot([]),
     OverlayPanelModule,
     FileUploadModule
   ],
