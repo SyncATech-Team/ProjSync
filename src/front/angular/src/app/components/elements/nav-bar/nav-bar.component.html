@@ -60,7 +60,37 @@
           <app-notification [notify_collapsed]="notify_collapsed"></app-notification>
         <!-- </div> -->
         <i class="fa-solid fa-gear px-3"></i>
-        <i class="fa-solid fa-user px-3"></i>
+        
+        <!-- POPOVER -->
+        <div>
+          <p-overlayPanel #op>
+              <ng-template pTemplate="content">
+                <div class="dropdown-div" id="dropdown-user-info">
+                  
+                  <div class="image">
+                    <img class="biggerImage" src="{{getProfilePhoto()}}" alt="user-image" draggable="false">
+                  </div>
+                  <div class="info">
+                    <div class="fullname"> {{getFullName()}} </div>
+                    <div class="email"> {{getEmail()}} </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="dropdown-div">
+                  <div style="font-weight: bold;">Settings</div>
+                  <div>
+                    <span class="clickable" routerLink="/home/edit-profile">Edit My Profile</span>
+                  </div>
+                  <div>
+                    <span class="clickable" (click)="logout()">Logout</span>
+                  </div>
+                </div>
+                
+              </ng-template>
+          </p-overlayPanel>
+          <img id="profile-image" src="{{getProfilePhoto()}}" alt="user-image" draggable="false" (click)="op.toggle($event)">
+        </div>
+
       </div>
     </div>
   </div>

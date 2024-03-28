@@ -36,6 +36,9 @@ import { ProjectPageComponent } from './components/pages/project-page/project-pa
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @NgModule({
   declarations: [
@@ -60,7 +63,8 @@ import { ProjectSettingsPageComponent } from './components/pages/project-page/pr
     ProjectPageComponent,
     ProjectSummaryPageComponent,
     NotFoundPageComponent,
-    ProjectSettingsPageComponent
+    ProjectSettingsPageComponent,
+    EditProfilePageComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +78,9 @@ import { ProjectSettingsPageComponent } from './components/pages/project-page/pr
     ButtonModule,
     ToastModule,
     ModalModule.forRoot(),
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    OverlayPanelModule,
+    FileUploadModule
   ],
   providers: [
     provideClientHydration(),
