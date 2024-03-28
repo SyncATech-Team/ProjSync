@@ -22,13 +22,9 @@ import { NgForm } from '@angular/forms';
 })
 export class FilterProjectComponent implements OnInit{
 
-  @ViewChild('createProjectForm') formRecipe?: NgForm; 
-  
-  currentDate = new Date();
-  currentUser = '';
-  users: UserGetter []= [];
+  @ViewChild('filterProjectForm') formRecipe?: NgForm; 
+
   projectTypes: ProjectType []=[];
-  projectVisibilities: ProjectVisibility[]=[];
 
   creationModel: Project = {
     name: "",
@@ -50,31 +46,9 @@ export class FilterProjectComponent implements OnInit{
 
   ngOnInit(): void {
 
-    // Pronalazenje trenutnog usera
-    var user = this.accountServis.getCurrentUser();
-    this.currentUser = user?.username!;
-
-    this.userService.getAllUsers().subscribe({
-      next: (response)=>{
-        this.users=response;
-      },
-      error: (error)=>{
-        console.log(error);
-      }
-    });
-
     this.projectTypeService.getAllProjectTypes().subscribe({
       next: (response)=>{
         this.projectTypes = response;
-      },
-      error: (error)=>{
-        console.log(error);
-      }
-    });
-
-    this.projectVisibilityService.getAllProjectVisibilities().subscribe({
-      next: (response)=>{
-        this.projectVisibilities = response;
       },
       error: (error)=>{
         console.log(error);
@@ -84,54 +58,17 @@ export class FilterProjectComponent implements OnInit{
 
   initializeFilters():void {
     this.projects=this.homePage.projects;
+    console.log(this.projects);
   }
 
   onSuccessfulCreation(){
     this.formRecipe?.reset();
     this.changeDetectorRef.detectChanges();
-   }
-
-  create():void{
-    var DueDateFormated = new Date(this.creationModel.dueDate);
-    this.creationModel.ownerUsername = this.currentUser;
-    
-    if(this.creationModel.dueDate < this.creationModel.creationDate){
-      this.msgPopUpService.showError("Unable to create project, due date is before creation date");
-    }
-    else if(DueDateFormated < this.currentDate){
-      this.msgPopUpService.showError("Unable to create project, due date is before current date");
-    }
-    else if(this.currentUser == ''){
-      this.msgPopUpService.showError("Unable to create project, user not found");
-    }
-    else{
-      this.projectService.createProject(this.creationModel).subscribe({
-        next: (response)=>{
-          this.homePage.initializeProjects();
-          this.msgPopUpService.showSuccess("Project successfully created");
-          this.onSuccessfulCreation();
-          // this.formCreateProject.reset();
-        },
-        error: (error)=>{
-          this.msgPopUpService.showError("Unable to create project");
-        }
-      });
-    }
   }
 
-  /* TODO 
-     
-    -Errors
-    -provera due date < current date
-    -reset poja unutar forme nakon uspesnog pravljenja zadatka
-    -key (back?)
+  applyFilters(){
     
-    - your -> private || YOUR
-    - stared -> favorite
-    - expend -> complition bar & time icon
-    - odma videti sve MOJE projekte/taskove
+  }
 
-  
-  */
 
 }
