@@ -1,0 +1,189 @@
+<p-toast></p-toast>
+
+<div id="page-wrapper">
+
+    <app-nav-bar></app-nav-bar>
+
+    <div id="content">
+
+        <div id="inputs">
+            <form #formEditUser="ngForm" (submit)="applyEditChanges()" id="formEditUser" class="row" autocomplete="off">
+                <div class="sectionEdit">
+                    <h3>My Profile</h3>
+    
+                    <div id="nameAndEmail">
+                        <span style="display: block;">Personal Info</span>
+                        
+                        <div class="col-md-6"> <!-- field za ime-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    id="firstName"
+                                    name="firstName"
+                                    class="form-control required-field"
+                                    required
+                                    [(ngModel)]="editUser.firstName"
+                                    value="{{getFirstName()}}"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="firstName" class="form-label">First Name</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- field za prezime-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    class="form-control required-field"
+                                    required
+                                    [(ngModel)]="editUser.lastName"
+                                    value="{{getLastName()}}"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="lastName" class="form-label">Last Name</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- field za address-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    id="address"
+                                    name="address"
+                                    class="form-control required-field"
+                                    required
+                                    [(ngModel)]="editUser.address"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="address" class="form-label">Address</label>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-6"> <!-- field za contact phone-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    class="form-control required-field"
+                                    required
+                                    [(ngModel)]="editUser.contactPhone"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="phone" class="form-label">Phone</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="sectionEdit">
+                    <div id="status">
+                        <span style="display: block;">Status</span>
+        
+                        <div class="col-md-6"> <!-- field za status-->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    id="statusId"
+                                    name="statusName"
+                                    class="form-control required-field"
+                                    required
+                                    [(ngModel)]="editUser.status"
+                                    value="{{getStatus()}}"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="statusId" class="form-label">Status</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="sectionEdit">
+                    <div id="changePassword">
+                        <span style="display: block;">Change Password</span>
+                        
+                        <div class="col-md-6"> <!-- field za current password-->
+                            <div class="form-floating mb-3">
+                                <input disabled 
+                                    type="password"
+                                    id="currentpswd"
+                                    name="currentpswd"
+                                    class="form-control required-field"
+                                    required
+                                    placeholder="Enter Current Password"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="currentpswd" class="form-label">Current</label>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-6"> <!-- field za new password-->
+                            <div class="form-floating mb-3">
+                                <input disabled
+                                    type="password"
+                                    id="newpswd"
+                                    name="newpswdName"
+                                    class="form-control required-field"
+                                    required
+                                    placeholder="Enter New Password"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="newpswd" class="form-label">New</label>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-6"> <!-- field za new password again -->
+                            <div class="form-floating mb-3">
+                                <input disabled
+                                    type="password"
+                                    id="newpswdverify"
+                                    name="newpswdverify"
+                                    class="form-control required-field"
+                                    required
+                                    placeholder="Verify New Password"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                >
+                                <label for="newpswdverify" class="form-label">Verify new</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="saveChanges">
+                    <button type="submit" form="formEditUser" class="btn btn-primary">Save changes</button>
+                </div>
+
+            </form>
+            
+        </div>
+
+        <div id="imageUpload">
+            <div>
+                <img src="{{getProfilePhoto()}}" alt="user photo">
+            </div>
+            <div>
+                Upload - TO DO
+                <!-- <p-fileUpload 
+                    mode="basic"
+                    name="demo[]"
+                    url="https://www.primefaces.org/cdn/api/upload.php" 
+                    accept="image/*"
+                    (onUpload)="onBasicUploadAuto($event)"
+                    [auto]="true"
+                    chooseLabel="Upload photo">
+                </p-fileUpload> -->
+            </div>
+        </div>
+    </div>
+
+</div>
