@@ -31,8 +31,7 @@ export class HomePageComponent implements OnInit {
     this.projectService.getAllProjects().subscribe({
       next: (response) => {
         this.projects = response;
-        this.projects.forEach((project)=>{
-          project.subProjects = this.projects.filter((subproject)=>  subproject.parentProjectName == project.name );
+        this.projects.forEach((project)=>{ 
           project.isExtanded = false;
           project.isFavorite = false;
           this.filterProjects(this.visibilityFilter);
@@ -70,13 +69,14 @@ export class HomePageComponent implements OnInit {
     }
 
     this.projectsShow = this.projects.filter(project =>
-        project.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        project.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.key.toLowerCase().includes(this.searchTerm.toLowerCase())
+        || project.ownerUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) 
     );
   }
   getDefaultImagePath(): string {
     // let x: number = this.getRandomInteger(1, 10);
     let x: number = 1;
-    let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
+    let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
     
     // console.log(path);
 
@@ -86,6 +86,12 @@ export class HomePageComponent implements OnInit {
   pageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
-}
+  }
+
+  /* Returns string from of the Date*/
+  dateFormat(date : Date){
+
+    return date.toString().split('T')[0];
+  }
   
 }

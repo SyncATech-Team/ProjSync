@@ -33,6 +33,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
+import { FilterProjectComponent } from './components/elements/filter-project/filter-project.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { ProjectPeoplePageComponent } from './components/pages/project-page/project-people-page/project-people-page.component';
 import { DropdownModule } from 'primeng/dropdown';
@@ -66,6 +67,7 @@ import { ProjectTasksPageComponent } from './components/pages/project-page/proje
     ConfirmEmailComponent,
     ProjectSidebarComponent,
     ProjectPageComponent,
+    FilterProjectComponent,
     ProjectSummaryPageComponent,
     ProjectPeoplePageComponent,
     NotFoundPageComponent,

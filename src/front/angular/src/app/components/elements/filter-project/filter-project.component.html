@@ -1,0 +1,147 @@
+<button type="button" class="btn btn-primary" (click)="initializeFilters()" data-bs-toggle="modal" data-bs-target="#filterProjectModal">
+    Filter
+</button>
+
+<div class="modal fade" id="filterProjectModal" tabindex="-1" aria-labelledby="filterProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="filterProjectModalLabel">Filters</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form  #filterProjectForm="ngForm" (ngSubmit)="applyFilters()" id="formFilterProject" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
+
+                   
+                    <div class="col-12"> 
+                        <div class="form-floating mb-3">
+                            <select id="type" class="form-select" aria-label="type" [(ngModel)]="creationModel.typeName" name="type">
+                                <option *ngFor="let type of projectTypes" value="{{type.name}}">{{type.name}}</option>
+                            </select>
+                            <label for="type" class="form-label">Type</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="date"
+                            id="startDate"
+                            name="startDate"
+                            class="form-control"
+                            [(ngModel)]="creationModel.creationDate"
+                            required
+                            >
+                            <label for="startDate" class="form-label">Starts before</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="date"
+                            id="dueDate"
+                            name="dueDate"
+                            class="form-control"
+                            [(ngModel)]="creationModel.dueDate"
+                            required
+                            >
+                            <label for="dueDate" class="form-label">Starts after</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                        <input 
+                            type="date"
+                            id="dueDate"
+                            name="dueDate"
+                            class="form-control"
+                            [(ngModel)]="creationModel.dueDate"
+                            required
+                            >
+                            <label for="dueDate" class="form-label">Ends before</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <input 
+                            type="date"
+                            id="dueDate"
+                            name="dueDate"
+                            class="form-control"
+                            [(ngModel)]="creationModel.dueDate"
+                            required
+                            >
+                            <label for="dueDate" class="form-label">Ends after</label>
+                        </div>
+                    </div>
+                    <p style="margin: 0; padding-left: 2%;">Starts inbetween</p>
+                    <div style="display: flex;">
+                        <div class="col-md-6" style="padding-right: 2%;">
+                            <div class="form-floating mb-3">
+                                <input 
+                                type="date"
+                                id="dueDate"
+                                name="dueDate"
+                                class="form-control"
+                                [(ngModel)]="creationModel.dueDate"
+                                required
+                                >
+                                <label for="dueDate" class="form-label">From</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-left: 2%;">
+                            <div class="form-floating mb-3">
+                            <input 
+                                type="date"
+                                id="dueDate"
+                                name="dueDate"
+                                class="form-control"
+                                [(ngModel)]="creationModel.dueDate"
+                                required
+                                >
+                                <label for="dueDate" class="form-label">To</label>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin: 0; padding-left: 2%;">Ends inbetween</p>
+                    <div style="display: flex;">
+                        <div class="col-md-6" style="padding-right: 2%;">
+                            <div class="form-floating mb-3">
+                            <input 
+                                type="date"
+                                id="dueDate"
+                                name="dueDate"
+                                class="form-control"
+                                [(ngModel)]="creationModel.dueDate"
+                                required
+                                >
+                                <label for="dueDate" class="form-label">From</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-left: 2%;">
+                            <div class="form-floating mb-3">
+                            <input 
+                                type="date"
+                                id="dueDate"
+                                name="dueDate"
+                                class="form-control"
+                                [(ngModel)]="creationModel.dueDate"
+                                required
+                                >
+                                <label for="dueDate" class="form-label">To</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Clear</button>
+                <button type="submit"  class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

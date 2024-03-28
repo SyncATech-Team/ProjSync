@@ -5,7 +5,6 @@ export interface Project{
     description: string,
     ownerUsername: string,
     icon?: string,
-    parentProjectName?: string|null,
     creationDate: Date,
     dueDate: Date,
     budget: number,
