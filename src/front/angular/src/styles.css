@@ -5,3 +5,7 @@ html, body {
     margin: 0;         /* Remove default browser margins */
     overflow: hidden;
 }
+
+ul{
+    padding: 0; 
+}
