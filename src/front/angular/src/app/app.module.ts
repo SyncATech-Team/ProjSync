@@ -34,6 +34,8 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
+import { ProjectPeoplePageComponent } from './components/pages/project-page/project-people-page/project-people-page.component';
+import { DropdownModule } from 'primeng/dropdown';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
 import { NzIconModule } from "ng-zorro-antd/icon";
@@ -65,6 +67,7 @@ import { ProjectTasksPageComponent } from './components/pages/project-page/proje
     ProjectSidebarComponent,
     ProjectPageComponent,
     ProjectSummaryPageComponent,
+    ProjectPeoplePageComponent,
     NotFoundPageComponent,
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
@@ -83,6 +86,7 @@ import { ProjectTasksPageComponent } from './components/pages/project-page/proje
     ToastModule,
     ModalModule.forRoot(),
     ConfirmDialogModule,
+    DropdownModule,
     NzSpinModule,
     NzIconModule.forRoot([]),
     OverlayPanelModule,

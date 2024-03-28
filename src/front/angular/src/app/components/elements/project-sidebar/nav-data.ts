@@ -5,7 +5,7 @@ export const navbarData = [
         label: 'Summary'
     },
     {
-        routeLink : '',
+        routeLink : '/home/projects/people/',
         icon: 'fa-solid fa-people-group',
         label: 'People'
     },

@@ -19,10 +19,10 @@ namespace backAPI.Repositories.Implementation.Projects
             this.usersRepository = usersRepository;
             this.projectsRepository = projectsRepository;
         }
-        public async Task<bool> AddUserToProjectAsync(string projectName, UserOnProjectDto userDto)
+        public async Task<bool> AddUserToProjectAsync(string projectName, string username)
         {
             var idProject = await projectsRepository.GetProjectByName(projectName);
-            var idUser = await usersRepository.GetUserByUsername(userDto.Username);
+            var idUser = await usersRepository.GetUserByUsername(username);
 
             if (idProject == null || idUser == null)
             {
@@ -65,10 +65,10 @@ namespace backAPI.Repositories.Implementation.Projects
                 .ToListAsync();
         }
 
-        public async Task<bool> RemoveUserFromProjectAsync(string projectName, UserOnProjectDto userDto)
+        public async Task<bool> RemoveUserFromProjectAsync(string projectName, string username)
         {
             var project = await projectsRepository.GetProjectByName(projectName);
-            var user = await usersRepository.GetUserByUsername(userDto.Username);
+            var user = await usersRepository.GetUserByUsername(username);
 
             if (user == null || project == null)
             {
