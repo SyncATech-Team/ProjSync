@@ -50,6 +50,15 @@ namespace backAPI.Repositories.Implementation.Projects
             await dataContext.Projects.AddAsync(project);
             await dataContext.SaveChangesAsync();
 
+            var addedProject = await GetProjectByName(request.Name);
+            var newUserOnProject = new UsersOnProject
+            {
+                UserId = user.Id,
+                ProjectId = addedProject.Id,
+            };
+            await dataContext.UsersOnProjects.AddAsync(newUserOnProject);
+            await dataContext.SaveChangesAsync();
+
             return project;
         }
 
