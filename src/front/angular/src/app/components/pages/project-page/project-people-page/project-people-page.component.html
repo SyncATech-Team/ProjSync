@@ -107,7 +107,7 @@
 </div>
 
 <div class="modal fade" id="modalAddUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <!-- Form Header -->
             <div class="modal-header">
@@ -117,22 +117,17 @@
             <!-- End of Form Header -->
             <div class="modal-body">
                 <!-- Form -->
-                <form #addUserForm="ngForm" id="addUserForm" class="row g-3" autocomplete="off" style="margin-bottom: 10%;">
-                    <div class="col-md-12"> <!-- field za ime korisnika -->
-                        <div class="form-floating mb-3">
-                            <input 
-                                type="text"
-                                id="userName"
-                                name="userName"
-                                class="form-control required-field"
-                                placeholder="John Doe"
-                                required
-                                spellcheck="false"
-                                [(ngModel)]="userForAdd"
-                            >
-                            <label for="userName" class="form-label">Username</label>
-                        </div>
-                    </div>
+                <form #addUserForm="ngForm" id="addUserForm" class="row" autocomplete="off" style="margin-bottom: 5%;">
+                    <p-dropdown 
+                        [options]="allUsers"
+                        [(ngModel)]="userForAdd" 
+                        optionLabel="username" 
+                        [filter]="true" 
+                        filterBy="username" 
+                        [showClear]="true" 
+                        [style]="{minWidth: '100%'}" 
+                        name="userForAdd">
+                    </p-dropdown>
                 </form>
                 <!-- End of Form -->
             </div>

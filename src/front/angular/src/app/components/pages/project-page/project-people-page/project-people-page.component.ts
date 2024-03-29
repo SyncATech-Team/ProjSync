@@ -7,6 +7,7 @@ import { CompanyRole } from '../../../../_models/company-role';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
 import { NgForm } from '@angular/forms';
+import { UserService } from '../../../../_service/user.service';
 
 @Component({
   selector: 'app-project-people-page',
@@ -18,6 +19,8 @@ export class ProjectPeoplePageComponent implements OnInit{
   private MAX_NUMBER_OF_DEFAULT_IMAGES: number = 10;
   users: UserGetter[] = [];
   users_backup : UserGetter[] = [];
+  allUsers: UserGetter[] = [];
+
   userRole : CompanyRole[] = [];
   selectedRole: string = '';
     
@@ -33,7 +36,8 @@ export class ProjectPeoplePageComponent implements OnInit{
     private userOnProjectService: UserOnProjectService, 
     private companyRole: CompanyroleService,
     private confirmationService: ConfirmationService,
-    private msgPopupService: MessagePopupService
+    private msgPopupService: MessagePopupService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +64,15 @@ export class ProjectPeoplePageComponent implements OnInit{
         console.log(error);
       }
     });
+
+    this.userService.getAllUsers().subscribe({
+      next: (response) => {
+        this.allUsers = response.filter(user => user.username !== 'admin');
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   getUserImagePath(username: string) {
@@ -138,9 +151,11 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
 
   addUser() {
-    this.userOnProjectService.addUserOnProject(this.projectName, this.userForAdd).subscribe({
+    console.log((this.userForAdd as any).username);
+    this.userOnProjectService.addUserOnProject(this.projectName, (this.userForAdd as any).username).subscribe({
       next: (response) => {
         this.msgPopupService.showSuccess("Successfully added new user!");
+        this.userForAdd = "";
 
         this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
           next: (response) => {
@@ -157,4 +172,5 @@ export class ProjectPeoplePageComponent implements OnInit{
       }
     })
   }
+
 }
