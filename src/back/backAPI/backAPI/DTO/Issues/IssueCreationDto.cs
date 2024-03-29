@@ -1,6 +1,6 @@
-﻿namespace backAPI.DTO.Tasks
+﻿namespace backAPI.DTO.Issues 
 {
-    public class TaskDto
+    public class IssueCreationDto 
     {
         public string Name { get; set; }
         public string TypeName { get; set; }
@@ -13,6 +13,6 @@
         public string ReporterUsername { get; set; }
         public string GroupName { get; set; }
         public string ProjectName { get; set; }
-        public int? DependentOn { get; set; } = -1;
+        public string DependentOnIssueName { get; set; }
     }
 }

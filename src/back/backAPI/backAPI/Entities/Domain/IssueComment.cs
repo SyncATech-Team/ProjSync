@@ -3,18 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backAPI.Entities.Domain
 {
-    [Table("TaskComments")]
-    public class TaskComment
+    [Table("IssueComments")]
+    public class IssueComment
     {
         [Key]
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int TaskId { get; set; }
+        public int IssueId { get; set; }
         public int Parent { get; set; }
         public string Content { get; set; }
         public DateTime Created { get; set; }
 
         [ForeignKey("UserId")] public User User { get; set; }
-        [ForeignKey("TaskId")] public Issue Task { get; set; }
+        [ForeignKey("IssueId")] public Issue Issue { get; set; }
     }
 }

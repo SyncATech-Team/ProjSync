@@ -1,4 +1,4 @@
-export interface TasksInGroup {
+export interface IssuesInGroup {
     name: string,
     typeName: string,
     statusName: string,
