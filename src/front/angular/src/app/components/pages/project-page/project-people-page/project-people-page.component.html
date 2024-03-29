@@ -64,7 +64,7 @@
                             <img draggable="false" *ngIf="1==1; else secondImageSource"
                             src={{getUserImagePath(user.username)}} alt="user-default-image">
                             <ng-template #secondImageSource>
-                                <img alt="user-image">
+                                <img src="{{getUserImagePath(user.username)}}" alt="user-image">
                             </ng-template>
                             <span>{{ user.username }}</span>
                         </div>
