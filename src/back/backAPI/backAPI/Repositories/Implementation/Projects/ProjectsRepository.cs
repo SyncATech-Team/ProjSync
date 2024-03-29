@@ -3,7 +3,7 @@ using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
-using backAPI.Repositories.Interface.Tasks;
+using backAPI.Repositories.Interface.Issues;
 using Microsoft.EntityFrameworkCore;
 
 namespace backAPI.Repositories.Implementation.Projects
@@ -14,11 +14,11 @@ namespace backAPI.Repositories.Implementation.Projects
         private readonly IUsersRepository usersRepository;
         private readonly IProjectTypesRepository projectTypesRepository;
         private readonly IProjectVisibilitiesRepository projectVisibilitiesRepository;
-        private readonly ITaskGroupRepository taskGroupRepository;
+        private readonly IIssueGroupRepository taskGroupRepository;
 
         public ProjectsRepository(DataContext dataContext, IUsersRepository usersRepository,
             IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository,
-            ITaskGroupRepository taskGroupRepository)
+            IIssueGroupRepository taskGroupRepository)
         {
             this.dataContext = dataContext;
             this.usersRepository = usersRepository;

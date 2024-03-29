@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace backAPI.Entities.Domain
 {
     [Table("TaskTypes")]
-    public class TaskType
+    public class IssueType
     {
         [Key]
         public int Id { get; set; }

@@ -2,7 +2,7 @@
 
 namespace backAPI.Entities.Domain
 {
-    public class TaskGroup
+    public class IssueGroup
     {
         public int Id { get; set; }
         /// <summary>

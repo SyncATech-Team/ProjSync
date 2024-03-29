@@ -3,7 +3,6 @@ using backAPI.Other.Logger;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Issue = backAPI.Entities.Domain.Issue;
 
 namespace backAPI.Data
 {
@@ -69,7 +68,7 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             /* **************************************************************************
-             * Strani kljucevi u tabeli >> Task <<
+             * Strani kljucevi u tabeli >> Issue <<
              * ************************************************************************** */
             modelBuilder.Entity<Issue>()
                 .HasOne(t => t.User)
@@ -78,31 +77,31 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Restrict); // FK owner
 
             modelBuilder.Entity<Issue>()
-                .HasOne(t => t.TaskGroup)
+                .HasOne(t => t.IssueGroup)
                 .WithMany()
                 .HasForeignKey(t => t.GroupId)
-                .OnDelete(DeleteBehavior.Cascade); // FK group -> ukoliko brisemo grupu brisemo i sve taskove iz te grupe
+                .OnDelete(DeleteBehavior.Cascade); // FK group -> ukoliko brisemo grupu brisemo i sve issue-ove iz te grupe
             
             modelBuilder.Entity<Issue>()
-                .HasOne(t => t.TaskPriority)
+                .HasOne(t => t.IssuePriority)
                 .WithMany()
                 .HasForeignKey(t => t.PriorityId)
                 .OnDelete(DeleteBehavior.Restrict); // FK priority
 
             modelBuilder.Entity<Issue>()
-                .HasOne(t => t.TaskType)
+                .HasOne(t => t.IssueType)
                 .WithMany()
                 .HasForeignKey(t => t.TypeId)
                 .OnDelete(DeleteBehavior.Restrict); // FK type
 
             modelBuilder.Entity<Issue>()
-                .HasOne(t => t.DependentTask)
+                .HasOne(t => t.DependentIssue)
                 .WithMany()
                 .HasForeignKey(t => t.DependentOn)
-                .OnDelete(DeleteBehavior.Restrict); // FK parent task
+                .OnDelete(DeleteBehavior.Restrict); // FK parent issue
 
             modelBuilder.Entity<Issue>()
-                .HasOne(t => t.TaskStatus)
+                .HasOne(t => t.IssueStatus)
                 .WithMany()
                 .HasForeignKey(t => t.StatusId)
                 .OnDelete(DeleteBehavior.Restrict); // FK status
@@ -126,9 +125,9 @@ namespace backAPI.Data
                 .IsRequired();
 
             /* **************************************************************************
-             * Strani kljucevi u tabeli >> TaskGroup <<
+             * Strani kljucevi u tabeli >> IssueGroup <<
              * ************************************************************************** */
-            modelBuilder.Entity<TaskGroup>()
+            modelBuilder.Entity<IssueGroup>()
                 .HasOne(t => t.Project)
                 .WithMany()
                 .HasForeignKey(t => t.ProjectId)
@@ -138,7 +137,7 @@ namespace backAPI.Data
              * Strani kljucevi u tabeli >> GroupsOnProject <<
              * ************************************************************************** */
             modelBuilder.Entity<GroupsOnProject>()
-                .HasOne(t => t.TaskGroup)
+                .HasOne(t => t.IssueGroup)
                 .WithMany()
                 .HasForeignKey(t => t.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);  // pri brisanju grupe brisu se sve veze koje se nalaze ovde
@@ -150,19 +149,19 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Cascade);  // pri brisanju projekta (koje se nece desiti) brisu se grupe
 
             /* **************************************************************************
-             * Strani kljucevi u tabeli >> TaskComment <<
+             * Strani kljucevi u tabeli >> IssueComment <<
              * ************************************************************************** */
-            modelBuilder.Entity<TaskComment>()
+            modelBuilder.Entity<IssueComment>()
                 .HasOne(t => t.User)
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Cascade); // pri brisanju korisnika (koje se nece desiti) brisu se komentari
 
-            modelBuilder.Entity<TaskComment>()
-                .HasOne(t => t.Task)
+            modelBuilder.Entity<IssueComment>()
+                .HasOne(t => t.Issue)
                 .WithMany()
-                .HasForeignKey(t => t.TaskId)
-                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju komentara brisu se komentari za taj task
+                .HasForeignKey(t => t.IssueId)
+                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju komentara brisu se komentari za taj issue
 
             /* **************************************************************************
              * Strani kljucevi u tabeli >> WorkingHours <<
@@ -198,18 +197,18 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             /* **************************************************************************
-             * Strani kljucevi u tabeli >> UsersOnTasks <<
+             * Strani kljucevi u tabeli >> UsersOnIssues <<
              * ************************************************************************** */
-            modelBuilder.Entity<UsersOnTasks>()
+            modelBuilder.Entity<UsersOnIssue>()
                 .HasOne(t => t.User)
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<UsersOnTasks>()
-                .HasOne(t => t.Task)
+            modelBuilder.Entity<UsersOnIssue>()
+                .HasOne(t => t.Issue)
                 .WithMany()
-                .HasForeignKey(t => t.TaskId)
+                .HasForeignKey(t => t.IssueId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             /* *******************************************************************************************************************
@@ -225,13 +224,13 @@ namespace backAPI.Data
                 .HasIndex(c => c.Name)
                 .IsUnique(true);
 
-            // UNIQUE - TaskType - Name
-            modelBuilder.Entity<TaskType>()
+            // UNIQUE - IssueType - Name
+            modelBuilder.Entity<IssueType>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
 
-            // UNIQUE - TaskPriority - Name
-            modelBuilder.Entity<TaskPriority>()
+            // UNIQUE - IssuePriority - Name
+            modelBuilder.Entity<IssuePriority>()
                 .HasIndex(t => t.Name)
                 .IsUnique(true);
 
@@ -276,17 +275,17 @@ namespace backAPI.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectVisibility> ProjectVisibilities { get; set; }
         public DbSet<ProjectType> ProjectTypes { get; set; }
-        public DbSet<Issue> Tasks { get; set; }
-        public DbSet<TaskType> TaskTypes { get; set; }
-        public DbSet<TaskPriority> TaskPriority { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<IssueType> IssueTypes { get; set; }
+        public DbSet<IssuePriority> IssuePriority { get; set; }
         public DbSet<ProjectRoles> ProjectRoles { get; set; }
-        public DbSet<UsersOnTasks> UsersOnTasks { get; set; }
+        public DbSet<UsersOnIssue> UsersOnIssues { get; set; }
         public DbSet<UsersOnProject> UsersOnProjects { get; set; }
         public DbSet<ProjectDocumentation> ProjectDocumentation { get; set; }
-        public DbSet<TaskComment> TaskComments { get; set; }
+        public DbSet<IssueComment> IssueComments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<TaskGroup> TaskGroups { get; set; }
+        public DbSet<IssueGroup> IssueGroups { get; set; }
         public DbSet<GroupsOnProject> GroupsOnProjects { get; set; }
-        public DbSet<Entities.Domain.TaskStatus> TaskStatuses { get; set; }
+        public DbSet<IssueStatus> IssueStatuses { get; set; }
     }
 }

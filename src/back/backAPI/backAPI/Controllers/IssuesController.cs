@@ -1,33 +1,34 @@
-﻿using backAPI.DTO.Tasks;
+﻿using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
-using backAPI.Repositories.Interface.Tasks;
+using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
-    public class TasksController : BaseApiController {
+    public class IssuesController : BaseApiController 
+    {
 
-        private readonly ITasksRepository _tasksRepository;
+        private readonly IIssueRepository _tasksRepository;
         private readonly IProjectsRepository _projectsRepository;
-        private readonly ITaskTypeRepository _taskTypeRepository;
-        private readonly ITaskStatusRepository _taskStatusRepository;
+        private readonly IIssueTypeRepository _taskTypeRepository;
+        private readonly IIssueStatusRepository _taskStatusRepository;
         private readonly IUsersRepository _usersRepository;
-        private readonly ITaskPriorityRepository _taskPriorityRepository;
-        private readonly ITaskGroupRepository _taskGroupRepository;
+        private readonly IIssuePriorityRepository _taskPriorityRepository;
+        private readonly IIssueGroupRepository _taskGroupRepository;
 
         /* ***************************************************************************************************
          * Konstruktor
          * *************************************************************************************************** */
-        public TasksController(
-            ITasksRepository tasksRepository,
+        public IssuesController(
+            IIssueRepository tasksRepository,
             IProjectsRepository projectsRepository, 
-            ITaskTypeRepository taskTypeRepository,
-            ITaskStatusRepository taskStatusRepository, 
+            IIssueTypeRepository taskTypeRepository,
+            IIssueStatusRepository taskStatusRepository, 
             IUsersRepository usersRepository,
-            ITaskPriorityRepository taskPriorityRepository,
-            ITaskGroupRepository taskGroupRepository
+            IIssuePriorityRepository taskPriorityRepository,
+            IIssueGroupRepository taskGroupRepository
             ) {
                 _tasksRepository = tasksRepository;
                 _projectsRepository = projectsRepository;
@@ -39,9 +40,10 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("groupId")]
-        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksFromGroupAsync(int groupId) {
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetTasksFromGroupAsync(int groupId) 
+        {
             var tasks = await _tasksRepository.GetAllTasksForGivenGroup( groupId );
-            List<TaskDto> result = new List<TaskDto>();
+            List<IssueDto> result = new List<IssueDto>();
 
             foreach( var task in tasks )
             {
@@ -49,7 +51,7 @@ namespace backAPI.Controllers
                 var tpriority = await _taskPriorityRepository.GetTaskPriorityById(task.StatusId);
                 var tstatus = await _taskStatusRepository.GetTaskTypeById(task.StatusId);
                 var taskGroup = await _taskGroupRepository.GetGroupAsync(task.Id);
-                TaskDto taskDto = new()
+                IssueDto taskDto = new()
                 {
                     Name = task.Name,
                     TypeName = ttype.Name,
@@ -69,7 +71,8 @@ namespace backAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTaskInsideGroup(TaskDto task) {
+        public async Task<ActionResult> CreateTaskInsideGroup(IssueDto task) 
+        {
 
             var ttype = await _taskTypeRepository.GetTaskTypeByName(task.TypeName);
             var tstatus = await _taskStatusRepository.GetTaskTypeByName(task.StatusName);
@@ -78,7 +81,9 @@ namespace backAPI.Controllers
             var project = await _projectsRepository.GetProjectByName(task.ProjectName);
             var taskGroup = await _taskGroupRepository.GetGroupByNameAsync(project.Id, task.GroupName);
 
-        var created = await _tasksRepository.CreateTaskAsync(new Issue {
+        var created = await _tasksRepository.CreateTaskAsync(
+            new Issue 
+            {
                 Name = task.Name,
                 TypeId = ttype.Id,
                 StatusId = tstatus.Id,
@@ -92,7 +97,8 @@ namespace backAPI.Controllers
                 GroupId = taskGroup.Id
             });
 
-            if (created == null) {
+            if (created == null) 
+            {
                 return BadRequest("There is already a task with the same name in this group");
             }
 

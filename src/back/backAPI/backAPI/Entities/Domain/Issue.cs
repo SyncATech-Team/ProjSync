@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backAPI.Entities.Domain
 {
-    [Table("Tasks")]
+    [Table("Issues")]
     public class Issue
     {
         [Key] public int Id { get; set; }
@@ -20,17 +20,17 @@ namespace backAPI.Entities.Domain
         public int GroupId { get; set; }
         public int? DependentOn { get; set; }
         
-        [ForeignKey("StatusId")] public TaskStatus TaskStatus { get; set; }
+        [ForeignKey("StatusId")] public IssueStatus IssueStatus { get; set; }
 
         [ForeignKey("ReporterId")] public User User { get; set; }
 
-        [ForeignKey("GroupId")] public TaskGroup TaskGroup { get; set; }
+        [ForeignKey("GroupId")] public IssueGroup IssueGroup { get; set; }
 
-        [ForeignKey("PriorityId")] public TaskPriority TaskPriority { get; set; }
+        [ForeignKey("PriorityId")] public IssuePriority IssuePriority { get; set; }
 
-        [ForeignKey("TypeId")] public TaskType TaskType { get; set; }
+        [ForeignKey("TypeId")] public IssueType IssueType { get; set; }
 
-        [ForeignKey("DependentOn")] public Issue DependentTask { get; set; }
+        [ForeignKey("DependentOn")] public Issue DependentIssue { get; set; }
 
     }
 }

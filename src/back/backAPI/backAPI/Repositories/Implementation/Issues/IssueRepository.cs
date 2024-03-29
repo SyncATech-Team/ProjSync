@@ -1,10 +1,10 @@
 ﻿using backAPI.Data;
-using backAPI.Repositories.Interface.Tasks;
+using backAPI.Repositories.Interface.Issues;
 using Microsoft.EntityFrameworkCore;
 
-namespace backAPI.Repositories.Implementation.Tasks
+namespace backAPI.Repositories.Implementation.Issues
 {
-    public class TasksRepository : ITasksRepository
+    public class IssueRepository : IIssueRepository
     {
 
         private readonly DataContext _dataContext;
@@ -12,7 +12,7 @@ namespace backAPI.Repositories.Implementation.Tasks
         /* *****************************************************************************************
          * Konstruktor
          * ***************************************************************************************** */
-        public TasksRepository(DataContext dataContext)
+        public IssueRepository(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -21,7 +21,7 @@ namespace backAPI.Repositories.Implementation.Tasks
         * ***************************************************************************************** */
         public async Task<IEnumerable<Entities.Domain.Issue>> GetAllTasksForGivenGroup(int groupId)
         {
-            var tasks = await _dataContext.Tasks.Where(t => t.GroupId == groupId).ToListAsync();
+            var tasks = await _dataContext.Issues.Where(t => t.GroupId == groupId).ToListAsync();
 
             return tasks;
         }
@@ -30,13 +30,13 @@ namespace backAPI.Repositories.Implementation.Tasks
         * ***************************************************************************************** */
         public async Task<Entities.Domain.Issue> CreateTaskAsync(Entities.Domain.Issue task)
         {
-            var anyother = await _dataContext.Tasks.FirstOrDefaultAsync(t => t.GroupId == task.GroupId && t.Name == task.Name);
+            var anyother = await _dataContext.Issues.FirstOrDefaultAsync(t => t.GroupId == task.GroupId && t.Name == task.Name);
             if (anyother != null)
             {
                 return null; // postoji task u istoj grupi sa istim imenom
             }
 
-            await _dataContext.Tasks.AddAsync(task);
+            await _dataContext.Issues.AddAsync(task);
             await _dataContext.SaveChangesAsync();
             return task;
         }
