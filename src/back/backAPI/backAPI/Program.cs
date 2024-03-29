@@ -3,15 +3,14 @@ using backAPI.Entities.Domain;
 using backAPI.Extensions;
 using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Implementation.Projects;
-using backAPI.Repositories.Implementation.Tasks;
+using backAPI.Repositories.Implementation.Issues;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
-using backAPI.Repositories.Interface.Tasks;
+using backAPI.Repositories.Interface.Issues;
 using backAPI.Services.Implementation;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TaskStatus = backAPI.Entities.Domain.TaskStatus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,11 +42,11 @@ builder.Services.AddScoped<IUserOnProjectRepository, UserOnProjectRepository>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<IProjectTypesRepository, ProjectTypesRepository>();
 builder.Services.AddScoped<IProjectVisibilitiesRepository, ProjectVisibilitiesRepository>();
-builder.Services.AddScoped<ITaskGroupRepository, TaskGroupRepository>();
-builder.Services.AddScoped<ITasksRepository, TasksRepository>();
-builder.Services.AddScoped<ITaskPriorityRepository, TaskPriorityRepository>();
-builder.Services.AddScoped<ITaskStatusRepository, TaskStatusRepository>();
-builder.Services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
+builder.Services.AddScoped<IIssueGroupRepository, IssueGroupRepository>();
+builder.Services.AddScoped<IIssueRepository, IssueRepository>();
+builder.Services.AddScoped<IIssuePriorityRepository, IssuePriorityRepository>();
+builder.Services.AddScoped<IIssueStatusRepository, IssueStatusRepository>();
+builder.Services.AddScoped<IIssueTypeRepository, IssueTypeRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
@@ -112,31 +111,31 @@ if(!context.ProjectVisibilities.Any()) {
 }
 
 // Seed task priority
-if (!context.TaskPriority.Any()) {
-    await context.TaskPriority.AddRangeAsync(
-        new TaskPriority { Id = 1, Name = "Lowest" },
-        new TaskPriority { Id = 2, Name = "Low" },
-        new TaskPriority { Id = 3, Name = "Medium" },
-        new TaskPriority { Id = 4, Name = "High" },
-        new TaskPriority { Id = 5, Name = "Highest" }
+if (!context.IssuePriority.Any()) {
+    await context.IssuePriority.AddRangeAsync(
+        new IssuePriority { Id = 1, Name = "Lowest" },
+        new IssuePriority { Id = 2, Name = "Low" },
+        new IssuePriority { Id = 3, Name = "Medium" },
+        new IssuePriority { Id = 4, Name = "High" },
+        new IssuePriority { Id = 5, Name = "Highest" }
     );
 }
 
 // Seed task type
-if(!context.TaskTypes.Any()) {
-    await context.TaskTypes.AddRangeAsync(
-        new TaskType { Id = 1, Name = "Task"},
-        new TaskType { Id = 2, Name = "Problem"},
-        new TaskType { Id = 3, Name = "Story"}
+if(!context.IssueTypes.Any()) {
+    await context.IssueTypes.AddRangeAsync(
+        new IssueType { Id = 1, Name = "Task"},
+        new IssueType { Id = 2, Name = "Problem"},
+        new IssueType { Id = 3, Name = "Story"}
     );
 }
 
 // Seed task statuses
-if(!context.TaskStatuses.Any()) {
-    await context.TaskStatuses.AddRangeAsync(
-        new TaskStatus { Id = 1, Name = "Planning" },
-        new TaskStatus { Id = 2, Name = "In progress" },
-        new TaskStatus { Id = 3, Name = "Done" }
+if(!context.IssueStatuses.Any()) {
+    await context.IssueStatuses.AddRangeAsync(
+        new IssueStatus { Id = 1, Name = "Planning" },
+        new IssueStatus { Id = 2, Name = "In progress" },
+        new IssueStatus { Id = 3, Name = "Done" }
     );
 }
 

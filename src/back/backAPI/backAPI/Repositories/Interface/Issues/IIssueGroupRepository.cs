@@ -1,24 +1,23 @@
-﻿using backAPI.DTO.Tasks;
+﻿using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
 
-namespace backAPI.Repositories.Interface.Tasks
+namespace backAPI.Repositories.Interface.Issues
 {
-    public interface ITaskGroupRepository
+    public interface IIssueGroupRepository
     {
-
         /// <summary>
         /// Funkcija koja za prosledjeni id projekta dohvata grupe taskova na tom projektu
         /// </summary>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        Task<IEnumerable<TaskGroup>> GetGroupsAsync(int projectId);
+        Task<IEnumerable<IssueGroup>> GetGroupsAsync(int projectId);
 
         /// <summary>
         /// Funkcija koja za prosledjeni id dohvati TaskGroup
         /// </summary>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        Task<TaskGroup> GetGroupAsync(int id);
+        Task<IssueGroup> GetGroupAsync(int id);
 
         /// <summary>
         /// Funkcija koja vraca TaskGroup po imenu koji se nalazi u nekom projektu
@@ -26,14 +25,14 @@ namespace backAPI.Repositories.Interface.Tasks
         /// <param name="projectId"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        Task<TaskGroup> GetGroupByNameAsync(int projectId, string name);
+        Task<IssueGroup> GetGroupByNameAsync(int projectId, string name);
 
         /// <summary>
         /// Funkcija koja kreira grupu na odredjenom projektu
         /// </summary>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        Task<TaskGroup> CreateGroupAsync(TaskGroup group);
+        Task<IssueGroup> CreateGroupAsync(IssueGroup group);
 
         /// <summary>
         /// Funkcija koja uklanja grupu sa projekta
@@ -49,7 +48,7 @@ namespace backAPI.Repositories.Interface.Tasks
         /// <param name="projectId"></param>
         /// <param name="groupId"></param>
         /// <returns></returns>
-        Task<TGroupResponse> GetGroupForNameInProject(int projectId, int groupId);
+        Task<IssueGroupResponseDto> GetGroupForNameInProject(int projectId, int groupId);
 
 
         /// <summary>

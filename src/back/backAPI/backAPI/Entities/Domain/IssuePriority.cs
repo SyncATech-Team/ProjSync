@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backAPI.Entities.Domain
 {
-    [Table("TaskPriorities")]
-    public class TaskPriority
+    [Table("IssuePriorities")]
+    public class IssuePriority
     {
         [Key]
         public int Id { get; set; }
