@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { TaskService } from '../../../../_service/task.service';
-import { TasksInGroup } from '../../../../_models/tasks-in-group';
+import { IssueService } from '../../../../_service/issue.service';
+import { IssuesInGroup } from '../../../../_models/issues-in-group';
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -12,14 +12,14 @@ import { TasksInGroup } from '../../../../_models/tasks-in-group';
 export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   projectName: string | null = '';
   subService!: Subscription;
-  tasksInGroup: TasksInGroup[] = [];
+  tasksInGroup: IssuesInGroup[] = [];
 
-  constructor (private route: ActivatedRoute, private taskService: TaskService) {
+  constructor (private route: ActivatedRoute, private issueService: IssueService) {
     this.projectName = route.snapshot.paramMap.get('projectName');
   }
 
   ngOnInit(): void {
-    this.subService = this.taskService.getAllTasksInGroup(1).subscribe({
+    this.subService = this.issueService.getAllTasksInGroup(1).subscribe({
       next: response => {
         this.tasksInGroup = response;
         console.log('dobijeni taskovi')
