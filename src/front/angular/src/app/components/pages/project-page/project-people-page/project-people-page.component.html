@@ -1,6 +1,10 @@
 <app-nav-bar></app-nav-bar>
 <div class="wrapper">
-    <app-project-sidebar></app-project-sidebar>
+    <app-project-sidebar 
+    [projectName]="projectName"
+    [projectType]="projectType"
+    [projectKey]="projectKey"></app-project-sidebar>
+    
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
     
@@ -132,7 +136,7 @@
                 </form>
                 <div class="color-wrapper">
                     <span>Color: </span>
-                    <p-colorPicker [(ngModel)]="color"></p-colorPicker>
+                    <p-colorPicker [(ngModel)]="color" class="color-picker"></p-colorPicker>
                 </div>
                 <!-- End of Form -->
             </div>
