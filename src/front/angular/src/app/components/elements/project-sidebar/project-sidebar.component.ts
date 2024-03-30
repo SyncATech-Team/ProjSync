@@ -22,6 +22,8 @@ export class ProjectSidebarComponent {
   screenWidth = 0;
   navData = navbarData;
   @Input() projectName: string | null = '';
+  @Input() projectType: string = '';
+  @Input() projectKey: string = '';  
 
   constructor(public accoutService: AccountService, private router: Router,private route: ActivatedRoute) { 
     this.screenWidth = window.innerWidth;

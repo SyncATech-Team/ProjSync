@@ -8,6 +8,8 @@ import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../../../_service/user.service';
+import { Project } from '../../../../_models/project.model';
+import { ProjectService } from '../../../../_service/project.service';
 
 @Component({
   selector: 'app-project-people-page',
@@ -20,11 +22,15 @@ export class ProjectPeoplePageComponent implements OnInit{
   users: UserGetter[] = [];
   users_backup : UserGetter[] = [];
   allUsers: UserGetter[] = [];
+  project: Project | null = null;
 
   userRole : CompanyRole[] = [];
   selectedRole: string = '';
     
   projectName: string = '';
+  projectType: string = '';
+  projectKey: string = '';
+
   searchTerm: string = '';
   color: string = '#ff0000';
 
@@ -38,7 +44,8 @@ export class ProjectPeoplePageComponent implements OnInit{
     private companyRole: CompanyroleService,
     private confirmationService: ConfirmationService,
     private msgPopupService: MessagePopupService,
-    private userService: UserService
+    private userService: UserService,
+    private projectService: ProjectService
   ) {}
 
   ngOnInit(): void {
@@ -73,7 +80,18 @@ export class ProjectPeoplePageComponent implements OnInit{
       error: (error) => {
         console.log(error);
       }
-    })
+    });
+
+    this.projectService.getProjectByName(this.projectName).subscribe({
+      next: (response) => {
+        this.project = response;
+        this.projectType = this.project.typeName;
+        this.projectKey = this.project.key;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 
   getUserImagePath(username: string) {
