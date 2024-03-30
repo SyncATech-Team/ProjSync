@@ -13,6 +13,165 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   projectName: string | null = '';
   subService!: Subscription;
   tasksInGroup: TasksInGroup[] = [];
+  tasks: TasksInGroup[]=[
+    {
+      name: 'task1',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: ''
+    },
+    {
+      name: 'task2',
+      typeName: 'type2',
+      statusName: 'status2',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group2',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task3',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task4',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task5',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task6',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task7',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task8',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task9',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task10',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+    {
+      name: 'task11',
+      typeName: 'type1',
+      statusName: 'status1',
+      priorityName: 'urgent',
+      description: 'desccription',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+      reporterUsername: 'repoeter1',
+      groupName: 'group1',
+      projectName: 'project1',
+      dependentOn: 'task2'
+    },
+  ];
+
+  first = 0;
+  rows = 10;
 
   constructor (private route: ActivatedRoute, private taskService: TaskService) {
     this.projectName = route.snapshot.paramMap.get('projectName');
@@ -29,5 +188,10 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subService.unsubscribe();
+  }
+
+  pageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
   }
 }

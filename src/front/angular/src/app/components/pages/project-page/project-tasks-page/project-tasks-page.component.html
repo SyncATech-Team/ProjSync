@@ -4,16 +4,76 @@
         <app-project-sidebar></app-project-sidebar>
         <div id="content">
             <h2>Tasks</h2>
-            <ul *ngIf="tasksInGroup">
-                <li *ngFor="let task of tasksInGroup">
-                    <ul>
-                        <ol>{{task.name}}</ol>
-                        <ol>{{task.dueDate}}</ol>
-                        <ol>{{task.statusName}}</ol>
-                        <ol>{{task.priorityName}}</ol>
-                    </ul>
-                </li>
-            </ul>
+            <div id="tasks">
+
+                <p-table
+                    [value]="tasks"
+                    dataKey="name"
+                    [globalFilterFields]="['name']"
+                    [tableStyle]="{'width': '100%'}"
+                    responsiveLayout="stack" 
+                    [breakpoint]="'960px'"
+                    styleClass="p-datatable-striped"
+                    [paginator]="true"
+                    [rows]="5"
+                    [first]="first"
+                    [rowsPerPageOptions]="[5, 10, 25, 50]"
+                    [showCurrentPageReport]="true"
+                    (onPage)="pageChange($event)"
+                    currentPageReportTemplate="Showing {first} to {last} of {{tasks.length}} entries">
+                    
+                    
+    
+                    <ng-template pTemplate="header">
+                        <tr>
+    
+                            <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+                            <th pSortableColumn="priorityName">Priority<p-sortIcon field="priorityName"></p-sortIcon></th>
+                            <th pSortableColumn="typeName">Type<p-sortIcon field="typeName"></p-sortIcon></th>
+                            <th pSortableColumn="reporterUsername">Reporter<p-sortIcon field="reporterUsername"></p-sortIcon></th>
+                            <th pSortableColumn="createdDate">Created Date<p-sortIcon field="createdDate"></p-sortIcon></th>
+                            <th pSortableColumn="dueDate">Due Date<p-sortIcon field="dueDate"></p-sortIcon></th>
+                            <th pSortableColumn="groupName">Group<p-sortIcon field="groupName"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+    
+                    <ng-template pTemplate="body" let-task>
+                        <tr>
+    
+                            <td><span class="p-column-title" style="font-weight: bold;">Name</span>
+                                
+                                <div>
+                                    <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
+                                </div>
+                            </td>
+                            <td><span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                {{ task.priorityName }}
+                            </td>
+                            <td>
+                                <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                {{ task.typeName }}
+                            </td>
+                            <td>
+                                <span class="p-column-title" style="font-weight: bold">Reporter</span>
+                                {{ task.reporterUsername }}
+                            </td>
+                            <td>
+                                <span class="p-column-title" style="font-weight: bold">Created Date</span>
+                                {{ task.createdDate | date: 'dd/MM/yyyy' }}
+                            </td>
+                            <td>
+                                <span class="p-column-title" style="font-weight: bold">Due Date</span>
+                                {{ task.dueDate | date : 'dd/MM/yyyy' }}
+                            </td>
+                            <td>
+                                <span class="p-column-title" style="font-weight: bold">Group</span>
+                                {{ task.groupName }}
+                            </td>
+                        </tr>
+                    </ng-template>
+                   
+                </p-table>
+            </div>
         </div>
     </div>
 </div>
