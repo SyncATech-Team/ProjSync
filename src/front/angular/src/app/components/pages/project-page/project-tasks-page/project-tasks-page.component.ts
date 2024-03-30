@@ -13,6 +13,9 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   projectName: string | null = '';
   subService!: Subscription;
   tasksInGroup: TasksInGroup[] = [];
+  groupView: boolean=false;
+  tableBody: string='body';
+
   tasks: TasksInGroup[]=[
     {
       name: 'task1',
@@ -150,7 +153,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
       updatedDate: new Date(),
       dueDate: new Date(),
       reporterUsername: 'repoeter1',
-      groupName: 'group1',
+      groupName: 'group3',
       projectName: 'project1',
       dependentOn: 'task2'
     },
@@ -164,7 +167,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
       updatedDate: new Date(),
       dueDate: new Date(),
       reporterUsername: 'repoeter1',
-      groupName: 'group1',
+      groupName: 'group3',
       projectName: 'project1',
       dependentOn: 'task2'
     },
@@ -193,5 +196,14 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   pageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
+  }
+  visible: boolean = true;
+  changeView():void {
+    if(this.tableBody==='body')
+      this.tableBody='rowexpansion';
+    else
+      this.tableBody='body';
+    this.visible = false;
+    setTimeout(() => this.visible = true, 0);
   }
 }

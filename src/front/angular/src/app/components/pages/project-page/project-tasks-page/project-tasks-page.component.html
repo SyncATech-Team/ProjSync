@@ -7,23 +7,32 @@
             <div id="tasks">
 
                 <p-table
+                    *ngIf="visible"
                     [value]="tasks"
-                    dataKey="name"
+                    dataKey="groupName"
                     [globalFilterFields]="['name']"
                     [tableStyle]="{'width': '100%'}"
                     responsiveLayout="stack" 
                     [breakpoint]="'960px'"
                     styleClass="p-datatable-striped"
-                    [paginator]="true"
+                    [paginator]="!groupView"
                     [rows]="5"
                     [first]="first"
                     [rowsPerPageOptions]="[5, 10, 25, 50]"
                     [showCurrentPageReport]="true"
                     (onPage)="pageChange($event)"
-                    currentPageReportTemplate="Showing {first} to {last} of {{tasks.length}} entries">
+                    currentPageReportTemplate="Showing {first} to {last} of {{tasks.length}} entries"
+                    rowGroupMode="subheader" 
+                    groupRowsBy="groupName">
                     
                     
-    
+                    <ng-template pTemplate="caption">
+                        <div class="flex align-items-center justify-content-between">
+                            Show by groups 
+                            <p-checkbox [(ngModel)]="groupView" [binary]="true" (onChange)="changeView()" ></p-checkbox>
+                        </div>
+                    </ng-template>
+
                     <ng-template pTemplate="header">
                         <tr>
     
@@ -33,11 +42,26 @@
                             <th pSortableColumn="reporterUsername">Reporter<p-sortIcon field="reporterUsername"></p-sortIcon></th>
                             <th pSortableColumn="createdDate">Created Date<p-sortIcon field="createdDate"></p-sortIcon></th>
                             <th pSortableColumn="dueDate">Due Date<p-sortIcon field="dueDate"></p-sortIcon></th>
-                            <th pSortableColumn="groupName">Group<p-sortIcon field="groupName"></p-sortIcon></th>
+                            <th *ngIf="!groupView" pSortableColumn="groupName">Group<p-sortIcon field="groupName"></p-sortIcon></th>
                         </tr>
                     </ng-template>
+
+                    
+                    <ng-template *ngIf="groupView" pTemplate="groupheader" let-task let-rowIndex="rowIndex" let-expanded="expanded">
+                        <tr>
+                            <td >
+                                <button type="button" pButton pRipple [pRowToggler]="task" class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                
+                            </td>
+                            <td colspan="5" style="align-items: center;">
+                                {{task.groupName}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                    
+                    
     
-                    <ng-template pTemplate="body" let-task>
+                    <ng-template pTemplate="{{tableBody}}" let-task>
                         <tr>
     
                             <td><span class="p-column-title" style="font-weight: bold;">Name</span>
@@ -65,7 +89,7 @@
                                 <span class="p-column-title" style="font-weight: bold">Due Date</span>
                                 {{ task.dueDate | date : 'dd/MM/yyyy' }}
                             </td>
-                            <td>
+                            <td *ngIf="!groupView">
                                 <span class="p-column-title" style="font-weight: bold">Group</span>
                                 {{ task.groupName }}
                             </td>
