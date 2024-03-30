@@ -11,13 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-<<<<<<<< HEAD:src/back/backAPI/backAPI/Migrations/20240329202626_IssueAdded.Designer.cs
-    [Migration("20240329202626_IssueAdded")]
-    partial class IssueAdded
-========
-    [Migration("20240330003641_MigrationColor")]
-    partial class MigrationColor
->>>>>>>> 81-izmena-usersonprojects-entiteta:src/back/backAPI/backAPI/Migrations/20240330003641_MigrationColor.Designer.cs
+    [Migration("20240330012505_MigrationColorIssue")]
+    partial class MigrationColorIssue
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

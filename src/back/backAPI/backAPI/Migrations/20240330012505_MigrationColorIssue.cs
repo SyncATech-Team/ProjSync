@@ -7,11 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:src/back/backAPI/backAPI/Migrations/20240329202626_IssueAdded.cs
-    public partial class IssueAdded : Migration
-========
-    public partial class MigrationColor : Migration
->>>>>>>> 81-izmena-usersonprojects-entiteta:src/back/backAPI/backAPI/Migrations/20240330003641_MigrationColor.cs
+    public partial class MigrationColorIssue : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
