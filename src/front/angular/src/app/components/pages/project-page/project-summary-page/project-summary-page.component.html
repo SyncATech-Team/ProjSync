@@ -2,7 +2,10 @@
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
 
-        <app-project-sidebar></app-project-sidebar>
+        <app-project-sidebar 
+            [projectName]="projectName"
+            [projectType]="projectType"
+            [projectKey]="projectKey"></app-project-sidebar>
 
         <div id="content">
             <div class="container" id="projectHeader">

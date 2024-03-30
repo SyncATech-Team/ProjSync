@@ -10,6 +10,8 @@ import { ProjectService } from '../../../../_service/project.service';
 })
 export class ProjectSummaryPageComponent implements OnInit{
   projectName: string | null = '';
+  projectType: string = '';
+  projectKey: string = '';
   isLoading: boolean = true;
   project: Project = {
     name: "",
@@ -30,6 +32,8 @@ export class ProjectSummaryPageComponent implements OnInit{
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response)=>{
         this.project= response;
+        this.projectType = this.project.typeName;
+        this.projectKey = this.project.key;
         this.isLoading = false; 
       },
       error: (error)=>{
