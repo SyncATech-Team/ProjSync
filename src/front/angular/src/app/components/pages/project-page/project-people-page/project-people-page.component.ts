@@ -26,6 +26,7 @@ export class ProjectPeoplePageComponent implements OnInit{
     
   projectName: string = '';
   searchTerm: string = '';
+  color: string = '#ff0000';
 
   userForAdd: string = '';
 
@@ -151,12 +152,12 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
 
   addUser() {
-    console.log((this.userForAdd as any).username);
-    this.userOnProjectService.addUserOnProject(this.projectName, (this.userForAdd as any).username).subscribe({
+    this.userOnProjectService.addUserOnProject(this.projectName, (this.userForAdd as any).username, this.color).subscribe({
       next: (response) => {
         this.msgPopupService.showSuccess("Successfully added new user!");
         this.userForAdd = "";
 
+        console.log(this.color);        
         this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
           next: (response) => {
             this.users = response;

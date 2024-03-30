@@ -49,6 +49,7 @@ namespace backAPI.Repositories.Implementation.Projects
 
             await dataContext.Projects.AddAsync(project);
             await dataContext.SaveChangesAsync();
+            Console.WriteLine("Dodat projekat");
 
             var addedProject = await GetProjectByName(request.Name);
             var newUserOnProject = new UsersOnProject
@@ -58,6 +59,7 @@ namespace backAPI.Repositories.Implementation.Projects
             };
             await dataContext.UsersOnProjects.AddAsync(newUserOnProject);
             await dataContext.SaveChangesAsync();
+            Console.WriteLine("Dodat user");
 
             return project;
         }

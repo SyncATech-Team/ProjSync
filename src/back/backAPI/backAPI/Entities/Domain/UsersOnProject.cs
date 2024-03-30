@@ -9,7 +9,6 @@ namespace backAPI.Entities.Domain
         public int Id { get; set; }
         public int UserId { get; set; }
         public int ProjectId { get; set; }
-
         public string UserColor { get; set; }
 
         [ForeignKey("UserId")] public User User { get; set; }
