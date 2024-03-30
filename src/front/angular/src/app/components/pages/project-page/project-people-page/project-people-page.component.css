@@ -41,6 +41,10 @@
     color: black;
 }
 
+.color-wrapper{
+    display: flex;
+}
+
 @media screen and (max-width: 768px) {
     .table-header{
         flex-direction: column;
