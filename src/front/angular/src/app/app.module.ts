@@ -45,6 +45,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
+import { ColorPickerModule } from 'primeng/colorpicker';
 import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
@@ -94,6 +95,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     NzIconModule.forRoot([]),
     OverlayPanelModule,
     FileUploadModule,
+    ColorPickerModule,
     CheckboxModule
   ],
   providers: [

@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240329202626_IssueAdded")]
-    partial class IssueAdded
+    [Migration("20240330012505_MigrationColorIssue")]
+    partial class MigrationColorIssue
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -657,6 +657,9 @@ namespace backAPI.Migrations
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserColor")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

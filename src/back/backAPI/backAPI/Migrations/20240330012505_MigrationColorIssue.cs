@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class IssueAdded : Migration
+    public partial class MigrationColorIssue : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -438,7 +438,8 @@ namespace backAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    UserColor = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {

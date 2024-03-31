@@ -19,7 +19,7 @@ namespace backAPI.Repositories.Implementation.Projects
             this.usersRepository = usersRepository;
             this.projectsRepository = projectsRepository;
         }
-        public async Task<bool> AddUserToProjectAsync(string projectName, string username)
+        public async Task<bool> AddUserToProjectAsync(string projectName, string username, string color)
         {
             var idProject = await projectsRepository.GetProjectByName(projectName);
             var idUser = await usersRepository.GetUserByUsername(username);
@@ -41,6 +41,7 @@ namespace backAPI.Repositories.Implementation.Projects
             {
                 UserId = idUser.Id,
                 ProjectId = idProject.Id,
+                UserColor = color
             };
 
             dataContext.UsersOnProjects.Add(newUserOnProject);

@@ -25,6 +25,7 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeProjects();
+    this.filterProjects('public');
   }
 
   initializeProjects(): void {

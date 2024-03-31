@@ -6,6 +6,7 @@ import { UserGetter } from "../_models/user-getter";
 interface UserOnProjectData {
     projectName: string;
     username: string;
+    userColor: string;
 }
 @Injectable({
     providedIn: 'root'
@@ -24,12 +25,15 @@ export class UserOnProjectService {
         return this.http.delete<void>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}`);
     }
 
-    addUserOnProject(projectName : string, username : string){
+    addUserOnProject(projectName : string, username : string, color : string){
+        //# -> %23 zbog heksadecimalnog zapisa
+        color = color.replace('#', '%23');
         const body: UserOnProjectData = {
             projectName: projectName,
-            username: username
+            username: username,
+            userColor: color
         };
 
-        return this.http.post<UserGetter>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}`, body);
+        return this.http.post<UserGetter>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}&color=${color}`, body);
     }
 }

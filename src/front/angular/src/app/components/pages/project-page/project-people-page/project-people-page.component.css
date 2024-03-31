@@ -31,6 +31,7 @@
 .search input{
     padding: 11px;
     border-radius: 5px;
+    border-color: #E4E4E4;
 }
 
 .deleteBtn button{
@@ -39,6 +40,15 @@
     width: 30px;
     height: 30px;
     color: black;
+}
+
+.color-wrapper{
+    display: flex;
+    align-items: center;
+}
+
+.color-wrapper .color-picker{
+    margin-left: 0.5rem;
 }
 
 @media screen and (max-width: 768px) {
