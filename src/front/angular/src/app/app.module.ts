@@ -34,6 +34,8 @@ import { ConfirmEmailComponent } from './components/elements/confirm-email/confi
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
 import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { FilterProjectComponent } from './components/elements/filter-project/filter-project.component';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {CalendarModule} from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,9 @@ import { FilterProjectComponent } from './components/elements/filter-project/fil
     ButtonModule,
     ToastModule,
     ModalModule.forRoot(),
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    MultiSelectModule,
+    CalendarModule
   ],
   providers: [
     provideClientHydration(),

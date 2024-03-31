@@ -71,20 +71,90 @@
                 [first]="first"
                 [rowsPerPageOptions]="[5, 10, 25, 50]"
                 [showCurrentPageReport]="true"
+                sortMode="multiple"
                 (onPage)="pageChange($event)"
+                [globalFilterFields]="['name','key','typeName','ownerUsername','creationDate','dueDate']"
                 currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries">
                 
-                
+                <!-- Clear all filters -->
+                <!-- <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                        </span>
+                    </div>
+                </ng-template> -->
 
-                <ng-template pTemplate="header">
+                <ng-template pTemplate="header" >
                     <tr>
 
-                        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
-                        <th pSortableColumn="key">Key<p-sortIcon field="key"></p-sortIcon></th>
-                        <th pSortableColumn="typeName">Type<p-sortIcon field="typeName"></p-sortIcon></th>
-                        <th pSortableColumn="ownerUsername">Owner<p-sortIcon field="ownerUsername"></p-sortIcon></th>
-                        <th pSortableColumn="creationDate">Creation Date<p-sortIcon field="creationDate"></p-sortIcon></th>
-                        <th pSortableColumn="dueDate">Due Date<p-sortIcon field="dueDate"></p-sortIcon></th>
+                        <th pSortableColumn="name">
+                            <div class="flex align-items-center">
+                                Name
+                                <p-sortIcon field="name"></p-sortIcon>
+                                <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pSortableColumn="key">
+                            <div class="flex align-items-center">
+                            Key
+                            <p-sortIcon field="key"></p-sortIcon>
+                            <p-columnFilter type="text" field="key" display="menu"></p-columnFilter>
+                        </div>
+                        </th>
+                        <th pSortableColumn="typeName">
+                            <div class="flex align-items-center">
+                            Type
+                            <p-sortIcon field="typeName"></p-sortIcon>
+                            <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                <ng-template pTemplate="header">
+                                    <div class="px-3 pt-3 pb-0">
+                                        <span class="font-bold">Type</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
+                                    <p-multiSelect [ngModel]="value" [options]="Types" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+                                        <ng-template let-project let-option pTemplate="item" >
+                                            <div class="inline-block vertical-align-middle">
+                                                <span class="ml-1 mt-1">{{ option.name }}</span>
+                                            </div>
+                                        </ng-template>
+                                    </p-multiSelect>
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
+                        </th>
+                        <th pSortableColumn="ownerUsername">
+                            <div class="flex align-items-center">
+                            Owner
+                            <p-sortIcon field="ownerUsername"></p-sortIcon>
+                            <p-columnFilter type="text" field="ownerUsername" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pSortableColumn="creationDate">
+                            <div class="flex align-items-center">
+                            Creation Date
+                            <p-sortIcon field="creationDate"></p-sortIcon>
+                            <p-columnFilter type="date" field="creationDate" display="menu">
+                                <ng-template pTemplate="filter" let-filter="filterCallback">
+                                    <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
+                        </th>
+                        <th pSortableColumn="dueDate">
+                            <div class="flex align-items-center">
+                            Due Date
+                            <p-sortIcon field="dueDate"></p-sortIcon>
+                            <p-columnFilter type="date" field="dueDate" display="menu">
+                                <ng-template pTemplate="filter" let-filter="filterCallback">
+                                    <p-calendar dateFormat="dd/MM/yy" (onSelect)="filter($event)"></p-calendar>
+                                </ng-template>
+                            </p-columnFilter>
+                            </div>
+                        </th>
                         <th>Progress</th>
                     </tr>
                 </ng-template>
@@ -104,7 +174,7 @@
                                 <a style="text-decoration: none;" routerLink="projects/{{project.name}}">{{ project.name }}</a>
                             </div>
                         </td>
-                        <td style="width: 13vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
+                        <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
                             {{ project.key }}
                         </td>
                         <td style="width: 23vh;">
@@ -115,13 +185,13 @@
                             <span class="p-column-title" style="font-weight: bold">Owner</span>
                             {{ project.ownerUsername }}
                         </td>
-                        <td style="width: 20vh; ">
+                        <td style="width: 25vh; ">
                             <span class="p-column-title" style="font-weight: bold">Creation Date</span>
-                            {{ dateFormat(project.creationDate) }}
+                            {{ project.creationDate | date: 'dd/MM/yyyy' }}
                         </td>
                         <td style="width: 20vh; ">
                             <span class="p-column-title" style="font-weight: bold">Due Date</span>
-                            {{ dateFormat(project.dueDate) }}
+                            {{ project.dueDate | date: 'dd/MM/yyyy'   }}
                         </td>
                         <td style="display: block; ">
                             <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
