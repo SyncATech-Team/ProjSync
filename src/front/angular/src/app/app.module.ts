@@ -45,6 +45,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { ProjectTasksPageComponent } from './components/pages/project-page/proje
     NzSpinModule,
     NzIconModule.forRoot([]),
     OverlayPanelModule,
-    FileUploadModule
+    FileUploadModule,
+    CheckboxModule
   ],
   providers: [
     provideClientHydration(),
