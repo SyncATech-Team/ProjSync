@@ -46,6 +46,9 @@ import { EditProfilePageComponent } from './components/pages/edit-profile-page/e
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
@@ -96,6 +99,9 @@ import { CheckboxModule } from 'primeng/checkbox';
     OverlayPanelModule,
     FileUploadModule,
     ColorPickerModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    InputTextareaModule,
     CheckboxModule
   ],
   providers: [

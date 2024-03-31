@@ -2,7 +2,7 @@
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
         <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
-        <div id="content">
+        <!-- <div id="content">
             <p-toast></p-toast>
             <h2>General</h2>
             <div class="container" style="border: 1px solid black;border-radius: 10px;padding-bottom: 2%;">
@@ -32,6 +32,25 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+        <div id="left-side" class="container">
+            <span class="project-settings-title">Project Settings</span>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-group">
+                <span class="title">Name</span>
+                <!-- <input type="text" formControlName="name"> -->
+                <input type="text" pInputText formControlName="name" class="projectName" placeholder="Project name"/>
+                <span class="title">Category</span>
+                <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+                <span class="title">Description</span>
+                <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description"></textarea>
+                <div class="btns">
+                    <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
+                    <p-button label="Close" severity="secondary"></p-button>
+                </div>
+            </form>
+        </div>
+        <div class="container">
+            
         </div>
     </div>
 </div>

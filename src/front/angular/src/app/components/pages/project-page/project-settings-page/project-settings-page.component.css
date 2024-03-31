@@ -21,3 +21,54 @@
     height: 150px;
     border-radius: 20px;
 }
+
+#left-side{
+    margin : 2rem;
+}
+
+.project-settings-title{
+    color: #42526e;
+    display: block;
+    font-weight: 500;
+    margin: 12px 0px 24px;
+    font-size: 24px;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+}
+
+:host ::ng-deep .form-group .title {
+    font-weight: 600;
+    color: #5e6c84;
+    font-size: .8125rem;
+    padding: 0 0 8px;
+}
+
+:host ::ng-deep .form-group .projectName {
+    height: 2rem;
+}
+
+:host ::ng-deep .form-group .p-dropdown{
+    width: 100%;
+}
+
+:host ::ng-deep .form-group .dropdownCateg span{
+    margin-left: 8px;
+}
+
+:host ::ng-deep .form-group .dropdownCateg span,
+:host ::ng-deep .form-group .dropdownCateg li{
+    padding: 5px;
+}
+
+:host ::ng-deep .form-group .btns{
+    margin-top: 10px;
+}
+
+:host ::ng-deep .form-group .btns .p-button{
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
