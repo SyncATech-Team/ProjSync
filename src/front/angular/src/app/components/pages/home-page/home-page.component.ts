@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { Project } from '../../../_models/project.model';
 import { ProjectService } from '../../../_service/project.service';
+import { ProjectTypeService } from '../../../_service/project-type.service';
+import { ProjectType } from '../../../_models/project-type';
+
 
 
 @Component({
@@ -12,7 +15,8 @@ import { ProjectService } from '../../../_service/project.service';
 export class HomePageComponent implements OnInit {
 
   projects: Project[]=[];
-  
+  Types: ProjectType[]=[];
+
   projectsShow: any[] = [];
 
   searchTerm: string = '';
@@ -21,10 +25,15 @@ export class HomePageComponent implements OnInit {
   first = 0;
   rows = 10;
 
-  constructor(public accoutService: AccountService,private projectService:ProjectService) { }
+  constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService) { }
 
   ngOnInit(): void {
     this.initializeProjects();
+    this.projectTypes.getAllProjectTypes().subscribe({
+      next: (response: ProjectType[]) =>{
+        this.Types = response;
+      }
+    })
     this.filterProjects('public');
   }
 
@@ -89,10 +98,7 @@ export class HomePageComponent implements OnInit {
     this.rows = event.rows;
   }
 
-  /* Returns string from of the Date*/
-  dateFormat(date : Date){
-
-    return date.toString().split('T')[0];
+  test(tst : any){
+    console.log(tst);
   }
-  
 }
