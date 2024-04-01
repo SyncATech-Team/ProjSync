@@ -115,10 +115,10 @@
                                     </div>
                                 </ng-template>
                                 <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                    <p-multiSelect [ngModel]="value" [options]="Types" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+                                    <p-multiSelect [ngModel]="value" [options]="Types" placeholder="Any" (onChange)="filter($event.value)">
                                         <ng-template let-project let-option pTemplate="item" >
                                             <div class="inline-block vertical-align-middle">
-                                                <span class="ml-1 mt-1">{{ option.name }}</span>
+                                                <span class="ml-1 mt-1">{{ option }}</span>
                                             </div>
                                         </ng-template>
                                     </p-multiSelect>
