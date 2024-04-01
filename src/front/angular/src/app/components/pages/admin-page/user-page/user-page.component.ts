@@ -40,6 +40,8 @@ export class UserPageComponent implements OnInit {
   users: UserGetter[] = [];
   users_backup: UserGetter[] = [];
 
+  usersShow: any[] = [];
+
   roles$: Observable<CompanyRole[]> | undefined;
 
   initialUsername: string = '';
@@ -54,7 +56,8 @@ export class UserPageComponent implements OnInit {
     address: '',
     status: '',
     isVerified: false,
-    preferedLanguage: ''
+    preferedLanguage: '',
+    isActive: false,
   };
 
   searchTerm : string = '';
@@ -67,6 +70,8 @@ export class UserPageComponent implements OnInit {
   loading: boolean = true;
   activityValues: number[] = [0, 100];
   @ViewChild(Table) table!:Table;
+
+  visibilityFilter: boolean = true;
 
   //#endregion
 
@@ -95,6 +100,7 @@ export class UserPageComponent implements OnInit {
         next: response => {
           this.users = response;
           this.users_backup = response;
+          this.showDeactivated(false);
           // console.log(this.users);
         },
         error: error => {
@@ -257,9 +263,9 @@ export class UserPageComponent implements OnInit {
     let searchTerm = this.searchTerm.toLowerCase();
     if (searchTerm.trim() === '') {
       //Kreira se novi niz za istim elementima 
-      this.users = [...this.users_backup];
+      this.showDeactivated(false);
     } else {
-      this.users = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
+      this.usersShow = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
     }
   }
 
@@ -435,5 +441,29 @@ export class UserPageComponent implements OnInit {
     return d.toLocaleDateString() + " " + d.toLocaleTimeString();
   }
   //#endregion
+
+  // Koriste se pri filtriranju usera
+  // checkbox filter || checker se koristi kako bi znali da li zelimo da menjamo stanje tabele ili ne
+  showDeactivated(checker : boolean){
+    if(checker){
+      this.visibilityFilter = !this.visibilityFilter;
+    }
+
+    this.filterUsers(this.visibilityFilter);
+  }
+
+
+  // funkcija za filtriranje
+  filterUsers(filter :boolean ):void {
+
+    if(filter==true)
+    {
+      this.usersShow=this.users.filter((users)=> users.isActive==true);
+    }
+    else
+    {
+      this.usersShow=this.users.filter((users)=> users.isActive==false);
+    }
+  }
 
 }

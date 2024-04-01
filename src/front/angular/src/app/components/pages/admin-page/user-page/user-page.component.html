@@ -16,6 +16,7 @@
 
         <div id="controls" style="float: right;">
             <!-- Dodati polja za search, filter etc. -->
+            <!-- <p style="text-decoration:blueviolet;">URADI I OVO OVDE</p> -->
             <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
         </div>
 
@@ -37,7 +38,7 @@
             <!-- Table start -->
             <p-table
                 #dt2
-                [value]="users"
+                [value]="usersShow"
                 dataKey="username"
                 [globalFilterFields]="['username']"
                 [paginator]="true"
@@ -46,7 +47,7 @@
                 [rowsPerPageOptions]="[5, 10, 25, 50]"
                 [showCurrentPageReport]="true"
                 (onPage)="pageChange($event)"
-                currentPageReportTemplate="Showing {first} to {last} of {{users.length}} entries"
+                currentPageReportTemplate="Showing {first} to {last} of {{usersShow.length}} entries"
                 [tableStyle]="{'width': '100%'}"
                 responsiveLayout="stack" [breakpoint]="'960px'"
                 styleClass="p-datatable-striped">
@@ -69,7 +70,10 @@
                                 tooltipPosition="bottom" title="Export as PDF"></button>
                         </div>
 
+                        <!-- Search i Active user filter -->
                         <div class="filterTableOptions">
+                            <p style="margin:0; margin-left: 4%;">Deactivated Users</p>
+                            <input type="checkbox" style="margin: 4%;" (click)="showDeactivated(true)" > 
                             <div class="p-input-icon-left ml-auto">
                                 <i class="pi pi-search"></i>
                                 <input id="search-users-by-username" pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
