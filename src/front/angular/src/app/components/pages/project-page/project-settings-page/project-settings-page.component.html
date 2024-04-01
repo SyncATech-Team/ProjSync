@@ -1,9 +1,10 @@
+<p-toast></p-toast>
+<p-confirmPopup></p-confirmPopup>
 <div id="pageWraper">
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
         <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
         <!-- <div id="content">
-            <p-toast></p-toast>
             <h2>General</h2>
             <div class="container" style="border: 1px solid black;border-radius: 10px;padding-bottom: 2%;">
                 <label>Project name:</label>
@@ -36,14 +37,27 @@
         <div class="content">
             <div id="left-side" class="container col-6">
                 <span class="project-settings-title">Project Settings</span>
+
+                <!-- <span class="title">Project icon:</span>
+                <div class="container" id="projectIconUpdate">
+                    <div>
+                        <img *ngIf="1==1" src="../../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" alt="project-default-image">
+                    </div>
+                    <div class="container">
+                        <button type="button" class="btn btn-primary" ><i class="pi pi-upload"></i> Upload new</button>
+                    </div>
+                </div> -->
+
                 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-group">
                     <span class="title">Name</span>
-                    <!-- <input type="text" formControlName="name"> -->
                     <input type="text" pInputText formControlName="name" class="projectName" placeholder="Project name" [(ngModel)]="projectName2"/>
+
                     <span class="title">Category</span>
                     <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true" [(ngModel)]="projectType2"></p-dropdown>
+
                     <span class="title">Description</span>
                     <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description" [(ngModel)]="projectDescription2"></textarea>
+
                     <div class="btns">
                         <button type="submit" pButton pRipple label="Submit" class="p-button-primary" [disabled]="!projectName2"></button>
                         <p-button label="Close" severity="secondary"></p-button>
@@ -54,7 +68,6 @@
                 <div class="wrapper">
                     <div class="info">
                         <span class="title">Transfer owenership</span>
-                        <!-- <p>Transfer this project to another user.</p> -->
                         <p>Transfer this project to another user.</p>
                     </div>
                     <div class="btn-wrap">
@@ -65,11 +78,10 @@
                 <div class="wrapper">
                     <div class="info">
                         <span class="title">Deactivate project</span>
-                        <!-- <p>Transfer this project to another user.</p> -->
                         <p>Deactivate your project.</p>
                     </div>
                     <div class="btn-wrap">
-                        <button pButton pDanger label="Deactivate" class="button-setting del p-button-danger"></button>
+                        <button pButton pDanger (click)="openPopUp($event)" label="Deactivate" class="button-setting del p-button-danger"></button>
                     </div>
                 </div>
             </div>

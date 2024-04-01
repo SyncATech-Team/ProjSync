@@ -6,6 +6,7 @@ import { MessagePopupService } from '../../../../_service/message-popup.service'
 import { FormBuilder, FormGroup} from '@angular/forms';
 import { ProjectType } from '../../../../_models/project-type';
 import { ProjectTypeService } from '../../../../_service/project-type.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-project-settings-page',
@@ -42,7 +43,9 @@ export class ProjectSettingsPageComponent implements OnInit {
     private router:Router,
     private msgPopupService: MessagePopupService,
     private formBuilder: FormBuilder,
-    private projectTypeService: ProjectTypeService){
+    private projectTypeService: ProjectTypeService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService){
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.form = this.formBuilder.group({
       name: [''],
@@ -100,5 +103,20 @@ export class ProjectSettingsPageComponent implements OnInit {
           });
       }
     }
+  }
+
+  openPopUp(event : any){
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to deactivate this project?',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-sm rounded',
+      accept: () => {
+          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Project deactivated', life: 3000 });
+      },
+      reject: () => {
+          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+      }
+  });
   }
 }
