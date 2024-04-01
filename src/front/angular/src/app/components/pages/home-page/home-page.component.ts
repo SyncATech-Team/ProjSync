@@ -15,7 +15,7 @@ import { ProjectType } from '../../../_models/project-type';
 export class HomePageComponent implements OnInit {
 
   projects: Project[]=[];
-  Types: ProjectType[]=[];
+  Types: any[]=[];
 
   projectsShow: any[] = [];
 
@@ -31,7 +31,7 @@ export class HomePageComponent implements OnInit {
     this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
-        this.Types = response;
+        this.Types = response.map(item => item.name);
       }
     })
     this.filterProjects('public');
@@ -44,8 +44,10 @@ export class HomePageComponent implements OnInit {
         this.projects.forEach((project)=>{ 
           project.isExtanded = false;
           project.isFavorite = false;
-          this.filterProjects(this.visibilityFilter);
+          project.creationDate = new Date(project.creationDate);
+          project.dueDate = new Date(project.dueDate); 
         });
+        this.filterProjects(this.visibilityFilter);
       },
       error: (error) => {
         console.log(error);
