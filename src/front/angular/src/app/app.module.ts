@@ -50,6 +50,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ReactiveFormsModule,
     InputTextModule,
     InputTextareaModule,
-    CheckboxModule
+    CheckboxModule,
+    ConfirmPopupModule
   ],
   providers: [
     provideClientHydration(),

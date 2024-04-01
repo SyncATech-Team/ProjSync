@@ -33,24 +33,46 @@
                 </div>
             </div>
         </div> -->
-        <div id="left-side" class="container">
-            <span class="project-settings-title">Project Settings</span>
-            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-group">
-                <span class="title">Name</span>
-                <!-- <input type="text" formControlName="name"> -->
-                <input type="text" pInputText formControlName="name" class="projectName" placeholder="Project name" [(ngModel)]="projectName2"/>
-                <span class="title">Category</span>
-                <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true" [(ngModel)]="projectType2"></p-dropdown>
-                <span class="title">Description</span>
-                <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description" [value]="project.description"></textarea>
-                <div class="btns">
-                    <button type="submit" pButton pRipple label="Submit" class="p-button-primary" [disabled]="!projectName2"></button>
-                    <p-button label="Close" severity="secondary"></p-button>
+        <div class="content">
+            <div id="left-side" class="container col-6">
+                <span class="project-settings-title">Project Settings</span>
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-group">
+                    <span class="title">Name</span>
+                    <!-- <input type="text" formControlName="name"> -->
+                    <input type="text" pInputText formControlName="name" class="projectName" placeholder="Project name" [(ngModel)]="projectName2"/>
+                    <span class="title">Category</span>
+                    <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true" [(ngModel)]="projectType2"></p-dropdown>
+                    <span class="title">Description</span>
+                    <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description" [(ngModel)]="projectDescription2"></textarea>
+                    <div class="btns">
+                        <button type="submit" pButton pRipple label="Submit" class="p-button-primary" [disabled]="!projectName2"></button>
+                        <p-button label="Close" severity="secondary"></p-button>
+                    </div>
+                </form>
+            </div>
+            <div id="right-side" class="container">
+                <div class="wrapper">
+                    <div class="info">
+                        <span class="title">Transfer owenership</span>
+                        <!-- <p>Transfer this project to another user.</p> -->
+                        <p>Transfer this project to another user.</p>
+                    </div>
+                    <div class="btn-wrap">
+                        <button pButton pRipple label="Transfer" class="button-setting"></button>
+                    </div>
                 </div>
-            </form>
-        </div>
-        <div class="container">
-            
+
+                <div class="wrapper">
+                    <div class="info">
+                        <span class="title">Deactivate project</span>
+                        <!-- <p>Transfer this project to another user.</p> -->
+                        <p>Deactivate your project.</p>
+                    </div>
+                    <div class="btn-wrap">
+                        <button pButton pDanger label="Deactivate" class="button-setting del p-button-danger"></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

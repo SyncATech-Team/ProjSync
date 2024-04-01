@@ -20,6 +20,7 @@ export class ProjectSettingsPageComponent implements OnInit {
   //Za ispis u input poljima default-no
   projectName2: string | null = '';
   projectType2: string | null = '';
+  projectDescription2: string | null = '';
 
   projectTypes: ProjectType []=[];
 
@@ -67,6 +68,7 @@ export class ProjectSettingsPageComponent implements OnInit {
         //Za ispis u input poljima default-no
         this.projectName2 = this.project.name;
         this.projectType2 = this.project.typeName;
+        this.projectDescription2 = this.project.description;
 
         this.form.patchValue({
           category: this.projectTypes.find(type => type.name === this.project.typeName)
