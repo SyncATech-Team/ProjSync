@@ -73,7 +73,7 @@
                         <!-- Search i Active user filter -->
                         <div class="filterTableOptions">
                             <p style="margin:0; margin-left: 4%;">Deactivated Users</p>
-                            <input type="checkbox" style="margin: 4%;" (click)="showDeactivated(true)" > 
+                            <input id="checkbox-deactivated-user" type="checkbox" style="margin: 4%;" (click)="showDeactivated(true)" > 
                             <div class="p-input-icon-left ml-auto">
                                 <i class="pi pi-search"></i>
                                 <input id="search-users-by-username" pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
