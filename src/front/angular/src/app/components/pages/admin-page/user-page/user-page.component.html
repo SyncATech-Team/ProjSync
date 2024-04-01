@@ -16,6 +16,7 @@
 
         <div id="controls" style="float: right;">
             <!-- Dodati polja za search, filter etc. -->
+            <!-- <p style="text-decoration:blueviolet;">URADI I OVO OVDE</p> -->
             <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
         </div>
 
@@ -33,21 +34,6 @@
                     [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
             </div>
 
-
-            <ul class="nav nav-tabs">
-
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab"
-                        (click)="filterUsers(true)">Active users</a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab"
-                        (click)="filterUsers(false)">Nonactive users</a>
-                </li>
-    
-            </ul>
 
             <!-- Table start -->
             <p-table
@@ -84,7 +70,10 @@
                                 tooltipPosition="bottom" title="Export as PDF"></button>
                         </div>
 
+                        <!-- Search i Active user filter -->
                         <div class="filterTableOptions">
+                            <p style="margin:0; margin-left: 4%;">Deactivated Users</p>
+                            <input type="checkbox" style="margin: 4%;" (click)="showDeactivated(true)" > 
                             <div class="p-input-icon-left ml-auto">
                                 <i class="pi pi-search"></i>
                                 <input id="search-users-by-username" pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>

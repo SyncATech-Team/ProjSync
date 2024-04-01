@@ -100,7 +100,7 @@ export class UserPageComponent implements OnInit {
         next: response => {
           this.users = response;
           this.users_backup = response;
-          this.filterUsers(true);
+          this.showDeactivated(false);
           // console.log(this.users);
         },
         error: error => {
@@ -263,7 +263,7 @@ export class UserPageComponent implements OnInit {
     let searchTerm = this.searchTerm.toLowerCase();
     if (searchTerm.trim() === '') {
       //Kreira se novi niz za istim elementima 
-      this.usersShow = [...this.users_backup];
+      this.showDeactivated(false);
     } else {
       this.usersShow = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
     }
@@ -442,8 +442,19 @@ export class UserPageComponent implements OnInit {
   }
   //#endregion
 
+  // Koriste se pri filtriranju usera
+  // checkbox filter || checker se koristi kako bi znali da li zelimo da menjamo stanje tabele ili ne
+  showDeactivated(checker : boolean){
+    if(checker){
+      this.visibilityFilter = !this.visibilityFilter;
+    }
+
+    this.filterUsers(this.visibilityFilter);
+  }
+
+
+  // funkcija za filtriranje
   filterUsers(filter :boolean ):void {
-    this.visibilityFilter = filter;
 
     if(filter==true)
     {
