@@ -17,6 +17,10 @@ export class ProjectSettingsPageComponent implements OnInit {
   form : FormGroup;
   projectName: string | null = '';
 
+  //Za ispis u input poljima default-no
+  projectName2: string | null = '';
+  projectType2: string | null = '';
+
   projectTypes: ProjectType []=[];
 
   project: Project = {
@@ -59,6 +63,14 @@ export class ProjectSettingsPageComponent implements OnInit {
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response)=>{
         this.project= response;
+
+        //Za ispis u input poljima default-no
+        this.projectName2 = this.project.name;
+        this.projectType2 = this.project.typeName;
+
+        this.form.patchValue({
+          category: this.projectTypes.find(type => type.name === this.project.typeName)
+        });
       },
       error: (error)=>{
         console.log(error);
@@ -71,20 +83,20 @@ export class ProjectSettingsPageComponent implements OnInit {
     this.project.description = this.form.value.description;
     this.project.typeName = this.form.value.category.name;
     
-    console.log(this.projectName);
-    console.log(this.project.name);
-    if(this.projectName && this.projectName!=this.project.name){
-      this.projectService.updateProject(this.projectName,this.project).subscribe({
-        next:(response)=>{
-            this.router.navigate(["home/projects/settings/"+this.project.name]);
-            this.projectName=this.project.name;
-            this.msgPopupService.showSuccess("Project name updated");
-          },
-          error: (error)=>{
-            console.log(error);
-            this.msgPopupService.showError("Project name failed to update");
-          }
-        });
+    if(this.projectName){
+      if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName){
+        this.projectService.updateProject(this.projectName,this.project).subscribe({
+          next:(response)=>{
+              this.router.navigate(["home/projects/settings/"+this.project.name]);
+              this.projectName=this.project.name;
+              this.msgPopupService.showSuccess("Project name updated");
+            },
+            error: (error)=>{
+              console.log(error);
+              this.msgPopupService.showError("Project name failed to update");
+            }
+          });
+      }
     }
   }
 }

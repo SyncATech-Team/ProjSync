@@ -38,13 +38,13 @@
             <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-group">
                 <span class="title">Name</span>
                 <!-- <input type="text" formControlName="name"> -->
-                <input type="text" pInputText formControlName="name" class="projectName" placeholder="Project name"/>
+                <input type="text" pInputText formControlName="name" class="projectName" placeholder="Project name" [(ngModel)]="projectName2"/>
                 <span class="title">Category</span>
-                <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+                <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true" [(ngModel)]="projectType2"></p-dropdown>
                 <span class="title">Description</span>
-                <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description"></textarea>
+                <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description" [value]="project.description"></textarea>
                 <div class="btns">
-                    <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
+                    <button type="submit" pButton pRipple label="Submit" class="p-button-primary" [disabled]="!projectName2"></button>
                     <p-button label="Close" severity="secondary"></p-button>
                 </div>
             </form>

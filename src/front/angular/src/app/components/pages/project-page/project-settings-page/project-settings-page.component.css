@@ -56,6 +56,7 @@
 
 :host ::ng-deep .form-group .dropdownCateg span{
     margin-left: 8px;
+    height: 2rem;
 }
 
 :host ::ng-deep .form-group .dropdownCateg span,
