@@ -2,13 +2,11 @@
     display: flex;
 }
 
-#content {
-    margin-top: 2%;
-    margin-left: 2%;
-    margin-right: 2%;
-    height: 100vh;
+.content {
+    display: flex;
     width: 100%;
-    overflow-y: auto;
+    height: 100vh;
+    overflow-y: scroll;
 }
 
 #projectIconUpdate{
@@ -20,4 +18,138 @@
     width: 150px;
     height: 150px;
     border-radius: 20px;
+}
+
+#left-side{
+    margin : 2rem;
+}
+
+.titleUpload{
+    font-weight: 600;
+    color: #5e6c84;
+    font-size: 1rem;
+    padding: 0 0 8px;
+}
+
+.upload{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.upload .icon-image{
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.upload .icon-image img{
+    width: 7rem;
+    border-radius: 10px;
+}
+
+:host ::ng-deep .buttonUpload{
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.project-settings-title{
+    color: #42526e;
+    display: block;
+    font-weight: 500;
+    margin: 12px 0px 24px;
+    font-size: 24px;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+}
+
+:host ::ng-deep .form-group .title {
+    font-weight: 600;
+    color: #5e6c84;
+    font-size: .8125rem;
+    padding: 0 0 8px;
+}
+
+:host ::ng-deep .form-group .projectName {
+    height: 2rem;
+}
+
+:host ::ng-deep .form-group .p-dropdown{
+    width: 100%;
+}
+
+:host ::ng-deep .form-group .dropdownCateg span{
+    margin-left: 8px;
+    height: 2rem;
+}
+
+:host ::ng-deep .form-group .dropdownCateg span,
+:host ::ng-deep .form-group .dropdownCateg li{
+    padding: 5px;
+}
+
+:host ::ng-deep .form-group .btns{
+    margin-top: 10px;
+}
+
+:host ::ng-deep .form-group .btns .p-button{
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+#right-side{
+    padding: 2rem;
+    margin: 2rem 0;
+    /* height: 100vh; */
+    border-left: 1px solid rgb(188, 185, 185);
+}
+
+#right-side .wrapper{
+    margin-bottom: 10px;
+    border-radius: 6px;
+    background-color: #f4eff1;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wrapper .title{
+    color: #42526e;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.wrapper p{
+    margin-bottom: 0;
+    color: #5e6c84;
+}
+
+:host ::ng-deep .wrapper .button-setting{
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+:host ::ng-deep .wrapper .del{
+    background-color: rgba(240, 91, 91, 0.8);
+}
+
+@media screen and (max-width: 900px) {
+    .content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content #left-side{
+        width: 100%;
+        margin: 0;
+    }
+    
+    #right-side{
+        border-left: none;  
+    }
 }
