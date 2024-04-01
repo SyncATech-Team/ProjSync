@@ -34,10 +34,25 @@
             </div>
 
 
+            <ul class="nav nav-tabs">
+
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab"
+                        (click)="filterUsers(true)">Active users</a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab"
+                        (click)="filterUsers(false)">Nonactive users</a>
+                </li>
+    
+            </ul>
+
             <!-- Table start -->
             <p-table
                 #dt2
-                [value]="users"
+                [value]="usersShow"
                 dataKey="username"
                 [globalFilterFields]="['username']"
                 [paginator]="true"
@@ -46,7 +61,7 @@
                 [rowsPerPageOptions]="[5, 10, 25, 50]"
                 [showCurrentPageReport]="true"
                 (onPage)="pageChange($event)"
-                currentPageReportTemplate="Showing {first} to {last} of {{users.length}} entries"
+                currentPageReportTemplate="Showing {first} to {last} of {{usersShow.length}} entries"
                 [tableStyle]="{'width': '100%'}"
                 responsiveLayout="stack" [breakpoint]="'960px'"
                 styleClass="p-datatable-striped">
