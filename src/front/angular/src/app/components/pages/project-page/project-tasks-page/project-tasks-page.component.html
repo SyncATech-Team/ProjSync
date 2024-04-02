@@ -130,12 +130,13 @@
                                     <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
                                 </div>
                             </td>
-                            <td><span class="p-column-title" style="font-weight: bold;">Priority</span>
-                                <p-tag [value]="task.priorityName" [severity]="getSeverity(task.priorityName)"></p-tag>
+                            <td class="fill-td">
+                                <span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                <p-tag class="p-tag-fill" [value]="task.priorityName" [severity]="getSeverity(task.priorityName)"></p-tag>
                             </td>
-                            <td>
+                            <td class="fill-td">
                                 <span class="p-column-title" style="font-weight: bold;">Type</span>
-                                <p-tag [value]="task.typeName" [severity]="getSeverity(task.typeName)"></p-tag>
+                                <p-tag class="p-tag-fill" [value]="task.typeName" [severity]="getSeverity(task.typeName)"></p-tag>
                             </td>
                             <td>
                                 <span class="p-column-title" style="font-weight: bold">Reporter</span>

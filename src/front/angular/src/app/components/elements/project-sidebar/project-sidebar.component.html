@@ -1,11 +1,12 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : '' ">
     <!-- Header od sidenav -->
     <div class="logo-container">
-        <img class="logo" (click)="toggleCollapse()" src="../../../../assets/Icons/ProjectImg.png">
-        <div class="logo-header" *ngIf="collapsed">
-            <div class="logo-text">{{ projectName ? projectName : 'Project Name' }}</div>
-            <p>Project type: {{ projectType }}</p>
-            <p>Project key: {{ projectKey }}</p>
+        <div id="image-title">
+            <img class="logo" (click)="toggleCollapse()" src="../../../../assets/Icons/ProjectImg.png">
+            <div class="logo-header" *ngIf="collapsed">
+                <span class="logo-text">{{ getProjectName() }}</span><br>
+                <span>Key: {{ projectKey }}</span>
+            </div>
         </div>
         <button class="button-close" *ngIf="collapsed" (click)="closeSidenav()">
             <i class="fa-solid fa-xmark"></i>

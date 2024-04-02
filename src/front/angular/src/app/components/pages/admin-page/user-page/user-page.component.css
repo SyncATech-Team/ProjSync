@@ -130,6 +130,7 @@ div.div-image img {
 #search-users-by-username{
     padding: 4px 34px;
     border-radius: 6px;
+    width: 100%;
 }
 
 .deleteBtn button.active {
@@ -146,4 +147,17 @@ div.div-image img {
 
 .inactive-user {
     opacity: 0.5;
+}
+
+#deactive-users-option-div {
+    display: flex;
+    align-items: center;
+    width: 200px;
+}
+
+@media (max-width: 960px) {
+    #header-content {
+        flex-direction: column;
+        align-items: start;
+    }
 }
