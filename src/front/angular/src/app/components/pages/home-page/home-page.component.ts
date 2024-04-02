@@ -103,4 +103,16 @@ export class HomePageComponent implements OnInit {
   test(tst : any){
     console.log(tst);
   }
+
+  MAX_PROJECT_NAME_LENGTH_DISPLAY = 20;
+  getProjectName(projectName: string): string {
+
+    let s: string = "";
+    if(projectName.length > this.MAX_PROJECT_NAME_LENGTH_DISPLAY)
+      s = projectName.substring(0, this.MAX_PROJECT_NAME_LENGTH_DISPLAY) + "...";
+    else
+      s = projectName;
+
+    return s;
+  }
 }

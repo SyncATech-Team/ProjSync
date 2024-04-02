@@ -171,7 +171,9 @@
                                 </ng-template>
                             </div>
                             <div>
-                                <a style="text-decoration: none;" routerLink="projects/{{project.name}}">{{ project.name }}</a>
+                                <a style="text-decoration: none;" 
+                                    routerLink="projects/{{project.name}}"
+                                    title="{{project.name}}">{{ getProjectName(project.name) }}</a>
                             </div>
                         </td>
                         <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>

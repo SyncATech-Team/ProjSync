@@ -1,7 +1,9 @@
-import { Component, Output, EventEmitter, HostListener, Input } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener, Input, OnInit } from '@angular/core';
 import { navbarData } from './nav-data';
 import { AccountService } from '../../../_service/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectService } from '../../../_service/project.service';
+import { Project } from '../../../_models/project.model';
 
 interface SideNavToggle{
   screenWidth : number;
@@ -13,7 +15,7 @@ interface SideNavToggle{
   templateUrl: './project-sidebar.component.html',
   styleUrl: './project-sidebar.component.css'
 })
-export class ProjectSidebarComponent {
+export class ProjectSidebarComponent implements OnInit {
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
 
   //TRUE -> otvoren side nav
@@ -22,13 +24,33 @@ export class ProjectSidebarComponent {
   screenWidth = 0;
   navData = navbarData;
   @Input() projectName: string | null = '';
-  @Input() projectType: string = '';
-  @Input() projectKey: string = '';  
+  projectType: string = "";
+  projectKey: string = "";
 
-  constructor(public accoutService: AccountService, private router: Router,private route: ActivatedRoute) { 
+  project: Project | null = null;
+
+  MAX_PROJECT_NAME: number = 12;
+
+  constructor(public accoutService: AccountService, private router: Router,
+      private route: ActivatedRoute, private projectService: ProjectService) { 
     this.screenWidth = window.innerWidth;
     this.setCollapsedState();
     this.projectName = route.snapshot.paramMap.get('projectName');
+  }
+  
+  ngOnInit(): void {
+    
+    this.projectService.getProjectByName(this.projectName).subscribe({
+      next: (response) => {
+        this.project = response;
+        this.projectType = this.project.typeName;
+        this.projectKey = this.project.key;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
   }
 
   @HostListener('window:resize', ['$event'])
@@ -58,5 +80,17 @@ export class ProjectSidebarComponent {
 
   emitToggleEvent() {
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+  }
+  
+  getProjectName(): string {
+    if(!this.projectName) return "Project Name";
+    
+    let s: string;
+    if(this.projectName.length > this.MAX_PROJECT_NAME)
+      s = this.projectName.substring(0, this.MAX_PROJECT_NAME) + "...";
+    else
+      s = this.projectName;
+
+    return s;
   }
 }

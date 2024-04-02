@@ -28,8 +28,10 @@
                 <p-button 
                     type="button" icon="pi pi-chevron-left" (click)="prev()" 
                     [disabled]="isFirstPage()"styleClass="p-button-text"></p-button>
+                
                 <p-button type="button" icon="pi pi-refresh" (click)="reset()" 
                     styleClass="p-button-text"></p-button>
+                
                 <p-button type="button" icon="pi pi-chevron-right" (click)="next()"
                     [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
             </div>
@@ -71,14 +73,16 @@
                         </div>
 
                         <!-- Search i Active user filter -->
-                        <div class="filterTableOptions">
-                            <p style="margin:0; margin-left: 4%;">Deactivated Users</p>
-                            <input type="checkbox" style="margin: 4%;" (click)="showDeactivated(true)" > 
+                            
+                            <div id="deactive-users-option-div">
+                                <input id="checkbox-deactivated-user" type="checkbox" (click)="showDeactivated(true)" > 
+                                <label for="checkbox-deactivated-user" style="margin-left: 1%;">Deactivated Users</label>
+                            </div>
+
                             <div class="p-input-icon-left ml-auto">
                                 <i class="pi pi-search"></i>
                                 <input id="search-users-by-username" pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search keyword"/>
                             </div>
-                        </div>
                     </div>
                 </ng-template>
                 <!-- End -->

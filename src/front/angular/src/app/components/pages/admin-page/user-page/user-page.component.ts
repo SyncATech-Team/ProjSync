@@ -39,8 +39,7 @@ export class UserPageComponent implements OnInit {
   
   users: UserGetter[] = [];
   users_backup: UserGetter[] = [];
-
-  usersShow: any[] = [];
+  usersShow: UserGetter[] = [];
 
   roles$: Observable<CompanyRole[]> | undefined;
 
@@ -145,6 +144,7 @@ export class UserPageComponent implements OnInit {
     this.users = this.users_backup;
     this.searchTerm='';
     this.table.reset();
+    this.showDeactivated(false);
     this.ngOnInit();  // proveriti da li moze bolje - ovako je radjeno da bi se prikazivala slika korisnika
   }
   /**
@@ -221,6 +221,7 @@ export class UserPageComponent implements OnInit {
               this.msgPopupService.showSuccess("User deactivated");
             }
             this.table.reset();
+            this.showDeactivated(false);
           },
           error: error => {
             this.msgPopupService.showError("Unable to deactive user");
