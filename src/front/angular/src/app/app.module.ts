@@ -48,7 +48,12 @@ import { EditProfilePageComponent } from './components/pages/edit-profile-page/e
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -100,13 +105,18 @@ import { CheckboxModule } from 'primeng/checkbox';
     OverlayPanelModule,
     FileUploadModule,
     ColorPickerModule,
-    CheckboxModule
+    ReactiveFormsModule,
+    InputTextModule,
+    InputTextareaModule,
+    CheckboxModule,
+    ConfirmPopupModule
   ],
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

@@ -10,7 +10,6 @@ import { PasswordResetPageComponent } from './components/pages/password-reset-pa
 import { authGuard } from './_guards/auth.guard';
 import { adminGuard } from './_guards/admin.guard';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
-import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { ProjectSummaryPageComponent } from './components/pages/project-page/project-summary-page/project-summary-page.component';
 import { ProjectPeoplePageComponent } from './components/pages/project-page/project-people-page/project-people-page.component';
 import { ProjectTasksPageComponent } from './components/pages/project-page/project-tasks-page/project-tasks-page.component';
@@ -31,8 +30,8 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomePageComponent },
       { path: 'home/edit-profile', component: EditProfilePageComponent },
-      { path: 'home/projects', component: ProjectPageComponent },
-      { path: 'home/projects/:projectName', component: ProjectPageComponent },
+      { path: 'home/projects', component: ProjectTasksPageComponent },
+      { path: 'home/projects/:projectName', component: ProjectTasksPageComponent },
       { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent},
       { path: 'home/projects/people/:projectName', component: ProjectPeoplePageComponent},
       { path: 'home/projects/tasks/:projectName', component: ProjectTasksPageComponent },
