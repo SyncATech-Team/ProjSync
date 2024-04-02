@@ -9,5 +9,5 @@ export const adminGuard: CanActivateFn = (route, state) => {
 
   if(!user) return false;
   if(user.roles.includes("Admin")) return true;
-  return inject(Router).createUrlTree(['/login']); //promeniti da route ne bude login vec 404 not found ("Jos uvek nije napravljen")
+  return inject(Router).createUrlTree(['/pageNotFound']);
 };
