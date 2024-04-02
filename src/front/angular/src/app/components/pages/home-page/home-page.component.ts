@@ -4,6 +4,7 @@ import { Project } from '../../../_models/project.model';
 import { ProjectService } from '../../../_service/project.service';
 import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectType } from '../../../_models/project-type';
+import { CompanyroleService } from '../../../_service/companyrole.service';
 
 
 
@@ -25,7 +26,9 @@ export class HomePageComponent implements OnInit {
   first = 0;
   rows = 10;
 
-  constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService) { }
+  permitions: any;
+
+  constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService,private companyroleService: CompanyroleService) { }
 
   ngOnInit(): void {
     this.initializeProjects();
@@ -33,7 +36,11 @@ export class HomePageComponent implements OnInit {
       next: (response: ProjectType[]) =>{
         this.Types = response.map(item => item.name);
       }
-    })
+    });
+    
+    var user = this.accoutService.getCurrentUser();
+    if(user?.permitions)
+      this.permitions = user.permitions;
     this.filterProjects('public');
   }
 
