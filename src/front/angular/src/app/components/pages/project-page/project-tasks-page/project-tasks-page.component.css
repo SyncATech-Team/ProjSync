@@ -13,3 +13,19 @@
     height: 100vh;
     overflow-y: auto;
 }
+
+@media (min-width: 960px) {
+    :host  ::ng-deep .p-tag-fill span {
+        width: max-content;
+    }
+}
+
+@media (max-width: 960px) {
+    :host  ::ng-deep .p-tag-fill span {
+        width: 100%;
+    }
+}
+
+.fill-td {
+    text-align: center;
+}
