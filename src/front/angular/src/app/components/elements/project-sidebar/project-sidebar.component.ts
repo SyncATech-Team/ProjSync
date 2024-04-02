@@ -63,21 +63,6 @@ export class ProjectSidebarComponent implements OnInit {
     });
 
   }
-  
-  ngOnInit(): void {
-    
-    this.projectService.getProjectByName(this.projectName).subscribe({
-      next: (response) => {
-        this.project = response;
-        this.projectType = this.project.typeName;
-        this.projectKey = this.project.key;
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
-
-  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
