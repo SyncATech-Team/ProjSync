@@ -6,10 +6,12 @@ namespace backAPI.Controllers
     public class ImagesController : BaseApiController
     {
         private readonly IImageRepository _imageRepository;
+        private readonly IUsersRepository _usersRepository;
 
-        public ImagesController(IImageRepository imageRepository)
+        public ImagesController(IImageRepository imageRepository, IUsersRepository usersRepository)
         {
             _imageRepository = imageRepository;
+            _usersRepository = usersRepository;
         }
 
         [HttpPost("user/{username}")]
@@ -27,24 +29,7 @@ namespace backAPI.Controllers
                 return BadRequest("Failed to upload image");
             }
 
-            return Ok(new { ImageUrl = imageUrl });
-        }
-
-        [HttpPost("other")]
-        public async Task<ActionResult> UploadOtherImage(IFormFile imageFile)
-        {
-            if (imageFile == null || imageFile.Length == 0)
-            {
-                return BadRequest("Invalid image file");
-            }
-
-            var imageUrl = await _imageRepository.UploadOtherImage(imageFile);
-
-            if (imageUrl == null)
-            {
-                return BadRequest("Failed to upload image");
-            }
-
+            await _usersRepository.UpdateUserProfilePhoto(username, imageUrl);
             return Ok(new { ImageUrl = imageUrl });
         }
     }
