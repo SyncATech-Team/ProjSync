@@ -5,7 +5,6 @@ import { MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { UserProfilePicture } from '../../../_service/userProfilePhoto';
-import { DomSanitizer } from '@angular/platform-browser';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -41,8 +40,7 @@ export class EditProfilePageComponent implements OnInit {
   constructor(private userService: UserService,
     private messageService: MessageService,
     private msgPopupService: MessagePopupService,
-    private userProfilePhoto: UserProfilePicture,
-    private _sanitizer: DomSanitizer) {}
+    private userProfilePhoto: UserProfilePicture) {}
 
 
   ngOnInit(): void {
@@ -53,7 +51,9 @@ export class EditProfilePageComponent implements OnInit {
         this.userProfilePhoto.getUserImage(this.user.username).subscribe({
           next: response => {
             this.profilePicturePath = response['fileContents'];
-            console.log(this.profilePicturePath);
+            // console.log(this.profilePicturePath);
+            this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
+            console.log(this.profilePicturePath)
         },
           error: error => {
             console.log(error);
@@ -81,7 +81,7 @@ export class EditProfilePageComponent implements OnInit {
     if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
     if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
     // return "../../../../assets/images/UserProfileImages/" + this.user.profilePhoto;
-    return this._sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + this.profilePicturePath);
+    return this.profilePicturePath;
   }
 
   getFirstName() {
@@ -122,4 +122,14 @@ export class EditProfilePageComponent implements OnInit {
     });
   } 
 
+  decodeBase64Image(base64String: string) {
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Promenite tip slike ako nije JPEG
+    return URL.createObjectURL(blob);
+  }
 }
