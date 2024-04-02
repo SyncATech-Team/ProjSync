@@ -16,6 +16,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   tableBody: string='body';
   dataKey: string = 'name';
   groupRowsBy: string = '';
+  visible: boolean = true;
+  visibleSide: boolean = true;
 
   tasks: any[]=[
     {
@@ -204,7 +206,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.first = event.first;
     this.rows = event.rows;
   }
-  visible: boolean = true;
+  
   changeView():void {
     if(this.groupView){
       this.tableBody='rowexpansion';

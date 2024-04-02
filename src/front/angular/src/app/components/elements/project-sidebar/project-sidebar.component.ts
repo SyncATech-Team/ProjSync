@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, HostListener, Input } from '@angular/c
 import { navbarData } from './nav-data';
 import { AccountService } from '../../../_service/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CompanyroleService } from '../../../_service/companyrole.service';
 
 interface SideNavToggle{
   screenWidth : number;
@@ -24,11 +25,21 @@ export class ProjectSidebarComponent {
   @Input() projectName: string | null = '';
   @Input() projectType: string = '';
   @Input() projectKey: string = '';  
+  permitions: any;
 
-  constructor(public accoutService: AccountService, private router: Router,private route: ActivatedRoute) { 
+  constructor(public accoutService: AccountService, private router: Router,private route: ActivatedRoute,private companyroleService: CompanyroleService) { 
     this.screenWidth = window.innerWidth;
     this.setCollapsedState();
     this.projectName = route.snapshot.paramMap.get('projectName');
+    var user = this.accoutService.getCurrentUser();
+    if(user?.permitions)
+      this.permitions = user.permitions;
+    if(this.permitions.canManageProjects === 'False')
+      this.navData = this.navData.filter((item)=> item.label != 'Project settings');
+        
+    if(this.permitions.canManageTasks === 'False')
+      this.navData = this.navData.filter((item)=> item.label != 'Create task');
+
   }
 
   @HostListener('window:resize', ['$event'])

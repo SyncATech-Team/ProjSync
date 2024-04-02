@@ -1,11 +1,11 @@
 <div id="pageWraper">
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
-        <app-project-sidebar></app-project-sidebar>
+        <app-project-sidebar *ngIf="visibleSide" [projectName]="projectName"></app-project-sidebar>
         <div id="content">
             <h2>Tasks</h2>
             <div id="tasks">
-
+  
                 <p-table
                     #dt1
                     *ngIf="visible"
@@ -124,28 +124,28 @@
                     <ng-template pTemplate="{{tableBody}}" let-task>
                         <tr>
     
-                            <td><span class="p-column-title" style="font-weight: bold;">Name</span>
+                            <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                 
                                 <div>
                                     <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
                                 </div>
                             </td>
-                            <td><span class="p-column-title" style="font-weight: bold;">Priority</span>
+                            <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Priority</span>
                                 <p-tag [value]="task.priorityName" [severity]="getSeverity(task.priorityName)"></p-tag>
                             </td>
-                            <td>
+                            <td style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold;">Type</span>
                                 <p-tag [value]="task.typeName" [severity]="getSeverity(task.typeName)"></p-tag>
                             </td>
-                            <td>
+                            <td style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Reporter</span>
                                 {{ task.reporterUsername }}
                             </td>
-                            <td>
+                            <td style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Due Date</span>
                                 {{ task.dueDate | date : 'dd/MM/yyyy' }}
                             </td>
-                            <td>
+                            <td style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Percentage</span>
                                 {{ task.percentage}} 
                             </td>

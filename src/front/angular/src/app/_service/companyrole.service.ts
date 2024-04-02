@@ -26,6 +26,10 @@ export class CompanyroleService {
     );
   }
 
+  getCompanyRoleByName(companyRoleName: string){
+    return this.http.get<CompanyRole>(this.baseUrl + `Companyroles/${companyRoleName}`);
+  }
+
   create(role: CompanyRole) {
     return this.http.post(this.baseUrl + 'Companyroles', role).pipe(
 
