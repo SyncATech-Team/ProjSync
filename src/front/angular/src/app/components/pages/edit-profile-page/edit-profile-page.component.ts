@@ -4,6 +4,8 @@ import { UserService } from '../../../_service/user.service';
 import { MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { UserProfilePicture } from '../../../_service/userProfilePhoto';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -34,8 +36,13 @@ export class EditProfilePageComponent implements OnInit {
     isActive: false
   };
 
-  constructor(private userService: UserService, private messageService: MessageService,
-    private msgPopupService: MessagePopupService) {}
+  profilePicturePath : string = ''; 
+
+  constructor(private userService: UserService,
+    private messageService: MessageService,
+    private msgPopupService: MessagePopupService,
+    private userProfilePhoto: UserProfilePicture,
+    private _sanitizer: DomSanitizer) {}
 
 
   ngOnInit(): void {
@@ -43,11 +50,20 @@ export class EditProfilePageComponent implements OnInit {
       next: response => {
         this.user = response;
         this.editUser = response;
+        this.userProfilePhoto.getUserImage(this.user.username).subscribe({
+          next: response => {
+            this.profilePicturePath = response['fileContents'];
+            console.log(this.profilePicturePath);
+        },
+          error: error => {
+            console.log(error);
+        }
+        });
       },
       error: error => {
         console.log(error.error);
       }
-    })
+    });
   }
 
   onBasicUploadAuto(event: FileUploadEvent) {
@@ -64,7 +80,8 @@ export class EditProfilePageComponent implements OnInit {
   getProfilePhoto() {
     if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
     if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    return "../../../../assets/images/UserProfileImages/" + this.user.profilePhoto;
+    // return "../../../../assets/images/UserProfileImages/" + this.user.profilePhoto;
+    return this._sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + this.profilePicturePath);
   }
 
   getFirstName() {

@@ -46,7 +46,8 @@ export class NavBarComponent implements OnInit {
   getProfilePhoto() {
     if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
     if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    return "../../../../assets/images/UserProfileImages/" + this.user.profilePhoto;
+    // return "../../../../assets/images/UserProfileImages/" + this.user.profilePhoto;
+    return "";
   }
 
   getFullName() {
