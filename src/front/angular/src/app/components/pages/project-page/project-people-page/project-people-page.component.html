@@ -1,14 +1,12 @@
 <app-nav-bar></app-nav-bar>
 <div class="wrapper">
-    <div id="options">
-        <app-project-sidebar 
+    <app-project-sidebar 
     [projectName]="projectName"></app-project-sidebar>
     
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
-    </div>
     
-    <div class="container">
+    <div class="content">
     <!-- Numeracija strana -->
         <p-table
             #dt
