@@ -8,7 +8,6 @@ import { environment } from '../../environments/environment';
 export class UserProfilePicture {
 
     baseUrl = environment.apiUrl;
-    profilePictureChanged = new EventEmitter<string>();
 
     constructor(private http: HttpClient) { }
 

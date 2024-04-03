@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../_service/user.service';
@@ -9,6 +9,9 @@ import { UserProfilePicture } from '../../../_service/userProfilePhoto';
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
+})
+@Injectable({
+  providedIn: 'root'
 })
 export class NavBarComponent implements OnInit {
 
@@ -30,6 +33,7 @@ export class NavBarComponent implements OnInit {
           next: response => {
             this.profilePicturePath = response['fileContents'];
             this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
+            this.getProfilePhoto();
         },
           error: error => {
             console.log(error);
@@ -83,5 +87,14 @@ export class NavBarComponent implements OnInit {
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: 'image/jpeg' });
     return URL.createObjectURL(blob);
+  }
+
+  updateProfilePicture(src : string){
+    let listOfElements = document.getElementsByClassName("user-profile");
+
+    for(let i = 0; i < listOfElements.length; i++){
+      let image = listOfElements[i] as HTMLImageElement;
+      image.src = src;
+    }
   }
 }

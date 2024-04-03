@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { UserProfilePicture } from '../../../_service/userProfilePhoto';
+import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -41,7 +42,8 @@ export class EditProfilePageComponent implements OnInit {
   constructor(private userService: UserService,
     private messageService: MessageService,
     private msgPopupService: MessagePopupService,
-    private userProfilePhoto: UserProfilePicture) {}
+    private userProfilePhoto: UserProfilePicture,
+    private navBarComponent: NavBarComponent) {}
 
 
   ngOnInit(): void {
@@ -50,6 +52,8 @@ export class EditProfilePageComponent implements OnInit {
         this.user = response;
         this.username = this.user.username;
         this.editUser = response;
+        this.navBarComponent.ngOnInit();
+        this.getProfilePhoto();
         this.getPhoto();
       },
       error: error => {
@@ -140,14 +144,12 @@ export class EditProfilePageComponent implements OnInit {
   onFileSelected(event: any){
     //POKUPIM FAJL ZA SLANJE
     if(event.target.files && event.target.files.length > 0){
-      const selectedFile = event.target.files[0]; 
-      console.log('1');
+      const selectedFile = event.target.files[0];
 
       this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
         next: response => {
           this.msgPopupService.showSuccess("Successfully uploaded image");
-          this.getPhoto();
-          this.userProfilePhoto.profilePictureChanged.emit(this.profilePicturePath);
+          this.ngOnInit();
         },
         error: error => {
           this.msgPopupService.showError("Unable to upload image");
