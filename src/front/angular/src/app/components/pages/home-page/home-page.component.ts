@@ -28,9 +28,14 @@ export class HomePageComponent implements OnInit {
 
   permitions: any;
 
+  selectedColumns!: string[];
+  columns!: string[];
+
   constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService,private companyroleService: CompanyroleService) { }
 
   ngOnInit(): void {
+    this.columns = ['Key','Type','Description','Owner','Creation Date','Due Date','Budget','Progress'];
+    this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{

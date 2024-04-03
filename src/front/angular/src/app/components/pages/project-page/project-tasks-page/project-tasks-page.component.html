@@ -52,7 +52,7 @@
                                 <p-sortIcon field="name"></p-sortIcon>
                                 <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('priorityName')" pSortableColumn="priorityName">
+                            <th *ngIf="selectedColumns.includes('Priority')" pSortableColumn="priorityName">
                                 Priority
                                 <p-sortIcon field="priorityName"></p-sortIcon>
                                 <p-columnFilter field="priorityName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
@@ -72,7 +72,7 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('typeName')" pSortableColumn="typeName">
+                            <th *ngIf="selectedColumns.includes('Type')" pSortableColumn="typeName">
                                 Type
                                 <p-sortIcon field="typeName"></p-sortIcon>
                                 <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
@@ -92,7 +92,7 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('statusName')" pSortableColumn="statusName">
+                            <th *ngIf="selectedColumns.includes('Status')" pSortableColumn="statusName">
                                 Status
                                 <p-sortIcon field="statusName"></p-sortIcon>
                                 <p-columnFilter field="statusName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
@@ -112,22 +112,22 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('reporterUsername')" pSortableColumn="reporterUsername">
+                            <th *ngIf="selectedColumns.includes('Reporter')" pSortableColumn="reporterUsername">
                                 Reporter
                                 <p-sortIcon field="reporterUsername"></p-sortIcon>
                                 <p-columnFilter type="text" field="reporterUsername" display="menu"></p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('description')" pSortableColumn="description">
+                            <th *ngIf="selectedColumns.includes('Description')" pSortableColumn="description">
                                 Description
                                 <p-sortIcon field="description"></p-sortIcon>
                                 <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('groupName')" pSortableColumn="groupName">
+                            <th *ngIf="selectedColumns.includes('Group')" pSortableColumn="groupName">
                                 Group
                                 <p-sortIcon field="groupName"></p-sortIcon>
                                 <p-columnFilter type="text" field="groupName" display="menu"></p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('dueDate')" pSortableColumn="dueDate">
+                            <th *ngIf="selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
                                 Due Date
                                 <p-sortIcon field="dueDate"></p-sortIcon>
                                 <p-columnFilter type="date" field="dueDate" display="menu">
@@ -136,7 +136,7 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('createdDate')" pSortableColumn="createdDate">
+                            <th *ngIf="selectedColumns.includes('Created Date')" pSortableColumn="createdDate">
                                 Created Date
                                 <p-sortIcon field="createdDate"></p-sortIcon>
                                 <p-columnFilter type="date" field="createdDate" display="menu">
@@ -145,7 +145,7 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('updatedDate')" pSortableColumn="updatedDate">
+                            <th *ngIf="selectedColumns.includes('Updated Date')" pSortableColumn="updatedDate">
                                 Updated Date
                                 <p-sortIcon field="updatedDate"></p-sortIcon>
                                 <p-columnFilter type="date" field="updatedDate" display="menu">
@@ -154,7 +154,7 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th *ngIf="selectedColumns.includes('percentage')" pSortableColumn="percentage">
+                            <th *ngIf="selectedColumns.includes('Percentage')" pSortableColumn="percentage">
                                 Percentage
                                 <p-sortIcon field="percentage"></p-sortIcon>
                                 <p-columnFilter type="numeric" field="percentage" display="menu"></p-columnFilter>
@@ -186,43 +186,43 @@
                                     <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
                                 </div>
                             </td>
-                            <td *ngIf="selectedColumns.includes('priorityName')" style="width: 17vh; " class="fill-td">
+                            <td *ngIf="selectedColumns.includes('Priority')" style="width: 17vh; " class="fill-td">
                                 <span class="p-column-title" style="font-weight: bold;">Priority</span>
                                 <p-tag class="p-tag-fill" [value]="task.priorityName" [severity]="getSeverity(task.priorityName)"></p-tag>
                             </td>
-                            <td *ngIf="selectedColumns.includes('typeName')" style="width: 17vh; " class="fill-td">
+                            <td *ngIf="selectedColumns.includes('Type')" style="width: 17vh; " class="fill-td">
                                 <span class="p-column-title" style="font-weight: bold;">Type</span>
                                 <p-tag class="p-tag-fill" [value]="task.typeName" [severity]="getSeverity(task.typeName)"></p-tag>
                             </td>
-                            <td *ngIf="selectedColumns.includes('statusName')" style="width: 17vh; " class="fill-td">
+                            <td *ngIf="selectedColumns.includes('Status')" style="width: 17vh; " class="fill-td">
                                 <span class="p-column-title" style="font-weight: bold;">Status</span>
                                 <p-tag class="p-tag-fill" [value]="task.statusName" [severity]="getSeverity(task.statusName)"></p-tag>
                             </td>
-                            <td *ngIf="selectedColumns.includes('reporterUsername')" style="width: 17vh; ">
+                            <td *ngIf="selectedColumns.includes('Reporter')" style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Reporter</span>
                                 {{ task.reporterUsername }}
                             </td>
-                            <td *ngIf="selectedColumns.includes('description')" style="width: 17vh; ">
+                            <td *ngIf="selectedColumns.includes('Description')" style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Description</span>
                                 {{ task.description }}
                             </td>
-                            <td *ngIf="selectedColumns.includes('groupName')" style="width: 17vh; ">
+                            <td *ngIf="selectedColumns.includes('Group')" style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Group</span>
                                 {{ task.groupName }}
                             </td>
-                            <td *ngIf="selectedColumns.includes('dueDate')" style="width: 16vh; ">
+                            <td *ngIf="selectedColumns.includes('Due Date')" style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Due Date</span>
                                 {{ task.dueDate | date : 'dd/MM/yyyy' }}
                             </td>
-                            <td *ngIf="selectedColumns.includes('createdDate')" style="width: 16vh; ">
+                            <td *ngIf="selectedColumns.includes('Created Date')" style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Created Date</span>
                                 {{ task.createdDate | date : 'dd/MM/yyyy' }}
                             </td>
-                            <td *ngIf="selectedColumns.includes('updatedDate')" style="width: 16vh; ">
+                            <td *ngIf="selectedColumns.includes('Updated Date')" style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Updated Date</span>
                                 {{ task.updatedDate | date : 'dd/MM/yyyy' }}
                             </td>
-                            <td *ngIf="selectedColumns.includes('percentage')" style="width: 16vh; ">
+                            <td *ngIf="selectedColumns.includes('Percentage')" style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Percentage</span>
                                 {{ task.percentage}} 
                             </td>
