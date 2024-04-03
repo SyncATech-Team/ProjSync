@@ -41,8 +41,6 @@ import { ProjectPeoplePageComponent } from './components/pages/project-page/proj
 import { DropdownModule } from 'primeng/dropdown';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
-import { NzIconModule } from "ng-zorro-antd/icon";
-import { NzSpinModule } from "ng-zorro-antd/spin";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -106,8 +104,6 @@ import { BoardDndListComponent } from './components/elements/board/board-dnd-lis
     MultiSelectModule,
     CalendarModule,
     DropdownModule,
-    NzSpinModule,
-    NzIconModule.forRoot([]),
     OverlayPanelModule,
     FileUploadModule,
     ColorPickerModule,
