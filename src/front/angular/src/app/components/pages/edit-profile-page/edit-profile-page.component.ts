@@ -4,7 +4,7 @@ import { UserService } from '../../../_service/user.service';
 import { MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
-import { UserProfilePicture } from '../../../_service/userProfilePhoto';
+import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
 
 interface UploadEvent {

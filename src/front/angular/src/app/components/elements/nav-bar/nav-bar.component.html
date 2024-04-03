@@ -68,7 +68,7 @@
                 <div class="dropdown-div" id="dropdown-user-info">
                   
                   <div class="image">
-                    <img class="biggerImage user-profile" src="{{getProfilePhoto()}}" alt="user-image" draggable="false">
+                    <img id="small_user_image" class="biggerImage" src="{{getDefaultImage()}}" alt="user-image" draggable="false">
                   </div>
                   <div class="info">
                     <div class="fullname"> {{getFullName()}} </div>
@@ -88,7 +88,11 @@
                 
               </ng-template>
           </p-overlayPanel>
-          <img id="profile-image" class="user-profile" src="{{getProfilePhoto()}}" alt="user-image" draggable="false" (click)="op.toggle($event)">
+          <img id="profile-image" 
+            src="../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" 
+            alt="user-image" draggable="false" 
+            (click)="op.toggle($event)" 
+            (click)="setSmallerUserPicture()">
         </div>
 
       </div>

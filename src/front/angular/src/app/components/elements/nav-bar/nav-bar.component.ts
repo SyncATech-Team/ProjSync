@@ -3,7 +3,7 @@ import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
-import { UserProfilePicture } from '../../../_service/userProfilePhoto';
+import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -20,25 +20,32 @@ export class NavBarComponent implements OnInit {
 
   profilePicturePath: string = '';
 
-  constructor(public accoutService: AccountService,
-    private router: Router,
-    private userService: UserService,
-    private userProfilePhoto: UserProfilePicture) { }
+  constructor(
+      public accoutService: AccountService,
+      private router: Router,
+      private userService: UserService,
+      private userProfilePictureService: UserProfilePicture
+    ) { }
   
   ngOnInit(): void {
     this.userService.getUser(this.getUsername()).subscribe({
       next: response => {
         this.user = response;
-        this.userProfilePhoto.getUserImage(this.user.username).subscribe({
-          next: response => {
-            this.profilePicturePath = response['fileContents'];
-            this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
-            this.getProfilePhoto();
-        },
-          error: error => {
-            console.log(error);
+        if(this.user.profilePhoto != null) {
+          this.userProfilePictureService.getUserImage(this.user.username).subscribe({
+            next: response => {
+              this.profilePicturePath = response['fileContents'];
+              this.profilePicturePath = this.userProfilePictureService.decodeBase64Image(response['fileContents']);
+              this.setUserPicture(this.profilePicturePath);
+          },
+            error: error => {
+              console.log(error);
+          }
+          });
         }
-        });
+        else {
+          this.setUserPicture("SLIKA_JE_NULL");
+        }
       },
       error: error => {
         console.log(error.error);
@@ -62,12 +69,6 @@ export class NavBarComponent implements OnInit {
     return JSON.parse(x)['username'];
   }
 
-  getProfilePhoto() {
-    if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    return this.profilePicturePath;
-  }
-
   getFullName() {
     if(this.user == null) return "John Doe";
     return this.user.firstName + " " + this.user.lastName;
@@ -78,23 +79,41 @@ export class NavBarComponent implements OnInit {
     return this.user.email;
   }
 
-  decodeBase64Image(base64String: string) {
-    const byteCharacters = atob(base64String);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
+  // setUserPicture() {
+  //   if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
+  //   if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
+  //   return this.profilePicturePath;
+  // }
+
+  setUserPicture(src : string){
+    let element = document.getElementById("profile-image");
+    let image = element as HTMLImageElement;
+
+    if(src === "SLIKA_JE_NULL") {
+      if(this.user)
+        image.src = this.userProfilePictureService.getDefaultImageForUser(this.user.username);
+      else
+        image.src = this.userProfilePictureService.getFirstDefaultImagePath();
     }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'image/jpeg' });
-    return URL.createObjectURL(blob);
-  }
-
-  updateProfilePicture(src : string){
-    let listOfElements = document.getElementsByClassName("user-profile");
-
-    for(let i = 0; i < listOfElements.length; i++){
-      let image = listOfElements[i] as HTMLImageElement;
+    else {
       image.src = src;
     }
   }
+
+  getDefaultImage() {
+    return this.userProfilePictureService.getFirstDefaultImagePath();
+  }
+
+  setSmallerUserPicture() {
+    let element = document.getElementById("small_user_image");
+    if(element == null) return;
+
+    console.log("NIJE NULL: " + element);
+    let image = element as HTMLImageElement;
+
+    let vecaSlika = document.getElementById("profile-image") as HTMLImageElement;
+    image.src = vecaSlika.src;
+     
+  }
+
 }
