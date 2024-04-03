@@ -29,3 +29,13 @@
 .fill-td {
     text-align: center;
 }
+
+.table-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.group-view{
+    display: flex;
+    justify-content: space-between;
+}
