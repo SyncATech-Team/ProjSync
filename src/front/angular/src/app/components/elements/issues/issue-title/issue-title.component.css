@@ -1,0 +1,10 @@
+:host {
+    display: flex;
+}
+
+.textarea-inline-control {
+    font-size: 1.5rem; /* 24px */
+    line-height: 2rem; /* 32px */
+    font-weight: 500;
+    margin-left: -8px;
+}

@@ -23,6 +23,7 @@ import { PasswordResetPageComponent } from './components/pages/password-reset-pa
 import { PasswordResetComponent } from './components/elements/password-reset/password-reset.component';
 import { NotificationComponent } from './components/elements/notification/notification.component';
 import { TableModule } from "primeng/table";
+import { ContentLoaderModule } from '@ngneat/content-loader';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -59,6 +60,17 @@ import { BoardDndListComponent } from './components/elements/board/board-dnd-lis
 import { SvgDefinitionsComponent } from './components/elements/shared/svg-definitions/svg-definitions.component';
 import { SvgIconComponent } from './components/elements/shared/svg-icon/svg-icon.component';
 import { SamotestComponent } from './components/pages/samotest/samotest.component';
+import { IssueModalComponent } from './components/elements/issues/issue-modal/issue-modal.component';
+import { DialogModule } from 'primeng/dialog';
+import { DialogService } from 'primeng/dynamicdialog';
+import { TooltipModule } from 'primeng/tooltip';
+import { IssueDetailComponent } from './components/elements/issues/issue-detail/issue-detail.component';
+import { IssueLoaderComponent } from './components/elements/issues/issue-loader/issue-loader.component';
+import { IssueTypeComponent } from './components/elements/issues/issue-type/issue-type.component';
+import { IssueTitleComponent } from './components/elements/issues/issue-title/issue-title.component';
+import { IssueDescriptionComponent } from './components/elements/issues/issue-description/issue-description.component';
+import { IssueStatusComponent } from './components/elements/issues/issue-status/issue-status.component';
+import { IssuePriorityComponent } from './components/elements/issues/issue-priority/issue-priority.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +105,15 @@ import { SamotestComponent } from './components/pages/samotest/samotest.componen
     BoardDndListComponent,
     SvgDefinitionsComponent,
     SvgIconComponent,
-    SamotestComponent
+    SamotestComponent,
+    IssueModalComponent,
+    IssueDetailComponent,
+    IssueLoaderComponent,
+    IssueTypeComponent,
+    IssueTitleComponent,
+    IssueDescriptionComponent,
+    IssueStatusComponent,
+    IssuePriorityComponent
   ],
   imports: [
     BrowserModule,
@@ -119,14 +139,18 @@ import { SamotestComponent } from './components/pages/samotest/samotest.componen
     InputTextareaModule,
     CheckboxModule,
     ConfirmPopupModule,
-    DragDropModule
+    ContentLoaderModule,
+    DragDropModule,
+    DialogModule,
+    TooltipModule
   ],
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    DialogService
   ],
   bootstrap: [AppComponent]
 })
