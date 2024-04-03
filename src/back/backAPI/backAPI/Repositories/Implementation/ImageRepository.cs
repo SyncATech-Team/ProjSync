@@ -62,5 +62,28 @@ namespace backAPI.Repositories.Implementation
                 return null;
             }
         }
+
+        public async Task<bool> DeleteUserImage(string username)
+        {
+            var userExists = await _usersRepository.UserExistsByUsername(username);
+
+            if (!userExists)
+            {
+                return false;
+            }
+
+            var user = await _usersRepository.GetUserByUsername(username);
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\user-images", user.ProfilePhoto);
+
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+
+            await _usersRepository.UpdateUserProfilePhoto(username, null);
+
+            return true;
+        }
+
     }
 }
