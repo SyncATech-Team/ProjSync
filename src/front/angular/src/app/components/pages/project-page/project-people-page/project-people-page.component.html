@@ -70,11 +70,7 @@
                     <td>
                         <span class="p-column-title" style="font-weight: bold;">Account</span>
                         <div class="profilecontent">
-                            <img draggable="false" *ngIf="1==1; else secondImageSource"
-                            src={{getUserImagePath(user.username)}} alt="user-default-image">
-                            <ng-template #secondImageSource>
-                                <img src="{{getUserImagePath(user.username)}}" alt="user-image">
-                            </ng-template>
+                            <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username)}} alt="user-default-image">
                             <span>{{ user.username }}</span>
                         </div>
                     </td>

@@ -172,16 +172,8 @@
                 <img draggable="false" src="{{getProfilePhoto()}}" alt="user photo">
             </div>
             <div>
-                Upload - TO DO
-                <!-- <p-fileUpload 
-                    mode="basic"
-                    name="demo[]"
-                    url="https://www.primefaces.org/cdn/api/upload.php" 
-                    accept="image/*"
-                    (onUpload)="onBasicUploadAuto($event)"
-                    [auto]="true"
-                    chooseLabel="Upload photo">
-                </p-fileUpload> -->
+                <input id="fileInput" type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
+                <label for="files" class="files-btn">Select file</label>
             </div>
         </div>
     </div>

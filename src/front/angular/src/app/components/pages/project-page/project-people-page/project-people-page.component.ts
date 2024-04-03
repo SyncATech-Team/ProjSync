@@ -10,6 +10,8 @@ import { NgForm } from '@angular/forms';
 import { UserService } from '../../../../_service/user.service';
 import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
+import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
+import { PhotoForUser } from '../../../../_models/photo-for-user';
 
 @Component({
   selector: 'app-project-people-page',
@@ -38,6 +40,8 @@ export class ProjectPeoplePageComponent implements OnInit{
   selectedColumns!: string[];
   columns!: string[];
 
+  usersPhotos: PhotoForUser[] = [];
+
   @ViewChild('createRoleForm') formRecipe?: NgForm;
 
   constructor(
@@ -47,7 +51,8 @@ export class ProjectPeoplePageComponent implements OnInit{
     private confirmationService: ConfirmationService,
     private msgPopupService: MessagePopupService,
     private userService: UserService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private userPictureService: UserProfilePicture
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +67,8 @@ export class ProjectPeoplePageComponent implements OnInit{
       next: (response) => {
         this.users = response;
         this.users_backup = response;
+        this.getUserProfilePhotos();
+        console.log(this.usersPhotos);
       },
       error: (error) => {
         console.log(error);
@@ -98,26 +105,44 @@ export class ProjectPeoplePageComponent implements OnInit{
     });
   }
 
-  getUserImagePath(username: string) {
-    var index = this.users.findIndex(user => user.username === username);
-    if(index == -1) return "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    var user = this.users[index];
-    let path = "";
-
-    if(user.profilePhoto == null) {
-      let usernameSumOfCharacters: number = 0;
-      for (let index = 0; index < username.length; index++) {
-        usernameSumOfCharacters += username.charCodeAt(index);
+  getUserProfilePhotos() {
+    for(const user of this.users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            let path = response['fileContents'];
+            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username, 
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
       }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
 
-      let defaultImageNumber = usernameSumOfCharacters % this.MAX_NUMBER_OF_DEFAULT_IMAGES + 1;
-      path = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" 
-          + defaultImageNumber + ".png";
-    }
-    else {
-      path = "../../../../../assets/images/UserProfileImages/" + user.profilePhoto;
-    }
-    return path;
+  getUserImagePath(username: string) {
+    let index = this.users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(this.users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(this.users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersPhotos[ind].photoSource;
   }
 
   search() {
