@@ -18,6 +18,11 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   groupRowsBy: string = '';
   visible: boolean = true;
   visibleSide: boolean = true;
+  selectedColumns!: string[];
+  columns!: string[];
+
+  tasks_backup: any[]=[];
+  searchTerm: string = '';
 
   tasks: any[]=[
     {
@@ -188,6 +193,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   ];
   issueType: string [] = ['Task','Problem','Story'];
   issuePriority: string [] = ['Lowest','Low','Medium','High','Highest'];
+  issueStatus: string [] = ['Planning','In progress','Done'];
 
   first = 0;
   rows = 10;
@@ -197,6 +203,9 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.tasks_backup = this.tasks;
+    this.columns = ['typeName','statusName','priorityName','description','createdDate','updatedDate','dueDate','reporterUsername','groupName','percentage'];
+    this.selectedColumns = ['typeName','priorityName','dueDate','reporterUsername','percentage'];
   }
 
   ngOnDestroy(): void {
@@ -243,8 +252,25 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         case 'story':
             return 'success';
 
+        case 'done':
+            return 'success';
+
+        case 'planning':
+            return 'info';
+
         default:
             return 'primary';
     }
-}
+  }
+
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase().trim();
+    let filteredTasks = [...this.tasks_backup];
+  
+    if (searchTerm) {
+      filteredTasks = filteredTasks.filter(task => task.name.toLowerCase().includes(searchTerm));
+    }
+    
+    this.tasks = filteredTasks;
+  }
 }
