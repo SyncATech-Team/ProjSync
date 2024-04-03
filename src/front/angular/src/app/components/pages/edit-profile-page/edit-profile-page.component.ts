@@ -50,21 +50,24 @@ export class EditProfilePageComponent implements OnInit {
         this.user = response;
         this.username = this.user.username;
         this.editUser = response;
-        this.userProfilePhoto.getUserImage(this.user.username).subscribe({
-          next: response => {
-            this.profilePicturePath = response['fileContents'];
-            // console.log(this.profilePicturePath);
-            this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
-            console.log(this.profilePicturePath)
-        },
-          error: error => {
-            console.log(error);
-        }
-        });
+        this.getPhoto();
       },
       error: error => {
         console.log(error.error);
       }
+    });
+  }
+
+  // POZIV SERVISA ZA DOHVATANJE SLIKE KORISNIKA
+  getPhoto(){
+    this.userProfilePhoto.getUserImage(this.username).subscribe({
+      next: response => {
+        this.profilePicturePath = response['fileContents'];
+        this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
+    },
+      error: error => {
+        console.log(error);
+    }
     });
   }
 
@@ -82,7 +85,6 @@ export class EditProfilePageComponent implements OnInit {
   getProfilePhoto() {
     if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
     if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    // return "../../../../assets/images/UserProfileImages/" + this.user.profilePhoto;
     return this.profilePicturePath;
   }
 
@@ -136,16 +138,22 @@ export class EditProfilePageComponent implements OnInit {
   }
 
   onFileSelected(event: any){
-    const selectedFile = event.target.files[0];
-    console.log(selectedFile);
-    this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
-      next: response => {
-        this.msgPopupService.showSuccess("Successfully uploaded image");
-      },
-      error: error => {
-        this.msgPopupService.showError("Unable to upload image");
-      }
-    });
+    //POKUPIM FAJL ZA SLANJE
+    if(event.target.files && event.target.files.length > 0){
+      const selectedFile = event.target.files[0]; 
+      console.log('1');
+
+      this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
+        next: response => {
+          this.msgPopupService.showSuccess("Successfully uploaded image");
+          this.getPhoto();
+          this.userProfilePhoto.profilePictureChanged.emit(this.profilePicturePath);
+        },
+        error: error => {
+          this.msgPopupService.showError("Unable to upload image");
+        }
+      });
+    }
   }
 
 }

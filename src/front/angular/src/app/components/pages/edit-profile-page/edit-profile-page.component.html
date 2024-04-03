@@ -172,7 +172,8 @@
                 <img draggable="false" src="{{getProfilePhoto()}}" alt="user photo">
             </div>
             <div>
-                <input type="file" (change)="onFileSelected($event)">
+                <input id="fileInput" type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
+                <label for="files" class="files-btn">Select file</label>
             </div>
         </div>
     </div>

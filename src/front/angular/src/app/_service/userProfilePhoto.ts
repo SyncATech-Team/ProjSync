@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -9,6 +8,7 @@ import { environment } from '../../environments/environment';
 export class UserProfilePicture {
 
     baseUrl = environment.apiUrl;
+    profilePictureChanged = new EventEmitter<string>();
 
     constructor(private http: HttpClient) { }
 
@@ -16,7 +16,6 @@ export class UserProfilePicture {
         return this.http.get<any>(`${this.baseUrl}Images/user/${username}/image`);
     }
 
-    //https://localhost:5000/api/Images/user/mihajlo
     uploadUserImage(username: string, imageFile: File) {
         const formData: FormData = new FormData();
         formData.append('imageFile', imageFile, imageFile.name);

@@ -15,7 +15,7 @@ export class NavBarComponent implements OnInit {
   user?: UserGetter;
   notify_collapsed : boolean = false;
 
-  profilePicturePath : string = ''; 
+  profilePicturePath: string = '';
 
   constructor(public accoutService: AccountService,
     private router: Router,
@@ -29,9 +29,7 @@ export class NavBarComponent implements OnInit {
         this.userProfilePhoto.getUserImage(this.user.username).subscribe({
           next: response => {
             this.profilePicturePath = response['fileContents'];
-            // console.log(this.profilePicturePath);
             this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
-            console.log(this.profilePicturePath)
         },
           error: error => {
             console.log(error);
