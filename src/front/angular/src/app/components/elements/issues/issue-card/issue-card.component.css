@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex: 1;
+  margin-bottom: 5px;
+}
+
+.issue-wrap {
+  touch-action: manipulation;
+  cursor: -webkit-grab;
+  cursor: grab;
+  margin-bottom: 5px;
+}
+
+.issue {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  border-radius: 0.125rem;
+  background-color: #fff;
+  transition-property: all;
+  transition-duration: 0.1s;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 2px 0px;
+  padding: 10px;
+}
+
+.issue:hover {
+   background-color: darkgrey;
+}
