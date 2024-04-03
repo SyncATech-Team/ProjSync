@@ -35,6 +35,8 @@ export class ProjectPeoplePageComponent implements OnInit{
   color: string = '#ff0000';
 
   userForAdd: string = '';
+  selectedColumns!: string[];
+  columns!: string[];
 
   @ViewChild('createRoleForm') formRecipe?: NgForm;
 
@@ -49,6 +51,8 @@ export class ProjectPeoplePageComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this.columns = ['Email address','Firstname','Lastname','Role','Address','Contact phone','Status'];
+    this.selectedColumns = ['Email address','Firstname','Lastname','Role'];
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     this.initialize();
   }

@@ -204,8 +204,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.tasks_backup = this.tasks;
-    this.columns = ['typeName','statusName','priorityName','description','createdDate','updatedDate','dueDate','reporterUsername','groupName','percentage'];
-    this.selectedColumns = ['typeName','priorityName','dueDate','reporterUsername','percentage'];
+    this.columns = ['Type','Status','Priority','Description','Created Date','Updated Date','Due Date','Reporter','Group','Percentage'];
+    this.selectedColumns = ['Type','Priority','Due Date','Reporter','Percentage'];
   }
 
   ngOnDestroy(): void {
