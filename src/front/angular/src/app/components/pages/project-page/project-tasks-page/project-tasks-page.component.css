@@ -32,10 +32,23 @@
 
 .table-header{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .group-view{
     display: flex;
     justify-content: space-between;
+}
+
+.search{
+    float: right;
+    margin-left: auto;
+    padding-inline: 10px;
+}
+
+th{
+    text-align: center;
+}
+td{
+    text-align: center;
 }

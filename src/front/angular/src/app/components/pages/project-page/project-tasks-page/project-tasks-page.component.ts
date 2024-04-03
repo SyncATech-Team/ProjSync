@@ -21,6 +21,9 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   selectedColumns!: string[];
   columns!: string[];
 
+  tasks_backup: any[]=[];
+  searchTerm: string = '';
+
   tasks: any[]=[
     {
       name: 'task1',
@@ -200,6 +203,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.tasks_backup = this.tasks;
     this.columns = ['typeName','statusName','priorityName','description','createdDate','updatedDate','dueDate','reporterUsername','groupName','percentage'];
     this.selectedColumns = ['typeName','priorityName','dueDate','reporterUsername','percentage'];
   }
@@ -257,5 +261,16 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         default:
             return 'primary';
     }
-}
+  }
+
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase().trim();
+    let filteredTasks = [...this.tasks_backup];
+  
+    if (searchTerm) {
+      filteredTasks = filteredTasks.filter(task => task.name.toLowerCase().includes(searchTerm));
+    }
+    
+    this.tasks = filteredTasks;
+  }
 }
