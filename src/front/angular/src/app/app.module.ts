@@ -55,6 +55,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { IssueCardComponent } from './components/elements/issues/issue-card/issue-card.component';
+import { BoardDndComponent } from './components/elements/board/board-dnd/board-dnd.component';
+import { BoardDndListComponent } from './components/elements/board/board-dnd-list/board-dnd-list.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +86,9 @@ import { IssueCardComponent } from './components/elements/issues/issue-card/issu
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
     ProjectTasksPageComponent,
-    IssueCardComponent
+    IssueCardComponent,
+    BoardDndComponent,
+    BoardDndListComponent
   ],
   imports: [
     BrowserModule,
