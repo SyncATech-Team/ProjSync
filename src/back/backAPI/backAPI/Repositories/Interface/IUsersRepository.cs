@@ -84,5 +84,7 @@ namespace backAPI.Repositories.Interface
         /// True - ukoliko korisnik postoji sa ovim email-om, False suprotno
         /// </returns>
         Task<bool> UserExistsByEmail(string email);
+
+        Task UpdateUserProfilePhoto(string username, string photoURL);
     }
 }

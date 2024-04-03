@@ -4,6 +4,8 @@ import { UserService } from '../../../_service/user.service';
 import { MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -18,6 +20,7 @@ interface UploadEvent {
 })
 export class EditProfilePageComponent implements OnInit {
 
+  username : string = '';
   user?: UserGetter;
   editUser: UserGetter = {
     username: '',
@@ -34,20 +37,42 @@ export class EditProfilePageComponent implements OnInit {
     isActive: false
   };
 
-  constructor(private userService: UserService, private messageService: MessageService,
-    private msgPopupService: MessagePopupService) {}
+  profilePicturePath : string = ''; 
+
+  constructor(private userService: UserService,
+    private messageService: MessageService,
+    private msgPopupService: MessagePopupService,
+    private userProfilePhoto: UserProfilePicture,
+    private navBarComponent: NavBarComponent) {}
 
 
   ngOnInit(): void {
     this.userService.getUser(this.getUsername()).subscribe({
       next: response => {
         this.user = response;
+        this.username = this.user.username;
         this.editUser = response;
+        this.navBarComponent.ngOnInit();
+        this.getProfilePhoto();
+        this.getPhoto();
       },
       error: error => {
         console.log(error.error);
       }
-    })
+    });
+  }
+
+  // POZIV SERVISA ZA DOHVATANJE SLIKE KORISNIKA
+  getPhoto(){
+    this.userProfilePhoto.getUserImage(this.username).subscribe({
+      next: response => {
+        this.profilePicturePath = response['fileContents'];
+        this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
+    },
+      error: error => {
+        console.log(error);
+    }
+    });
   }
 
   onBasicUploadAuto(event: FileUploadEvent) {
@@ -64,7 +89,7 @@ export class EditProfilePageComponent implements OnInit {
   getProfilePhoto() {
     if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
     if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    return "../../../../assets/images/UserProfileImages/" + this.user.profilePhoto;
+    return this.profilePicturePath;
   }
 
   getFirstName() {
@@ -104,5 +129,33 @@ export class EditProfilePageComponent implements OnInit {
       }
     });
   } 
+
+  decodeBase64Image(base64String: string) {
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/jpeg' });
+    return URL.createObjectURL(blob);
+  }
+
+  onFileSelected(event: any){
+    //POKUPIM FAJL ZA SLANJE
+    if(event.target.files && event.target.files.length > 0){
+      const selectedFile = event.target.files[0];
+
+      this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
+        next: response => {
+          this.msgPopupService.showSuccess("Successfully uploaded image");
+          this.ngOnInit();
+        },
+        error: error => {
+          this.msgPopupService.showError("Unable to upload image");
+        }
+      });
+    }
+  }
 
 }

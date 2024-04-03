@@ -178,6 +178,15 @@ namespace backAPI.Repositories.Implementation
             return jwt;
         }
 
+        public async Task UpdateUserProfilePhoto(string username, string photoURL)
+        {
+            var user = await dataContext.Users.SingleOrDefaultAsync(user => user.UserName == username);
 
+            if(user != null)
+            {
+                user.ProfilePhoto = photoURL;
+                await dataContext.SaveChangesAsync();
+            }
+        }
     }
 }
