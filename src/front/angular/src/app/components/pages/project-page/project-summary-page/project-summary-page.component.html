@@ -1,6 +1,6 @@
-<div id="pageWraper">
-    <app-nav-bar></app-nav-bar>
-    <div id="contentPages">
+<div id="pageWraper" style="overflow: auto;">
+    <div ><app-nav-bar></app-nav-bar></div>
+    <div id="contentPages" >
         
         <app-project-sidebar 
         [projectName]="projectName"></app-project-sidebar>
@@ -18,7 +18,6 @@
             <div class="container">
                 <p>Project key: </p>
                 <p class="cont">{{project.key}}</p>
-                <br/>
                 <hr>
             </div>
             <div class="container">
@@ -29,33 +28,18 @@
                     <ng-template #secondImageSource>
                         <img src="{{getUserImagePath(project.ownerUsername)}}" alt="user-image">
                     </ng-template>
-                    <span> {{ project.ownerUsername }}</span>
+                    <span style="font-weight: bold; font-size: 18px;"> {{ project.ownerUsername }}</span>
                 </div>
-                <br>
                 <hr>
             </div>
             <div class="container">
                 <p>Creation date: </p>
                 <p class="cont">{{project.creationDate | date: 'dd/MM/yyyy'}}</p>
-                <br/>
                 <hr>
             </div>
             <div class="container">
                 <p>Due date: </p>
                 <p class="cont">{{project.dueDate | date: 'dd/MM/yyyy'}}</p>
-                <br>
-                <hr>
-            </div>
-            <div class="container">
-                <p>Project visibility: </p>
-                <p class="cont">{{project.visibilityName}}</p>
-                <br>
-                <hr>
-            </div>
-            <div class="container">
-                <p>Project type: </p>
-                <p class="cont">{{project.typeName}}</p>
-                <br>
                 <hr>
             </div>
             <div class="container">
@@ -63,16 +47,22 @@
                 <p id="description">
                     {{project.description}} 
                 </p>
-                <br>
+                <hr>
+            </div>
+            <div class="container">
+                <p>Project visibility: </p>
+                <p class="cont">{{project.visibilityName}}</p>
+                <hr>
+            </div>
+            <div class="container">
+                <p>Project type: </p>
+                <p class="cont">{{project.typeName}}</p>
                 <hr>
             </div>
             
-            <div class="container">
+            <div class="container last">
                 <p>Bugdet: </p>
                 <p class="cont">{{project.budget}}</p>
-                <br>
-                <br>
-                <br>
                 <hr>
             </div>
         </div>
