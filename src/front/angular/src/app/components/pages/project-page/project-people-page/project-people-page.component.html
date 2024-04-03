@@ -33,8 +33,11 @@
                             </span>
                         </div>
                         <p-dropdown class="dropdown" [options]="userRole" (onChange)="search()" [(ngModel)]="selectedRole" optionLabel="name" [style]="{minWidth: '14rem'}" placeholder="Select role" [showClear]="true"></p-dropdown>
+                        <div style="padding-inline: 16px;">
+                            <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" selectedItemsLabel="{0} columns selected" [style]="{'width': '30vh'}" placeholder="Choose Columns"></p-multiSelect>
+                        </div>
                     </div>
-
+                    
                     <div class="btn-add-user">
                         <p-button
                             data-bs-toggle="modal"
@@ -51,10 +54,13 @@
             <ng-template pTemplate="header">
                 <tr class="header">
                     <th>Username</th>
-                    <th>Email address</th>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th>Role</th>
+                    <th *ngIf="selectedColumns.includes('Email address')">Email address</th>
+                    <th *ngIf="selectedColumns.includes('Firstname')">Firstname</th>
+                    <th *ngIf="selectedColumns.includes('Lastname')">Lastname</th>
+                    <th *ngIf="selectedColumns.includes('Role')">Role</th>
+                    <th *ngIf="selectedColumns.includes('Address')">Address</th>
+                    <th *ngIf="selectedColumns.includes('Contact phone')">Contact phone</th>
+                    <th *ngIf="selectedColumns.includes('Status')">Status</th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -73,24 +79,39 @@
                         </div>
                     </td>
 
-                    <td>
+                    <td *ngIf="selectedColumns.includes('Email address')">
                         <span class="p-column-title" style="font-weight: bold;">Email</span>
                         <a class="mail" href="mailto:{{user.email}}"> {{user.email}}</a>
                     </td>
 
-                    <td>
+                    <td *ngIf="selectedColumns.includes('Firstname')">
                         <span class="p-column-title" style="font-weight: bold;">Firstname</span>
                         <span > {{user.firstName }}</span>
                     </td>
 
-                    <td>
+                    <td *ngIf="selectedColumns.includes('Lastname')">
                         <span class="p-column-title" style="font-weight: bold;">Lastname</span>
                         <span> {{user.lastName }}</span>
                     </td>
 
-                    <td>
+                    <td *ngIf="selectedColumns.includes('Role')">
                         <span class="p-column-title" style="font-weight: bold;">Company role</span>
                         {{ user.companyRoleName }}
+                    </td>
+
+                    <td *ngIf="selectedColumns.includes('Address')">
+                        <span class="p-column-title" style="font-weight: bold;">Address</span>
+                        <span> {{user.address }}</span>
+                    </td>
+
+                    <td *ngIf="selectedColumns.includes('Contact phone')">
+                        <span class="p-column-title" style="font-weight: bold;">Contact phone</span>
+                        <span> {{user.contactPhone }}</span>
+                    </td>
+
+                    <td *ngIf="selectedColumns.includes('Status')">
+                        <span class="p-column-title" style="font-weight: bold;">Status</span>
+                        <span> {{user.status }}</span>
                     </td>
 
                     <td><span class="p-column-title" style="font-weight: bold">Actions</span>
