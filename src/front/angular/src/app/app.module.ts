@@ -52,9 +52,13 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { IssueCardComponent } from './components/elements/issues/issue-card/issue-card.component';
 import { BoardDndComponent } from './components/elements/board/board-dnd/board-dnd.component';
 import { BoardDndListComponent } from './components/elements/board/board-dnd-list/board-dnd-list.component';
+import { SvgDefinitionsComponent } from './components/elements/shared/svg-definitions/svg-definitions.component';
+import { SvgIconComponent } from './components/elements/shared/svg-icon/svg-icon.component';
+import { SamotestComponent } from './components/pages/samotest/samotest.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +90,10 @@ import { BoardDndListComponent } from './components/elements/board/board-dnd-lis
     ProjectTasksPageComponent,
     IssueCardComponent,
     BoardDndComponent,
-    BoardDndListComponent
+    BoardDndListComponent,
+    SvgDefinitionsComponent,
+    SvgIconComponent,
+    SamotestComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +118,8 @@ import { BoardDndListComponent } from './components/elements/board/board-dnd-lis
     InputTextModule,
     InputTextareaModule,
     CheckboxModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    DragDropModule
   ],
   providers: [
     provideClientHydration(),

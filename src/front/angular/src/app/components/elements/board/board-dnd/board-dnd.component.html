@@ -1,1 +1,8 @@
-<p>board-dnd works!</p>
+<div class="d-flex" cdkDropListGroup *ngIf="project">
+    <div class="board-dnd-list" 
+        board-dnd-list
+        *ngFor="let status of issueStatuses"
+        [status]="status"
+        [issues$]="issueByStatusSorted$(status)">
+    </div>
+</div>
