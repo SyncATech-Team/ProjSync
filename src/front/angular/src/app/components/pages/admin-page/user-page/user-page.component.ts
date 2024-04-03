@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { EmailValidationService } from '../../../../_service/email_validator.service';
+import { PhotoForUser } from '../../../../_models/photo-for-user';
+import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 
 /**
  * Interfejs koji predstavlja jednu kolonu u tabeli koju eksportujemo
@@ -72,6 +74,8 @@ export class UserPageComponent implements OnInit {
 
   visibilityFilter: boolean = true;
 
+  usersPhotos: PhotoForUser[] = [];
+
   //#endregion
 
   //#region METODE
@@ -82,7 +86,8 @@ export class UserPageComponent implements OnInit {
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
     private companyRoleService: CompanyroleService,
-    private emailValidationService: EmailValidationService
+    private emailValidationService: EmailValidationService,
+    private userPictureService: UserProfilePicture
     ){ }
 
   /**
@@ -99,6 +104,7 @@ export class UserPageComponent implements OnInit {
         next: response => {
           this.users = response;
           this.users_backup = response;
+          this.getUserProfilePhotos();
           this.showDeactivated(false);
           // console.log(this.users);
         },
@@ -118,6 +124,45 @@ export class UserPageComponent implements OnInit {
       this.roles$ = this.companyRoleService.getAllCompanyRoles();
 
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+  }
+  getUserProfilePhotos() {
+    for(const user of this.users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            let path = response['fileContents'];
+            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            // this.setUserPicture(user, path);
+            var ph: PhotoForUser = {
+              username: user.username, 
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
+  getUserImagePath(username: string) {
+    let index = this.users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(this.users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(this.users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersPhotos[ind].photoSource;
   }
   /**
    * Poziva se kada se pomocu komponente za registraciju user-a doda novi user.
@@ -146,43 +191,6 @@ export class UserPageComponent implements OnInit {
     this.table.reset();
     this.showDeactivated(false);
     this.ngOnInit();  // proveriti da li moze bolje - ovako je radjeno da bi se prikazivala slika korisnika
-  }
-  /**
-   * Funkcija koja vraca random generisani broj u opsegu min-max
-   * @param min minimum
-   * @param max maksimum
-   * @returns generisani random broj
-   */
-  getRandomInteger(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-  /**
-   * Osnovna ideja ove funkcije je da vrati putanju predefinisanu za korisnika koji nema uploadovanu profilnu sliku.
-   * Kako bi se dodatno postigla raznolikost defaultnih profilnih slika, one se mogu odrediti na osnovu korisnickog imena
-   * kao ostatak pri deljenju sume svih karaktera i broja predefinisanih slika
-   * @param username 
-   * @returns 
-   */
-  getUserImagePath(username: string) {
-    var index = this.users.findIndex(user => user.username === username);
-    if(index == -1) return "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    var user = this.users[index];
-    let path = "";
-
-    if(user.profilePhoto == null) {
-      let usernameSumOfCharacters: number = 0;
-      for (let index = 0; index < username.length; index++) {
-        usernameSumOfCharacters += username.charCodeAt(index);
-      }
-
-      let defaultImageNumber = usernameSumOfCharacters % this.MAX_NUMBER_OF_DEFAULT_IMAGES + 1;
-      path = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" 
-          + defaultImageNumber + ".png";
-    }
-    else {
-      path = "../../../../../assets/images/UserProfileImages/" + user.profilePhoto;
-    }
-    return path;
   }
   /**
    * Metod koji brise korisnika za prosledjeno korisnicko ime
