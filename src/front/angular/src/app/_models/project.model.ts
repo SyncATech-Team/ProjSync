@@ -3,6 +3,7 @@ export interface Project{
     key: string,
     typeName: string
     description: string,
+    ownerProfilePhoto?: string;
     ownerUsername: string,
     icon?: string,
     creationDate: Date,

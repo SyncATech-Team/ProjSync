@@ -9,6 +9,7 @@ import { ProjectService } from '../../../../_service/project.service';
   styleUrl: './project-summary-page.component.css'
 })
 export class ProjectSummaryPageComponent implements OnInit{
+  private MAX_NUMBER_OF_DEFAULT_IMAGES: number = 10;
   projectName: string | null = '';
   projectType: string = '';
   projectKey: string = '';
@@ -52,4 +53,24 @@ export class ProjectSummaryPageComponent implements OnInit{
 
     return path;
   }
+  getUserImagePath(username: string) {
+    var user = this.project.ownerUsername;
+    let path = "";
+
+    if(this.project.ownerProfilePhoto == null) {
+      let usernameSumOfCharacters: number = 0;
+      for (let index = 0; index < username.length; index++) {
+        usernameSumOfCharacters += username.charCodeAt(index);
+      }
+
+      let defaultImageNumber = usernameSumOfCharacters % this.MAX_NUMBER_OF_DEFAULT_IMAGES + 1;
+      path = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" 
+          + defaultImageNumber + ".png";
+    }
+    else {
+      path = "../../../../../assets/images/UserProfileImages/" + this.project.ownerProfilePhoto;
+    }
+    return path;
+  }
+
 }
