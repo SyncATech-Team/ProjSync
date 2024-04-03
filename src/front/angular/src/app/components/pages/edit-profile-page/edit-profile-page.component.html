@@ -172,7 +172,7 @@
                 <img draggable="false" src="{{getProfilePhoto()}}" alt="user photo">
             </div>
             <div>
-                <p-fileUpload mode="basic" chooseLabel="Upload image" name="demo[]" accept="image/*"></p-fileUpload>
+                <input type="file" (change)="onFileSelected($event)">
             </div>
         </div>
     </div>

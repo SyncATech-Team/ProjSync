@@ -19,6 +19,7 @@ interface UploadEvent {
 })
 export class EditProfilePageComponent implements OnInit {
 
+  username : string = '';
   user?: UserGetter;
   editUser: UserGetter = {
     username: '',
@@ -47,6 +48,7 @@ export class EditProfilePageComponent implements OnInit {
     this.userService.getUser(this.getUsername()).subscribe({
       next: response => {
         this.user = response;
+        this.username = this.user.username;
         this.editUser = response;
         this.userProfilePhoto.getUserImage(this.user.username).subscribe({
           next: response => {
@@ -129,7 +131,21 @@ export class EditProfilePageComponent implements OnInit {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Promenite tip slike ako nije JPEG
+    const blob = new Blob([byteArray], { type: 'image/jpeg' });
     return URL.createObjectURL(blob);
   }
+
+  onFileSelected(event: any){
+    const selectedFile = event.target.files[0];
+    console.log(selectedFile);
+    this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
+      next: response => {
+        this.msgPopupService.showSuccess("Successfully uploaded image");
+      },
+      error: error => {
+        this.msgPopupService.showError("Unable to upload image");
+      }
+    });
+  }
+
 }

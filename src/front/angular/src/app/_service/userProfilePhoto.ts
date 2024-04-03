@@ -14,12 +14,12 @@ export class UserProfilePicture {
 
     getUserImage(username: string) {
         return this.http.get<any>(`${this.baseUrl}Images/user/${username}/image`);
-        // 'https://localhost:5000/api/Images/user/nemanja/image'
     }
 
-    uploadUserImage(username: string, imageFile: File): Observable<any> {
+    //https://localhost:5000/api/Images/user/mihajlo
+    uploadUserImage(username: string, imageFile: File) {
         const formData: FormData = new FormData();
         formData.append('imageFile', imageFile, imageFile.name);
-        return this.http.post<any>(this.baseUrl + 'user/' + username, formData);
+        return this.http.post<any>(this.baseUrl + 'Images/user/' + username, formData);
     }
 }
