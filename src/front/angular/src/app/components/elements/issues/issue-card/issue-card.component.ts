@@ -49,7 +49,7 @@ export class IssueCardComponent implements OnChanges, OnInit {
 
   openIssueModal(issueId: string) {
     this.ref = this._modalService.open(IssueModalComponent, {
-      header: 'Select a Product',
+      header: 'Issue - update',
       width: '50vw',
       modal:true,
       breakpoints: {

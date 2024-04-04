@@ -1,27 +1,18 @@
-<div *ngIf="issue; else loaderTmpl"
-     class="w-full h-full" [class.pl-4]="isShowCloseButton">
-    <div class="flex items-center pt-4 text-textDarkest">
+<div *ngIf="issue; else loaderTmpl" class="detail-modal pl-3">
+    <div class="flex items-center pt-3 text-textDarkest">
         <issue-type [issue]="issue"></issue-type>
+
         <div class="flex-auto"></div>
-        <!-- <j-button icon="trash"
-                  [className]="'btn-empty'"
-                  (click)="openDeleteIssueModal()">
-        </j-button> -->
-        <button pButton  class="secondary" icon="pi pi-trash" (click)="openDeleteIssueModal()" ></button>
-        <p-button></p-button>
-        <p-button></p-button>
-        <!-- <j-button *ngIf="isShowCloseButton"
-                  icon="expand"
-                  (click)="openIssuePage()"
-                  [iconSize]="24"
-                  [className]="'btn-empty'">
-        </j-button>
-        <j-button *ngIf="isShowCloseButton"
-                  icon="times"
-                  [iconSize]="24"
-                  (click)="closeModal()"
-                  [className]="'btn-empty'">
-        </j-button> -->
+        <button pButton 
+            class="btn btn-empty icon-only" 
+            icon="pi pi-trash" 
+            (click)="openDeleteIssueModal()">
+        </button>
+        <button pButton 
+            class="btn btn-empty icon-only" 
+            icon="pi pi-window-maximize" 
+            (click)="openIssuePage()">
+        </button>
     </div>
     <div class="flex w-full flex-wrap pb-16">
         <div class="sm:w-full md:w-7/12 lg:w-4/6 pr-10">
