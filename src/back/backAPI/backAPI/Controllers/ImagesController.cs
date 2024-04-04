@@ -61,26 +61,25 @@ namespace backAPI.Controllers
         }
 
         [HttpDelete("user/{username}/image")]
-        public async Task<ActionResult> DeleteUserImage(string username)
+        public async Task<IActionResult> DeleteUserImage(string username)
         {
             var user = await _usersRepository.GetUserByUsername(username);
 
             if (user == null || string.IsNullOrEmpty(user.ProfilePhoto))
             {
-                return BadRequest("User or image not found");
+                return BadRequest(new {message = "User or image not found" });
             }
 
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\") + user.ProfilePhoto;
 
             if (System.IO.File.Exists(imagePath))
             {
-                Console.WriteLine("U kontorleru delete");
                 System.IO.File.Delete(imagePath);
             }
 
             await _usersRepository.UpdateUserProfilePhoto(username, null);
 
-            return Ok("Image deleted successfully");
+            return Ok(new { message = "Image deleted successfully" });
         }
     }
 }

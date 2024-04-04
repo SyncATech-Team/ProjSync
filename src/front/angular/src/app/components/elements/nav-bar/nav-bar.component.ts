@@ -79,12 +79,6 @@ export class NavBarComponent implements OnInit {
     return this.user.email;
   }
 
-  // setUserPicture() {
-  //   if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-  //   if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-  //   return this.profilePicturePath;
-  // }
-
   setUserPicture(src : string){
     let element = document.getElementById("profile-image");
     let image = element as HTMLImageElement;

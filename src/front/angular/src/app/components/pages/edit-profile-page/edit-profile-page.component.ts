@@ -6,6 +6,7 @@ import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
+import { error } from 'console';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -52,26 +53,27 @@ export class EditProfilePageComponent implements OnInit {
         this.user = response;
         this.username = this.user.username;
         this.editUser = response;
+        console.log(this.user);
+        if(this.user.profilePhoto != null) {
+          this.userProfilePhoto.getUserImage(this.user.username).subscribe({
+            next: response => {
+              this.profilePicturePath = response['fileContents'];
+              this.profilePicturePath = this.userProfilePhoto.decodeBase64Image(response['fileContents']);
+              this.setUserPicture(this.profilePicturePath);
+          },
+            error: error => {
+              console.log(error);
+          }
+          });
+        }
+        else {
+          this.setUserPicture("SLIKA_JE_NULL");
+        }
         this.navBarComponent.ngOnInit();
-        this.getProfilePhoto();
-        this.getPhoto();
       },
       error: error => {
         console.log(error.error);
       }
-    });
-  }
-
-  // POZIV SERVISA ZA DOHVATANJE SLIKE KORISNIKA
-  getPhoto(){
-    this.userProfilePhoto.getUserImage(this.username).subscribe({
-      next: response => {
-        this.profilePicturePath = response['fileContents'];
-        this.profilePicturePath = this.decodeBase64Image(response['fileContents']);
-    },
-      error: error => {
-        console.log(error);
-    }
     });
   }
 
@@ -84,12 +86,6 @@ export class EditProfilePageComponent implements OnInit {
     if(x == null) return "";
 
     return JSON.parse(x)['username'];
-  }
-
-  getProfilePhoto() {
-    if(this.user == null) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    if(this.user.profilePhoto == null ) return "../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png";
-    return this.profilePicturePath;
   }
 
   getFirstName() {
@@ -130,17 +126,6 @@ export class EditProfilePageComponent implements OnInit {
     });
   } 
 
-  decodeBase64Image(base64String: string) {
-    const byteCharacters = atob(base64String);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'image/jpeg' });
-    return URL.createObjectURL(blob);
-  }
-
   onFileSelected(event: any){
     //POKUPIM FAJL ZA SLANJE
     if(event.target.files && event.target.files.length > 0){
@@ -158,4 +143,35 @@ export class EditProfilePageComponent implements OnInit {
     }
   }
 
+  getDefaultImage() {
+    return this.userProfilePhoto.getFirstDefaultImagePath();
+  }
+
+  setUserPicture(src : string){
+    let element = document.getElementById("profile-image2");
+    let image = element as HTMLImageElement;
+
+    if(src === "SLIKA_JE_NULL") {
+      if(this.user)
+        image.src = this.userProfilePhoto.getDefaultImageForUser(this.user.username);
+      else
+        image.src = this.userProfilePhoto.getFirstDefaultImagePath();
+    }
+    else {
+      image.src = src;
+    }
+  }
+
+  removePhoto(){
+    if(this.user && this.user.profilePhoto != null){
+      this.userProfilePhoto.removeUserImage(this.user.username).subscribe({
+        next : respones =>{
+          this.ngOnInit();
+        },
+        error: error => {
+          console.log(error.error);
+        }
+      });
+    }
+  }
 }
