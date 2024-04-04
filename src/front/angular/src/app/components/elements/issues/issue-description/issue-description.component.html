@@ -6,19 +6,11 @@
                   (onEditorCreated)="editorCreated($event)">
     </quill-editor>
 
-    <div class="pt-3 flex items-center">
-        <p-button class="btn btn-empty" icon="pi pi-save" ></p-button>
-
-        <!-- <j-button [isWorking]="isWorking"
-                  [className]="'btn-primary'"
-                  class="mr-2"
-                  (click)="save()">
-            Save</j-button>
-        <j-button (click)="cancel()"
-                  [className]="'btn-empty'">
-            Cancel
-        </j-button> -->
+    <div class="pt-3 d-flex align-items-center">
+        <p-button label="Save" icon="pi pi-save" (click)="save()"></p-button>
+        <p-button label="Cancel" severity="warning" icon="pi pi-times" (click)="cancel()"></p-button>
     </div>
+
 </ng-container>
 
 <ng-template #readonlyModeTmpl>
