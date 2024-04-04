@@ -23,6 +23,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   tasks_backup: any[]=[];
   searchTerm: string = '';
+  tasksByGroup: any[] = [];
 
   tasks: any[]=[
     {
@@ -206,6 +207,17 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.tasks_backup = this.tasks;
     this.columns = ['Type','Status','Priority','Description','Created Date','Updated Date','Due Date','Reporter','Group','Percentage'];
     this.selectedColumns = ['Type','Priority','Due Date','Reporter','Percentage'];
+    this.tasksByGroup = this.getTasksByGroup();
+  }
+
+  getTasksByGroup(): any{
+    var groups = new Set(this.tasks.map(item => item.groupName));
+    var result: any[] = [];
+    groups.forEach(g => result.push({
+      group: g,
+      tasks: this.tasks.filter(item => item.groupName===g)
+    }));
+    return result;
   }
 
   ngOnDestroy(): void {
@@ -218,14 +230,10 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   
   changeView():void {
     if(this.groupView){
-      this.tableBody='rowexpansion';
-      this.dataKey = 'groupName';
-      this.groupRowsBy = 'groupName';
+      this.dataKey = 'group';
     }
     else{
-      this.tableBody='body';
       this.dataKey = 'name';
-      this.groupRowsBy = '';
     }
       
     this.visible = false;
@@ -270,7 +278,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     if (searchTerm) {
       filteredTasks = filteredTasks.filter(task => task.name.toLowerCase().includes(searchTerm));
     }
-    
     this.tasks = filteredTasks;
+    this.tasksByGroup = this.getTasksByGroup();
   }
 }
