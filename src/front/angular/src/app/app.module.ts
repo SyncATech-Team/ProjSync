@@ -72,6 +72,8 @@ import { IssueTitleComponent } from './components/elements/issues/issue-title/is
 import { IssueDescriptionComponent } from './components/elements/issues/issue-description/issue-description.component';
 import { IssueStatusComponent } from './components/elements/issues/issue-status/issue-status.component';
 import { IssuePriorityComponent } from './components/elements/issues/issue-priority/issue-priority.component';
+import { IssueCommentsComponent } from './components/elements/issues/issue-comments/issue-comments.component';
+import { IssueCommentComponent } from './components/elements/issues/issue-comment/issue-comment.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +116,9 @@ import { IssuePriorityComponent } from './components/elements/issues/issue-prior
     IssueTitleComponent,
     IssueDescriptionComponent,
     IssueStatusComponent,
-    IssuePriorityComponent
+    IssuePriorityComponent,
+    IssueCommentComponent,
+    IssueCommentsComponent
   ],
   imports: [
     BrowserModule,

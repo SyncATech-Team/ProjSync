@@ -1,4 +1,5 @@
 export interface JUser {
+    name: string;
     username: string;
     email: string;
     firstName: string;
