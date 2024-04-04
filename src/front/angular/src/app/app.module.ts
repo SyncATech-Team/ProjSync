@@ -64,6 +64,7 @@ import { IssueModalComponent } from './components/elements/issues/issue-modal/is
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { QuillModule } from 'ngx-quill';
 import { IssueDetailComponent } from './components/elements/issues/issue-detail/issue-detail.component';
 import { IssueLoaderComponent } from './components/elements/issues/issue-loader/issue-loader.component';
 import { IssueTypeComponent } from './components/elements/issues/issue-type/issue-type.component';
@@ -127,6 +128,7 @@ import { IssuePriorityComponent } from './components/elements/issues/issue-prior
     ButtonModule,
     ToastModule,
     ModalModule.forRoot(),
+    QuillModule.forRoot(),
     ConfirmDialogModule,
     MultiSelectModule,
     CalendarModule,

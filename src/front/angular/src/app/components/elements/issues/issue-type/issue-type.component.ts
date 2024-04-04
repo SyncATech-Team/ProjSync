@@ -23,7 +23,9 @@ export class IssueTypeComponent {
     return IssueUtil.getIssueTypeIcon(this.issue.type);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selectedissueType = this.issue.type;
+  }
 
   ngOnChanges(): void {}
 

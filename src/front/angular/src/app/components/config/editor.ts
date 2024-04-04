@@ -8,4 +8,5 @@ export const quillConfiguration = {
       ['link'],
       ['clean']
     ]
-};
+  };
+  

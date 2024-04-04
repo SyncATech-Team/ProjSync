@@ -2,7 +2,7 @@
     <div (click)="openIssueModal(issue.id)"
          class="issue">
         <p class="pb-3 text-15 text-textDarkest">
-            {{ issue.title }}
+            {{issue.type}}: {{ issue.id }} - {{ issue.title }}
         </p>
         <div class="flex items-center justify-between">
             <div class="flex items-center">
