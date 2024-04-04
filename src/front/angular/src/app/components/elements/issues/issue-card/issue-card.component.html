@@ -1,11 +1,11 @@
 <div class="issue-wrap">
     <div (click)="openIssueModal(issue.id)"
          class="issue">
-        <p class="pb-3 text-15 text-textDarkest">
+         <p class="pb-3 fs-5 text-primary">
             {{issue.type}}: {{ issue.id }} - {{ issue.title }}
         </p>
-        <div class="flex items-center justify-between">
-            <div class="flex items-center">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
                 <svg-icon class="mr-1 text-textMedium"
                           [name]="issueTypeIcon"
                           p-tooltip
