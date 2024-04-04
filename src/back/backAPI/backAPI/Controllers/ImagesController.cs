@@ -1,4 +1,5 @@
-﻿using backAPI.Repositories.Interface;
+﻿using backAPI.Entities.Domain;
+using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
@@ -46,6 +47,15 @@ namespace backAPI.Controllers
                 return BadRequest("Failed to upload image");
             }
 
+            var user = await _usersRepository.GetUserByUsername(username);
+            if (user.ProfilePhoto != null)
+            {
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\") + user.ProfilePhoto;
+                Console.WriteLine("TEST");
+                System.IO.File.Delete(imagePath);
+
+            }
+
             await _usersRepository.UpdateUserProfilePhoto(username, imageUrl);
             return Ok(new { ImageUrl = imageUrl });
         }
@@ -64,6 +74,7 @@ namespace backAPI.Controllers
 
             if (System.IO.File.Exists(imagePath))
             {
+                Console.WriteLine("U kontorleru delete");
                 System.IO.File.Delete(imagePath);
             }
 
