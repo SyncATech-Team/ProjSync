@@ -1,6 +1,7 @@
 <div id="page-wrapper">
     
     <p-toast></p-toast>
+    <p-confirmPopup></p-confirmPopup>
     <app-nav-bar></app-nav-bar>
 
     <div id="content">
@@ -176,7 +177,8 @@
                 <input id="fileInput" type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
                 <label for="files" class="files-btn">Select file</label>
                 
-                <p-button label="Remove image" [outlined]="true" severity="danger" class="remove-photo" (onClick)="removePhoto()"></p-button>
+                <p-button label="Remove image" [outlined]="true" severity="danger" class="remove-photo" (onClick)="openPopUp($event)"></p-button> 
+                <!-- (onClick)="removePhoto()" -->
             </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserGetter } from '../../../_models/user-getter';
 import { UserService } from '../../../_service/user.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
@@ -44,7 +44,8 @@ export class EditProfilePageComponent implements OnInit {
     private messageService: MessageService,
     private msgPopupService: MessagePopupService,
     private userProfilePhoto: UserProfilePicture,
-    private navBarComponent: NavBarComponent) {}
+    private navBarComponent: NavBarComponent,
+    private confirmationService: ConfirmationService) {}
 
 
   ngOnInit(): void {
@@ -163,13 +164,31 @@ export class EditProfilePageComponent implements OnInit {
   }
 
   removePhoto(){
-    if(this.user && this.user.profilePhoto != null){
+    if(this.user){
       this.userProfilePhoto.removeUserImage(this.user.username).subscribe({
         next : respones =>{
           this.ngOnInit();
         },
         error: error => {
           console.log(error.error);
+        }
+      });
+    }
+  }
+
+  openPopUp(event : any){
+    if(this.user && this.user.profilePhoto != null){
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Do you want to remove your profile photo?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-sm rounded',
+        accept: () => {
+            this.removePhoto();
+            this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Profile photo removed', life: 3000 });
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
         }
       });
     }

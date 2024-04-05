@@ -32,7 +32,6 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmEmailComponent } from './components/elements/confirm-email/confirm-email.component';
 import { ProjectSidebarComponent } from './components/elements/project-sidebar/project-sidebar.component';
-import { ProjectPageComponent } from './components/pages/project-page/project-page.component';
 import { FilterProjectComponent } from './components/elements/filter-project/filter-project.component';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
@@ -75,7 +74,6 @@ import { ConfirmationService } from 'primeng/api';
     NotificationComponent,
     ConfirmEmailComponent,
     ProjectSidebarComponent,
-    ProjectPageComponent,
     FilterProjectComponent,
     ProjectSummaryPageComponent,
     ProjectPeoplePageComponent,
