@@ -15,6 +15,7 @@
             [rowHover]="true"
             [rows]="5"
             [showCurrentPageReport]="true"
+            [resizableColumns]="true"
             [rowsPerPageOptions]="[5,10, 25, 50]"
             [paginator]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -32,7 +33,7 @@
                                 <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
                             </span>
                         </div>
-                        <p-dropdown class="dropdown" [options]="userRole" (onChange)="search()" [(ngModel)]="selectedRole" optionLabel="name" [style]="{minWidth: '14rem'}" placeholder="Select role" [showClear]="true"></p-dropdown>
+                        <p-dropdown class="dropdown" [options]="userRole" (onChange)="search()" [(ngModel)]="selectedRole" [style]="{minWidth: '14rem'}" placeholder="Select role" [showClear]="true"></p-dropdown>
                         <div style="padding-inline: 16px;">
                             <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" selectedItemsLabel="{0} columns selected" [style]="{'width': '30vh'}" placeholder="Choose Columns"></p-multiSelect>
                         </div>
@@ -43,6 +44,7 @@
                             data-bs-toggle="modal"
                             data-bs-target="#modalAddUser"
                             [outlined]="true"
+                            (click)="updateOptions(dropdown1)"
                         >
                             Add user
                         </p-button>
@@ -53,15 +55,15 @@
             <!-- Table header -->
             <ng-template pTemplate="header">
                 <tr class="header">
-                    <th>Username</th>
-                    <th *ngIf="selectedColumns.includes('Email address')">Email address</th>
-                    <th *ngIf="selectedColumns.includes('Firstname')">Firstname</th>
-                    <th *ngIf="selectedColumns.includes('Lastname')">Lastname</th>
-                    <th *ngIf="selectedColumns.includes('Role')">Role</th>
-                    <th *ngIf="selectedColumns.includes('Address')">Address</th>
-                    <th *ngIf="selectedColumns.includes('Contact phone')">Contact phone</th>
-                    <th *ngIf="selectedColumns.includes('Status')">Status</th>
-                    <th></th>
+                    <th pResizableColumn>Username</th>
+                    <th pResizableColumn *ngIf="selectedColumns.includes('Email address')">Email address</th>
+                    <th pResizableColumn *ngIf="selectedColumns.includes('Firstname')">Firstname</th>
+                    <th pResizableColumn *ngIf="selectedColumns.includes('Lastname')">Lastname</th>
+                    <th pResizableColumn *ngIf="selectedColumns.includes('Role')">Role</th>
+                    <th pResizableColumn *ngIf="selectedColumns.includes('Address')">Address</th>
+                    <th pResizableColumn *ngIf="selectedColumns.includes('Contact phone')">Contact phone</th>
+                    <th pResizableColumn *ngIf="selectedColumns.includes('Status')">Status</th>
+                    <th pResizableColumn></th>
                 </tr>
             </ng-template>
             
@@ -70,7 +72,7 @@
                     <td>
                         <span class="p-column-title" style="font-weight: bold;">Account</span>
                         <div class="profilecontent">
-                            <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username)}} alt="user-default-image">
+                            <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
                             <span>{{ user.username }}</span>
                         </div>
                     </td>
@@ -111,7 +113,7 @@
                     </td>
 
                     <td><span class="p-column-title" style="font-weight: bold">Actions</span>
-                        <div class="action">
+                        <div *ngIf="project && (user.username !== project.ownerUsername)" class="action">
                             <div class="deleteBtn">
                                 <button type="button" pButton pRipple icon="fa-solid fa-right-from-bracket" 
                                     (click)="deleteUserFromProject($event, user.username)"
@@ -147,7 +149,14 @@
                         [showClear]="true" 
                         [style]="{minWidth: '100%'}" 
                         name="userForAdd"
-                        placeholder="Add user">
+                        placeholder="Add user"
+                        #dropdown1>
+                        <ng-template let-user pTemplate="item">
+                            <div class="profilecontent">
+                                <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,allUsers)}} alt="user-default-image">
+                                <span>{{ user.username }}</span>
+                            </div>
+                        </ng-template>
                     </p-dropdown>
                 </form>
                 <div class="color-wrapper">

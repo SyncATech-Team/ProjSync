@@ -26,7 +26,7 @@ export class ProjectPeoplePageComponent implements OnInit{
   allUsers: UserGetter[] = [];
   project: Project | null = null;
 
-  userRole : CompanyRole[] = [];
+  userRole : string[] = [];
   selectedRole: string = '';
     
   projectName: string = '';
@@ -65,28 +65,33 @@ export class ProjectPeoplePageComponent implements OnInit{
   initialize(): void {
     this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
       next: (response) => {
+        
         this.users = response;
         this.users_backup = response;
-        this.getUserProfilePhotos();
         console.log(this.usersPhotos);
+        this.userRole = this.users_backup.map(user => user.companyRoleName);
       },
       error: (error) => {
         console.log(error);
       }
     });
 
-    this.companyRole.getAllCompanyRoles().subscribe({
-      next: (response) => {
-        this.userRole = response;
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+    // this.companyRole.getAllCompanyRoles().subscribe({
+    //   next: (response) => {
+    //     this.userRole = response;
+    //   },
+    //   error: (error) => {
+    //     console.log(error);
+    //   }
+    // });
 
     this.userService.getAllUsers().subscribe({
       next: (response) => {
+        this.getUserProfilePhotos(this.users);
         this.allUsers = response.filter(user => user.username !== 'admin');
+        var userNames = this.users_backup.map(user => user.username);
+        this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username));
+        this.getUserProfilePhotos(this.allUsers);
       },
       error: (error) => {
         console.log(error);
@@ -105,8 +110,8 @@ export class ProjectPeoplePageComponent implements OnInit{
     });
   }
 
-  getUserProfilePhotos() {
-    for(const user of this.users) {
+  getUserProfilePhotos(users: UserGetter[]) {
+    for(const user of users) {
       if(user.profilePhoto != null) {
         this.userPictureService.getUserImage(user.username).subscribe({
           next: response => {
@@ -133,12 +138,12 @@ export class ProjectPeoplePageComponent implements OnInit{
     }
   }
 
-  getUserImagePath(username: string) {
-    let index = this.users.findIndex(u => u.username === username);
+  getUserImagePath(username: string,users: UserGetter[]) {
+    let index = users.findIndex(u => u.username === username);
     if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
 
-    if(this.users[index].profilePhoto == null)
-      return this.userPictureService.getDefaultImageForUser(this.users[index].username);
+    if(users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(users[index].username);
 
     let ind = this.usersPhotos.findIndex(u => u.username == username);
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
@@ -149,8 +154,8 @@ export class ProjectPeoplePageComponent implements OnInit{
     let searchTerm = this.searchTerm.toLowerCase().trim();
     let filteredUsers = [...this.users_backup];
   
-    if (this.selectedRole && (this.selectedRole as any).name) {
-      filteredUsers = filteredUsers.filter(user => user.companyRoleName === (this.selectedRole as any).name);
+    if (this.selectedRole && (this.selectedRole as any)) {
+      filteredUsers = filteredUsers.filter(user => user.companyRoleName === (this.selectedRole as any));
     }
   
     if (searchTerm) {
@@ -177,6 +182,7 @@ export class ProjectPeoplePageComponent implements OnInit{
           next: _ => {
             const indexToRemove = this.users.findIndex(user => user.username === username);
             if (indexToRemove !== -1) {
+              this.allUsers.push(this.users[indexToRemove]);
               this.users.splice(indexToRemove, 1);
             }
     
@@ -184,6 +190,7 @@ export class ProjectPeoplePageComponent implements OnInit{
             if(indexToRemoveBackup !== -1) {
               this.users_backup.splice(indexToRemoveBackup, 1);
             }
+            this.userRole = this.users_backup.map(user => user.companyRoleName);
             this.msgPopupService.showSuccess("User removed from project successfully.");
           },
           error: error => {
@@ -202,6 +209,7 @@ export class ProjectPeoplePageComponent implements OnInit{
     this.userOnProjectService.addUserOnProject(this.projectName, (this.userForAdd as any).username, this.color).subscribe({
       next: (response) => {
         this.msgPopupService.showSuccess("Successfully added new user!");
+        this.allUsers = this.allUsers.filter(user => user.username !== (this.userForAdd as any).username);
         this.userForAdd = "";
 
         console.log(this.color);        
@@ -209,6 +217,7 @@ export class ProjectPeoplePageComponent implements OnInit{
           next: (response) => {
             this.users = response;
             this.users_backup = response;
+            this.userRole = this.users_backup.map(user => user.companyRoleName);
           },
           error: (error) => {
             console.log(error);
@@ -219,6 +228,9 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.msgPopupService.showError("Unable to add new user! Make sure there are no duplicate names.")
       }
     })
+  }
+  updateOptions(dropdown :any){
+    dropdown.options = this.allUsers;
   }
 
 }
