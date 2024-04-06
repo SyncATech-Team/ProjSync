@@ -16,6 +16,7 @@ import { ProjectTasksPageComponent } from './components/pages/project-page/proje
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
+import { HomeGuard } from './_guards/home.guard';
 
 
 const routes: Routes = [
@@ -28,14 +29,14 @@ const routes: Routes = [
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [authGuard],
     children: [
-      { path: 'home', component: HomePageComponent },
-      { path: 'home/edit-profile', component: EditProfilePageComponent },
-      { path: 'home/projects', component: ProjectTasksPageComponent },
-      { path: 'home/projects/:projectName', component: ProjectTasksPageComponent },
-      { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent},
-      { path: 'home/projects/people/:projectName', component: ProjectPeoplePageComponent},
-      { path: 'home/projects/tasks/:projectName', component: ProjectTasksPageComponent },
-      { path: 'home/projects/settings/:projectName', component: ProjectSettingsPageComponent },
+      { path: 'home', component: HomePageComponent, canActivate: [HomeGuard] },
+      { path: 'home/edit-profile', component: EditProfilePageComponent, canActivate: [HomeGuard] },
+      { path: 'home/projects', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
+      { path: 'home/projects/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
+      { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent, canActivate: [HomeGuard]},
+      { path: 'home/projects/people/:projectName', component: ProjectPeoplePageComponent, canActivate: [HomeGuard]},
+      { path: 'home/projects/tasks/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
+      { path: 'home/projects/settings/:projectName', component: ProjectSettingsPageComponent, canActivate: [HomeGuard] },
       { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
       { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
       { path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard] },

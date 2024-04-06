@@ -26,7 +26,7 @@
             </div>
             
             <!-- Create project option -->
-            <div class="col d-flex justify-content-end">
+            <div *ngIf="permitions && permitions.canManageProjects === 'True'" class="col d-flex justify-content-end">
                 <app-create-project></app-create-project>
             </div>
         </div>
@@ -74,7 +74,8 @@
                 sortMode="multiple"
                 (onPage)="pageChange($event)"
                 [globalFilterFields]="['name','key','typeName','ownerUsername','creationDate','dueDate']"
-                currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries">
+                currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries"
+                [columns]="selectedColumns" >
                 
                 <!-- Clear all filters -->
                 <!-- <ng-template pTemplate="caption">
@@ -86,6 +87,11 @@
                         </span>
                     </div>
                 </ng-template> -->
+                <ng-template pTemplate="caption">
+                    <div class="table-header">
+                        <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" selectedItemsLabel="{0} columns selected" [style]="{'width': '30vh'}" placeholder="Choose Columns"></p-multiSelect>
+                    </div>
+                </ng-template>
 
                 <ng-template pTemplate="header" >
                     <tr>
@@ -97,14 +103,14 @@
                                 <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
                             </div>
                         </th>
-                        <th pSortableColumn="key">
+                        <th *ngIf="selectedColumns.includes('Key')" pSortableColumn="key">
                             <div class="flex align-items-center">
                             Key
                             <p-sortIcon field="key"></p-sortIcon>
                             <p-columnFilter type="text" field="key" display="menu"></p-columnFilter>
                         </div>
                         </th>
-                        <th pSortableColumn="typeName">
+                        <th *ngIf="selectedColumns.includes('Type')" pSortableColumn="typeName">
                             <div class="flex align-items-center">
                             Type
                             <p-sortIcon field="typeName"></p-sortIcon>
@@ -126,14 +132,21 @@
                             </p-columnFilter>
                         </div>
                         </th>
-                        <th pSortableColumn="ownerUsername">
+                        <th *ngIf="selectedColumns.includes('Description')" pSortableColumn="description">
+                            <div class="flex align-items-center">
+                            Description
+                            <p-sortIcon field="description"></p-sortIcon>
+                            <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th *ngIf="selectedColumns.includes('Owner')" pSortableColumn="ownerUsername">
                             <div class="flex align-items-center">
                             Owner
                             <p-sortIcon field="ownerUsername"></p-sortIcon>
                             <p-columnFilter type="text" field="ownerUsername" display="menu"></p-columnFilter>
                             </div>
                         </th>
-                        <th pSortableColumn="creationDate">
+                        <th *ngIf="selectedColumns.includes('Creation Date')" pSortableColumn="creationDate">
                             <div class="flex align-items-center">
                             Creation Date
                             <p-sortIcon field="creationDate"></p-sortIcon>
@@ -144,7 +157,7 @@
                             </p-columnFilter>
                         </div>
                         </th>
-                        <th pSortableColumn="dueDate">
+                        <th *ngIf="selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
                             <div class="flex align-items-center">
                             Due Date
                             <p-sortIcon field="dueDate"></p-sortIcon>
@@ -155,7 +168,12 @@
                             </p-columnFilter>
                             </div>
                         </th>
-                        <th>Progress</th>
+                        <th *ngIf="selectedColumns.includes('Budget')" pSortableColumn="budget">
+                            Budget
+                            <p-sortIcon field="budget"></p-sortIcon>
+                            <p-columnFilter type="numeric" field="budget" display="menu"></p-columnFilter>
+                        </th>
+                        <th *ngIf="selectedColumns.includes('Progress')" >Progress</th>
                     </tr>
                 </ng-template>
 
@@ -176,26 +194,34 @@
                                     title="{{project.name}}">{{ getProjectName(project.name) }}</a>
                             </div>
                         </td>
-                        <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
+                        <td *ngIf="selectedColumns.includes('Key')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
                             {{ project.key }}
                         </td>
-                        <td style="width: 23vh;">
+                        <td *ngIf="selectedColumns.includes('Type')" style="width: 23vh;">
                             <span class="p-column-title" style="font-weight: bold;">Type</span>
                             {{ project.typeName }}
                         </td>
-                        <td style="width: 20vh; ">
+                        <td *ngIf="selectedColumns.includes('Description')" style="width: 23vh;">
+                            <span class="p-column-title" style="font-weight: bold;">Description</span>
+                            {{ project.description }}
+                        </td>
+                        <td *ngIf="selectedColumns.includes('Owner')" style="width: 20vh; ">
                             <span class="p-column-title" style="font-weight: bold">Owner</span>
                             {{ project.ownerUsername }}
                         </td>
-                        <td style="width: 25vh; ">
+                        <td *ngIf="selectedColumns.includes('Creation Date')" style="width: 25vh; ">
                             <span class="p-column-title" style="font-weight: bold">Creation Date</span>
                             {{ project.creationDate | date: 'dd/MM/yyyy' }}
                         </td>
-                        <td style="width: 20vh; ">
+                        <td *ngIf="selectedColumns.includes('Due Date')" style="width: 20vh; ">
                             <span class="p-column-title" style="font-weight: bold">Due Date</span>
                             {{ project.dueDate | date: 'dd/MM/yyyy'   }}
                         </td>
-                        <td  class="progress-bar-wrapper">
+                        <td *ngIf="selectedColumns.includes('Budget')" style="width: 23vh;">
+                            <span class="p-column-title" style="font-weight: bold;">Budget</span>
+                            {{ project.budget }}
+                        </td>
+                        <td *ngIf="selectedColumns.includes('Progress')" style="width: 20vh;">
                             <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
                             
                             <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>

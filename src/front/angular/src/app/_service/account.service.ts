@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { UserGetter } from '../_models/user-getter';
 import { ResetPassword } from '../_models/reset-password';
 import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-response';
+import { CompanyroleService } from './companyrole.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-r
 export class AccountService {
   baseUrl = environment.apiUrl;
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private companyroleService: CompanyroleService) { }
 
   login(model: any) {
     // POST: http://localhost:5000/api/Account/login, model se salje preko body-ja
@@ -51,15 +52,19 @@ export class AccountService {
     return {
       username: user['username'],
       token: user['token'],
-      roles: user['roles']
+      roles: user['roles'],
+      permitions: user['permitions']
     }
   }
 
   setCurentUser(user: User) {
     user.roles = [];
-    const roles = this.getDecodedToken(user.token).role;
+    const decoded = this.getDecodedToken(user.token);
+    const roles = decoded.role;
+    const permitions = decoded.permitions;
     // korisnik moze da ima jednu ili vise uloga, zato pravimo niz
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+    user.permitions = permitions;
 
     localStorage.setItem('user', JSON.stringify(user));
   }

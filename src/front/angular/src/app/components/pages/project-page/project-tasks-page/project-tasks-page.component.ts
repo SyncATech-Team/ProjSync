@@ -16,6 +16,14 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   tableBody: string='body';
   dataKey: string = 'name';
   groupRowsBy: string = '';
+  visible: boolean = true;
+  visibleSide: boolean = true;
+  selectedColumns!: string[];
+  columns!: string[];
+
+  tasks_backup: any[]=[];
+  searchTerm: string = '';
+  tasksByGroup: any[] = [];
 
   tasks: any[]=[
     {
@@ -186,6 +194,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   ];
   issueType: string [] = ['Task','Problem','Story'];
   issuePriority: string [] = ['Lowest','Low','Medium','High','Highest'];
+  issueStatus: string [] = ['Planning','In progress','Done'];
 
   first = 0;
   rows = 10;
@@ -195,6 +204,20 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.tasks_backup = this.tasks;
+    this.columns = ['Type','Status','Priority','Description','Created Date','Updated Date','Due Date','Reporter','Group','Percentage'];
+    this.selectedColumns = ['Type','Priority','Due Date','Reporter','Percentage'];
+    this.tasksByGroup = this.getTasksByGroup();
+  }
+
+  getTasksByGroup(): any{
+    var groups = new Set(this.tasks.map(item => item.groupName));
+    var result: any[] = [];
+    groups.forEach(g => result.push({
+      group: g,
+      tasks: this.tasks.filter(item => item.groupName===g)
+    }));
+    return result;
   }
 
   ngOnDestroy(): void {
@@ -204,17 +227,13 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.first = event.first;
     this.rows = event.rows;
   }
-  visible: boolean = true;
+  
   changeView():void {
     if(this.groupView){
-      this.tableBody='rowexpansion';
-      this.dataKey = 'groupName';
-      this.groupRowsBy = 'groupName';
+      this.dataKey = 'group';
     }
     else{
-      this.tableBody='body';
       this.dataKey = 'name';
-      this.groupRowsBy = '';
     }
       
     this.visible = false;
@@ -241,8 +260,25 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         case 'story':
             return 'success';
 
+        case 'done':
+            return 'success';
+
+        case 'planning':
+            return 'info';
+
         default:
             return 'primary';
     }
-}
+  }
+
+  search() {
+    let searchTerm = this.searchTerm.toLowerCase().trim();
+    let filteredTasks = [...this.tasks_backup];
+  
+    if (searchTerm) {
+      filteredTasks = filteredTasks.filter(task => task.name.toLowerCase().includes(searchTerm));
+    }
+    this.tasks = filteredTasks;
+    this.tasksByGroup = this.getTasksByGroup();
+  }
 }
