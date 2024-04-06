@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../_models/user-getter';
 import { UserService } from '../../../_service/user.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -20,6 +20,7 @@ interface UploadEvent {
   providers: [MessageService]
 })
 export class EditProfilePageComponent implements OnInit {
+  @ViewChild('fileInputRef') fileInputRef: ElementRef | undefined;
 
   username : string = '';
   user?: UserGetter;
@@ -131,11 +132,20 @@ export class EditProfilePageComponent implements OnInit {
     //POKUPIM FAJL ZA SLANJE
     if(event.target.files && event.target.files.length > 0){
       const selectedFile = event.target.files[0];
+      const fileSize = selectedFile.size;
+
+      if (fileSize > 5000000) { // 5MB u bajtovima
+        this.msgPopupService.showError("File size exceeds 5MB limit");
+        return;
+      }
 
       this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
         next: response => {
           this.msgPopupService.showSuccess("Successfully uploaded image");
           this.ngOnInit();
+
+          if(this.fileInputRef)
+            this.fileInputRef.nativeElement.value = '';
         },
         error: error => {
           this.msgPopupService.showError("Unable to upload image");

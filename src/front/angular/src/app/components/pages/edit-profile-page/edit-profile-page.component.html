@@ -174,7 +174,7 @@
                 alt="user photo">
             </div>
             <div class="btns-wrapper">
-                <input id="fileInput" type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
+                <input id="fileInput" #fileInputRef type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
                 <label for="files" class="files-btn">Select file</label>
                 
                 <p-button label="Remove image" [outlined]="true" severity="danger" class="remove-photo" (onClick)="openPopUp($event)"></p-button> 
