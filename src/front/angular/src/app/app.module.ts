@@ -53,6 +53,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { ProjectDocumentsPageComponent } from './components/pages/project-page/project-documents-page/project-documents-page.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { ConfirmationService } from 'primeng/api';
     NotFoundPageComponent,
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
-    ProjectTasksPageComponent
+    ProjectTasksPageComponent,
+    ProjectDocumentsPageComponent
   ],
   imports: [
     BrowserModule,
