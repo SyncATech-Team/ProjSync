@@ -1,4 +1,5 @@
-﻿using backAPI.Repositories.Interface;
+﻿using backAPI.Entities.Domain;
+using backAPI.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
@@ -46,18 +47,27 @@ namespace backAPI.Controllers
                 return BadRequest("Failed to upload image");
             }
 
+            var user = await _usersRepository.GetUserByUsername(username);
+            if (user.ProfilePhoto != null)
+            {
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\") + user.ProfilePhoto;
+                Console.WriteLine("TEST");
+                System.IO.File.Delete(imagePath);
+
+            }
+
             await _usersRepository.UpdateUserProfilePhoto(username, imageUrl);
             return Ok(new { ImageUrl = imageUrl });
         }
 
         [HttpDelete("user/{username}/image")]
-        public async Task<ActionResult> DeleteUserImage(string username)
+        public async Task<IActionResult> DeleteUserImage(string username)
         {
             var user = await _usersRepository.GetUserByUsername(username);
 
             if (user == null || string.IsNullOrEmpty(user.ProfilePhoto))
             {
-                return BadRequest("User or image not found");
+                return BadRequest(new {message = "User or image not found" });
             }
 
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\") + user.ProfilePhoto;
@@ -69,7 +79,7 @@ namespace backAPI.Controllers
 
             await _usersRepository.UpdateUserProfilePhoto(username, null);
 
-            return Ok("Image deleted successfully");
+            return Ok(new { message = "Image deleted successfully" });
         }
     }
 }

@@ -21,6 +21,10 @@ export class UserProfilePicture {
         return this.http.post<any>(this.baseUrl + 'Images/user/' + username, formData);
     }
 
+    removeUserImage(username: string){
+      return this.http.delete<string>(this.baseUrl + 'Images/user/' + username + '/image');
+    }
+
     decodeBase64Image(base64String: string) {
         const byteCharacters = atob(base64String);
         const byteNumbers = new Array(byteCharacters.length);
