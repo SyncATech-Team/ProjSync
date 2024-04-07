@@ -69,12 +69,16 @@
                             <ng-template #cell let-item="item"> {{ item.title }} </ng-template>    
                         </ngx-gantt-column>
 
-                        <ngx-gantt-column name="Start date" width="200px">
-                            <ng-template #cell let-item="item">{{ item.start * 1000 | date : 'yyyy-MM-dd HH:mm' }}</ng-template>
+                        <ngx-gantt-column name="Start date">
+                            <ng-template #cell let-item="item">{{ item.start * 1000 | date : 'dd.MM.yyyy' }}</ng-template>
                         </ngx-gantt-column>
 
-                        <ngx-gantt-column name="Due date" width="200px">
-                            <ng-template #cell let-item="item"> {{ item.end * 1000 | date : 'yyyy-MM-dd HH:mm' }} </ng-template>
+                        <ngx-gantt-column name="Due date">
+                            <ng-template #cell let-item="item"> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </ng-template>
+                        </ngx-gantt-column>
+
+                        <ngx-gantt-column name="Assignee">
+                            <ng-template #cell let-item="item"> TO DO </ng-template>
                         </ngx-gantt-column>
 
                     </ngx-gantt-table>

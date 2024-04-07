@@ -143,11 +143,15 @@ dropEnterPredicate = (event: GanttTableDragEnterPredicateContext) => {
     return true;
 };
 
-constructor(private printService: GanttPrintService) {}
+constructor(
+    private route: ActivatedRoute,
+    private printService: GanttPrintService
+) {}
 
 ngOnInit(): void {
     // init items children
 
+    this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     this.items = this.randomItems(100);
 
     this.items.forEach((item, index) => {
