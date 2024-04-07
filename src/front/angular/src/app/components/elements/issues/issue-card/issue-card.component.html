@@ -5,6 +5,21 @@
             {{issue.type}}: {{ issue.id }} - {{ issue.title }}
         </p>
         <div class="d-flex align-items-center justify-content-between">
+
+            <div class="d-flex align-items-center ml-1">
+                <p-avatarGroup styleClass="mb-3">
+                    <p-avatar *ngFor="let user of assignees"
+                              [image]="user?.avatarUrl"
+                              shape="circle"
+                              size="large"
+                              [pTooltip]="user?.name">
+                    </p-avatar>
+                </p-avatarGroup>
+                <span [ngClass]="{'ml-3': assignees.length}" class="text-uppercase">
+                    {{issue.type}}-{{issue.id}}
+                </span>
+            </div>
+
             <div class="d-flex align-items-center">
                 <svg-icon class="mr-1 text-textMedium"
                           [name]="issueTypeIcon"
@@ -21,7 +36,7 @@
                           [size]="20"
                           [style.color]="priorityIcon.color">
                 </svg-icon>
-            </div>            
+            </div>
         </div>
     </div>
 </div>

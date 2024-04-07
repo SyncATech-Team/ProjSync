@@ -77,6 +77,8 @@ import { IssuePriorityComponent } from './components/elements/issues/issue-prior
 import { IssueCommentsComponent } from './components/elements/issues/issue-comments/issue-comments.component';
 import { IssueCommentComponent } from './components/elements/issues/issue-comment/issue-comment.component';
 import {environment} from "../environments/environment";
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 @NgModule({
   declarations: [
@@ -153,6 +155,8 @@ import {environment} from "../environments/environment";
     TooltipModule,
     environment.production ? [] : AkitaNgDevtools,
     AkitaNgRouterStoreModule,
+    AvatarModule,
+    AvatarGroupModule
   ],
   providers: [
     provideClientHydration(),

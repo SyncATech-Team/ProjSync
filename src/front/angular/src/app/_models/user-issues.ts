@@ -1,5 +1,6 @@
 export interface JUser {
   id: string;
+  avatarUrl: string;
   name: string;
   username: string;
   email: string;
