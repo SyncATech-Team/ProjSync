@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import { IssuePriority, IssueType, JIssue } from '../../../../_models/issue';
 import { IssueTypeWithIcon } from '../../../../_models/issue-type-icon';
 import { IssueUtil } from '../../../utils/issue-util';
@@ -12,16 +12,20 @@ import {OverlayPanel} from "primeng/overlaypanel";
   templateUrl: './issue-type.component.html',
   styleUrl: './issue-type.component.css'
 })
-export class IssueTypeComponent {
+export class IssueTypeComponent implements OnInit {
   @Input() issue!: JIssue;
   issueTypes: IssueTypeWithIcon[];
 
-  constructor(private _projectService: ProjectService) {
+  constructor(private _projectService: ProjectService, private cdr: ChangeDetectorRef) {
     this.issueTypes = ProjectConst.IssueTypesWithIcon;
   }
 
   get selectedIssueTypeIcon(): string {
     return IssueUtil.getIssueTypeIcon(this.issue.type);
+  }
+
+  ngOnInit() {
+    this.cdr.markForCheck();
   }
 
   ngOnChanges(): void {}
@@ -31,6 +35,7 @@ export class IssueTypeComponent {
       ...this.issue,
       type: issueType
     });
+    op.hide();
   }
 
   isTypeSelected(type: IssueType) {

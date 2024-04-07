@@ -1,15 +1,10 @@
-
-
-
-
-<div class="mt-6 mb-1 text-uppercase text-muted font-weight-bold">
-  Type
-</div>
-
 <p-button
   [text]="true"
   label="{{ issue.type }}-{{issue.id}}"
   (click)="op.toggle($event)">
+  <svg-icon [name]="selectedIssueTypeIcon"
+            [size]="20">
+  </svg-icon>
 </p-button>
 
 <p-overlayPanel #op>
