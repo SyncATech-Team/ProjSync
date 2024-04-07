@@ -53,6 +53,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { ConfirmationService } from 'primeng/api';
     NotFoundPageComponent,
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
-    ProjectTasksPageComponent
+    ProjectTasksPageComponent,
+    ProjectGanttPageComponent
   ],
   imports: [
     BrowserModule,

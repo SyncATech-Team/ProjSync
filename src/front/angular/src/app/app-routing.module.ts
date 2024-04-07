@@ -17,6 +17,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { HomeGuard } from './_guards/home.guard';
+import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 
 
 const routes: Routes = [
@@ -36,6 +37,7 @@ const routes: Routes = [
       { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent, canActivate: [HomeGuard]},
       { path: 'home/projects/people/:projectName', component: ProjectPeoplePageComponent, canActivate: [HomeGuard]},
       { path: 'home/projects/tasks/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
+      { path: 'home/projects/gantt/:projectName', component: ProjectGanttPageComponent, canActivate: [HomeGuard] },
       { path: 'home/projects/settings/:projectName', component: ProjectSettingsPageComponent, canActivate: [HomeGuard] },
       { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
       { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },

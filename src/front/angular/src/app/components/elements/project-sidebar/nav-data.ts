@@ -33,5 +33,10 @@ export const navbarData = [
         routeLink : '/home/projects/settings/',
         icon: 'fa-solid fa-wrench',
         label: 'Project settings'
+    },
+    { // testing
+        routeLink: '/home/projects/gantt/',
+        icon: 'fa-solid fa-wrench',
+        label: 'Gantt'
     }
 ];
