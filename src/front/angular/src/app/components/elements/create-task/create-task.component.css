@@ -30,3 +30,39 @@
     padding: 5px 10px;
     margin-right: 10px;
 }
+
+.calendar-wrapper{
+    display: flex;
+}
+
+.calendar-wrapper .created-date{
+    margin-right: 20px;
+}
+
+:host ::ng-deep .date2 button,
+:host ::ng-deep .date1 button{
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    height: 2rem;
+}
+
+:host ::ng-deep .issue-status button:first-child{
+    border-top-right-radius: 6px;
+}
+
+
+:host ::ng-deep .date2 input,
+:host ::ng-deep .date1 input{
+    height: 2rem;
+}
+
+:host ::ng-deep .issue-status button:last-child{
+    border-bottom-right-radius: 6px;
+}
+
+@media screen and (max-width: 760px) {
+    .calendar-wrapper{
+        display: flex;
+        flex-direction: column;
+    }
+}

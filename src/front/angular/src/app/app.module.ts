@@ -56,6 +56,7 @@ import { ConfirmationService } from 'primeng/api';
 import { CreateTaskComponent } from './components/elements/create-task/create-task.component';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import { DialogService } from 'primeng/dynamicdialog';
     InputTextareaModule,
     CheckboxModule,
     ConfirmPopupModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    InputNumberModule
   ],
   providers: [
     provideClientHydration(),

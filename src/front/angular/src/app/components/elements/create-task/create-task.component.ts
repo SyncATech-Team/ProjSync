@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { quillConfiguration } from '../../../config/editor';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueGroup } from '../../../_models/issue-group';
+import { UserService } from '../../../_service/user.service';
+import { UserGetter } from '../../../_models/user-getter';
 
 @Component({
   selector: 'app-create-task',
@@ -13,12 +15,14 @@ import { IssueGroup } from '../../../_models/issue-group';
 export class CreateTaskComponent implements OnInit {
   projectName: string | null = '';
   groupsOnProject: IssueGroup [] = [];
+  users : UserGetter[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private _modal: DynamicDialogRef,
     private _dialogConfig: DynamicDialogConfig,
-    private _issueService: IssueService
+    private _issueService: IssueService,
+    private userService : UserService
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +37,15 @@ export class CreateTaskComponent implements OnInit {
           console.log(error);
         }
         
+      });
+    
+      this.userService.getAllUsers().subscribe({
+        next: (response) => {
+          this.users = response.filter(user => user.username !== 'admin');
+        },
+        error: (error) => {
+          console.log(error);
+        }
       });
   }
 }

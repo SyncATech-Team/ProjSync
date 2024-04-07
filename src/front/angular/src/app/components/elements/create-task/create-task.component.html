@@ -21,13 +21,39 @@
         <!-- [(ngModel)]="value" -->
         <textarea rows="5" cols="30" pInputTextarea ></textarea>
 
+        <div class="calendar-wrapper">
+            <div class="created-date">
+                <p>Created Date</p>
+                <!-- [(ngModel)]="date1"  -->
+                <p-calendar [showIcon]="true" class="date1">
+                    <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+                        <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
+                    </ng-template>
+                </p-calendar>
+            </div>
+
+            <div class="due-date">
+                <p>Due Date</p>
+                <!-- [(ngModel)]="date1"  -->
+                <p-calendar [showIcon]="true" class="date2">
+                    <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+                        <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
+                    </ng-template>
+                </p-calendar>                
+            </div>
+        </div>
+
+        <p>Issue status</p>
+        <!-- [(ngModel)]="value1" -->
+        <p-inputNumber mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100" class="issue-status"> </p-inputNumber>
+
         <p>Reporter</p>
-        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown optionLabel="name" [options]="users" optionLabel="username" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Assigned</p>
-        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown optionLabel="name" [options]="users" optionLabel="username" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->
