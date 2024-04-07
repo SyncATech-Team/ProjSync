@@ -5,6 +5,7 @@ import { IssueUtil } from '../../../utils/issue-util';
 import { IssuePriorityIcon } from '../../../../_models/issue-priority-icon';
 import { ProjectConst } from '../../../config/const';
 import {ProjectService} from "../../../state/project/project.service";
+import {OverlayPanel} from "primeng/overlaypanel";
 
 @Component({
   selector: 'issue-type',
@@ -13,8 +14,6 @@ import {ProjectService} from "../../../state/project/project.service";
 })
 export class IssueTypeComponent {
   @Input() issue!: JIssue;
-
-  selectedissueType!: IssueType;
   issueTypes: IssueTypeWithIcon[];
 
   constructor(private _projectService: ProjectService) {
@@ -25,13 +24,9 @@ export class IssueTypeComponent {
     return IssueUtil.getIssueTypeIcon(this.issue.type);
   }
 
-  ngOnInit() {
-    this.selectedissueType = this.issue.type;
-  }
-
   ngOnChanges(): void {}
 
-  updateIssue(issueType: IssueType) {
+  updateIssue(issueType: IssueType, op: OverlayPanel) {
     this._projectService.updateIssue({
       ...this.issue,
       type: issueType
