@@ -1,0 +1,27 @@
+<div class="issue-wrap">
+    <div (click)="openIssueModal(issue.id)"
+         class="issue">
+         <p class="pb-3 fs-5 text-primary">
+            {{issue.type}}: {{ issue.id }} - {{ issue.title }}
+        </p>
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <svg-icon class="mr-1 text-textMedium"
+                          [name]="issueTypeIcon"
+                          p-tooltip
+                          [pTooltip]="issue.type"
+                          tooltipPlacement="bottom"
+                          [size]="20">
+                </svg-icon>
+
+                <svg-icon [name]="priorityIcon.icon"
+                          p-tooltip
+                          [pTooltip]="priorityIcon.value"
+                          tooltipPlacement="bottom"
+                          [size]="20"
+                          [style.color]="priorityIcon.color">
+                </svg-icon>
+            </div>            
+        </div>
+    </div>
+</div>

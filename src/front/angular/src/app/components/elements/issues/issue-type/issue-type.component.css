@@ -1,0 +1,15 @@
+.p-dropdown {
+  margin-left: -12px;
+}
+
+:host ::ng-deep .p-dropdown { 
+    width: 250px; 
+} 
+  
+:host ::ng-deep .p-dropdown-items { 
+    border: none; 
+} 
+  
+:host ::ng-deep .p-dropdown-clearable { 
+    font-weight: bold; 
+}
