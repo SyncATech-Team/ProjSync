@@ -1,1 +1,30 @@
-<p>create-task works!</p>
+<div id="container-wrapper" class="container">
+    <!--  [formGroup]="form" (ngSubmit)="onSubmit()" -->
+    <form class="form-group">
+        <p>Issue type</p>
+        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+
+        <p>Issue priority</p>
+        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+
+        <p>Description</p>
+        <!-- [(ngModel)]="value" -->
+        <textarea rows="5" cols="30" pInputTextarea ></textarea>
+
+        <p>Reporter</p>
+        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+
+        <p>Assigned</p>
+        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+
+        <div class="btns">
+            <!--  [disabled]="!projectName2" -->
+            <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
+            <p-button label="Close" severity="secondary"></p-button>
+        </div>
+    </form>
+</div>

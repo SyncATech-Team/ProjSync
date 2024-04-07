@@ -1,0 +1,30 @@
+.form-group p{
+    margin-bottom: 4px;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #42526e;
+}
+
+:host ::ng-deep .form-group .p-dropdown{
+    width: 100%;
+}
+
+:host ::ng-deep .form-group .dropdownCateg span{
+    margin-left: 8px;
+    height: 2rem;
+}
+
+:host ::ng-deep .form-group .dropdownCateg span,
+:host ::ng-deep .form-group .dropdownCateg li{
+    padding: 5px;
+}
+
+:host ::ng-deep .form-group .btns{
+    margin-top: 10px;
+}
+
+:host ::ng-deep .form-group .btns .p-button{
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}

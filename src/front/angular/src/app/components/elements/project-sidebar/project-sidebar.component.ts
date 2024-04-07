@@ -126,7 +126,11 @@ export class ProjectSidebarComponent implements OnInit {
         width: '70%',
         contentStyle: { overflow: 'auto' },
         baseZIndex: 10000,
-        maximizable: true
-    });
+        maximizable: true,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true
+      });
   }
 }
