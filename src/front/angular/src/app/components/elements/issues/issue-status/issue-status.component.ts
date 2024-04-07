@@ -1,29 +1,29 @@
-import { Component, Input } from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import { IssueStatus, IssueStatusDisplay, JIssue } from '../../../../_models/issue';
 import {ProjectService} from "../../../state/project/project.service";
 import {ProjectQuery} from "../../../state/project/project.query";
+import {OverlayPanel} from "primeng/overlaypanel";
 
 @Component({
   selector: 'issue-status',
   templateUrl: './issue-status.component.html',
   styleUrl: './issue-status.component.css'
 })
-export class IssueStatusComponent {
+export class IssueStatusComponent implements OnInit {
   @Input() issue!: JIssue;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  IssueStatusDisplay = IssueStatusDisplay;
+  IssueStatusDisplayMap = IssueStatusDisplay;
 
   variants = {
-    [IssueStatus.BACKLOG]: 'btn-secondary',
-    [IssueStatus.SELECTED]: 'btn-secondary',
-    [IssueStatus.IN_PROGRESS]: 'btn-primary',
-    [IssueStatus.DONE]: 'btn-success'
+    [IssueStatus.BACKLOG]: 'secondary',
+    [IssueStatus.SELECTED]: 'secondary',
+    [IssueStatus.IN_PROGRESS]: '',
+    [IssueStatus.DONE]: 'success'
   };
 
   issueStatuses!: IssueStatusValueTitle[];
-  selectedIssueStatus!: IssueStatus;
 
-  constructor(private _projectService: ProjectService, private _projectQuery: ProjectQuery) {}
+  constructor(private _projectService: ProjectService, private _projectQuery: ProjectQuery,
+              private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.issueStatuses = [
@@ -32,16 +32,18 @@ export class IssueStatusComponent {
       new IssueStatusValueTitle(IssueStatus.IN_PROGRESS),
       new IssueStatusValueTitle(IssueStatus.DONE)
     ];
-    this.selectedIssueStatus = this.issue.status;
+    this.cdr.markForCheck();
   }
 
-  updateIssue(status: IssueStatus) {
+  updateIssue(status: IssueStatus, op: OverlayPanel) {
     const newPosition = this._projectQuery.lastIssuePosition(status);
     this._projectService.updateIssue({
       ...this.issue,
       status,
       listPosition: newPosition + 1
+
     });
+    op.hide();
   }
 
   isStatusSelected(status: IssueStatus) {
