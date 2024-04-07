@@ -222,9 +222,11 @@
                             {{ project.budget }}
                         </td>
                         <td *ngIf="selectedColumns.includes('Progress')" style="width: 20vh;">
-                            <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
-                            
-                            <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>
+                            <div class="progress-bar-wrapper">
+                                <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
+                                
+                                <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>
+                            </div>
                         </td>
                     </tr>
                 </ng-template>
