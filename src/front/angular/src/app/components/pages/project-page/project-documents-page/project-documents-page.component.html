@@ -8,9 +8,49 @@
         <div class="content">
             <div id="left-side" >
                 <h1 id="Name">{{project.name}}</h1>
-                <button class="btn btn-primary"> Upload File</button>
-
+                <button data-bs-toggle="modal" data-bs-target="#modalAddDocument" class="btn btn-primary">
+                         Upload File
+                </button>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="modalAddDocument" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add new documents to the project</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+            </div>
+            <!-- End of Form Header -->
+            
+            <!-- From Body -->
+            <!-- File upload From HTML (Hidden) -->
+            <div class="modal-body">
+                <input type="file" class="file-input"
+                (change)="onFileSelected($event)" #fileUpload>
+
+            <div class="file-upload">
+            <!-- End of Hidden element -->
+            
+            <!-- Custom File Upload Button -->
+            {{this.fileName || "No file uploaded yet."}}
+
+                <button  class="btn btn-outline-primary"
+                (click)="fileUpload.click()">
+
+                    <i class="pi pi-paperclip"></i>
+
+                </button>
+                
+            </div>
+            <!-- End of Custom Button -->
+            <!-- End of Form -->
+            </div>
+            
+        </div>
+    </div>
+
 </div>

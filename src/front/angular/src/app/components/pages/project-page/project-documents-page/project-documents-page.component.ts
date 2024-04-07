@@ -17,6 +17,7 @@ export class ProjectDocumentsPageComponent implements OnInit{
 
   form : FormGroup;
   projectName: string | null = '';
+  fileName: String | null = '';
 
   projectTypes: ProjectType []=[];
   
@@ -77,6 +78,14 @@ export class ProjectDocumentsPageComponent implements OnInit{
         console.log(error);
       }
     });
+  }
+
+  onFileSelected(event: any){
+    const file:File = event.target.files[0];
+    if(file){
+      this.fileName = file.name
+
+    }
   }
 
 }
