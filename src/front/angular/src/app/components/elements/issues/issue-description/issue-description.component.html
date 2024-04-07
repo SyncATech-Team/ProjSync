@@ -18,13 +18,7 @@
          *ngIf="!isEditing"
          (click)="setEditMode(true)">
         <div class="ql-editor"
-             [innerHTML]="issue.description || 'Click to add description'"></div>
-        <div class="icon-edit">
-            <i nz-icon
-               class="cursor-pointer"
-               title="Click to edit"
-               nzType="edit"
-               nzTheme="outline"></i>
+             [innerHTML]="issue.description || 'Click to add description'">
         </div>
     </div>
 </ng-template>

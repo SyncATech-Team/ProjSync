@@ -4,6 +4,7 @@ import { IssueTypeWithIcon } from '../../../../_models/issue-type-icon';
 import { IssueUtil } from '../../../utils/issue-util';
 import { IssuePriorityIcon } from '../../../../_models/issue-priority-icon';
 import { ProjectConst } from '../../../config/const';
+import {ProjectService} from "../../../state/project/project.service";
 
 @Component({
   selector: 'issue-type',
@@ -16,7 +17,7 @@ export class IssueTypeComponent {
   selectedissueType!: IssueType;
   issueTypes: IssueTypeWithIcon[];
 
-  constructor() {
+  constructor(private _projectService: ProjectService) {
     this.issueTypes = ProjectConst.IssueTypesWithIcon;
   }
 
@@ -31,10 +32,10 @@ export class IssueTypeComponent {
   ngOnChanges(): void {}
 
   updateIssue(issueType: IssueType) {
-    // this._projectService.updateIssue({
-    //   ...this.issue,
-    //   type: issueType
-    // });
+    this._projectService.updateIssue({
+      ...this.issue,
+      type: issueType
+    });
   }
 
   isTypeSelected(type: IssueType) {

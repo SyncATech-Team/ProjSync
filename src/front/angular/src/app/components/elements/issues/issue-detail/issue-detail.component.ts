@@ -13,10 +13,9 @@ export class IssueDetailComponent {
   @Input() isShowFullScreenButton!: boolean;
   @Input() isShowCloseButton!: boolean;
   @Output() onClosed = new EventEmitter();
- //  @Output() onOpenIssue = new EventEmitter<string>();
- 
-  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
+  @Output() onOpenIssue = new EventEmitter<string>();
 
+  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
   }
 
   closeModal() {
@@ -46,6 +45,7 @@ export class IssueDetailComponent {
 }
 
   openIssuePage() {
-    // this.onOpenIssue.emit(this.issue.id);
+    if (!this.issue) return;
+    this.onOpenIssue.emit(this.issue.id);
   }
 }

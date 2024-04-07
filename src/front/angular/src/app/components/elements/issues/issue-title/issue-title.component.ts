@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { JIssue } from '../../../../_models/issue';
 import { FormControl } from '@angular/forms';
+import {ProjectService} from "../../../state/project/project.service";
 
 @Component({
   selector: 'issue-title',
@@ -11,7 +12,7 @@ export class IssueTitleComponent implements OnChanges {
   @Input() issue!: JIssue;
   titleControl!: FormControl;
 
-  constructor() {}
+  constructor(private _projectService: ProjectService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const issueChange = changes['issue'];
@@ -21,9 +22,9 @@ export class IssueTitleComponent implements OnChanges {
   }
 
   onBlur() {
-    // this._projectService.updateIssue({
-    //   ...this.issue,
-    //   title: this.titleControl.value
-    // });
+    this._projectService.updateIssue({
+      ...this.issue,
+      title: this.titleControl.value
+    });
   }
 }

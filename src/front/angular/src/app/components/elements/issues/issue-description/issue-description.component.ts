@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { JIssue } from '../../../../_models/issue';
 import { FormControl } from '@angular/forms';
 import { quillConfiguration } from '../../../config/editor';
+import {ProjectService} from "../../../state/project/project.service";
 
 @Component({
   selector: 'issue-description',
@@ -15,7 +16,7 @@ export class IssueDescriptionComponent implements OnChanges {
   isEditing!: boolean;
   isWorking!: boolean;
 
-  constructor() {}
+  constructor(private _projectService: ProjectService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const issueChange = changes['issue'];
@@ -35,11 +36,11 @@ export class IssueDescriptionComponent implements OnChanges {
   }
 
   save() {
-    // this._projectService.updateIssue({
-    //   ...this.issue,
-    //   description: this.descriptionControl.value
-    // });
-    // this.setEditMode(false);
+    this._projectService.updateIssue({
+      ...this.issue,
+      description: this.descriptionControl.value
+    });
+    this.setEditMode(false);
   }
 
   cancel() {

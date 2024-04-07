@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IssueStatus, IssueStatusDisplay, JIssue } from '../../../../_models/issue';
+import {ProjectService} from "../../../state/project/project.service";
+import {ProjectQuery} from "../../../state/project/project.query";
 
 @Component({
   selector: 'issue-status',
@@ -21,7 +23,7 @@ export class IssueStatusComponent {
   issueStatuses!: IssueStatusValueTitle[];
   selectedIssueStatus!: IssueStatus;
 
-  constructor() {}
+  constructor(private _projectService: ProjectService, private _projectQuery: ProjectQuery) {}
 
   ngOnInit(): void {
     this.issueStatuses = [
@@ -34,12 +36,12 @@ export class IssueStatusComponent {
   }
 
   updateIssue(status: IssueStatus) {
-    // const newPosition = this._projectQuery.lastIssuePosition(status);
-    // this._projectService.updateIssue({
-    //   ...this.issue,
-    //   status,
-    //   listPosition: newPosition + 1
-    // });
+    const newPosition = this._projectQuery.lastIssuePosition(status);
+    this._projectService.updateIssue({
+      ...this.issue,
+      status,
+      listPosition: newPosition + 1
+    });
   }
 
   isStatusSelected(status: IssueStatus) {
