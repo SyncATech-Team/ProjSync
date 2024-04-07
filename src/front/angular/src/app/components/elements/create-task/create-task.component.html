@@ -1,13 +1,21 @@
 <div id="container-wrapper" class="container">
     <!--  [formGroup]="form" (ngSubmit)="onSubmit()" -->
     <form class="form-group">
+        <p>Issue group</p>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown [options]="groupsOnProject" optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+
         <p>Issue type</p>
         <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Issue priority</p>
         <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+        
+        <p>Issue name</p>
+        <!-- [(ngModel)]="value" -->
+        <input type="text" pInputText class="input-size"/>
 
         <p>Description</p>
         <!-- [(ngModel)]="value" -->
@@ -15,11 +23,11 @@
 
         <p>Reporter</p>
         <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Assigned</p>
         <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true"></p-dropdown>
+        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->

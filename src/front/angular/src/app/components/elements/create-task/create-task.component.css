@@ -5,17 +5,19 @@
     color: #42526e;
 }
 
+:host ::ng-deep .form-group input,
 :host ::ng-deep .form-group .p-dropdown{
     width: 100%;
 }
 
-:host ::ng-deep .form-group .dropdownCateg span{
+:host ::ng-deep .form-group .input-size span{
     margin-left: 8px;
     height: 2rem;
 }
 
-:host ::ng-deep .form-group .dropdownCateg span,
-:host ::ng-deep .form-group .dropdownCateg li{
+:host ::ng-deep .form-group input,
+:host ::ng-deep .form-group .input-size span,
+:host ::ng-deep .form-group .input-size li{
     padding: 5px;
 }
 

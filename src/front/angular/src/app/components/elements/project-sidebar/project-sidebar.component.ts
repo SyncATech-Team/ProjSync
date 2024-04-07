@@ -130,7 +130,11 @@ export class ProjectSidebarComponent implements OnInit {
         closable: true,
         modal: true,
         dismissableMask: true,
-        closeOnEscape: true
+        closeOnEscape: true,
+        data: {
+          projectName: this.projectName
+        }
       });
+      console.log(this.projectName);
   }
 }
