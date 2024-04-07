@@ -23,6 +23,7 @@ import { PasswordResetPageComponent } from './components/pages/password-reset-pa
 import { PasswordResetComponent } from './components/elements/password-reset/password-reset.component';
 import { NotificationComponent } from './components/elements/notification/notification.component';
 import { TableModule } from "primeng/table";
+import { ContentLoaderModule } from '@ngneat/content-loader';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -40,8 +41,6 @@ import { ProjectPeoplePageComponent } from './components/pages/project-page/proj
 import { DropdownModule } from 'primeng/dropdown';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
-import { NzIconModule } from "ng-zorro-antd/icon";
-import { NzSpinModule } from "ng-zorro-antd/spin";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -53,6 +52,31 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { IssueCardComponent } from './components/elements/issues/issue-card/issue-card.component';
+import { BoardDndComponent } from './components/elements/board/board-dnd/board-dnd.component';
+import { BoardDndListComponent } from './components/elements/board/board-dnd-list/board-dnd-list.component';
+import { SvgDefinitionsComponent } from './components/elements/shared/svg-definitions/svg-definitions.component';
+import { SvgIconComponent } from './components/elements/shared/svg-icon/svg-icon.component';
+import { SamotestComponent } from './components/pages/samotest/samotest.component';
+import { IssueModalComponent } from './components/elements/issues/issue-modal/issue-modal.component';
+import { DialogModule } from 'primeng/dialog';
+import { DialogService } from 'primeng/dynamicdialog';
+import { TooltipModule } from 'primeng/tooltip';
+import { QuillModule } from 'ngx-quill';
+import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { IssueDetailComponent } from './components/elements/issues/issue-detail/issue-detail.component';
+import { IssueLoaderComponent } from './components/elements/issues/issue-loader/issue-loader.component';
+import { IssueTypeComponent } from './components/elements/issues/issue-type/issue-type.component';
+import { IssueTitleComponent } from './components/elements/issues/issue-title/issue-title.component';
+import { IssueDescriptionComponent } from './components/elements/issues/issue-description/issue-description.component';
+import { IssueStatusComponent } from './components/elements/issues/issue-status/issue-status.component';
+import { IssuePriorityComponent } from './components/elements/issues/issue-priority/issue-priority.component';
+import { IssueCommentsComponent } from './components/elements/issues/issue-comments/issue-comments.component';
+import { IssueCommentComponent } from './components/elements/issues/issue-comment/issue-comment.component';
+import {environment} from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -80,7 +104,23 @@ import { ConfirmationService } from 'primeng/api';
     NotFoundPageComponent,
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
-    ProjectTasksPageComponent
+    ProjectTasksPageComponent,
+    IssueCardComponent,
+    BoardDndComponent,
+    BoardDndListComponent,
+    SvgDefinitionsComponent,
+    SvgIconComponent,
+    SamotestComponent,
+    IssueModalComponent,
+    IssueDetailComponent,
+    IssueLoaderComponent,
+    IssueTypeComponent,
+    IssueTitleComponent,
+    IssueDescriptionComponent,
+    IssueStatusComponent,
+    IssuePriorityComponent,
+    IssueCommentComponent,
+    IssueCommentsComponent
   ],
   imports: [
     BrowserModule,
@@ -94,12 +134,11 @@ import { ConfirmationService } from 'primeng/api';
     ButtonModule,
     ToastModule,
     ModalModule.forRoot(),
+    QuillModule.forRoot(),
     ConfirmDialogModule,
     MultiSelectModule,
     CalendarModule,
     DropdownModule,
-    NzSpinModule,
-    NzIconModule.forRoot([]),
     OverlayPanelModule,
     FileUploadModule,
     ColorPickerModule,
@@ -107,14 +146,22 @@ import { ConfirmationService } from 'primeng/api';
     InputTextModule,
     InputTextareaModule,
     CheckboxModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    ContentLoaderModule,
+    DragDropModule,
+    DialogModule,
+    TooltipModule,
+    environment.production ? [] : AkitaNgDevtools,
+    AkitaNgRouterStoreModule,
   ],
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    DialogService,
+    { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
   ],
   bootstrap: [AppComponent]
 })

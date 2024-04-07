@@ -1,0 +1,24 @@
+<ng-container *ngIf="isEditing; else readonlyModeTmpl">
+    <quill-editor class="content-editor"
+                  [modules]="editorOptions"
+                  [formControl]="descriptionControl"
+                  [placeholder]="''"
+                  (onEditorCreated)="editorCreated($event)">
+    </quill-editor>
+
+    <div class="pt-3 d-flex align-items-center">
+        <p-button label="Save" icon="pi pi-save" (click)="save()"></p-button>
+        <p-button label="Cancel" severity="warning" icon="pi pi-times" (click)="cancel()"></p-button>
+    </div>
+
+</ng-container>
+
+<ng-template #readonlyModeTmpl>
+    <div class="ql-snow content-readonly"
+         *ngIf="!isEditing"
+         (click)="setEditMode(true)">
+        <div class="ql-editor"
+             [innerHTML]="issue.description || 'Click to add description'">
+        </div>
+    </div>
+</ng-template>

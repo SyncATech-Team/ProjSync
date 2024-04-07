@@ -1,0 +1,21 @@
+<div class="type-dropdown">
+    <p-dropdown 
+        [options]="issueTypes" 
+        [(ngModel)]="selectedissueType"
+        optionLabel="value"
+        [showClear]="false"
+        placeholder={{selectedissueType}}>
+        <ng-template let-issueType pTemplate="item">
+           
+            <div class="item-drop1">
+                <div class="flex items-center">
+                    <svg-icon [name]="issueType.icon" [size]="20">
+                    </svg-icon>
+                    <span class="ml-3 font-semibold uppercase text-textMedium text-13">{{ issueType.value }}</span>
+                </div>
+            </div>
+        </ng-template>
+    </p-dropdown>
+</div>
+
+
