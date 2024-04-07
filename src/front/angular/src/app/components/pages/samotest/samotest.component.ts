@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ProjectService} from "../../state/project/project.service";
+
 
 @Component({
   selector: 'app-samotest',
   templateUrl: './samotest.component.html',
   styleUrl: './samotest.component.css'
 })
-export class SamotestComponent {
+export class SamotestComponent implements OnInit {
 
-  constructor() {}
+  constructor(private _projectService: ProjectService) {
+  }
+
+  ngOnInit(): void {
+    this._projectService.getProject();
+  }
 }

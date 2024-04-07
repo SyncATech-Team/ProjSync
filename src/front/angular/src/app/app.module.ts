@@ -65,6 +65,9 @@ import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { QuillModule } from 'ngx-quill';
+import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { IssueDetailComponent } from './components/elements/issues/issue-detail/issue-detail.component';
 import { IssueLoaderComponent } from './components/elements/issues/issue-loader/issue-loader.component';
 import { IssueTypeComponent } from './components/elements/issues/issue-type/issue-type.component';
@@ -74,6 +77,7 @@ import { IssueStatusComponent } from './components/elements/issues/issue-status/
 import { IssuePriorityComponent } from './components/elements/issues/issue-priority/issue-priority.component';
 import { IssueCommentsComponent } from './components/elements/issues/issue-comments/issue-comments.component';
 import { IssueCommentComponent } from './components/elements/issues/issue-comment/issue-comment.component';
+import {environment} from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -148,7 +152,9 @@ import { IssueCommentComponent } from './components/elements/issues/issue-commen
     ContentLoaderModule,
     DragDropModule,
     DialogModule,
-    TooltipModule
+    TooltipModule,
+    environment.production ? [] : AkitaNgDevtools,
+    AkitaNgRouterStoreModule,
   ],
   providers: [
     provideClientHydration(),
@@ -156,7 +162,8 @@ import { IssueCommentComponent } from './components/elements/issues/issue-commen
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     MessageService,
     ConfirmationService,
-    DialogService
+    DialogService,
+    { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
   ],
   bootstrap: [AppComponent]
 })
