@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { JIssue } from '../../../../_models/issue';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {JIssue} from '../../../../_models/issue';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {ProjectService} from "../../../state/project/project.service";
 
 @Component({
@@ -29,25 +29,25 @@ export class IssueDetailComponent {
   // dialog za brisanje
   confirmDelete(event: Event) {
     this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Do you want to delete this record?',
-        header: 'Delete Confirmation',
-        icon: 'pi pi-info-circle',
-        acceptButtonStyleClass:"p-button-danger p-button-text",
-        rejectButtonStyleClass:"p-button-text p-button-text",
-        acceptIcon:"none",
-        rejectIcon:"none",
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: "p-button-danger p-button-text",
+      rejectButtonStyleClass: "p-button-text p-button-text",
+      acceptIcon: "none",
+      rejectIcon: "none",
 
-        accept: () => {
-          if (!this.issue) return;
-          this._projectService.deleteIssue(this.issue.id);
-          this.closeModal();
-        },
-        reject: () => {
-          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-        }
+      accept: () => {
+        if (!this.issue) return;
+        this._projectService.deleteIssue(this.issue.id);
+        this.closeModal();
+      },
+      reject: () => {
+        this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+      }
     });
-}
+  }
 
   openIssuePage() {
     if (!this.issue) return;
