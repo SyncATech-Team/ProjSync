@@ -53,6 +53,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { CreateTaskComponent } from './components/elements/create-task/create-task.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [
@@ -80,7 +83,8 @@ import { ConfirmationService } from 'primeng/api';
     NotFoundPageComponent,
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
-    ProjectTasksPageComponent
+    ProjectTasksPageComponent,
+    CreateTaskComponent
   ],
   imports: [
     BrowserModule,
@@ -107,13 +111,15 @@ import { ConfirmationService } from 'primeng/api';
     InputTextModule,
     InputTextareaModule,
     CheckboxModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    DynamicDialogModule
   ],
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     MessageService,
+    DialogService,
     ConfirmationService
   ],
   bootstrap: [AppComponent]

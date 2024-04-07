@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 import { ProjectService } from '../../../_service/project.service';
 import { Project } from '../../../_models/project.model';
+import { CreateTaskComponent } from '../create-task/create-task.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 interface SideNavToggle{
   screenWidth : number;
@@ -18,6 +20,7 @@ interface SideNavToggle{
 })
 export class ProjectSidebarComponent implements OnInit {
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
+  ref: DynamicDialogRef | undefined;
 
   //TRUE -> otvoren side nav
   //FALSE -> zatvoren side nav
@@ -33,8 +36,14 @@ export class ProjectSidebarComponent implements OnInit {
   MAX_PROJECT_NAME: number = 12;
   permitions: any;
 
-  constructor(public accoutService: AccountService, private router: Router,
-      private route: ActivatedRoute,private companyroleService: CompanyroleService, private projectService: ProjectService) { 
+  constructor(
+    public accoutService: AccountService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private companyroleService: CompanyroleService,
+    private projectService: ProjectService,
+    public dialogService: DialogService
+    ) { 
     this.screenWidth = window.innerWidth;
     this.setCollapsedState();
     this.projectName = route.snapshot.paramMap.get('projectName');
@@ -103,5 +112,21 @@ export class ProjectSidebarComponent implements OnInit {
       s = this.projectName;
 
     return s;
+  }
+
+  handleNavigation(label: string) {
+    if (label === 'Create task') {
+        this.showCreateTaskPopup();
+    }
+  }
+
+  showCreateTaskPopup() {
+      this.ref = this.dialogService.open(CreateTaskComponent, {
+        header: 'Create task',
+        width: '70%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true
+    });
   }
 }
