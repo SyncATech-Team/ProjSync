@@ -3,27 +3,22 @@
 }
 
 .textarea-inline-control {
-    font-size: 1.5rem; /* 24px */
-    line-height: 2rem; /* 32px */
-    font-weight: 500;
-    margin-left: -8px;
-}
-
-.textarea-inline-control {
-    border-color: transparent;
-    padding: 7px 7px 8px;
-    line-height: 1.28;
-    resize: none;
-    box-shadow: transparent 0px 0px 0px 1px;
-    transition: background 0.1s ease 0s;
-    overflow: auto;
-    overflow-y: hidden;
-    width: 100%;
-    border-radius: 3px;
-    appearance: none;
-    width: 100%;
-    height: auto;
-    color: #718096;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 500;
+  margin-left: -8px;
+  border-color: transparent;
+  padding: 7px 7px 8px;
+  line-height: 1.28;
+  resize: none;
+  box-shadow: transparent 0px 0px 0px 1px;
+  transition: background 0.1s ease 0s;
+  overflow: auto;
+  overflow-y: hidden;
+  width: 100%;
+  border-radius: 3px;
+  appearance: none;
+  height: auto;
+  color: #718096;
 }
 .textarea-inline-control:hover:not(:focus) {
     background-color: lightgray;

@@ -80,6 +80,7 @@ import {environment} from "../environments/environment";
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { BoardFilterComponent } from './components/elements/board/board-filter/board-filter.component';
+import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 
 @NgModule({
   declarations: [
@@ -158,7 +159,8 @@ import { BoardFilterComponent } from './components/elements/board/board-filter/b
     environment.production ? [] : AkitaNgDevtools,
     AkitaNgRouterStoreModule,
     AvatarModule,
-    AvatarGroupModule
+    AvatarGroupModule,
+    CdkTextareaAutosize
   ],
   providers: [
     provideClientHydration(),
