@@ -9,6 +9,10 @@
     justify-content: center;
 }
 
+#content div{
+    width: 100%;
+}
+
 @media screen and (max-width: 900px) {
     #content {
         display: block;
@@ -60,7 +64,12 @@
     border: 2px solid black;
 }
 
-#imageUpload div {
+#imageUpload{
+    display: flex;
+    flex-direction: column;
+}
+
+#imageUpload .show-img {
     margin-top: 20px;
     display: flex;
     justify-content: center;
@@ -68,4 +77,29 @@
 
 #imageUpload div:first-child {
     margin-bottom: 10px;
+}
+
+.btns-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.files-btn{
+    padding: 6px 12px;
+    margin-right: 2rem;
+    cursor: pointer;
+    border-radius: 6px;
+    color: white;
+    background-color: #3B82F6;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+:host ::ng-deep .remove-photo button{
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
 }

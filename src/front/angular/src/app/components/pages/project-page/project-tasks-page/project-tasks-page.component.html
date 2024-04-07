@@ -9,7 +9,7 @@
                 <p-table
                     #dt1
                     *ngIf="visible"
-                    [value]="tasks"
+                    [value]="groupView ? tasksByGroup : tasks"
                     dataKey="{{dataKey}}"
                     [globalFilterFields]="['name']"
                     [tableStyle]="{'width': '100%'}"
@@ -24,19 +24,25 @@
                     [showCurrentPageReport]="true"
                     (onPage)="pageChange($event)"
                     currentPageReportTemplate="Showing {first} to {last} of {{tasks.length}} entries"
-                    rowGroupMode="subheader" 
-                    groupRowsBy="{{groupRowsBy}}"
-                    [scrollable]="true" >
+                    [columns]="selectedColumns" >
                     
                     
                     <ng-template pTemplate="caption">
-                        <div class="flex align-items-center justify-content-between">
-                            Show by groups 
-                            <p-checkbox [(ngModel)]="groupView" [binary]="true" (onChange)="changeView()" ></p-checkbox>
+                        <div class="table-header">
+                            <div class="group-view"> 
+                                <p-checkbox label="Show by groups" [(ngModel)]="groupView" [binary]="true" (onChange)="changeView()" ></p-checkbox>
+                            </div>
+                            <div class="search">
+                                <span class="p-input-icon-right">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+                                </span>
+                            </div>
+                            <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" selectedItemsLabel="{0} columns selected" [style]="{'width': '30vh'}" placeholder="Choose Columns"></p-multiSelect>
                         </div>
                     </ng-template>
 
-                    <ng-template pTemplate="header">
+                    <ng-template *ngIf="!groupView" pTemplate="header">
                         <tr>
     
                             <th pSortableColumn="name">
@@ -44,7 +50,7 @@
                                 <p-sortIcon field="name"></p-sortIcon>
                                 <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
                             </th>
-                            <th pSortableColumn="priorityName">
+                            <th *ngIf="selectedColumns.includes('Priority')" pSortableColumn="priorityName">
                                 Priority
                                 <p-sortIcon field="priorityName"></p-sortIcon>
                                 <p-columnFilter field="priorityName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
@@ -64,7 +70,7 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th pSortableColumn="typeName">
+                            <th *ngIf="selectedColumns.includes('Type')" pSortableColumn="typeName">
                                 Type
                                 <p-sortIcon field="typeName"></p-sortIcon>
                                 <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
@@ -84,12 +90,42 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th pSortableColumn="reporterUsername">
+                            <th *ngIf="selectedColumns.includes('Status')" pSortableColumn="statusName">
+                                Status
+                                <p-sortIcon field="statusName"></p-sortIcon>
+                                <p-columnFilter field="statusName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template pTemplate="header">
+                                        <div class="px-3 pt-3 pb-0">
+                                            <span class="font-bold">Type</span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
+                                        <p-multiSelect [ngModel]="value" [options]="issueStatus" placeholder="Any" (onChange)="filter($event.value)">
+                                            <ng-template let-task let-option pTemplate="item" >
+                                                <div class="inline-block vertical-align-middle">
+                                                    <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </th>
+                            <th *ngIf="selectedColumns.includes('Reporter')" pSortableColumn="reporterUsername">
                                 Reporter
                                 <p-sortIcon field="reporterUsername"></p-sortIcon>
                                 <p-columnFilter type="text" field="reporterUsername" display="menu"></p-columnFilter>
                             </th>
-                            <th pSortableColumn="dueDate">
+                            <th *ngIf="selectedColumns.includes('Description')" pSortableColumn="description">
+                                Description
+                                <p-sortIcon field="description"></p-sortIcon>
+                                <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
+                            </th>
+                            <th *ngIf="selectedColumns.includes('Group')" pSortableColumn="groupName">
+                                Group
+                                <p-sortIcon field="groupName"></p-sortIcon>
+                                <p-columnFilter type="text" field="groupName" display="menu"></p-columnFilter>
+                            </th>
+                            <th *ngIf="selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
                                 Due Date
                                 <p-sortIcon field="dueDate"></p-sortIcon>
                                 <p-columnFilter type="date" field="dueDate" display="menu">
@@ -98,7 +134,25 @@
                                     </ng-template>
                                 </p-columnFilter>
                             </th>
-                            <th pSortableColumn="percentage">
+                            <th *ngIf="selectedColumns.includes('Created Date')" pSortableColumn="createdDate">
+                                Created Date
+                                <p-sortIcon field="createdDate"></p-sortIcon>
+                                <p-columnFilter type="date" field="createdDate" display="menu">
+                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                        <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </th>
+                            <th *ngIf="selectedColumns.includes('Updated Date')" pSortableColumn="updatedDate">
+                                Updated Date
+                                <p-sortIcon field="updatedDate"></p-sortIcon>
+                                <p-columnFilter type="date" field="updatedDate" display="menu">
+                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                        <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </th>
+                            <th *ngIf="selectedColumns.includes('Percentage')" pSortableColumn="percentage">
                                 Percentage
                                 <p-sortIcon field="percentage"></p-sortIcon>
                                 <p-columnFilter type="numeric" field="percentage" display="menu"></p-columnFilter>
@@ -107,21 +161,206 @@
                     </ng-template>
 
                     
-                    <ng-template *ngIf="groupView" pTemplate="groupheader" let-task let-rowIndex="rowIndex" let-expanded="expanded">
+                    <ng-template *ngIf="groupView" pTemplate="body" let-group let-expanded="expanded">
                         <tr>
-                            <td>
-                                <button type="button" pButton pRipple [pRowToggler]="task" class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                                
-                            </td>
-                            <td colspan="5" style="align-items: center;">
-                                {{task.groupName}}
+                            <td style="text-align: left;">
+                                <button type="button" pButton pRipple [pRowToggler]="group" class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">{{group.group}}</button>
                             </td>
                         </tr>
                     </ng-template>
+
                     
+                    <ng-template pTemplate="rowexpansion" let-group>
+                        <tr>
+                            <td>
+                                <p-table
+                                    [value]="group.tasks"
+                                    dataKey="name"
+                                    [globalFilterFields]="['name']"
+                                    [tableStyle]="{'width': '100%'}"
+                                    responsiveLayout="stack" 
+                                    [breakpoint]="'960px'"
+                                    styleClass="p-datatable-striped"
+                                    [columns]="selectedColumns"
+                                    sortMode="multiple" >
+
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                    
+                                            <th pSortableColumn="name">
+                                                Name
+                                                <p-sortIcon field="name"></p-sortIcon>
+                                                <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Priority')" pSortableColumn="priorityName">
+                                                Priority
+                                                <p-sortIcon field="priorityName"></p-sortIcon>
+                                                <p-columnFilter field="priorityName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                                    <ng-template pTemplate="header">
+                                                        <div class="px-3 pt-3 pb-0">
+                                                            <span class="font-bold">Priority</span>
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
+                                                        <p-multiSelect [ngModel]="value" [options]="issuePriority" placeholder="Any" (onChange)="filter($event.value)">
+                                                            <ng-template let-task let-option pTemplate="item" >
+                                                                <div class="inline-block vertical-align-middle">
+                                                                    <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-multiSelect>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Type')" pSortableColumn="typeName">
+                                                Type
+                                                <p-sortIcon field="typeName"></p-sortIcon>
+                                                <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                                    <ng-template pTemplate="header">
+                                                        <div class="px-3 pt-3 pb-0">
+                                                            <span class="font-bold">Type</span>
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
+                                                        <p-multiSelect [ngModel]="value" [options]="issueType" placeholder="Any" (onChange)="filter($event.value)">
+                                                            <ng-template let-task let-option pTemplate="item" >
+                                                                <div class="inline-block vertical-align-middle">
+                                                                    <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-multiSelect>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Status')" pSortableColumn="statusName">
+                                                Status
+                                                <p-sortIcon field="statusName"></p-sortIcon>
+                                                <p-columnFilter field="statusName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                                    <ng-template pTemplate="header">
+                                                        <div class="px-3 pt-3 pb-0">
+                                                            <span class="font-bold">Type</span>
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
+                                                        <p-multiSelect [ngModel]="value" [options]="issueStatus" placeholder="Any" (onChange)="filter($event.value)">
+                                                            <ng-template let-task let-option pTemplate="item" >
+                                                                <div class="inline-block vertical-align-middle">
+                                                                    <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-multiSelect>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Reporter')" pSortableColumn="reporterUsername">
+                                                Reporter
+                                                <p-sortIcon field="reporterUsername"></p-sortIcon>
+                                                <p-columnFilter type="text" field="reporterUsername" display="menu"></p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Description')" pSortableColumn="description">
+                                                Description
+                                                <p-sortIcon field="description"></p-sortIcon>
+                                                <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Group')" pSortableColumn="groupName">
+                                                Group
+                                                <p-sortIcon field="groupName"></p-sortIcon>
+                                                <p-columnFilter type="text" field="groupName" display="menu"></p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
+                                                Due Date
+                                                <p-sortIcon field="dueDate"></p-sortIcon>
+                                                <p-columnFilter type="date" field="dueDate" display="menu">
+                                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                                        <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Created Date')" pSortableColumn="createdDate">
+                                                Created Date
+                                                <p-sortIcon field="createdDate"></p-sortIcon>
+                                                <p-columnFilter type="date" field="createdDate" display="menu">
+                                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                                        <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Updated Date')" pSortableColumn="updatedDate">
+                                                Updated Date
+                                                <p-sortIcon field="updatedDate"></p-sortIcon>
+                                                <p-columnFilter type="date" field="updatedDate" display="menu">
+                                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                                        <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </th>
+                                            <th *ngIf="selectedColumns.includes('Percentage')" pSortableColumn="percentage">
+                                                Percentage
+                                                <p-sortIcon field="percentage"></p-sortIcon>
+                                                <p-columnFilter type="numeric" field="percentage" display="menu"></p-columnFilter>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-task>
+                                        <tr>
+                    
+                                            <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
+                                                
+                                                <div>
+                                                    <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Priority')" style="width: 17vh; " class="fill-td">
+                                                <span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                                <p-tag class="p-tag-fill" [value]="task.priorityName" [severity]="getSeverity(task.priorityName)"></p-tag>
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Type')" style="width: 17vh; " class="fill-td">
+                                                <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                                <p-tag class="p-tag-fill" [value]="task.typeName" [severity]="getSeverity(task.typeName)"></p-tag>
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Status')" style="width: 17vh; " class="fill-td">
+                                                <span class="p-column-title" style="font-weight: bold;">Status</span>
+                                                <p-tag class="p-tag-fill" [value]="task.statusName" [severity]="getSeverity(task.statusName)"></p-tag>
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Reporter')" style="width: 17vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Reporter</span>
+                                                {{ task.reporterUsername }}
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Description')" style="width: 17vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Description</span>
+                                                {{ task.description }}
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Group')" style="width: 17vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Group</span>
+                                                {{ task.groupName }}
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Due Date')" style="width: 16vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Due Date</span>
+                                                {{ task.dueDate | date : 'dd/MM/yyyy' }}
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Created Date')" style="width: 16vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Created Date</span>
+                                                {{ task.createdDate | date : 'dd/MM/yyyy' }}
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Updated Date')" style="width: 16vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Updated Date</span>
+                                                {{ task.updatedDate | date : 'dd/MM/yyyy' }}
+                                            </td>
+                                            <td *ngIf="selectedColumns.includes('Percentage')" style="width: 16vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Percentage</span>
+                                                {{ task.percentage}} 
+                                            </td>
+                                            
+                                        </tr>
+                                    </ng-template>
+
+                                </p-table>
+                            </td>
+                        </tr>
+                    </ng-template>   
                     
     
-                    <ng-template pTemplate="{{tableBody}}" let-task>
+                    <ng-template *ngIf="!groupView" pTemplate="body" let-task>
                         <tr>
     
                             <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
@@ -130,31 +369,52 @@
                                     <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
                                 </div>
                             </td>
-                            <td style="width: 17vh; " class="fill-td">
+                            <td *ngIf="selectedColumns.includes('Priority')" style="width: 17vh; " class="fill-td">
                                 <span class="p-column-title" style="font-weight: bold;">Priority</span>
                                 <p-tag class="p-tag-fill" [value]="task.priorityName" [severity]="getSeverity(task.priorityName)"></p-tag>
                             </td>
-                            <td style="width: 17vh; " class="fill-td">
+                            <td *ngIf="selectedColumns.includes('Type')" style="width: 17vh; " class="fill-td">
                                 <span class="p-column-title" style="font-weight: bold;">Type</span>
                                 <p-tag class="p-tag-fill" [value]="task.typeName" [severity]="getSeverity(task.typeName)"></p-tag>
                             </td>
-                            <td style="width: 17vh; ">
+                            <td *ngIf="selectedColumns.includes('Status')" style="width: 17vh; " class="fill-td">
+                                <span class="p-column-title" style="font-weight: bold;">Status</span>
+                                <p-tag class="p-tag-fill" [value]="task.statusName" [severity]="getSeverity(task.statusName)"></p-tag>
+                            </td>
+                            <td *ngIf="selectedColumns.includes('Reporter')" style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Reporter</span>
                                 {{ task.reporterUsername }}
                             </td>
-                            <td style="width: 16vh; ">
+                            <td *ngIf="selectedColumns.includes('Description')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold">Description</span>
+                                {{ task.description }}
+                            </td>
+                            <td *ngIf="selectedColumns.includes('Group')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold">Group</span>
+                                {{ task.groupName }}
+                            </td>
+                            <td *ngIf="selectedColumns.includes('Due Date')" style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Due Date</span>
                                 {{ task.dueDate | date : 'dd/MM/yyyy' }}
                             </td>
-                            <td style="width: 16vh; ">
+                            <td *ngIf="selectedColumns.includes('Created Date')" style="width: 16vh; ">
+                                <span class="p-column-title" style="font-weight: bold">Created Date</span>
+                                {{ task.createdDate | date : 'dd/MM/yyyy' }}
+                            </td>
+                            <td *ngIf="selectedColumns.includes('Updated Date')" style="width: 16vh; ">
+                                <span class="p-column-title" style="font-weight: bold">Updated Date</span>
+                                {{ task.updatedDate | date : 'dd/MM/yyyy' }}
+                            </td>
+                            <td *ngIf="selectedColumns.includes('Percentage')" style="width: 16vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Percentage</span>
                                 {{ task.percentage}} 
                             </td>
                             
                         </tr>
                     </ng-template>
-                   
+                    
                 </p-table>
+                
             </div>
         </div>
     </div>

@@ -1,11 +1,10 @@
-<p-toast></p-toast>
-
 <div id="page-wrapper">
-
+    
+    <p-toast></p-toast>
+    <p-confirmPopup></p-confirmPopup>
     <app-nav-bar></app-nav-bar>
 
     <div id="content">
-
         <div id="inputs">
             <form #formEditUser="ngForm" (submit)="applyEditChanges()" id="formEditUser" class="row" autocomplete="off">
                 <div class="sectionEdit">
@@ -168,20 +167,18 @@
         </div>
 
         <div id="imageUpload">
-            <div>
-                <img draggable="false" src="{{getProfilePhoto()}}" alt="user photo">
+            <div class="show-img">
+                <img id="profile-image2" 
+                draggable="false" 
+                src="../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" 
+                alt="user photo">
             </div>
-            <div>
-                Upload - TO DO
-                <!-- <p-fileUpload 
-                    mode="basic"
-                    name="demo[]"
-                    url="https://www.primefaces.org/cdn/api/upload.php" 
-                    accept="image/*"
-                    (onUpload)="onBasicUploadAuto($event)"
-                    [auto]="true"
-                    chooseLabel="Upload photo">
-                </p-fileUpload> -->
+            <div class="btns-wrapper">
+                <input id="fileInput" #fileInputRef type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
+                <label for="files" class="files-btn">Select file</label>
+                
+                <p-button label="Remove image" [outlined]="true" severity="danger" class="remove-photo" (onClick)="openPopUp($event)"></p-button> 
+                <!-- (onClick)="removePhoto()" -->
             </div>
         </div>
     </div>

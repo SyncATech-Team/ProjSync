@@ -34,6 +34,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+src/back/backAPI/user-images
 
 # .NET Core
 project.lock.json
@@ -68,3 +69,4 @@ artifacts/
 *.pidb
 *.svclog
 *.scc
+
