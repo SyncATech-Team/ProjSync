@@ -79,6 +79,7 @@ import { IssueCommentComponent } from './components/elements/issues/issue-commen
 import {environment} from "../environments/environment";
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { BoardFilterComponent } from './components/elements/board/board-filter/board-filter.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     IssueStatusComponent,
     IssuePriorityComponent,
     IssueCommentComponent,
-    IssueCommentsComponent
+    IssueCommentsComponent,
+    BoardFilterComponent
   ],
   imports: [
     BrowserModule,
