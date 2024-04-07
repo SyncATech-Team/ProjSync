@@ -1,17 +1,6 @@
-
 <div class="mt-6 mb-1 text-uppercase text-muted font-weight-bold">
   Status
 </div>
-
-
-<!--<p-menu [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'" #menu [model]="issueStatuses" [popup]="true">-->
-<!--  <ng-template pTemplate="option" let-option>-->
-<!--      <div class="d-flex align-items-center" *ngIf="!isStatusSelected(option.value)"-->
-<!--           (click)="updateIssue(option.value)">-->
-<!--        <span class="ml-3 font-weight-bold">{{ option.label }}</span>-->
-<!--      </div>-->
-<!--  </ng-template>-->
-<!--</p-menu>-->
 
 <p-button
   [text]="true"
@@ -24,8 +13,8 @@
   <ng-template pTemplate="content">
     <ng-container *ngFor="let option of issueStatuses">
       <div class="select-item"
-          *ngIf="!isStatusSelected(option.value)"
-          (click)="updateIssue(option.value, op)">
+           *ngIf="!isStatusSelected(option.value)"
+           (click)="updateIssue(option.value, op)">
         <div class="flex items-center">
           <span class="ml-3 font-semibold uppercase text-textMedium text-13">{{ option.label }}</span>
         </div>
