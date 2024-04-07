@@ -1,0 +1,55 @@
+<div class="d-flex align-items-center mt-6">
+  <form class="w-40 mr-4">
+    <span class="p-input-icon-left">
+    <i class="pi pi-search"></i>
+    <input
+      type="text" pInputText
+      [formControl]="searchControl"/>
+    </span>
+  </form>
+
+  <div class="d-flex flex-row mr-3">
+    <p-avatarGroup>
+      <div *ngFor="let user of projectQuery.users$ | async"
+           class="lift-avatar cursor-pointer ml-1 flex rounded-circle transition-transform duration-100"
+           [class.is-active]="isUserSelected(user)"
+           [pTooltip]="user.name">
+
+        <p-avatar class="d-flex select-none shadow-outline-white"
+                  [image]="user?.avatarUrl"
+                  shape="circle"
+                  size="large"
+                  [pTooltip]="user?.name"
+                  (click)="userChanged(user)">
+        </p-avatar>
+      </div>
+    </p-avatarGroup>
+  </div>
+
+  <p-button
+    class="ml-3 btn-empty"
+    label="Only My Issues"
+    [outlined]="true"
+    (click)="onlyMyIssueChanged()">
+  </p-button>
+
+  <p-button
+    class="ml-3 btn-empty"
+    label="Ignore Resolved"
+    [outlined]="true"
+    (click)="ignoreResolvedChanged()">
+  </p-button>
+
+  <div class="ml-3 d-flex align-items-center"
+       *ngIf="filterQuery.any$ | async">
+    <div class="mr-3 border-right bg-secondary" style="width: 1px;"></div>
+    <p-button
+      class="btn-secondary"
+      label="Clear all"
+      [outlined]="true"
+      (click)="resetAll()">
+    </p-button>
+  </div>
+
+</div>
+

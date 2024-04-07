@@ -1,0 +1,8 @@
+.lift-avatar.is-active {
+  box-shadow: 0 0 0 4px #1255b9;
+  z-index: 1;
+}
+
+.lift-avatar:hover {
+  transform: translateY(-5px);
+}
