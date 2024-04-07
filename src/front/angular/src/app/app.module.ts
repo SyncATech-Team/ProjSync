@@ -55,6 +55,14 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 
+// GANTT CHART MODULES
+import { NgxGanttModule } from '@worktile/gantt';
+import { ThyLayoutModule } from 'ngx-tethys/layout';
+import { ThyButtonModule } from 'ngx-tethys/button';
+import { ThySwitchModule } from 'ngx-tethys/switch';
+
+// END OF GANTT MODULES
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -109,7 +117,11 @@ import { ProjectGanttPageComponent } from './components/pages/project-page/proje
     InputTextModule,
     InputTextareaModule,
     CheckboxModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    NgxGanttModule,
+    ThyLayoutModule,
+    ThyButtonModule,
+    ThySwitchModule
   ],
   providers: [
     provideClientHydration(),
