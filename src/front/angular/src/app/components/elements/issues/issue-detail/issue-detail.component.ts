@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { JIssue } from '../../../../_models/issue';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import {ProjectService} from "../../../state/project/project.service";
 
 @Component({
   selector: 'issue-detail',
@@ -15,7 +16,10 @@ export class IssueDetailComponent {
   @Output() onClosed = new EventEmitter();
   @Output() onOpenIssue = new EventEmitter<string>();
 
-  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
+  constructor(
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private _projectService: ProjectService) {
   }
 
   closeModal() {
@@ -35,8 +39,9 @@ export class IssueDetailComponent {
         rejectIcon:"none",
 
         accept: () => {
-          // TODO: obrisati preko servisa za this.issue.id
-          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+          if (!this.issue) return;
+          this._projectService.deleteIssue(this.issue.id);
+          this.closeModal();
         },
         reject: () => {
           this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
