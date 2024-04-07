@@ -36,7 +36,7 @@ export const navbarData = [
     },
     { // testing
         routeLink: '/home/projects/gantt/',
-        icon: 'fa-solid fa-wrench',
+        icon: 'fa-solid fa-chart-gantt',
         label: 'Gantt'
     }
 ];

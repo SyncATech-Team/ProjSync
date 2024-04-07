@@ -40,8 +40,6 @@ import { ProjectPeoplePageComponent } from './components/pages/project-page/proj
 import { DropdownModule } from 'primeng/dropdown';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
-import { NzIconModule } from "ng-zorro-antd/icon";
-import { NzSpinModule } from "ng-zorro-antd/spin";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -60,6 +58,8 @@ import { NgxGanttModule } from '@worktile/gantt';
 import { ThyLayoutModule } from 'ngx-tethys/layout';
 import { ThyButtonModule } from 'ngx-tethys/button';
 import { ThySwitchModule } from 'ngx-tethys/switch';
+import { SpinnerComponent } from './components/elements/spinner/spinner.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 // END OF GANTT MODULES
 
@@ -90,7 +90,8 @@ import { ThySwitchModule } from 'ngx-tethys/switch';
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
     ProjectTasksPageComponent,
-    ProjectGanttPageComponent
+    ProjectGanttPageComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -108,8 +109,6 @@ import { ThySwitchModule } from 'ngx-tethys/switch';
     MultiSelectModule,
     CalendarModule,
     DropdownModule,
-    NzSpinModule,
-    NzIconModule.forRoot([]),
     OverlayPanelModule,
     FileUploadModule,
     ColorPickerModule,
@@ -127,6 +126,7 @@ import { ThySwitchModule } from 'ngx-tethys/switch';
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     MessageService,
     ConfirmationService
   ],

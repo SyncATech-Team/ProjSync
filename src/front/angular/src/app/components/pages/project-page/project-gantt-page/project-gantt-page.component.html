@@ -1,3 +1,5 @@
+<app-spinner></app-spinner>
+
 <app-nav-bar></app-nav-bar>
 
 <div class="wrapper">
@@ -5,7 +7,7 @@
 
     <div class="content">
 
-        <thy-layout>
+        <thy-layout class="display-block">
             <thy-header class="header-with-baseline">
                 <ng-template #headerContent>
                     <thy-button-group thySize="sm" thyType="outline-default">
@@ -72,11 +74,9 @@
                         </ngx-gantt-column>
 
                     </ngx-gantt-table>
-
                     <ng-template #bar let-item="item">
                         <span style="color: #fff">&nbsp;&nbsp;{{ item.title }} </span>
                     </ng-template>
-
                 </ngx-gantt>
             </thy-content>
         </thy-layout>
