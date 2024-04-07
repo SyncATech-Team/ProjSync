@@ -3,7 +3,11 @@
 <app-nav-bar></app-nav-bar>
 
 <div class="wrapper">
-    <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
+    <!-- <app-project-sidebar [projectName]="projectName"></app-project-sidebar> -->
+
+    <div id="side">
+        <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
+    </div>
 
     <div class="content">
 
@@ -20,7 +24,7 @@
                     &nbsp; &nbsp; &nbsp;
                     <thy-button thyType="primary" thySize="sm" (click)="scrollToToday()">Today</thy-button>
                     &nbsp; &nbsp; &nbsp;
-                    <!-- Za print -->
+                    <!-- Otkomentarisati za pokusaj printa -->
                     <!-- <thy-button thyType="primary" thySize="sm" (click)="print('gantt-example')"> ↓ 导出为图片 </thy-button> -->
                     <!-- &nbsp; &nbsp; &nbsp; -->
                     <span>Toolbar: </span>

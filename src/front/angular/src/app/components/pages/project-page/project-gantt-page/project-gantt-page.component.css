@@ -3,16 +3,11 @@
 }
 
 .content{
-    height: 80vh;
-    overflow-y: hidden;
-    margin: 5px;
-    border: 2px solid red;
+    display: contents;
 }
 
 .display-block {
-    background-color: red;
-}
-
-.gantt-scrollbar {
-    display: block;
+    margin: 10px;
+    width: 85%;
+    height: 80vh;
 }

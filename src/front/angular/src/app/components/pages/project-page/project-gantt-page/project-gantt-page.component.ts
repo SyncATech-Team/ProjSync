@@ -127,7 +127,8 @@ viewOptions = {
         yearQuarter: `QQQ 'of' yyyy`,
         month: 'LLLL',
         yearMonth: `LLLL yyyy`,
-        year: `'Year' yyyy`
+        year: `'Year' yyyy`,
+        week: `'Week ' w`
     },
     linkOptions: {
         showArrow: true
