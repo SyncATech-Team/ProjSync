@@ -1,59 +1,51 @@
 <div id="container-wrapper" class="container">
     <!--  [formGroup]="form" (ngSubmit)="onSubmit()" -->
-    <form class="form-group">
+    <form class="form-group" [formGroup]="form">
         <p>Issue group</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown [options]="groupsOnProject" optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown [options]="groupsOnProject" optionLabel="name" formControlName="issue-group" placeholder="Select issue group" class="input-size" [showClear]="true"></p-dropdown>
+
+        <p>Issue name</p>
+        <!-- [(ngModel)]="value" -->
+        <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name"/>
 
         <p>Issue type</p>
         <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-type" optionLabel="name" placeholder="Select issue type" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Issue priority</p>
         <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
-        
-        <p>Issue name</p>
-        <!-- [(ngModel)]="value" -->
-        <input type="text" pInputText class="input-size"/>
+        <p-dropdown optionLabel="name" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Description</p>
         <!-- [(ngModel)]="value" -->
-        <textarea rows="5" cols="30" pInputTextarea ></textarea>
+        <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea ></textarea>
 
         <div class="calendar-wrapper">
             <div class="created-date">
                 <p>Created Date</p>
                 <!-- [(ngModel)]="date1"  -->
-                <p-calendar [showIcon]="true" class="date1">
-                    <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
-                        <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
-                    </ng-template>
-                </p-calendar>
+                <p-calendar formControlName= "issue-create-date" [showIcon]="true" class="date1"></p-calendar>
             </div>
 
             <div class="due-date">
                 <p>Due Date</p>
                 <!-- [(ngModel)]="date1"  -->
-                <p-calendar [showIcon]="true" class="date2">
-                    <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
-                        <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
-                    </ng-template>
-                </p-calendar>                
+                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2"></p-calendar>                
             </div>
         </div>
 
         <p>Issue status</p>
         <!-- [(ngModel)]="value1" -->
-        <p-inputNumber mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100" class="issue-status"> </p-inputNumber>
+        <p-inputNumber formControlName="issue-status" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100" class="issue-status"> </p-inputNumber>
 
         <p>Reporter</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" [options]="users" optionLabel="username" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-reporter" optionLabel="name" [options]="users" optionLabel="username" placeholder="Select reporter" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Assigned</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" [options]="users" optionLabel="username" placeholder="Select a Category" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-assigner" optionLabel="name" [options]="users" optionLabel="username" placeholder="Assigned" class="input-size" [showClear]="true"></p-dropdown>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->

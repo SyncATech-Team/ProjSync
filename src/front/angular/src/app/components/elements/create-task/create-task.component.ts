@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IssueService } from '../../../_service/issue.service';
 import { ActivatedRoute } from '@angular/router';
-import { quillConfiguration } from '../../../config/editor';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueGroup } from '../../../_models/issue-group';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-create-task',
@@ -13,6 +13,8 @@ import { UserGetter } from '../../../_models/user-getter';
   styleUrl: './create-task.component.css'
 })
 export class CreateTaskComponent implements OnInit {
+  form : FormGroup;
+
   projectName: string | null = '';
   groupsOnProject: IssueGroup [] = [];
   users : UserGetter[] = [];
@@ -22,8 +24,22 @@ export class CreateTaskComponent implements OnInit {
     private _modal: DynamicDialogRef,
     private _dialogConfig: DynamicDialogConfig,
     private _issueService: IssueService,
-    private userService : UserService
-  ) { }
+    private userService : UserService,
+    private formBuilder: FormBuilder
+  ) { 
+    this.form = this.formBuilder.group({
+      'issue-group': [''],
+      'issue-name' : [],
+      'issue-type' : [],
+      'issue-priority' : [],
+      'issue-description' : [],
+      'issue-create-date' : [],
+      'issue-due-date' : [],
+      'issue-status' : [],
+      'issue-reporter' : [],
+      'issue-assigner' : []
+    });
+  }
 
   ngOnInit(): void {
     this.projectName = this._dialogConfig.data.projectName;
@@ -31,7 +47,6 @@ export class CreateTaskComponent implements OnInit {
       this._issueService.getAllGroups(this.projectName).subscribe({
         next: (response) => {
           this.groupsOnProject = response;
-          console.log(this.groupsOnProject);
         },
         error: (error) => {
           console.log(error);
