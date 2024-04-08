@@ -26,5 +26,6 @@
 }
 
 .issue:hover {
-   background-color: gray;
+  background-color: lightblue;
+  cursor: pointer;
 }
