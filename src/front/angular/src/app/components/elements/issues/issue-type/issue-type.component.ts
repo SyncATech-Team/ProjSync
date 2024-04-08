@@ -1,8 +1,7 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import { IssuePriority, IssueType, JIssue } from '../../../../_models/issue';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { IssueType, JIssue } from '../../../../_models/issue';
 import { IssueTypeWithIcon } from '../../../../_models/issue-type-icon';
 import { IssueUtil } from '../../../utils/issue-util';
-import { IssuePriorityIcon } from '../../../../_models/issue-priority-icon';
 import { ProjectConst } from '../../../config/const';
 import {ProjectService} from "../../../state/project/project.service";
 import {OverlayPanel} from "primeng/overlaypanel";
@@ -12,7 +11,7 @@ import {OverlayPanel} from "primeng/overlaypanel";
   templateUrl: './issue-type.component.html',
   styleUrl: './issue-type.component.css'
 })
-export class IssueTypeComponent implements OnInit {
+export class IssueTypeComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
   issueTypes: IssueTypeWithIcon[];
 
