@@ -8,9 +8,9 @@ export interface IssuesInGroup {
     updatedDate: Date,
     dueDate: Date,
     reporterUsername: string,
+    assignedTo : string
     groupName: string,
     projectName: string,
-    dependentOn: string,
-    assignetTo : string
+    dependentOn: number | null,
 }
 

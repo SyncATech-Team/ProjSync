@@ -16,6 +16,10 @@
         <!-- [(ngModel)]="projectType2" -->
         <p-dropdown [options]="issuePrioritys" optionLabel="name" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true"></p-dropdown>
 
+        <p>Issue status</p>
+        <!-- [(ngModel)]="value1" -->
+        <p-dropdown formControlName="issue-status" optionLabel="name" [options]="issueStatus" placeholder="Select issue status" class="input-size" [showClear]="true"></p-dropdown>
+
         <p>Description</p>
         <!-- [(ngModel)]="value" -->
         <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea ></textarea>
@@ -24,27 +28,23 @@
             <div class="created-date">
                 <p>Created Date</p>
                 <!-- [(ngModel)]="date1"  -->
-                <p-calendar formControlName= "issue-create-date" [showIcon]="true" class="date1" placeholder="01/31/2024"></p-calendar>
+                <p-calendar formControlName= "issue-create-date" [showIcon]="true" class="date1" placeholder="dd/mm/yyyy"></p-calendar>
             </div>
 
             <div class="due-date">
                 <p>Due Date</p>
                 <!-- [(ngModel)]="date1"  -->
-                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="12/31/2024"></p-calendar>                
+                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="dd/mm/yyyy"></p-calendar>                
             </div>
         </div>
 
-        <p>Issue status</p>
-        <!-- [(ngModel)]="value1" -->
-        <p-inputNumber formControlName="issue-status" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100" class="issue-status"> </p-inputNumber>
-
         <p>Reporter</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-reporter" optionLabel="name" [options]="users" optionLabel="username" placeholder="Select reporter" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-reporter" [options]="users" optionLabel="username" placeholder="Select reporter" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Assigned</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-assigner" optionLabel="name" [options]="users" optionLabel="username" placeholder="Assigned" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-assigner" [options]="users" optionLabel="username" placeholder="Assigned" class="input-size" [showClear]="true"></p-dropdown>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->

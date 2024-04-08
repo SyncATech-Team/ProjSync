@@ -5,6 +5,7 @@ import { IssuesInGroup } from '../_models/issues-in-group';
 import { IssueGroup } from '../_models/issue-group';
 import { IssueType } from '../_models/issue-type';
 import { IssuePriority } from '../_models/issue-prioritys';
+import { IssueStatus } from '../_models/issue-status';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,13 @@ export class IssueService {
 
   getAllTasksInGroup(groupId: number) {
     return this.http.get<IssuesInGroup[]>(`${this.baseUrl}Tasks/groupId?groupId=${groupId}`);
+  }
+
+  getAllIssueStatus(){
+    return this.http.get<IssueStatus[]>(`${this.baseUrl}IssuesStatus`);
+  }
+
+  createIssue(model: IssuesInGroup){
+    return this.http.post<IssuesInGroup>(this.baseUrl + "Issues", model);
   }
 }
