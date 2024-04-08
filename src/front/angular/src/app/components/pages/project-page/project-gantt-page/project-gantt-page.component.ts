@@ -39,13 +39,14 @@ import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
             dateFormat: {
                 week: `'Week ' w`,
                 month: 'LLLL',
-                quarter: 'Q',
+                quarter: `'Q'Q`,
                 year: `'Year' yyyy`,
                 yearMonth: `LLLL yyyy`,
                 yearQuarter: `QQQ 'of' yyyy`
             },
             linkOptions: {
-                showArrow: true
+                showArrow: true,                // prikaz strelice na kraju linije
+                lineType: 'straight'            // tip linije: | curve | straight |
             }
         }
     }
@@ -177,6 +178,7 @@ ngOnInit(): void {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     // this.items = this.randomItems(100);
 
+    // this.loading = true;
     this.issueService.getTasksTest().subscribe({
         next: response => {
             let data = JSON.parse(JSON.stringify(response));
@@ -192,13 +194,17 @@ ngOnInit(): void {
                     start: getUnixTime(startDate),
                     end: getUnixTime(endDate),
                     group_id: '0000',
-                    expandable: true
+                    expandable: true,
+                    color: "red"
+                    // progress: 0.5
                 });
             }
             this.items = dataIssues;
 
             this.viewType = GanttViewType.month;
             this.selectedViewType = GanttViewType.month;
+            // this.loading = false;
+            this.scrollToToday();
             
             // this.items.forEach((item, index) => {
             //     if (index % 5 === 0) {
@@ -218,17 +224,17 @@ ngOnInit(): void {
 // }
 
 barClick(event: GanttBarClickEvent) {
-    this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
+    // this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
 }
 
 lineClick(event: GanttLineClickEvent) {
-    this.msgPopupService.showInfo(`Event: lineClick ${event.source.title} to ${event.target.title} line`)
+    // this.msgPopupService.showInfo(`Event: lineClick ${event.source.title} to ${event.target.title} line`)
 }
 
 dragMoved(event: GanttDragEvent) {}
 
 dragEnded(event: GanttDragEvent) {
-    this.msgPopupService.showInfo(`Event: dragEnded ${event.item.title}`);
+    // this.msgPopupService.showInfo(`Event: dragEnded ${event.item.title}`);
     this.items = [...this.items];
 }
 
@@ -285,7 +291,7 @@ refresh() {
     this.loading = true;
     of(this.randomItems(30))
         .pipe(
-            delay(2000),
+            // delay(2000),
             finalize(() => {
                 this.loading = false;
             })
