@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {JIssue} from '../../../../_models/issue';
-import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ProjectService} from "../../../state/project/project.service";
+import {ProjectQuery} from "../../../state/project/project.query";
 
 @Component({
   selector: 'issue-detail',
@@ -19,6 +19,7 @@ export class IssueDetailComponent {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    public projectQuery: ProjectQuery,
     private _projectService: ProjectService) {
   }
 

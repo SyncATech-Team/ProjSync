@@ -81,6 +81,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { BoardFilterComponent } from './components/elements/board/board-filter/board-filter.component';
 import { CdkTextareaAutosize } from "@angular/cdk/text-field";
+import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import { CdkTextareaAutosize } from "@angular/cdk/text-field";
     IssuePriorityComponent,
     IssueCommentComponent,
     IssueCommentsComponent,
-    BoardFilterComponent
+    BoardFilterComponent,
+    IssueReporterComponent
   ],
   imports: [
     BrowserModule,
