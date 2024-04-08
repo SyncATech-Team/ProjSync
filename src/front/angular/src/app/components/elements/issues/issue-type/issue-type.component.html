@@ -1,5 +1,6 @@
 <p-button
   [text]="true"
+  [raised]="true"
   label="{{ issue.type }}-{{issue.id}}"
   (click)="op.toggle($event)">
   <svg-icon [name]="selectedIssueTypeIcon"

@@ -4,6 +4,7 @@
 
 <p-button
   [text]="true"
+  [raised]="true"
   severity="{{ variants[issue.status] }}"
   label="{{ IssueStatusDisplayMap[issue.status] }}"
   (click)="op.toggle($event)">
