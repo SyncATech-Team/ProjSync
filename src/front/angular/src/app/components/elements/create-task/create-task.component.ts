@@ -8,6 +8,7 @@ import { UserGetter } from '../../../_models/user-getter';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IssueType } from '../../../_models/issue-type';
 import { IssuePriority } from '../../../_models/issue-prioritys';
+import { IssuesInGroup } from '../../../_models/issues-in-group';
 
 @Component({
   selector: 'app-create-task',
@@ -23,6 +24,22 @@ export class CreateTaskComponent implements OnInit {
   issueTypes : IssueType[] = [];
   issuePrioritys : IssuePriority[] = [];
 
+  issue : IssuesInGroup = {
+    name: "",
+    typeName: "",
+    statusName: "",
+    priorityName: "",
+    description: "",
+    createdDate: new Date(),
+    updatedDate: new Date(),
+    dueDate: new Date(),
+    reporterUsername: "",
+    groupName: "",
+    projectName: "",
+    dependentOn: "",
+    assignetTo: ""
+  }
+
   constructor(
     private route: ActivatedRoute,
     private _modal: DynamicDialogRef,
@@ -32,7 +49,7 @@ export class CreateTaskComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { 
     this.form = this.formBuilder.group({
-      'issue-group': [''],
+      'issue-group': [],
       'issue-name' : [],
       'issue-type' : [],
       'issue-priority' : [],
@@ -83,5 +100,26 @@ export class CreateTaskComponent implements OnInit {
           console.log(error);
         }
       })
+  }
+
+  onSubmit() {
+    // console.log(this.form.controls['issue-type'].value.name);
+    if(this.projectName){
+      this.issue.projectName = this.projectName;
+      this.issue.name = this.form.controls['issue-name'].value;
+      this.issue.groupName = this.form.controls['issue-group'].value;
+      this.issue.priorityName = this.form.controls['issue-priority'].value;
+      this.issue.statusName = this.form.controls['issue-status'].value;
+      this.issue.description = this.form.controls['issue-description'].value;
+      this.issue.createdDate = this.form.controls['issue-create-date'].value;
+      this.issue.dueDate = this.form.controls['issue-due-date'].value;
+      this.issue.statusName = this.form.controls['issue-status'].value;
+      this.issue.reporterUsername = this.form.controls['issue-reporter'].value.username;
+      this.issue.dependentOn = "";
+      this.issue.updatedDate = new Date();
+      this.issue.assignetTo = this.form.controls['issue-assigner'].value.username;
+
+      console.log(this.issue);
+    }
   }
 }

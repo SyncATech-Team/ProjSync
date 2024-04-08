@@ -14,7 +14,7 @@ export class IssueService {
   constructor(private http: HttpClient) { }
 
   getAllGroups(projectName : string){
-    return this.http.get<IssueGroup[]>(`${this.baseUrl}IssueGroup/projectName?projectName=${projectName}`);
+    return this.http.get<IssueGroup[]>(`${this.baseUrl}IssuesGroup/projectName?projectName=${projectName}`);
   }
 
   getAllIssueTypes(){

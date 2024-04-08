@@ -1,3 +1,3 @@
 export interface IssueType{
-    TypeName : string;
+    TypeName : string
 }

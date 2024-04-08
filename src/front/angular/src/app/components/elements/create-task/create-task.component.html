@@ -1,6 +1,5 @@
 <div id="container-wrapper" class="container">
-    <!--  [formGroup]="form" (ngSubmit)="onSubmit()" -->
-    <form class="form-group" [formGroup]="form">
+    <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
         <p>Issue group</p>
         <!-- [(ngModel)]="projectType2" -->
         <p-dropdown [options]="groupsOnProject" optionLabel="name" formControlName="issue-group" placeholder="Select issue group" class="input-size" [showClear]="true"></p-dropdown>
@@ -25,13 +24,13 @@
             <div class="created-date">
                 <p>Created Date</p>
                 <!-- [(ngModel)]="date1"  -->
-                <p-calendar formControlName= "issue-create-date" [showIcon]="true" class="date1"></p-calendar>
+                <p-calendar formControlName= "issue-create-date" [showIcon]="true" class="date1" placeholder="01/31/2024"></p-calendar>
             </div>
 
             <div class="due-date">
                 <p>Due Date</p>
                 <!-- [(ngModel)]="date1"  -->
-                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2"></p-calendar>                
+                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="12/31/2024"></p-calendar>                
             </div>
         </div>
 
