@@ -6,5 +6,6 @@ namespace backAPI.Repositories.Interface.Issues
     {
         Task<IssuePriority> GetTaskPriorityByName(string name);
         Task<IssuePriority> GetTaskPriorityById(int id);
+        Task<List<IssuePriority>> GetAllIssuePrioritys();
     }
 }

@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
-    public class IssueGroupController : BaseApiController {
+    public class IssuesGroupController : BaseApiController {
     
         private readonly IIssueGroupRepository _taskGroupRepository;
         private readonly IProjectsRepository _projectsRepository;
 
-        public IssueGroupController(IIssueGroupRepository taskGroupRepository, IProjectsRepository projectsRepository) { 
+        public IssuesGroupController(IIssueGroupRepository taskGroupRepository, IProjectsRepository projectsRepository) { 
             _taskGroupRepository = taskGroupRepository;
             _projectsRepository = projectsRepository;
         }
