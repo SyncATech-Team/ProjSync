@@ -5,7 +5,6 @@
 
 .issue-wrap {
   touch-action: manipulation;
-  cursor: -webkit-grab;
   cursor: grab;
   margin-bottom: 5px;
   margin-left: 5px;
@@ -15,8 +14,8 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  border-radius: .125rem;    
-  background-color: #fff;    
+  border-radius: .125rem;
+  background-color: #fff;
   transition-property: all;
   transition-duration: .1s;
   -webkit-user-select: none;
