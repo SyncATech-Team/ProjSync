@@ -10,12 +10,12 @@
         <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name"/>
 
         <p>Issue type</p>
-        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-type" optionLabel="name" placeholder="Select issue type" class="input-size" [showClear]="true"></p-dropdown>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="name" placeholder="Select issue type" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Issue priority</p>
-        <!-- [options]="projectTypes" [(ngModel)]="projectType2" -->
-        <p-dropdown optionLabel="name" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true"></p-dropdown>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown [options]="issuePrioritys" optionLabel="name" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Description</p>
         <!-- [(ngModel)]="value" -->

@@ -6,6 +6,8 @@ import { IssueGroup } from '../../../_models/issue-group';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IssueType } from '../../../_models/issue-type';
+import { IssuePriority } from '../../../_models/issue-prioritys';
 
 @Component({
   selector: 'app-create-task',
@@ -16,8 +18,10 @@ export class CreateTaskComponent implements OnInit {
   form : FormGroup;
 
   projectName: string | null = '';
-  groupsOnProject: IssueGroup [] = [];
   users : UserGetter[] = [];
+  groupsOnProject: IssueGroup [] = [];
+  issueTypes : IssueType[] = [];
+  issuePrioritys : IssuePriority[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -51,7 +55,6 @@ export class CreateTaskComponent implements OnInit {
         error: (error) => {
           console.log(error);
         }
-        
       });
     
       this.userService.getAllUsers().subscribe({
@@ -62,5 +65,23 @@ export class CreateTaskComponent implements OnInit {
           console.log(error);
         }
       });
+
+      this._issueService.getAllIssueTypes().subscribe({
+        next: (response) => {
+          this.issueTypes = response;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+
+      this._issueService.getAllIssuePrioritys().subscribe({
+        next: (response) => {
+          this.issuePrioritys = response;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
   }
 }
