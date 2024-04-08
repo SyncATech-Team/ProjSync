@@ -6,5 +6,6 @@ namespace backAPI.Repositories.Interface.Issues
     {
         Task<IssueType> GetTaskTypeByName(string name);
         Task<IssueType> GetTaskTypeById(int id);
+        Task <List<IssueType>> GetAllIssueTypes();
     }
 }

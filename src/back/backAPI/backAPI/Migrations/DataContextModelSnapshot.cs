@@ -354,7 +354,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("TaskTypes");
+                    b.ToTable("IssueType");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>

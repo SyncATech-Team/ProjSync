@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationColorIssue : Migration
+    public partial class IssueTypeMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -79,6 +79,20 @@ namespace backAPI.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "IssueType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IssueType", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ProjectRoles",
                 columns: table => new
                 {
@@ -118,20 +132,6 @@ namespace backAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectVisibilities", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "TaskTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TaskTypes", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -532,15 +532,15 @@ namespace backAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Issues_Issues_DependentOn",
-                        column: x => x.DependentOn,
-                        principalTable: "Issues",
+                        name: "FK_Issues_IssueType_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "IssueType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Issues_TaskTypes_TypeId",
-                        column: x => x.TypeId,
-                        principalTable: "TaskTypes",
+                        name: "FK_Issues_Issues_DependentOn",
+                        column: x => x.DependentOn,
+                        principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
@@ -720,6 +720,12 @@ namespace backAPI.Migrations
                 column: "TypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_IssueType_Name",
+                table: "IssueType",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notifications_UserId",
                 table: "Notifications",
                 column: "UserId");
@@ -776,12 +782,6 @@ namespace backAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectVisibilities_Name",
                 table: "ProjectVisibilities",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskTypes_Name",
-                table: "TaskTypes",
                 column: "Name",
                 unique: true);
 
@@ -864,7 +864,7 @@ namespace backAPI.Migrations
                 name: "IssueStatuses");
 
             migrationBuilder.DropTable(
-                name: "TaskTypes");
+                name: "IssueType");
 
             migrationBuilder.DropTable(
                 name: "Projects");

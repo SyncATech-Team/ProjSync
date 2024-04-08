@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240330012505_MigrationColorIssue")]
-    partial class MigrationColorIssue
+    [Migration("20240407222735_IssueTypeMigration")]
+    partial class IssueTypeMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -357,7 +357,7 @@ namespace backAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("TaskTypes");
+                    b.ToTable("IssueType");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
