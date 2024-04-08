@@ -25,15 +25,42 @@ import { addDays, getUnixTime } from 'date-fns';
 import { IssueService } from '../../../../_service/issue.service';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
 
+import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
+
 @Component({
   selector: 'app-project-gantt-page',
   templateUrl: './project-gantt-page.component.html',
   styleUrl: './project-gantt-page.component.css',
-  providers: [GanttPrintService]
+  providers: [
+    GanttPrintService,
+    {
+        provide: GANTT_GLOBAL_CONFIG,
+        useValue: {
+            dateFormat: {
+                week: `'Week ' w`,
+                month: 'LLLL',
+                quarter: 'Q',
+                year: `'Year' yyyy`,
+                yearMonth: `LLLL yyyy`,
+                yearQuarter: `QQQ 'of' yyyy`
+            },
+            linkOptions: {
+                showArrow: true
+            }
+        }
+    }
+]
 })
 export class ProjectGanttPageComponent implements OnInit {
 
   projectName: string = '';
+
+    /**
+     * Opcije za prikaz gantt-a
+     */
+    viewOptions = {
+        // Opcije premestene u global config
+    };
 
   /**
    * Opcije koje postoje za prikaz
@@ -63,11 +90,11 @@ export class ProjectGanttPageComponent implements OnInit {
 /**
  * Inicijalni prikaz pri otvaranju strane
  */
-viewType: GanttViewType = GanttViewType.month;
+viewType: GanttViewType = GanttViewType.year;
 /**
  * Prikaz koji je oznacen kao izabran u header-u
  */
-selectedViewType: GanttViewType = GanttViewType.month;
+selectedViewType: GanttViewType = GanttViewType.year;
 /**
  * Indikator da li je selektovano prikazivanje baseline-a
  */
@@ -129,22 +156,6 @@ baselineItems: GanttBaselineItem[] = [];
 options = {
     viewType: GanttViewType.day
 };
-/**
- * Opcije za prikaz gantt-a
- */
-viewOptions = {
-    dateFormat: {
-        yearQuarter: `QQQ 'of' yyyy`,
-        month: 'LLLL',
-        yearMonth: `LLLL yyyy`,
-        year: `'Year' yyyy`,
-        week: `'Week ' w`
-    },
-    linkOptions: {
-        showArrow: true
-    }
-};
-
 @HostBinding('class.gantt-example-component') class = true;
 
 @ViewChild('gantt') ganttComponent?: NgxGanttComponent;
@@ -175,8 +186,6 @@ ngOnInit(): void {
                 let endDate = new Date(issue['createdAt']);
                 endDate.setDate(endDate.getDate() + 5);
 
-                console.log(startDate + " " + getUnixTime(startDate));
-
                 dataIssues.push({
                     id: issue['id'],
                     title: issue['title'],
@@ -187,6 +196,10 @@ ngOnInit(): void {
                 });
             }
             this.items = dataIssues;
+
+            this.viewType = GanttViewType.month;
+            this.selectedViewType = GanttViewType.month;
+            
             // this.items.forEach((item, index) => {
             //     if (index % 5 === 0) {
             //         item.children = this.randomItems(this.random(1, 5), item);
