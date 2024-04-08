@@ -107,13 +107,12 @@ export class CreateTaskComponent implements OnInit {
 
       this._issueService.getAllIssueStatus().subscribe({
         next: (response) => {
-          console.log(response);
           this.issueStatus = response;
         },
         error: (error) => {
           console.log(error);
         }
-      })
+      });
   }
 
   onSubmit() {
@@ -150,5 +149,9 @@ export class CreateTaskComponent implements OnInit {
 
       console.log(this.issue);
     }
+  }
+
+  closeModal() {
+    this._modal.close();
   }
 }

@@ -5,6 +5,37 @@
     color: #42526e;
 }
 
+.issue-group-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.issue-group-wrapper .dropdown-groups{
+    width: 60%;
+}
+
+@media screen and (max-width: 560px) {
+    .issue-group-wrapper{
+        display: flex;
+        flex-direction: column;
+    }
+
+    :host ::ng-deep .issue-group-wrapper .add-new-group button{
+        margin-top: 10px;
+    }
+}
+
+:host ::ng-deep .issue-group-wrapper .add-new-group button{
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+:host ::ng-deep .issue-group-wrapper .add-new-group button{
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
 :host ::ng-deep .form-group input,
 :host ::ng-deep .form-group .p-dropdown{
     width: 100%;

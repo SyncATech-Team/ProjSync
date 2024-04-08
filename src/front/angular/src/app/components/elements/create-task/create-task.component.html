@@ -1,8 +1,11 @@
 <div id="container-wrapper" class="container">
     <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
         <p>Issue group</p>
-        <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown [options]="groupsOnProject" optionLabel="name" formControlName="issue-group" placeholder="Select issue group" class="input-size" [showClear]="true"></p-dropdown>
+        <div class="issue-group-wrapper">
+            <p-dropdown [options]="groupsOnProject" optionLabel="name" formControlName="issue-group" placeholder="Select issue group" class="input-size dropdown-groups" [showClear]="true"></p-dropdown>
+
+            <p-button label="Add new group" [outlined]="true" severity="success" class="add-new-group"></p-button>
+        </div>
 
         <p>Issue name</p>
         <!-- [(ngModel)]="value" -->
@@ -49,7 +52,7 @@
         <div class="btns">
             <!--  [disabled]="!projectName2" -->
             <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
-            <p-button label="Close" severity="secondary"></p-button>
+            <p-button label="Close" severity="secondary" (click)="closeModal()"></p-button>
         </div>
     </form>
 </div>

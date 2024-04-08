@@ -7,6 +7,7 @@ import { ProjectService } from '../../../_service/project.service';
 import { Project } from '../../../_models/project.model';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
 
 interface SideNavToggle{
   screenWidth : number;
@@ -42,7 +43,8 @@ export class ProjectSidebarComponent implements OnInit {
     private route: ActivatedRoute,
     private companyroleService: CompanyroleService,
     private projectService: ProjectService,
-    public dialogService: DialogService
+    public dialogService: DialogService,
+    public messageService: MessageService
     ) { 
     this.screenWidth = window.innerWidth;
     this.setCollapsedState();
@@ -134,6 +136,17 @@ export class ProjectSidebarComponent implements OnInit {
         data: {
           projectName: this.projectName
         }
+      });
+      
+      this.ref.onClose.subscribe((data: any) => {
+        let summary_and_detail;
+        if (data) {
+            const buttonType = data?.buttonType;
+            summary_and_detail = buttonType ? { summary: 'No Product Selected', detail: `Pressed '${buttonType}' button` } : { summary: 'Product Selected', detail: data?.name };
+        } else {
+            summary_and_detail = { summary: 'Task not added', detail: 'Pressed Close button' };
+        }
+        this.messageService.add({ severity: 'info', ...summary_and_detail, life: 3000 });
       });
       console.log(this.projectName);
   }
