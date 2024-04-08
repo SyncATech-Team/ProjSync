@@ -77,6 +77,7 @@ namespace backAPI.Controllers
             var ttype = await _taskTypeRepository.GetTaskTypeByName(task.TypeName);
             var tstatus = await _taskStatusRepository.GetTaskTypeByName(task.StatusName);
             var treporter = await _usersRepository.UsernameToId(task.ReporterUsername);
+            var tassingee = await _usersRepository.UsernameToId(task.AssignedTo);
             var tpriority = await _taskPriorityRepository.GetTaskPriorityByName(task.PriorityName);
             var project = await _projectsRepository.GetProjectByName(task.ProjectName);
             var taskGroup = await _taskGroupRepository.GetGroupByNameAsync(project.Id, task.GroupName);
@@ -93,9 +94,10 @@ namespace backAPI.Controllers
                 UpdatedDate = task.UpdatedDate,
                 DueDate = task.DueDate,
                 ReporterId = treporter,
+                AssigneeId = tassingee,
                 DependentOn = task.DependentOn == -1 ? null : task.DependentOn,
                 GroupId = taskGroup.Id
-            });
+            });;
 
             if (created == null) 
             {
