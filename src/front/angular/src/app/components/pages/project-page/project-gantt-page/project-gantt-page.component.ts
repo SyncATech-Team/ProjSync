@@ -22,6 +22,8 @@ import {
 import { finalize, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { addDays, getUnixTime } from 'date-fns';
+import { IssueService } from '../../../../_service/issue.service';
+import { MessagePopupService } from '../../../../_service/message-popup.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -61,14 +63,18 @@ export class ProjectGanttPageComponent implements OnInit {
 /**
  * Inicijalni prikaz pri otvaranju strane
  */
-viewType: GanttViewType = GanttViewType.day;
+viewType: GanttViewType = GanttViewType.month;
 /**
  * Prikaz koji je oznacen kao izabran u header-u
  */
-selectedViewType: GanttViewType = GanttViewType.day;
-
+selectedViewType: GanttViewType = GanttViewType.month;
+/**
+ * Indikator da li je selektovano prikazivanje baseline-a
+ */
 isBaselineChecked = false;
-
+/**
+ * Indikator da li se prikazuje toolbar na gantt-u
+ */
 isShowToolbarChecked = false;
 
 loading = false;
@@ -111,7 +117,9 @@ randomGroupsAndItems(length: number) {
       items
   };
 }
-
+/**
+ * Koje opcije se prikazuju u toolbar-u
+ */
 toolbarOptions: GanttToolbarOptions = {
     viewTypes: [GanttViewType.day, GanttViewType.month, GanttViewType.year]
 };
@@ -121,7 +129,9 @@ baselineItems: GanttBaselineItem[] = [];
 options = {
     viewType: GanttViewType.day
 };
-
+/**
+ * Opcije za prikaz gantt-a
+ */
 viewOptions = {
     dateFormat: {
         yearQuarter: `QQQ 'of' yyyy`,
@@ -145,22 +155,49 @@ dropEnterPredicate = (event: GanttTableDragEnterPredicateContext) => {
 
 constructor(
     private route: ActivatedRoute,
-    private printService: GanttPrintService
+    private printService: GanttPrintService,
+    private issueService: IssueService,
+    private msgPopupService: MessagePopupService
 ) {}
 
 ngOnInit(): void {
     // init items children
 
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
-    this.items = this.randomItems(100);
+    // this.items = this.randomItems(100);
 
-    this.items.forEach((item, index) => {
-        if (index % 5 === 0) {
-            item.children = this.randomItems(this.random(1, 5), item);
+    this.issueService.getTasksTest().subscribe({
+        next: response => {
+            let data = JSON.parse(JSON.stringify(response));
+            const dataIssues = [];
+            for(let issue of data['issues']) {
+                let startDate = new Date(issue['createdAt']);
+                let endDate = new Date(issue['createdAt']);
+                endDate.setDate(endDate.getDate() + 5);
+
+                console.log(startDate + " " + getUnixTime(startDate));
+
+                dataIssues.push({
+                    id: issue['id'],
+                    title: issue['title'],
+                    start: getUnixTime(startDate),
+                    end: getUnixTime(endDate),
+                    group_id: '0000',
+                    expandable: true
+                });
+            }
+            this.items = dataIssues;
+            // this.items.forEach((item, index) => {
+            //     if (index % 5 === 0) {
+            //         item.children = this.randomItems(this.random(1, 5), item);
+            //     }
+            // });
+            // console.log(this.items);
+        },
+        error: error => {
+            console.log("Error fetching tasks: " + error.error);
         }
-    });
-
-    // console.log(this.items);
+    })
 }
 
 // ngAfterViewInit() {
@@ -168,24 +205,25 @@ ngOnInit(): void {
 // }
 
 barClick(event: GanttBarClickEvent) {
-    // this.thyNotify.info('Event: barClick', `你点击了 [${event.item.title}]`);
+    this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
 }
 
 lineClick(event: GanttLineClickEvent) {
-    // this.thyNotify.info('Event: lineClick', `你点击了 ${event.source.title} 到 ${event.target.title} 的关联线`);
+    this.msgPopupService.showInfo(`Event: lineClick ${event.source.title} to ${event.target.title} line`)
 }
 
 dragMoved(event: GanttDragEvent) {}
 
 dragEnded(event: GanttDragEvent) {
-    // this.thyNotify.info('Event: dragEnded', `修改了 [${event.item.title}] 的时间`);
+    this.msgPopupService.showInfo(`Event: dragEnded ${event.item.title}`);
     this.items = [...this.items];
 }
 
 selectedChange(event: GanttSelectedEvent) {
-  if(this.ganttComponent && event.current?.start)
+  if(this.ganttComponent && event.current?.start) {
+    console.log("Scroll required to: " + event.current.start);
     event.current && this.ganttComponent.scrollToDate(event.current?.start);
-
+  }
     // this.thyNotify.info(
     //     'Event: selectedChange',
     //     `当前选中的 item 的 id 为 ${(event.selectedValue as GanttItem[]).map((item) => item.id).join('、')}`
