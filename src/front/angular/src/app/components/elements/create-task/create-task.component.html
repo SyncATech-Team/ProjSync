@@ -6,7 +6,7 @@
 
         <p>Issue name</p>
         <!-- [(ngModel)]="value" -->
-        <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name"/>
+        <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" class="issueName"/>
 
         <p>Issue type</p>
         <!-- [(ngModel)]="projectType2" -->
@@ -44,7 +44,7 @@
 
         <p>Assigned</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-assigner" [options]="users" optionLabel="username" placeholder="Assigned" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-assigner" [options]="users" optionLabel="username" placeholder="Assignee" class="input-size" [showClear]="true"></p-dropdown>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->

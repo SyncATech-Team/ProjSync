@@ -56,6 +56,10 @@
     height: 2rem;
 }
 
+.form-group .issueName{
+    padding-left: 13px;
+}
+
 :host ::ng-deep .issue-status button:last-child{
     border-bottom-right-radius: 6px;
 }
