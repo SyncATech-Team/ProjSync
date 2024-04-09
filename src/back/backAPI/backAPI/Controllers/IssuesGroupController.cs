@@ -42,20 +42,20 @@ namespace backAPI.Controllers
          * Create new group on a project
          * ****************************************************************************** */
         [HttpPost]
-        public async Task<ActionResult> CreateGroupOnProject(string projectName, IssueGroupCreateDto group) {
+        public async Task<ActionResult> CreateGroupOnProject(IssueGroupCreateDto group) {
 
-            var project = _projectsRepository.GetProjectByName(projectName).Result;
+            var project = _projectsRepository.GetProjectByName(group.ProjectName).Result;
             if(project == null) {
                 return BadRequest("No project with the given name");
             }
 
-            var nameExists = await _taskGroupRepository.GroupNameExistsWithinTheSameProject(project.Id, group.Name);
+            var nameExists = await _taskGroupRepository.GroupNameExistsWithinTheSameProject(project.Id, group.GroupName);
             if(nameExists == true) {
                 return BadRequest("There is already a group with the same name in this project");
             }
 
             await _taskGroupRepository.CreateGroupAsync(new IssueGroup {
-                Name = group.Name,
+                Name = group.GroupName,
                 ProjectId = project.Id
             });
 
