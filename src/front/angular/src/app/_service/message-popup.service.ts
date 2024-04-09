@@ -38,4 +38,18 @@ export class MessagePopupService {
         );
     }
 
+    /**
+     * Prikazi obavestenje
+     * @param message 
+     */
+    showInfo(message: string): void {
+        this.messageService.add(
+            {
+                severity: 'info',
+                summary: 'Info',
+                detail: message
+            }
+        )
+    }
+
 }

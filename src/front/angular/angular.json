@@ -35,6 +35,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@worktile/gantt/styles/index.scss",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
