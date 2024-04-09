@@ -46,8 +46,15 @@
         <p-dropdown formControlName="issue-reporter" [options]="users" optionLabel="username" placeholder="Select reporter" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Assigned</p>
-        <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-assigner" [options]="users" optionLabel="username" placeholder="Assignee" class="input-size" [showClear]="true"></p-dropdown>
+        <p-multiSelect
+            formControlName="issue-assigner"
+            [options]="users"
+            optionLabel="username"
+            [(ngModel)]="selectedAssignees"
+            placeholder="Assignee"
+            [showClear]="true"
+            class="multi-select-dropdown"
+        ></p-multiSelect>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->

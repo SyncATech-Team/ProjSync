@@ -11,6 +11,7 @@ export class GroupService{
 
     // https://localhost:5000/api/IssuesGroup?projectName=Projekat1
     createGroup(projectName: string, groupName: string) {
-        return this.http.post<void>(`${this.baseUrl}IssuesGroup?projectName=${projectName}`, { projectName, groupName });
+        return this.http.post<void>(`${this.baseUrl}IssuesGroup/${projectName}`, { projectName, groupName });
     }
+    
 }

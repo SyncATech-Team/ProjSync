@@ -30,6 +30,8 @@ export class CreateTaskComponent implements OnInit {
   issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
 
+  selectedAssignees : UserGetter[] = [];
+
   issue : IssuesInGroup = {
     name: "",
     typeName: "",
@@ -43,7 +45,7 @@ export class CreateTaskComponent implements OnInit {
     groupName: "",
     projectName: "",
     dependentOn: null,
-    assignedTo: ""
+    assignedTo: []
   }
 
   constructor(
@@ -136,23 +138,25 @@ export class CreateTaskComponent implements OnInit {
       this.issue.reporterUsername = this.form.controls['issue-reporter'].value.username;
       this.issue.dependentOn = null;
       this.issue.updatedDate = new Date();
-      this.issue.assignedTo = this.form.controls['issue-assigner'].value.username;
-
-      if(this.issue.dueDate < this.issue.createdDate){
-        this.msgPopUpService.showError("Unable to create project, due date is before creation date");
-      }
-      else{
-        this._issueService.createIssue(this.issue).subscribe({
-          next : (response) => {
-            this.msgPopUpService.showSuccess("Project successfully created");
-          },
-          error : (error) => {
-            console.log(error);
-          }
-        })
-      }
+      
+      const assignedToUsernames = this.selectedAssignees.map(user => user.username);
+      this.issue.assignedTo = assignedToUsernames;
 
       console.log(this.issue);
+
+      // if(this.issue.dueDate < this.issue.createdDate){
+      //   this.msgPopUpService.showError("Unable to create project, due date is before creation date");
+      // }
+      // else{
+      //   this._issueService.createIssue(this.issue).subscribe({
+      //     next : (response) => {
+      //       this.msgPopUpService.showSuccess("Project successfully created");
+      //     },
+      //     error : (error) => {
+      //       console.log(error);
+      //     }
+      //   })
+      // }
     }
   }
 

@@ -38,7 +38,12 @@ export class CreateGroupComponent implements OnInit {
       console.log(this.groupName);
 
       this.groupService.createGroup(this.projectName, this.groupName).subscribe({
-
+        next : (response) => {
+          console.log(response);
+        },
+        error : (error) => {
+          console.log(error);
+        }
       });
     }
   }
