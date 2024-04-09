@@ -14,6 +14,7 @@ import { IssueStatus } from '../../../_models/issue-status';
 import { CreateGroupComponent } from '../create-group/create-group.component';
 import { MessageService } from 'primeng/api';
 import { AccountService } from '../../../_service/account.service';
+import { GroupInProject } from '../../../_models/group-in-project';
 
 @Component({
   selector: 'app-create-task',
@@ -182,10 +183,12 @@ export class CreateTaskComponent implements OnInit {
       dismissableMask: true,
       closeOnEscape: true,
       data: {
-        projectName: this.projectName
+        projectName: this.projectName,
       }
     });
-
-    this.ref.onClose.subscribe((data: any) => {});
+  
+    this.ref.onClose.subscribe((data: any) => {
+      this.ngOnInit();
+    });
   }
 }
