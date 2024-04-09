@@ -144,19 +144,19 @@ export class CreateTaskComponent implements OnInit {
 
       console.log(this.issue);
 
-      // if(this.issue.dueDate < this.issue.createdDate){
-      //   this.msgPopUpService.showError("Unable to create project, due date is before creation date");
-      // }
-      // else{
-      //   this._issueService.createIssue(this.issue).subscribe({
-      //     next : (response) => {
-      //       this.msgPopUpService.showSuccess("Project successfully created");
-      //     },
-      //     error : (error) => {
-      //       console.log(error);
-      //     }
-      //   })
-      // }
+      if(this.issue.dueDate < this.issue.createdDate){
+        this.msgPopUpService.showError("Unable to create project, due date is before creation date");
+      }
+      else{
+        this._issueService.createIssue(this.issue).subscribe({
+          next : (response) => {
+            this.msgPopUpService.showSuccess("Project successfully created");
+          },
+          error : (error) => {
+            console.log(error);
+          }
+        })
+      }
     }
   }
 
