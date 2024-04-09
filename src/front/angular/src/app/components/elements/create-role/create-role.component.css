@@ -3,7 +3,7 @@ input[type="checkbox"] {
 }
 
 .permission-card {
-    margin-bottom: 10px;
+    padding: 5px;
 }
 
 .permission-switch {
@@ -17,6 +17,7 @@ input[type="checkbox"] {
     width: 100%;
     text-align: left;
     margin-left: 1%;
+    font-weight: 500;
 }
 
 .permission-description {
