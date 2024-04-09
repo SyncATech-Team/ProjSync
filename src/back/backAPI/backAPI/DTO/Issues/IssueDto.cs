@@ -11,7 +11,7 @@
         public DateTime UpdatedDate { get; set; }
         public DateTime DueDate { get; set; }
         public string ReporterUsername { get; set; }
-        public string AssignedTo { get; set; }
+        public string[] AssignedTo { get; set; }
         public string GroupName { get; set; }
         public string ProjectName { get; set; }
         public int? DependentOn { get; set; } = -1;

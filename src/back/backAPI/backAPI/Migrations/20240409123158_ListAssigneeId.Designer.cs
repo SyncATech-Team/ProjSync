@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240408095357_AssigneeIdMigration")]
-    partial class AssigneeIdMigration
+    [Migration("20240409123158_ListAssigneeId")]
+    partial class ListAssigneeId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,8 +212,8 @@ namespace backAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AssigneeId")
-                        .HasColumnType("int");
+                    b.Property<string>("AssigneeId")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");

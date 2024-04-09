@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AssigneeIdMigration : Migration
+    public partial class ListAssigneeId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -501,7 +501,7 @@ namespace backAPI.Migrations
                     UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ReporterId = table.Column<int>(type: "int", nullable: false),
-                    AssigneeId = table.Column<int>(type: "int", nullable: false),
+                    AssigneeId = table.Column<string>(type: "longtext", nullable: true),
                     GroupId = table.Column<int>(type: "int", nullable: false),
                     DependentOn = table.Column<int>(type: "int", nullable: true)
                 },

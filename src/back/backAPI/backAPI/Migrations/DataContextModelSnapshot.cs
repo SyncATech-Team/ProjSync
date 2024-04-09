@@ -209,8 +209,8 @@ namespace backAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AssigneeId")
-                        .HasColumnType("int");
+                    b.Property<string>("AssigneeId")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");

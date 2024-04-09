@@ -17,7 +17,7 @@ namespace backAPI.Entities.Domain
         public DateTime UpdatedDate { get; set; }
         public DateTime DueDate { get; set; }
         public int ReporterId { get; set; }
-        public int AssigneeId { get; set; }
+        public List<int> AssigneeId { get; set; }
         public int GroupId { get; set; }
         public int? DependentOn { get; set; }
         
