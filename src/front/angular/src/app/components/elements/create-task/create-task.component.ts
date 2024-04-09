@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IssueService } from '../../../_service/issue.service';
 import { ActivatedRoute } from '@angular/router';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { IssueGroup } from '../../../_models/issue-group';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -15,6 +14,7 @@ import { CreateGroupComponent } from '../create-group/create-group.component';
 import { MessageService } from 'primeng/api';
 import { AccountService } from '../../../_service/account.service';
 import { GroupInProject } from '../../../_models/group-in-project';
+import { GroupService } from '../../../_service/group.service';
 
 @Component({
   selector: 'app-create-task',
@@ -27,7 +27,7 @@ export class CreateTaskComponent implements OnInit {
 
   projectName: string | null = '';
   users : UserGetter[] = [];
-  groupsOnProject: IssueGroup [] = [];
+  groupsOnProject: GroupInProject [] = [];
   issueTypes : IssueType[] = [];
   issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
@@ -62,7 +62,8 @@ export class CreateTaskComponent implements OnInit {
     private msgPopUpService : MessagePopupService,
     private messageService: MessageService,
     public dialogService: DialogService,
-    private accountServis: AccountService
+    private accountServis: AccountService,
+    private groupService: GroupService
   ) { 
     this.currentUser = this.accountServis.getCurrentUser()?.username;
     this.form = this.formBuilder.group({
@@ -82,7 +83,7 @@ export class CreateTaskComponent implements OnInit {
   ngOnInit(): void {
     this.projectName = this._dialogConfig.data.projectName;
     if(this.projectName)
-      this._issueService.getAllGroups(this.projectName).subscribe({
+      this.groupService.getAllGroups(this.projectName).subscribe({
         next: (response) => {
           this.groupsOnProject = response;
         },

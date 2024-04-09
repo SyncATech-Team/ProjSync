@@ -18,6 +18,7 @@ export class CreateGroupComponent implements OnInit {
   groupName : string = '';
 
   groupInProject : GroupInProject = {
+    id : -1,
     projectName : "",
     groupName : ""
   }

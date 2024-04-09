@@ -12,7 +12,10 @@ export class GroupService{
     
     constructor(private http: HttpClient) { }
 
-    // https://localhost:5000/api/IssuesGroup?projectName=Projekat1
+    getAllGroups(projectName : string){
+        return this.http.get<GroupInProject[]>(`${this.baseUrl}IssuesGroup/projectName?projectName=${projectName}`);
+    }
+    
     createGroup(model : GroupInProject) {
         return this.http.post<void>(`${this.baseUrl}IssuesGroup`,model);
     }
