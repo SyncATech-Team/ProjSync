@@ -94,6 +94,8 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 // END OF GANTT MODULES
 
+import { InputSwitchModule } from 'primeng/inputswitch';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -179,7 +181,8 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     AkitaNgRouterStoreModule,
     AvatarModule,
     AvatarGroupModule,
-    CdkTextareaAutosize
+    CdkTextareaAutosize,
+    InputSwitchModule
   ],
   providers: [
     provideClientHydration(),

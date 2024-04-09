@@ -3,12 +3,18 @@
 }
 
 #content {
+    margin-top: 10px;
     margin-left: 1%;
     padding-right: 1%;
     /* margin-right: 1%;  */ /* verticall scroll problem - reseno paddingom :) */
     height: 100vh;
     width: 100%;
     overflow-y: auto;
+}
+
+h2 {
+    font-family: 'Helvetica';
+    font-weight: 600;
 }
 
 #roles {
@@ -106,4 +112,38 @@ td i.pi.pi-question-circle:hover {
 
 input[type="checkbox"] {
     margin-right: 5%;
+}
+
+.permission-card {
+    padding: 5px;
+}
+
+.permission-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* margin-bottom: 5px; */
+}
+
+.permission-switch div {
+    width: 100%;
+    text-align: left;
+    margin-left: 1%;
+    font-weight: 500;
+}
+
+.permission-description {
+    font-style: italic;
+    font-size: 12px;
+    color: red;
+}
+
+:host ::ng-deep .p-inputswitch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:host ::ng-deep .p-inputswitch-checked span {
+    background-color: #22c55e;
 }

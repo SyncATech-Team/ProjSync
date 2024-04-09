@@ -70,6 +70,7 @@ namespace backAPI.Repositories.Implementation
             // TO DO: Potrebno obezbediti kaskadno brisanje podataka vezanih za ovog korisnika
 
             user.IsActive = false;
+            user.UpdatedAt = DateTime.Now;
             await dataContext.SaveChangesAsync(true);
 
             return true;

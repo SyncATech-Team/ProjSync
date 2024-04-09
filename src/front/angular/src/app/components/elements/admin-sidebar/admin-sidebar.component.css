@@ -1,5 +1,14 @@
+.sidenav {
+    --color-value-1: #c5d1e6;
+    --color-value-2: #d3d9e3;
+    --color-value-3: #b5c8e8;
+    --color-value-4: #d8dde6;
+    --color-value-initial: #263238;
+}
+
 .sidenav{
-    background: #263238;
+    /* background: #263238; */
+    background-color: var(--color-value-4);
     transition: all .5s ease;
     /* display: inline-block; */
     /* position: relative; */
@@ -38,7 +47,7 @@
     /* margin-left: 1.5rem; */
     font-size: 18px;
     font-weight: 700;
-    color: #fff;
+    color: black;
 
 }
 
@@ -54,7 +63,7 @@
 }
 
 .sidenav .logo-container .button-close .fa-xmark{
-    color: #fff;
+    color: black;
     font-size: 24px;
 }
 
@@ -87,9 +96,9 @@
     align-items: center;
     justify-content: left;
     height: 3rem;
-    color: #fff;
+    color: black;
     text-decoration: none;
-    border-radius: 0.625rem;
+    /* border-radius: 0.625rem; */
     transition: all .3s ease;
 }
 
@@ -101,18 +110,19 @@
 }
 
 .sidenav-nav .sidenav-nav-item .sidenav-nav-link .sidenav-link-text{
-    margin-left: 1.5rem;   
+    margin-left: 0.5rem;   
 }
 
 .sidenav-collapsed .sidenav-nav-item:hover,
 .sidenav-collapsed .sidenav-nav-item:hover .sidenav-nav-link{
     background-color: #fff;
-    border-radius: 0.625rem;
+    /* border-radius: 0.625rem; */
     color: #000;
 }
 
 .active{
     background-color: #fff;
+    border-right: 5px solid #0b5ed7;
 }
 
 .active .sidenav-link-icon,
