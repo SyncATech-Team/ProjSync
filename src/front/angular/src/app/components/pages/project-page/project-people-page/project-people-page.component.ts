@@ -38,6 +38,7 @@ export class ProjectPeoplePageComponent implements OnInit{
   userForAdd: string = '';
   selectedColumns!: string[];
   columns!: string[];
+  showColumns!: string[];
 
   usersPhotos: PhotoForUser[] = [];
 
@@ -57,6 +58,7 @@ export class ProjectPeoplePageComponent implements OnInit{
   ngOnInit(): void {
     this.columns = ['Email address','Firstname','Lastname','Role','Address','Contact phone','Status'];
     this.selectedColumns = ['Email address','Firstname','Lastname','Role'];
+    this.showColumns = ['Username',...this.selectedColumns,''];
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     this.initialize();
   }
@@ -231,5 +233,16 @@ export class ProjectPeoplePageComponent implements OnInit{
   updateOptions(dropdown :any){
     dropdown.options = this.allUsers;
   }
-
+  onSelectedChange(){
+    this.selectedColumns.forEach(item => {
+      if(!this.showColumns.includes(item)){
+        this.showColumns.push(item);
+      }
+    });
+    this.showColumns.forEach((item,index) => {
+      if(!this.selectedColumns.includes(item) && item!=='Username' && item !==''){
+        this.showColumns.splice(index,1);
+      }
+    })
+  }
 }
