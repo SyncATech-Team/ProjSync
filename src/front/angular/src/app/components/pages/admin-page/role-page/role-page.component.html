@@ -179,7 +179,7 @@
                     autocomplete="off" style="margin-bottom: 10%;">
 
                     <div class="rolename">
-                        <div class="col-md-6"> <!-- field za ime role -->
+                        <div> <!-- field za ime role -->
                             <div class="form-floating mb-3">
                                 <input 
                                     type="text"
@@ -196,60 +196,77 @@
                     </div>
 
                     <div class="permissions">
-                        <div class="col-md-6"> <!-- checkbox za canManageProjects -->
-                            <input 
-                                type="checkbox"
-                                id="canManageProjects"
-                                class="canManageProjects"
-                                name="canManageProjects"
-                                [(ngModel)]="editRole.canManageProjects"
-                                [value]="false"
-                            >
-                            <label for="canManageProjects">Can manage projects</label>
+                        <div class="permission-card">
+                            <div class="permission-switch">
+                                <p-inputSwitch
+                                    id="canManageProjects"
+                                    class="canManageProjects"
+                                    name="canManageProjects"
+                                    [(ngModel)]="editRole.canManageProjects"
+                                ></p-inputSwitch>
+                                <div>Can manage projects</div>
+                            </div>
+                            <div class="permission-description">*Able to create project, add users to it, change settings, etc.</div>
                         </div>
-    
-                        <div class="col-md-6"> <!-- checkbox za canManageTasks -->
-                            <input 
-                                type="checkbox"
-                                id="canManageTasks"
-                                class="canManageTasks"
-                                name="canManageTasks"
-                                [(ngModel)]="editRole.canManageTasks"
-                            >
-                            <label for="canManageTasks">Can manage tasks</label>
+                        
+                        <hr>
+
+                        <div class="permission-card">
+                            <div class="permission-switch">
+                                <p-inputSwitch
+                                    id="canManageTasks"
+                                    class="canManageTasks"
+                                    name="canManageTasks"
+                                    [(ngModel)]="editRole.canManageTasks"
+                                ></p-inputSwitch>
+                                <div>Can manage tasks</div>
+                            </div>
+                            <div class="permission-description">*Able to create task, assign it to users, change it, etc.</div>
                         </div>
-    
-                        <div class="col-md-6"> <!-- checkbox za canUpdateTaskProgress -->
-                            <input 
-                                type="checkbox"
-                                id="canUpdateTaskProgress"
-                                class="canUpdateTaskProgress"
-                                name="canUpdateTaskProgress"
-                                [(ngModel)]="editRole.canUpdateTaskProgress"
-                            >
-                            <label for="canUpdateTaskProgress">Can update task progress</label>
+                        
+                        <hr>
+                        
+                        <div class="permission-card">
+                            <div class="permission-switch">
+                                <p-inputSwitch
+                                    id="canUpdateTaskProgress"
+                                    class="canUpdateTaskProgress"
+                                    name="canUpdateTaskProgress"
+                                    [(ngModel)]="editRole.canUpdateTaskProgress"
+                                ></p-inputSwitch>
+                                <div>Can update task progress</div>
+                            </div>
+                            <div class="permission-description">*Able to update task progress</div>
                         </div>
-    
-                        <div class="col-md-6"> <!-- checkbox za canLeaveComments -->
-                            <input 
-                                type="checkbox"
-                                id="canLeaveComments"
-                                class="canLeaveComments"
-                                name="canLeaveComments"
-                                [(ngModel)]="editRole.canLeaveComments"
-                            >
-                            <label for="canLeaveComments">Can leave comments</label>
+                        
+                        <hr>
+                        
+                        <div class="permission-card">
+                            <div class="permission-switch">
+                                <p-inputSwitch
+                                    id="canLeaveComments"
+                                    class="canLeaveComments"
+                                    name="canLeaveComments"
+                                    [(ngModel)]="editRole.canLeaveComments"
+                                ></p-inputSwitch>
+                                <div>Can leave comments</div>
+                            </div>
+                            <div class="permission-description">*Able to leave comments on tasks</div>
                         </div>
-    
-                        <div class="col-md-6"> <!-- checkbox za canUploadFiles -->
-                            <input 
-                                type="checkbox"
-                                id="canUploadFiles"
-                                class="canUploadFiles"
-                                name="canUploadFiles"
-                                [(ngModel)]="editRole.canUploadFiles"
-                            >
-                            <label for="canUploadFiles">Can upload files</label>
+                        
+                        <hr>
+
+                        <div class="permission-card">
+                            <div class="permission-switch">
+                                <p-inputSwitch
+                                    id="canUploadFiles"
+                                    class="canUploadFiles"
+                                    name="canUploadFiles"
+                                    [(ngModel)]="editRole.canUploadFiles"
+                                ></p-inputSwitch>
+                                <div>Can upload files</div>
+                            </div>
+                            <div class="permission-description">*Able to upload files to project</div>
                         </div>
                     </div>
 
