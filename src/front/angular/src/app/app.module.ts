@@ -82,6 +82,17 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { BoardFilterComponent } from './components/elements/board/board-filter/board-filter.component';
 import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
+import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
+
+// GANTT CHART MODULES
+import { NgxGanttModule } from '@worktile/gantt';
+import { ThyLayoutModule } from 'ngx-tethys/layout';
+import { ThyButtonModule } from 'ngx-tethys/button';
+import { ThySwitchModule } from 'ngx-tethys/switch';
+import { SpinnerComponent } from './components/elements/spinner/spinner.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+
+// END OF GANTT MODULES
 
 @NgModule({
   declarations: [
@@ -110,6 +121,8 @@ import { IssueReporterComponent } from './components/elements/issues/issue-repor
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
     ProjectTasksPageComponent,
+    ProjectGanttPageComponent,
+    SpinnerComponent,
     IssueCardComponent,
     BoardDndComponent,
     BoardDndListComponent,
@@ -154,6 +167,10 @@ import { IssueReporterComponent } from './components/elements/issues/issue-repor
     InputTextareaModule,
     CheckboxModule,
     ConfirmPopupModule,
+    NgxGanttModule,
+    ThyLayoutModule,
+    ThyButtonModule,
+    ThySwitchModule,
     ContentLoaderModule,
     DragDropModule,
     DialogModule,
@@ -168,6 +185,7 @@ import { IssueReporterComponent } from './components/elements/issues/issue-repor
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     MessageService,
     ConfirmationService,
     DialogService,
