@@ -13,6 +13,7 @@ import { MessagePopupService } from '../../../_service/message-popup.service';
 import { IssueStatus } from '../../../_models/issue-status';
 import { CreateGroupComponent } from '../create-group/create-group.component';
 import { MessageService } from 'primeng/api';
+import { AccountService } from '../../../_service/account.service';
 
 @Component({
   selector: 'app-create-task',
@@ -31,6 +32,7 @@ export class CreateTaskComponent implements OnInit {
   issueStatus : IssueStatus[] = [];
 
   selectedAssignees : UserGetter[] = [];
+  currentUser? : string;
 
   issue : IssuesInGroup = {
     name: "",
@@ -45,7 +47,8 @@ export class CreateTaskComponent implements OnInit {
     groupName: "",
     projectName: "",
     dependentOn: null,
-    assignedTo: []
+    assignedTo: [],
+    issueOwner: ""
   }
 
   constructor(
@@ -58,7 +61,9 @@ export class CreateTaskComponent implements OnInit {
     private msgPopUpService : MessagePopupService,
     private messageService: MessageService,
     public dialogService: DialogService,
+    private accountServis: AccountService
   ) { 
+    this.currentUser = this.accountServis.getCurrentUser()?.username;
     this.form = this.formBuilder.group({
       'issue-group': [],
       'issue-name' : [],
@@ -138,6 +143,8 @@ export class CreateTaskComponent implements OnInit {
       this.issue.reporterUsername = this.form.controls['issue-reporter'].value.username;
       this.issue.dependentOn = null;
       this.issue.updatedDate = new Date();
+      if(this.currentUser)
+        this.issue.issueOwner = this.currentUser;
       
       const assignedToUsernames = this.selectedAssignees.map(user => user.username);
       this.issue.assignedTo = assignedToUsernames;

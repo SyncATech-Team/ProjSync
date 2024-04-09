@@ -12,5 +12,6 @@ export interface IssuesInGroup {
     groupName: string,
     projectName: string,
     dependentOn: number | null,
+    issueOwner : string
 }
 
