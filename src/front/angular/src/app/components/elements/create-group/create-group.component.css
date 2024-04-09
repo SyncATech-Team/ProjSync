@@ -1,0 +1,24 @@
+.form-group .groupName{
+    padding-left: 13px;
+}
+
+:host ::ng-deep .form-group input{
+    width: 100%;
+}
+
+.form-group p{
+    margin-bottom: 4px;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #42526e;
+}
+
+:host ::ng-deep .form-group .btns{
+    margin-top: 10px;
+}
+
+:host ::ng-deep .form-group .btns .p-button{
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}

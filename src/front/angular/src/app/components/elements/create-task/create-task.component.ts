@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IssueService } from '../../../_service/issue.service';
 import { ActivatedRoute } from '@angular/router';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueGroup } from '../../../_models/issue-group';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
@@ -11,6 +11,8 @@ import { IssuePriority } from '../../../_models/issue-prioritys';
 import { IssuesInGroup } from '../../../_models/issues-in-group';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { IssueStatus } from '../../../_models/issue-status';
+import { CreateGroupComponent } from '../create-group/create-group.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-create-task',
@@ -19,6 +21,7 @@ import { IssueStatus } from '../../../_models/issue-status';
 })
 export class CreateTaskComponent implements OnInit {
   form : FormGroup;
+  ref: DynamicDialogRef | undefined;
 
   projectName: string | null = '';
   users : UserGetter[] = [];
@@ -50,7 +53,9 @@ export class CreateTaskComponent implements OnInit {
     private _issueService: IssueService,
     private userService : UserService,
     private formBuilder : FormBuilder,
-    private msgPopUpService : MessagePopupService
+    private msgPopUpService : MessagePopupService,
+    private messageService: MessageService,
+    public dialogService: DialogService,
   ) { 
     this.form = this.formBuilder.group({
       'issue-group': [],
@@ -153,5 +158,23 @@ export class CreateTaskComponent implements OnInit {
 
   closeModal() {
     this._modal.close();
+  }
+
+  showCreateGroupPopUp(){
+    this.ref = this.dialogService.open(CreateGroupComponent, {
+      header: 'Create Group',
+      width: '30%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      closable: true,
+      modal: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      data: {
+        projectName: this.projectName
+      }
+    });
+
+    this.ref.onClose.subscribe((data: any) => {});
   }
 }

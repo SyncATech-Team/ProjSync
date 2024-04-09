@@ -125,7 +125,7 @@ export class ProjectSidebarComponent implements OnInit {
   showCreateTaskPopup() {
       this.ref = this.dialogService.open(CreateTaskComponent, {
         header: 'Create task',
-        width: '70%',
+        width: '50%',
         contentStyle: { overflow: 'auto' },
         baseZIndex: 10000,
         maximizable: true,

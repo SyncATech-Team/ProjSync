@@ -57,6 +57,7 @@ import { CreateTaskComponent } from './components/elements/create-task/create-ta
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
     ProjectTasksPageComponent,
-    CreateTaskComponent
+    CreateTaskComponent,
+    CreateGroupComponent
   ],
   imports: [
     BrowserModule,
