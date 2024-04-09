@@ -14,6 +14,7 @@ export class ProjectDocumentService {
   uploadDocument(docFile: File){
     const formData= new FormData();
     formData.append('document', docFile, docFile.name);
+    console.log(docFile);
     return this.http.post<any>(this.baseUrl + 'Documents/' + docFile.name, formData, {
       reportProgress: true,
       observe: 'events'

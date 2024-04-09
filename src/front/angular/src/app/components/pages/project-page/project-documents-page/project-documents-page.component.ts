@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ProjectTypeService } from '../../../../_service/project-type.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProjectType } from '../../../../_models/project-type';
+import { ProjectDocumentService } from '../../../../_service/project-document.service'
 
 @Component({
   selector: 'app-project-documents-page',
@@ -34,6 +35,7 @@ export class ProjectDocumentsPageComponent implements OnInit{
   }
   
   constructor (
+    private ProjectDocService: ProjectDocumentService,
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private router:Router,
@@ -82,8 +84,11 @@ export class ProjectDocumentsPageComponent implements OnInit{
 
   onFileSelected(event: any){
     const file:File = event.target.files[0];
+
     if(file){
-      this.fileName = file.name
+      this.ProjectDocService.uploadDocument(file).subscribe({
+
+      })
 
     }
   }
