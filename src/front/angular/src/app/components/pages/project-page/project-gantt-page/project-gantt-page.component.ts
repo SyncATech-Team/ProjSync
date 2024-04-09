@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   GanttBarClickEvent,
@@ -20,7 +20,7 @@ import {
   GanttGroup
 } from '@worktile/gantt';
 import { finalize, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+// import { delay } from 'rxjs/operators';
 import { addDays, getUnixTime } from 'date-fns';
 import { IssueService } from '../../../../_service/issue.service';
 import { MessagePopupService } from '../../../../_service/message-popup.service';

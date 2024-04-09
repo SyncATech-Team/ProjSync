@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
-import { User } from '../../../_models/user';
 import { EmailValidationService } from '../../../_service/email_validator.service';
 
 @Component({

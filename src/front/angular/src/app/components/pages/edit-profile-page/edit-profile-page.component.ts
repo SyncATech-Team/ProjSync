@@ -6,7 +6,6 @@ import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
-import { error } from 'console';
 
 interface UploadEvent {
   originalEvent: Event;

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IssueService } from '../../../../_service/issue.service';
-import { IssuesInGroup } from '../../../../_models/issues-in-group';
 
 @Component({
   selector: 'app-project-tasks-page',

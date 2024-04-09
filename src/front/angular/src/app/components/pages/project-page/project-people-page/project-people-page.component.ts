@@ -3,7 +3,6 @@ import { UserGetter } from '../../../../_models/user-getter';
 import { ActivatedRoute } from '@angular/router';
 import { UserOnProjectService } from '../../../../_service/userOnProject.service';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
-import { CompanyRole } from '../../../../_models/company-role';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
 import { NgForm } from '@angular/forms';

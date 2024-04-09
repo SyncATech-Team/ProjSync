@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HomePageComponent } from '../../pages/home-page/home-page.component';
-import { DatePipe } from '@angular/common';
 import { ProjectService } from '../../../_service/project.service';
 import { Project } from '../../../_models/project.model';
-import { UserGetter } from '../../../_models/user-getter';
 import { ProjectType } from '../../../_models/project-type';
 import { ProjectTypeService } from '../../../_service/project-type.service';
-import { ProjectVisibility } from '../../../_models/project-visibility';
 import { ProjectVisibilityService } from '../../../_service/project-visibility.service';
 import { UserService } from '../../../_service/user.service';
 import { AccountService } from '../../../_service/account.service';

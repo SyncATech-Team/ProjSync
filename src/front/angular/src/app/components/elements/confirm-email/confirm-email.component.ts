@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../_service/account.service';
-import { ResetPasswordAfterEmailConformation } from '../../../_models/reset-password-response';
-import { response } from 'express';
-import { map, take } from 'rxjs';
+// import { ResetPasswordAfterEmailConformation } from '../../../_models/reset-password-response';
+// import { response } from 'express';
+// import { map, take } from 'rxjs';
 
 @Component({
   selector: 'app-confirm-email',

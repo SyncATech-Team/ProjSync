@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IssuesInGroup } from '../_models/issues-in-group';
-import { getUnixTime } from 'date-fns';
-import { GanttItem } from '@worktile/gantt';
 import { Observable } from 'rxjs';
 
 @Injectable({

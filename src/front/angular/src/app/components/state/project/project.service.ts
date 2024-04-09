@@ -4,7 +4,6 @@ import { arrayRemove, arrayUpsert, setLoading } from '@datorama/akita';
 
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import {environment} from "../../../../environments/environment";
 import {JProject} from "../../../_models/project";
 import {JIssue} from "../../../_models/issue";
 import {JComment} from "../../../_models/comment";

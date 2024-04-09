@@ -4,7 +4,7 @@ import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { Table } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { CreateRoleComponent } from '../../../elements/create-role/create-role.component';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
