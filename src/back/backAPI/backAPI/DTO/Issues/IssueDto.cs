@@ -15,5 +15,6 @@
         public string GroupName { get; set; }
         public string ProjectName { get; set; }
         public int? DependentOn { get; set; } = -1;
+        public string IssueOwner {  get; set; }
     }
 }

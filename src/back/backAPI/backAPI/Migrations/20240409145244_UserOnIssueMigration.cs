@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class ListAssigneeId : Migration
+    public partial class UserOnIssueMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -500,8 +500,7 @@ namespace backAPI.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ReporterId = table.Column<int>(type: "int", nullable: false),
-                    AssigneeId = table.Column<string>(type: "longtext", nullable: true),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
                     DependentOn = table.Column<int>(type: "int", nullable: true)
                 },
@@ -509,8 +508,8 @@ namespace backAPI.Migrations
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Issues_AspNetUsers_ReporterId",
-                        column: x => x.ReporterId,
+                        name: "FK_Issues_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -701,14 +700,14 @@ namespace backAPI.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Issues_OwnerId",
+                table: "Issues",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Issues_PriorityId",
                 table: "Issues",
                 column: "PriorityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issues_ReporterId",
-                table: "Issues",
-                column: "ReporterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_StatusId",

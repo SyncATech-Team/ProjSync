@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240409123158_ListAssigneeId")]
-    partial class ListAssigneeId
+    [Migration("20240409145244_UserOnIssueMigration")]
+    partial class UserOnIssueMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,9 +212,6 @@ namespace backAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AssigneeId")
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
@@ -234,10 +231,10 @@ namespace backAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("PriorityId")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReporterId")
+                    b.Property<int>("PriorityId")
                         .HasColumnType("int");
 
                     b.Property<int>("StatusId")
@@ -255,9 +252,9 @@ namespace backAPI.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("PriorityId");
+                    b.HasIndex("OwnerId");
 
-                    b.HasIndex("ReporterId");
+                    b.HasIndex("PriorityId");
 
                     b.HasIndex("StatusId");
 
@@ -785,15 +782,15 @@ namespace backAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backAPI.Entities.Domain.IssuePriority", "IssuePriority")
+                    b.HasOne("backAPI.Entities.Domain.User", "User")
                         .WithMany()
-                        .HasForeignKey("PriorityId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("backAPI.Entities.Domain.User", "User")
+                    b.HasOne("backAPI.Entities.Domain.IssuePriority", "IssuePriority")
                         .WithMany()
-                        .HasForeignKey("ReporterId")
+                        .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
