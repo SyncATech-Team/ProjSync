@@ -1,0 +1,8 @@
+.select-item {
+  height: 2.5em
+}
+
+.select-item:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}

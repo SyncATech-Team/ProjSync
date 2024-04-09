@@ -56,6 +56,6 @@ th{
     .progress-bar-wrapper{
         display: flex;
         flex-direction: column;
-        width: 20vh;
+        width: 100%;
     }
 }

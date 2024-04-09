@@ -1,0 +1,34 @@
+<div class="issue-wrap">
+  <div (click)="openIssueModal(issue.id)" class="issue">
+    <p class="pb-3">
+      {{ issue.type }}: {{ issue.id }} - {{ issue.title }}
+    </p>
+    <div class="d-flex align-items-center justify-content-between">
+      <p-avatarGroup styleClass="mb-3">
+        <p-avatar *ngFor="let user of assignees"
+                  [image]="user?.avatarUrl"
+                  shape="circle"
+                  size="normal"
+                  [pTooltip]="user?.name">
+        </p-avatar>
+        <span class="text-uppercase">
+          {{ issue.type }}-{{ issue.id }}
+        </span>
+      </p-avatarGroup>
+
+      <div class="d-flex align-items-center">
+        <svg-icon class="mr-1 text-textMedium"
+                  [name]="issueTypeIcon"
+                  [pTooltip]="issue.type"
+                  [size]="20">
+        </svg-icon>
+
+        <svg-icon [name]="priorityIcon.icon"
+                  [pTooltip]="priorityIcon.value"
+                  [size]="20"
+                  [style.color]="priorityIcon.color">
+        </svg-icon>
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,6 +23,7 @@ import { PasswordResetPageComponent } from './components/pages/password-reset-pa
 import { PasswordResetComponent } from './components/elements/password-reset/password-reset.component';
 import { NotificationComponent } from './components/elements/notification/notification.component';
 import { TableModule } from "primeng/table";
+import { ContentLoaderModule } from '@ngneat/content-loader';
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -51,6 +52,36 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { IssueCardComponent } from './components/elements/issues/issue-card/issue-card.component';
+import { BoardDndComponent } from './components/elements/board/board-dnd/board-dnd.component';
+import { BoardDndListComponent } from './components/elements/board/board-dnd-list/board-dnd-list.component';
+import { SvgDefinitionsComponent } from './components/elements/shared/svg-definitions/svg-definitions.component';
+import { SvgIconComponent } from './components/elements/shared/svg-icon/svg-icon.component';
+import { SamotestComponent } from './components/pages/samotest/samotest.component';
+import { IssueModalComponent } from './components/elements/issues/issue-modal/issue-modal.component';
+import { DialogModule } from 'primeng/dialog';
+import { DialogService } from 'primeng/dynamicdialog';
+import { TooltipModule } from 'primeng/tooltip';
+import { QuillModule } from 'ngx-quill';
+import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { IssueDetailComponent } from './components/elements/issues/issue-detail/issue-detail.component';
+import { IssueLoaderComponent } from './components/elements/issues/issue-loader/issue-loader.component';
+import { IssueTypeComponent } from './components/elements/issues/issue-type/issue-type.component';
+import { IssueTitleComponent } from './components/elements/issues/issue-title/issue-title.component';
+import { IssueDescriptionComponent } from './components/elements/issues/issue-description/issue-description.component';
+import { IssueStatusComponent } from './components/elements/issues/issue-status/issue-status.component';
+import { IssuePriorityComponent } from './components/elements/issues/issue-priority/issue-priority.component';
+import { IssueCommentsComponent } from './components/elements/issues/issue-comments/issue-comments.component';
+import { IssueCommentComponent } from './components/elements/issues/issue-comment/issue-comment.component';
+import {environment} from "../environments/environment";
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { BoardFilterComponent } from './components/elements/board/board-filter/board-filter.component';
+import { CdkTextareaAutosize } from "@angular/cdk/text-field";
+import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 
 // GANTT CHART MODULES
@@ -91,7 +122,25 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     EditProfilePageComponent,
     ProjectTasksPageComponent,
     ProjectGanttPageComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    IssueCardComponent,
+    BoardDndComponent,
+    BoardDndListComponent,
+    SvgDefinitionsComponent,
+    SvgIconComponent,
+    SamotestComponent,
+    IssueModalComponent,
+    IssueDetailComponent,
+    IssueLoaderComponent,
+    IssueTypeComponent,
+    IssueTitleComponent,
+    IssueDescriptionComponent,
+    IssueStatusComponent,
+    IssuePriorityComponent,
+    IssueCommentComponent,
+    IssueCommentsComponent,
+    BoardFilterComponent,
+    IssueReporterComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +154,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     ButtonModule,
     ToastModule,
     ModalModule.forRoot(),
+    QuillModule.forRoot(),
     ConfirmDialogModule,
     MultiSelectModule,
     CalendarModule,
@@ -120,7 +170,16 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     NgxGanttModule,
     ThyLayoutModule,
     ThyButtonModule,
-    ThySwitchModule
+    ThySwitchModule,
+    ContentLoaderModule,
+    DragDropModule,
+    DialogModule,
+    TooltipModule,
+    environment.production ? [] : AkitaNgDevtools,
+    AkitaNgRouterStoreModule,
+    AvatarModule,
+    AvatarGroupModule,
+    CdkTextareaAutosize
   ],
   providers: [
     provideClientHydration(),
@@ -128,7 +187,9 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    DialogService,
+    { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
   ],
   bootstrap: [AppComponent]
 })

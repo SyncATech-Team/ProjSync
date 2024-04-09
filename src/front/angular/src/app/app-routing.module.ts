@@ -17,11 +17,13 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { HomeGuard } from './_guards/home.guard';
+import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
+  { path: 'test', component: SamotestComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },

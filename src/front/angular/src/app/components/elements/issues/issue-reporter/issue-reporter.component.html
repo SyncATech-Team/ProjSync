@@ -1,0 +1,39 @@
+<div class="mt-6 mb-1 text-uppercase text-muted font-weight-bold">
+  Reporter
+</div>
+<p-button
+  [text]="true"
+  (click)="op.toggle($event)">
+
+  <div class="d-flex align-items-center items-center">
+    <p-avatar
+      [image]="reporter?.avatarUrl"
+      shape="circle"
+      size="normal"
+      [pTooltip]="reporter?.name">
+    </p-avatar>
+    <span class="m-2">
+      {{ reporter?.name }}
+    </span>
+  </div>
+</p-button>
+
+<p-overlayPanel #op>
+  <ng-template pTemplate="content">
+    <ng-container *ngFor="let option of users">
+      <div class="select-item"
+           *ngIf="!isUserSelected(option)"
+           (click)="updateIssue(option, op)">
+        <div class="d-flex align-items-center items-center">
+          <p-avatar
+            [image]="option?.avatarUrl"
+            shape="circle"
+            size="normal"
+            [pTooltip]="option?.name">
+          </p-avatar>
+          <span class="m-2"> {{ option?.name }} </span>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</p-overlayPanel>

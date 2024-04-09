@@ -1,5 +1,8 @@
 @import "../../angular/node_modules/primeicons/primeicons.css";
 
+@import '../../angular/node_modules/quill/dist/quill.core.css';
+@import '../../angular/node_modules/quill/dist/quill.snow.css';
+
 @import "@worktile/gantt/styles/index";
 
 html, body {

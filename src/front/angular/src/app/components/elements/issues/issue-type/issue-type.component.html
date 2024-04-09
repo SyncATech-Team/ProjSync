@@ -1,0 +1,26 @@
+<p-button
+  [text]="true"
+  [raised]="true"
+  label="{{ issue.type }}-{{issue.id}}"
+  (click)="op.toggle($event)">
+  <svg-icon [name]="selectedIssueTypeIcon"
+            [size]="20">
+  </svg-icon>
+</p-button>
+
+<p-overlayPanel #op>
+  <ng-template pTemplate="content">
+    <ng-container *ngFor="let option of issueTypes">
+      <div class="select-item"
+           *ngIf="!isTypeSelected(option.value)"
+           (click)="updateIssue(option.value, op)">
+        <div class="flex items-center">
+          <svg-icon [name]="option.icon"
+                    [size]="20">
+          </svg-icon>
+          <span class="ml-3 font-semibold uppercase text-textMedium text-13">{{ option.value }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</p-overlayPanel>
