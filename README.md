@@ -36,7 +36,7 @@ After you're finished please remove all the comments and instructions!
 
 <!-- TABLE OF CONTENTS -->
 
-# 📗 Sadrzaj
+# 📗 Sadržaj
 
 - [📖 O projektu](#about-project)
   - [🛠 Built With](#built-with)
