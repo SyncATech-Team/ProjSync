@@ -174,7 +174,21 @@ import { CreateGroupComponent } from './components/elements/create-group/create-
     InputTextModule,
     InputTextareaModule,
     CheckboxModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    NgxGanttModule,
+    ThyLayoutModule,
+    ThyButtonModule,
+    ThySwitchModule,
+    ContentLoaderModule,
+    DragDropModule,
+    DialogModule,
+    TooltipModule,
+    environment.production ? [] : AkitaNgDevtools,
+    AkitaNgRouterStoreModule,
+    AvatarModule,
+    AvatarGroupModule,
+    CdkTextareaAutosize,
+    InputSwitchModule
   ],
   providers: [
     provideClientHydration(),
@@ -182,7 +196,9 @@ import { CreateGroupComponent } from './components/elements/create-group/create-
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    DialogService,
+    { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
   ],
   bootstrap: [AppComponent]
 })

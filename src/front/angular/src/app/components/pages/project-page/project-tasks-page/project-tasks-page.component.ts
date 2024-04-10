@@ -5,6 +5,7 @@ import { IssueService } from '../../../../_service/issue.service';
 import { GroupInProject } from '../../../../_models/group-in-project';
 import { GroupService } from '../../../../_service/group.service';
 import { response } from 'express';
+import { IssuesInGroup } from '../../../../_models/issues-in-group';
 
 @Component({
   selector: 'app-project-tasks-page',
