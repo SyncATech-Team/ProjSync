@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './project-kanban-page.component.html',
   styleUrl: './project-kanban-page.component.css'
 })
-export class ProjectKanbanPageComponent {
+export class ProjectKanbanPageComponent implements OnInit {
   
   projectName: string = '';
   

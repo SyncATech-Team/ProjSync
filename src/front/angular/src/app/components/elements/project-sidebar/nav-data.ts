@@ -41,7 +41,7 @@ export const navbarData = [
     },
     {
         routeLink: '/home/projects/kanban/',
-        icon: 'fa-solid fa-chart-kanban',
+        icon: 'fa-solid fa-chart-simple fa-rotate-180',
         label: 'Kanban'
     }
 ];
