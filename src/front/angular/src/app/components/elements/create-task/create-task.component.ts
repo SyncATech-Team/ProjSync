@@ -15,6 +15,7 @@ import { MessageService } from 'primeng/api';
 import { AccountService } from '../../../_service/account.service';
 import { GroupInProject } from '../../../_models/group-in-project';
 import { GroupService } from '../../../_service/group.service';
+import { UserOnProjectService } from '../../../_service/userOnProject.service';
 
 @Component({
   selector: 'app-create-task',
@@ -57,7 +58,7 @@ export class CreateTaskComponent implements OnInit {
     private _modal : DynamicDialogRef,
     private _dialogConfig : DynamicDialogConfig,
     private _issueService: IssueService,
-    private userService : UserService,
+    private userOnProject : UserOnProjectService,
     private formBuilder : FormBuilder,
     private msgPopUpService : MessagePopupService,
     private messageService: MessageService,
@@ -92,7 +93,8 @@ export class CreateTaskComponent implements OnInit {
         }
       });
     
-      this.userService.getAllUsers().subscribe({
+    if(this.projectName)
+      this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
         next: (response) => {
           this.users = response.filter(user => user.username !== 'admin');
         },
