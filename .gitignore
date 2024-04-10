@@ -35,7 +35,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 src/back/backAPI/user-images
-src/back/backAPI/Documents
+src/back/backAPI/Project-Documentation
 
 # .NET Core
 project.lock.json

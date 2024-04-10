@@ -50,6 +50,7 @@ builder.Services.AddScoped<IIssueTypeRepository, IssueTypeRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IProjectDocumentationRepository, ProjectDocumentationRepository>();
 
 var app = builder.Build();
 
