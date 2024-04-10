@@ -24,6 +24,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   selectedColumns!: string[];
   columns!: string[];
 
+  tasks : any[] = [];
   tasks_backup: any[]=[];
   searchTerm: string = '';
   tasksByGroup: any[] = [];
@@ -223,6 +224,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
           this.groupsInProject = response;
 
           this.tasksByGroup = this.getTasksByGroup();
+          console.log(this.tasks);
+          this.tasks_backup = this.tasks;
         },
         error: (error) => {
           console.log(error);
@@ -236,6 +239,9 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.groupsInProject.forEach(group => {
       this.issueService.getAllTasksInGroup(group.id).subscribe({
         next: (response) =>{
+          for(let element of response){
+            this.tasks.push(element);
+          }
           this.issuesInGroup = response;
           this.tasks_backup = this.issuesInGroup;
           result.push({
@@ -309,7 +315,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     if (searchTerm) {
       filteredTasks = filteredTasks.filter(task => task.name.toLowerCase().includes(searchTerm));
     }
-    this.issuesInGroup = filteredTasks;
+    this.tasks = filteredTasks;
     this.tasksByGroup = this.getTasksByGroup();
   }
 }

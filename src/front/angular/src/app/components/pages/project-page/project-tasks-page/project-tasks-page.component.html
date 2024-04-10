@@ -9,7 +9,7 @@
                 <p-table
                     #dt1
                     *ngIf="visible"
-                    [value]="groupView ? tasksByGroup : issuesInGroup"
+                    [value]="groupView ? tasksByGroup : tasks"
                     dataKey="{{dataKey}}"
                     [globalFilterFields]="['name']"
                     [tableStyle]="{'width': '100%'}"

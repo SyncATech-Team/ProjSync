@@ -5,6 +5,7 @@ using backAPI.Repositories.Interface.Projects;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using System.Text.RegularExpressions;
 
 namespace backAPI.Controllers
 {
@@ -72,6 +73,42 @@ namespace backAPI.Controllers
                     DependentOn = task.DependentOn
                 };
                 result.Add(taskDto);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("projectId")]
+        public async Task<ActionResult<IEnumerable<IssueGroup>>> GetAllTasksForProject(int projectId)
+        {
+            var groups = await _tasksRepository.GetAllGroupsForGivenProject(projectId);
+            List<IssueDto> result = new List<IssueDto>();
+
+            foreach (var group in groups)
+            {
+                var tasks = await _tasksRepository.GetAllTasksForGivenGroup(group.Id);
+
+                foreach (var task in tasks)
+                {
+                    var ttype = await _taskTypeRepository.GetTaskTypeById(task.TypeId);
+                    var tpriority = await _taskPriorityRepository.GetTaskPriorityById(task.StatusId);
+                    var tstatus = await _taskStatusRepository.GetTaskTypeById(task.StatusId);
+                    var taskGroup = await _taskGroupRepository.GetGroupAsync(task.GroupId);
+                    IssueDto taskDto = new()
+                    {
+                        Name = task.Name,
+                        TypeName = ttype.Name,
+                        StatusName = tstatus.Name,
+                        PriorityName = tpriority.Name,
+                        Description = task.Description,
+                        CreatedDate = task.CreatedDate,
+                        UpdatedDate = task.UpdatedDate,
+                        DueDate = task.DueDate,
+                        GroupName = taskGroup.Name,
+                        DependentOn = task.DependentOn
+                    };
+                    result.Add(taskDto);
+                }
             }
 
             return Ok(result);

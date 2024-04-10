@@ -25,6 +25,13 @@ namespace backAPI.Repositories.Implementation.Issues
 
             return tasks;
         }
+
+        public async Task<IEnumerable<Entities.Domain.IssueGroup>> GetAllGroupsForGivenProject(int projectId)
+        {
+            var groups = await _dataContext.IssueGroups.Where(t => t.ProjectId == projectId).ToListAsync();
+
+            return groups;
+        }
         /* *****************************************************************************************
         * Kreiranje zadatka
         * ***************************************************************************************** */
