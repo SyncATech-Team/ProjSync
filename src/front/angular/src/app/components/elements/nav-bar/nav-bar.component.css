@@ -1,3 +1,9 @@
+.navbar-custom-color {
+    --default-color: #263238;
+    --color-value-1: #d8dde6;
+    --color-value-2: #bcd0f5;
+}
+
 .navbar .logo{
     margin-right: 6vh;
 }
@@ -7,7 +13,7 @@
 }
 
 .navbar-custom-color {
-    background: #263238;
+    background: var(--color-value-1);
 }
 
 .navbar .logo:hover{
@@ -30,7 +36,7 @@
 }
 
 .left--menu .item-nav{
-    color: #fff;
+    color: black;
     cursor: pointer;
 }
 
