@@ -102,8 +102,6 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-> Aplikacija se može pronaći na sledećem linku.
-
 - [Live Demo Link](https://google.com) - biće priložen prilikom migracije na server
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -112,13 +110,13 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 
 ## 💻 Getting Started <a name="getting-started"></a>
 
-> Describe how a new developer could make use of your project.
-
-To get a local copy up and running, follow these steps.
-
 ### Prerequisites
 
-In order to run this project you need:
+Za potrebe pokretanja aplikacije neophodno je imati instalirano:
+* Node.js - moze se preuzeti putem sledeceg [linka](https://nodejs.org/en/download)
+* Angular CLI - instalirati komandom
+``` npm install -g @angular/cli ```
+* .NET - moze se preuzeti putem sledeceg [linka](https://dotnet.microsoft.com/en-us/download)
 
 <!--
 Example command:
@@ -130,29 +128,14 @@ Example command:
 
 ### Setup
 
-Clone this repository to your desired folder:
-
-<!--
-Example commands:
+Aplikacija se može klonirati u željeni direktorijum komanom:
 
 ```sh
-  cd my-folder
-  git clone git@github.com:myaccount/my-project.git
+  cd ./direktorijum
+  git clone http://gitlab.pmf.kg.ac.rs/si2024/syncatech.git
 ```
---->
 
-### Install
-
-Install this project with:
-
-<!--
-Example command:
-
-```sh
-  cd my-project
-  gem install
-```
---->
+Takodje, moguće je preuzeti i .zip verziju koju je potrebno otpakovati u određeni direktorijum takođe.
 
 ### Usage
 
