@@ -43,7 +43,7 @@ After you're finished please remove all the comments and instructions!
     - [Tehnologije](#tech-stack)
     - [Glavne funkcionalnosti](#key-features)
   - [🚀 Live Demo](#live-demo)
-- [💻 Getting Started](#getting-started)
+- [💻 Pokretanje aplikacije](#getting-started)
   - [Setup](#setup)
   - [Prerequisites](#prerequisites)
   - [Korišćenje](#usage)
@@ -65,21 +65,29 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 <details>
   <summary>Client</summary>
   <ul>
-    <li><a href="https://angular.io/">Angular</a></li>
+    <li><a href="https://angular.io/">
+    Angular
+    </a>
+    ([Dokumentacija](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/manuals/angular/AngularManual_vPDF.pdf))
+    </li>
   </ul>
 </details>
 
 <details>
   <summary>Server</summary>
   <ul>
-    <li><a href="https://dotnet.microsoft.com/en-us/">.NET</a></li>
+    <li><a href="https://dotnet.microsoft.com/en-us/">.NET</a>
+    ([Dokumentacija](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/manuals/dotnet/DotNETManual_vPDF.pdf))
+    </li>
   </ul>
 </details>
 
 <details>
 <summary>Database</summary>
   <ul>
-    <li><a href="https://www.mysql.com/">MySQL</a></li>
+    <li><a href="https://www.mysql.com/">MySQL</a>
+    ([Dokumentacija](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/manuals/mysql/MySQLManual_vPDF.pdf))
+    </li>
   </ul>
 </details>
 
@@ -105,9 +113,9 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 
 <!-- GETTING STARTED -->
 
-## 💻 Getting Started <a name="getting-started"></a>
+## 💻 Pokretanje aplikacije <a name="getting-started"></a>
 
-### Prerequisites
+### Neophodni alati
 
 Za potrebe pokretanja aplikacije neophodno je imati instalirano:
 * Node.js - moze se preuzeti putem sledeceg [linka](https://nodejs.org/en/download)
@@ -137,13 +145,18 @@ Kao rezultat komande u trenutnom radnom direktorijumu će biti kloniran projekat
 
 Takodje, moguće je preuzeti i **.zip** verziju koju je potrebno otpakovati u određeni direktorijum takođe.
 
+Nakon kreiranja baze podataka pod nazivom "syncatecdb" u fajlu ``` /src/back/backAPI/backAPI/appsettings.json ``` promeniti konekcioni string ka MySQL bazi koji odgovaraju vašim kredencijalima. Primer konekcionog stringa koji je u upotrebi je sledećeg formata:
+```sh
+"SyncATechDefaultConectionMySQL": "Server=localhost;Database=syncatechdb;username=root;password=;"
+```
+
 ### Korišćenje
 
-Prvi korak pri korišćenju aplikacije je kreiranje baze. U *Developer PowerShell*-u pokrenuti komandu **dotnet ef database update** iz root direktorijuma solution-a. Ukoliko baza prethodno postoji pokrenuti komandu **dotnet ef database drop**.
+Prvi korak pri korišćenju aplikacije je kreiranje baze. U *Developer PowerShell*-u pokrenuti komandu **dotnet ef database update** iz root direktorijuma solution-a (```/src/back/backAPI/backAPI/```). Ukoliko baza prethodno postoji pokrenuti komandu **dotnet ef database drop**.
 
-Ukoliko koristite WAMP server za potrebe pokretanja aplikacije moguće je na Windows-u pokrenuti .bat fajl: *start_services.bat* lociran u *src* direktorijumu projekta i pratiti dalja uputstva. Pokretanjem ove skripte podići će se lokalni WAMP server i odraditi komande za pokretanje frontend i backend delova aplikacije.
+Ukoliko koristite WAMP server za potrebe pokretanja aplikacije moguće je na Windows-u pokrenuti .bat fajl: *start_services.bat* lociran u *src* direktorijumu projekta i pratiti dalja uputstva. Pokretanjem ove skripte podići će se lokalni WAMP server i odraditi komande za pokretanje frontend i backend delova aplikacije. (*Napomena: Za potrebe pokretanja na ovaj nacin potrebno je da se instalcija WAMP servera nalazi na putanji:* ```C:\wamp64\wampmanager.exe```)
 
-U suprotnom, moguće je manuelno pokretanje frontend i backend delova aplikacije:
+Takođe, moguće je manuelno pokretanje frontend i backend delova aplikacije:
 ```sh
 # potrebno pokrenuti iz direktorijuma /src/front/angular
 ng serve [--open]
