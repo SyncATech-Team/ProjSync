@@ -39,30 +39,28 @@ After you're finished please remove all the comments and instructions!
 # 📗 Sadržaj
 
 - [📖 O projektu](#about-project)
-  - [🛠 Built With](#built-with)
-    - [Tech Stack](#tech-stack)
-    - [Key Features](#key-features)
+  - [🛠 Razvoj](#built-with)
+    - [Tehnologije](#tech-stack)
+    - [Glavne funkcionalnosti](#key-features)
   - [🚀 Live Demo](#live-demo)
 - [💻 Getting Started](#getting-started)
   - [Setup](#setup)
   - [Prerequisites](#prerequisites)
-  - [Usage](#usage)
-  - [Run tests](#run-tests)
-  - [Deployment](#deployment)
+  - [Korišćenje](#usage)
 - [👥 Authors](#authors)
-- [🙏 Acknowledgements](#acknowledgements)
+<!-- - [🙏 Acknowledgements](#acknowledgements) -->
 
 <!-- PROJECT DESCRIPTION -->
 
 # 📖 ProjSync <a name="about-project"></a>
 
-Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u softversko inženjerstvo. Osnovni cilj projekta je pružiti efikasan alat za upravljanje projektima, koji bi korisnicima omogućio da organizuju, prate i koordiniraju različite zadatke, resurse i aktivnosti u okviru svojih projekata.
+Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u softversko inženjerstvo školske 2023/2024. godine. Osnovni cilj projekta je pružiti efikasan alat za upravljanje projektima koji bi korisnicima omogućio da organizuju, prate i koordiniraju različite zadatke, resurse i aktivnosti u okviru svojih projekata.
 
 ## 🛠 Razvoj <a name="built-with"></a>
 
 ### Tech Stack <a name="tech-stack"></a>
 
-Što se tehnologija tiče, navedena aplikacija je razvijena korišćenjem jedne od savremenih web tehnologija - Angular kao frontend, dok je za potrebe serverske strane korišćen .NET framework.
+Što se tehnologija tiče, navedena aplikacija je razvijena korišćenjem savremenih web tehnologija - Angular kao frontend, dok je za potrebe serverske strane korišćen .NET framework i MySQL baza podataka.
 
 <details>
   <summary>Client</summary>
@@ -117,29 +115,43 @@ Za potrebe pokretanja aplikacije neophodno je imati instalirano:
 ``` npm install -g @angular/cli ```
 * .NET - moze se preuzeti putem sledeceg [linka](https://dotnet.microsoft.com/en-us/download)
 
-<!--
-Example command:
+Što se kompatibilnosti verzija tiče aplikacija je razvijena uz:
+* Angluar CLI: 17.2.1
+* Node: 20.11.1
+* Packet Manager: npm 10.4.0
+* OS: Windows x64
+* .NET 8.0.200
 
-```sh
- gem install rails
-```
- -->
+Za potrebe kreiranja MySQL baze podataka korišćena je WAMP verzija 3.3.2 koja se može pronaći na sledećem [linku](https://www.wampserver.com/en/).  
+Međutim, moguće je korišćenje MySQL baze podataka i na druge načine uz **ograničenje default storage engine-a** na: **InnoDb**.
 
 ### Setup
 
-Aplikacija se može klonirati u željeni direktorijum komanom:
+Aplikacija se može klonirati u željeni direktorijum sledećom komandom:
 
 ```sh
-  cd ./direktorijum
   git clone http://gitlab.pmf.kg.ac.rs/si2024/syncatech.git
 ```
 
-Takodje, moguće je preuzeti i .zip verziju koju je potrebno otpakovati u određeni direktorijum takođe.
+Kao rezultat komande u trenutnom radnom direktorijumu će biti kloniran projekat.
 
-### Usage
+Takodje, moguće je preuzeti i **.zip** verziju koju je potrebno otpakovati u određeni direktorijum takođe.
 
-To run the project, execute the following command:
+### Korišćenje
 
+Prvi korak pri korišćenju aplikacije je kreiranje baze. U *Developer PowerShell*-u pokrenuti komandu **dotnet ef database update** iz root direktorijuma solution-a. Ukoliko baza prethodno postoji pokrenuti komandu **dotnet ef database drop**.
+
+Ukoliko koristite WAMP server za potrebe pokretanja aplikacije moguće je na Windows-u pokrenuti .bat fajl: *start_services.bat* lociran u *src* direktorijumu projekta i pratiti dalja uputstva. Pokretanjem ove skripte podići će se lokalni WAMP server i odraditi komande za pokretanje frontend i backend delova aplikacije.
+
+U suprotnom, moguće je manuelno pokretanje frontend i backend delova aplikacije:
+```sh
+# potrebno pokrenuti iz direktorijuma /src/front/angular
+ng serve [--open]
+```
+```sh
+# potrebno pokrenuti iz direktorijuma /src/back/backAPI/backAPI/
+dotnet run
+```
 <!--
 Example command:
 
@@ -148,11 +160,11 @@ Example command:
 ```
 --->
 
+<!--
 ### Run tests
 
 To run tests, run the following command:
 
-<!--
 Example command:
 
 ```sh
@@ -160,11 +172,12 @@ Example command:
 ```
 --->
 
+<!--
 ### Deployment
 
 You can deploy this project using:
 
-<!--
+
 Example:
 
 ```sh
@@ -186,37 +199,32 @@ Example:
 👤 **Mihajlo Nikolić**
 
 - GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
 
 👤 **Vladimir Geroski**
 
 - GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
 
 👤 **Luka Gvozdenović**
 
 - GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
 
 👤 **Milan Bajić**
 
 - GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
 
 👤 **Dora Dimitrijević**
 
 - GitHub: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- ACKNOWLEDGEMENTS -->
+<!-- ACKNOWLEDGEMENTS 
 
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
 
@@ -225,3 +233,5 @@ Example:
 I would like to thank...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+-->
+
