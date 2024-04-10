@@ -1,0 +1,76 @@
+<div id="page" class="login">
+    <div class="container">
+        <div class="login-container-wrapper clearfix">
+            <div class="logo">
+                <i class="fa-solid fa-right-to-bracket" style="color: #ffffff;"></i>
+                <!-- <i class="fa fa-sign-in"></i> -->
+            </div>
+            
+            <!-- Welcome message -->
+            <div class="welcome">
+                <strong>Welcome,</strong> please login
+            </div>
+            <!-- End of Welcome message -->
+
+            <form class="form-horizontal login-form" #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
+                
+                <!-- Input email -->
+                <div class="form-group relative">
+                    <input
+                        name="email"
+                        id="login_email" 
+                        class="form-control input-lg" 
+                        type="email" 
+                        placeholder="syncatechpmf@domain.com" 
+                        [(ngModel)]="user.email"
+                        (ngModelChange)="validateEmail(user.email)"
+                        spellcheck="false"
+                        required
+                        autocomplete="off">
+                    <i class="fa fa-user"></i>
+                </div>
+                <!-- End of Input email -->
+                
+                <!-- Input password -->
+                <div class="form-group relative password">
+                    <input 
+                        name="password"
+                        id="login_password" 
+                        class="form-control input-lg" 
+                        [type]="showPassword ? 'text' : 'password'" 
+                        placeholder="Password" 
+                        [(ngModel)]="user.password"
+                        spellcheck="false"
+                        required
+                        autocomplete="current-password">
+                    <i style="cursor: pointer;" *ngIf="showPassword; else hideIcon" (click)="togglePasswordVisibility()" class="fa fa-unlock"></i>
+                    
+                    <ng-template #hideIcon>
+                        <i style="cursor: pointer;" class="fa fa-lock" (click)="togglePasswordVisibility()"></i>
+                    </ng-template>
+                </div>
+                <!-- End of Input password -->
+                
+                <!-- Optional options -->
+                <div id="need_flex">
+                    <div class="checkbox pull-left">
+                        <label><input id="input-checkbox-rememberme" type="checkbox"> Remember me</label>
+                    </div>
+                    
+                    <div class="checkbox pull-right">
+                        <span> <a id="mailto_link" class="forget" href="mailto: syncatech@hotmail.com?Subject=Problems with login" title="Contact us">Need help with login?</a> </span>
+                    </div>
+                </div>
+                <!-- End of Optional options -->
+
+                <!-- Submit button -->
+                <div id="login-btn-div" class="form-group">
+                    <!-- <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="loginForm.invalid">Login</button> -->
+                    <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="!emailValid || loginForm.invalid">Login</button>
+                </div>
+                <!-- End of Submit button -->
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,169 @@
+#contentPages {
+    display: flex;
+}
+
+#content {
+    margin-top: 10px;
+    margin-left: 1%;
+    padding-right: 1%;
+    /* margin-right: 1%; */
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+}
+
+h2 {
+    font-family: 'Helvetica';
+    font-weight: 600;
+}
+
+#users {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+th {
+    text-align: center;
+}
+
+.flexdiv-custom {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filterTableOptions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.action {
+    border-radius: 20%;
+}
+
+.action:first-child {
+    background-color: #ec5941;
+}
+
+.action:last-child {
+    background-color: lightblue;
+}
+
+.deleteBtn button{
+    border-radius: 20%;
+    background-color: #ec5941;
+    width: 30px;
+    height: 30px;
+    color: black;
+}
+
+.editUser button {
+    border-radius: 20%;
+    background-color: lightblue;
+    width: 30px;
+    height: 30px;
+    color: black;
+}
+
+.pi-trash {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pi-pencil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profilecontent img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* LINKS */
+a,
+a:link,
+a:active,
+a:visited,
+a:hover {
+    color: rgb(35, 118, 196);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.exportFileOptions button {
+    border-radius: 20%;
+}
+
+.valid-email {
+    border-width: 2px;
+    border-color: green;
+}
+
+.invalid-email {
+    border-width: 2px;
+    border-color: red;
+}
+
+/* Modal style */
+div.modal-content {
+    width: fit-content;
+}
+
+div.div-image {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+div.div-image img {
+    width: 100px;
+    border-radius: 50%;
+}
+
+#search-users-by-username{
+    padding: 4px 34px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.deleteBtn button.active {
+    background-color: #7faf80;
+}
+
+.deleteBtn button.inactive {
+    background-color: #f44336;
+}
+
+.active-user {
+    opacity: 1;
+}
+
+.inactive-user {
+    opacity: 0.5;
+}
+
+#deactive-users-option-div {
+    display: flex;
+    align-items: center;
+    width: 200px;
+}
+
+@media (max-width: 960px) {
+    #header-content {
+        flex-direction: column;
+        align-items: start;
+    }
+}

@@ -1,0 +1,121 @@
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreateRole">
+    Create Role
+</button>
+
+<div class="modal fade" id="modalCreateRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="modalDialog" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create new company role</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
+
+            <div class="modal-body">
+                <!-- Form -->
+                <form #createRoleForm="ngForm" id="createRoleForm" class="row g-3" (ngSubmit)="createRole()" 
+                    autocomplete="off" style="margin-bottom: 10%;">
+
+                    <div class="rolename">
+                        <div> <!-- field za ime role -->
+                            <div class="form-floating mb-3">
+                                <input 
+                                    type="text"
+                                    id="roleName"
+                                    name="roleName"
+                                    class="form-control required-field"
+                                    placeholder="Developer"
+                                    [(ngModel)]="roleToCreate.name"
+                                    required
+                                    spellcheck="false"
+                                >
+                                <label for="roleName" class="form-label">Role name</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="permissions">
+                        <div class="permission-card">
+                            <div class="permission-switch"> <!-- checkbox za canManageProjects -->
+                                <p-inputSwitch
+                                    class="input-switch"
+                                    id="canManageProjects"
+                                    name="canManageProjects"
+                                    [(ngModel)]="roleToCreate.canManageProjects"
+                                ></p-inputSwitch>
+                                <div>Can manage projects</div>
+                            </div>
+                            <div class="permission-description">*Able to create project, add users to it, change settings, etc.</div>
+                        </div>
+                        
+                        <hr>
+
+                        <div class="permission-card">
+                            <div class="permission-switch"> <!-- checkbox za canManageTasks -->
+                                <p-inputSwitch
+                                    id="canManageTasks"
+                                    name="canManageTasks"
+                                    [(ngModel)]="roleToCreate.canManageTasks"
+                                ></p-inputSwitch>
+                                <div>Can manage tasks</div>
+                            </div>
+                            <div class="permission-description">*Able to create task, assign it to users, change it, etc.</div>
+                        </div>
+                        
+                        <hr>
+
+                        <div class="permission-card">
+                            <div class="permission-switch"> <!-- checkbox za canUpdateTaskProgress -->
+                                <p-inputSwitch
+                                    id="canUpdateTaskProgress"
+                                    name="canUpdateTaskProgress"
+                                    [(ngModel)]="roleToCreate.canUpdateTaskProgress"
+                                ></p-inputSwitch>
+                                <div>Can update task progress</div>
+                            </div>
+                            <div class="permission-description">*Able to update task progress</div>
+                        </div>
+    
+                        <hr>
+
+                        <div class="permission-card">
+                            <div class="permission-switch"> <!-- checkbox za canLeaveComments -->
+                                <p-inputSwitch
+                                    id="canLeaveComments"
+                                    name="canLeaveComments"
+                                    [(ngModel)]="roleToCreate.canLeaveComments"
+                                ></p-inputSwitch>
+                                <div>Can leave comments</div>
+                            </div>
+                            <div class="permission-description">*Able to leave comments on tasks</div>
+                        </div>
+                        
+                        <hr>
+    
+                        <div class="permission-card">
+                            <div class="permission-switch"> <!-- checkbox za canUploadFiles -->
+                                <p-inputSwitch
+                                    id="canUploadFiles"
+                                    name="canUploadFiles"
+                                    [(ngModel)]="roleToCreate.canUploadFiles"
+                                ></p-inputSwitch>
+                                <div>Can upload files</div>
+                            </div>
+                            <div class="permission-description">*Able to upload files to project</div>
+                        </div>
+                    </div>
+
+                </form>
+                <!-- End of Form -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="formRegisterUser" class="btn btn-primary" data-bs-dismiss="modal" (click)="createRole()">Create new</button>
+            </div>
+
+        </div>
+    </div>
+</div>
