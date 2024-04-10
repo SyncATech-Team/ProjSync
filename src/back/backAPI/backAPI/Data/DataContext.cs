@@ -73,7 +73,7 @@ namespace backAPI.Data
             modelBuilder.Entity<Issue>()
                 .HasOne(t => t.User)
                 .WithMany()
-                .HasForeignKey(t => t.ReporterId)
+                .HasForeignKey(t => t.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict); // FK owner
 
             modelBuilder.Entity<Issue>()

@@ -16,13 +16,13 @@ namespace backAPI.Entities.Domain
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime DueDate { get; set; }
-        public int ReporterId { get; set; }
+        public int OwnerId { get; set; }
         public int GroupId { get; set; }
         public int? DependentOn { get; set; }
         
         [ForeignKey("StatusId")] public IssueStatus IssueStatus { get; set; }
 
-        [ForeignKey("ReporterId")] public User User { get; set; }
+        [ForeignKey("OwnerId")] public User User { get; set; }
 
         [ForeignKey("GroupId")] public IssueGroup IssueGroup { get; set; }
 

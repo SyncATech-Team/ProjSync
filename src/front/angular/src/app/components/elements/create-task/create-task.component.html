@@ -1,0 +1,65 @@
+<div id="container-wrapper" class="container">
+    <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <p>Issue group</p>
+        <div class="issue-group-wrapper">
+            <p-dropdown [options]="groupsOnProject" optionLabel="name" formControlName="issue-group" placeholder="Select issue group" class="input-size dropdown-groups" [showClear]="true"></p-dropdown>
+
+            <p-button label="Add new group" [outlined]="true" severity="success" class="add-new-group" (onClick)="showCreateGroupPopUp()"></p-button>
+        </div>
+
+        <p>Issue name</p>
+        <!-- [(ngModel)]="value" -->
+        <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" class="issueName" spellcheck="false"/>
+
+        <p>Issue type</p>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="name" placeholder="Select issue type" class="input-size" [showClear]="true"></p-dropdown>
+
+        <p>Issue priority</p>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown [options]="issuePrioritys" optionLabel="name" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true"></p-dropdown>
+
+        <p>Issue status</p>
+        <!-- [(ngModel)]="value1" -->
+        <p-dropdown formControlName="issue-status" optionLabel="name" [options]="issueStatus" placeholder="Select issue status" class="input-size" [showClear]="true"></p-dropdown>
+
+        <p>Description</p>
+        <!-- [(ngModel)]="value" -->
+        <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea spellcheck="false"></textarea>
+
+        <div class="calendar-wrapper">
+            <div class="created-date">
+                <p>Created Date</p>
+                <!-- [(ngModel)]="date1"  -->
+                <p-calendar formControlName= "issue-create-date" [showIcon]="true" class="date1" placeholder="dd/mm/yyyy"></p-calendar>
+            </div>
+
+            <div class="due-date">
+                <p>Due Date</p>
+                <!-- [(ngModel)]="date1"  -->
+                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="dd/mm/yyyy"></p-calendar>                
+            </div>
+        </div>
+
+        <p>Reporter</p>
+        <!-- [(ngModel)]="projectType2" -->
+        <p-dropdown formControlName="issue-reporter" [options]="users" optionLabel="username" placeholder="Select reporter" class="input-size" [showClear]="true"></p-dropdown>
+
+        <p>Assigned</p>
+        <p-multiSelect
+            formControlName="issue-assigner"
+            [options]="users"
+            optionLabel="username"
+            [(ngModel)]="selectedAssignees"
+            placeholder="Assignee"
+            [showClear]="true"
+            class="multi-select-dropdown"
+        ></p-multiSelect>
+
+        <div class="btns">
+            <!--  [disabled]="!projectName2" -->
+            <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
+            <p-button label="Close" severity="secondary" (click)="closeModal()"></p-button>
+        </div>
+    </form>
+</div>

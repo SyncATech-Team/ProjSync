@@ -23,7 +23,7 @@ namespace backAPI.Repositories.Implementation.Issues
          * ***************************************************************************** */
         public async Task<IEnumerable<IssueGroup>> GetGroupsAsync(int projectId) 
         {
-            return await dataContext.IssueGroups.ToListAsync();
+            return await dataContext.IssueGroups.Where(group => group.ProjectId == projectId).ToListAsync();
         }
         /* *****************************************************************************
          * Kreiranje grupe na projektu

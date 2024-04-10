@@ -16,5 +16,7 @@ namespace backAPI.Repositories.Interface.Issues
         /// <param name="task"></param>
         /// <returns></returns>
         Task<Issue> CreateTaskAsync(Issue task);
+
+        Task<IEnumerable<Entities.Domain.IssueGroup>> GetAllGroupsForGivenProject(int projectId);
     }
 }

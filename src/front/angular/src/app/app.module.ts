@@ -95,6 +95,10 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 // END OF GANTT MODULES
 
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { CreateTaskComponent } from './components/elements/create-task/create-task.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +127,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
     ProjectTasksPageComponent,
+    CreateTaskComponent,
+    CreateGroupComponent,
     ProjectGanttPageComponent,
     SpinnerComponent,
     IssueCardComponent,
@@ -168,21 +174,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     InputTextModule,
     InputTextareaModule,
     CheckboxModule,
-    ConfirmPopupModule,
-    NgxGanttModule,
-    ThyLayoutModule,
-    ThyButtonModule,
-    ThySwitchModule,
-    ContentLoaderModule,
-    DragDropModule,
-    DialogModule,
-    TooltipModule,
-    environment.production ? [] : AkitaNgDevtools,
-    AkitaNgRouterStoreModule,
-    AvatarModule,
-    AvatarGroupModule,
-    CdkTextareaAutosize,
-    InputSwitchModule
+    ConfirmPopupModule
   ],
   providers: [
     provideClientHydration(),
@@ -190,9 +182,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     MessageService,
-    ConfirmationService,
-    DialogService,
-    { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

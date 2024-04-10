@@ -24,5 +24,10 @@ namespace backAPI.Repositories.Implementation.Issues
         {
             return await _dataContext.IssueStatuses.Where(type => type.Name == name).FirstAsync();
         }
+
+        public async Task<List<IssueStatus>> GetAllIssueStatus()
+        {
+            return await _dataContext.IssueStatuses.ToListAsync();
+        }
     }
 }

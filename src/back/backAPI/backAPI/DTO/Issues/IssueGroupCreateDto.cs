@@ -2,6 +2,7 @@
 {
     public class IssueGroupCreateDto
     {
-        public string Name { get; set; }
+        public string ProjectName { get; set; } 
+        public string GroupName { get; set; }
     }
 }
