@@ -1,0 +1,160 @@
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Register user
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">User registration form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
+
+            <div class="modal-body">
+
+                <!-- Form -->
+                <form #registerForm="ngForm" id="formRegisterUser" class="row g-3" (ngSubmit)="register()" autocomplete="off" style="margin-bottom: 10%;">
+
+                    <div class="col-md-6"> <!-- field za ime-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                class="form-control required-field"
+                                placeholder="John"
+                                [(ngModel)]="registrationModel.firstName"
+                                required
+                                spellcheck="false"
+                            >
+                            <label for="firstName" class="form-label">First Name</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-6"> <!-- field za prezime-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                class="form-control"
+                                placeholder="Doe"
+                                [(ngModel)]="registrationModel.lastName"
+                                required
+                                spellcheck="false"
+                            >
+                            <label for="lastName" class="form-label">Last Name</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12"> <!-- field za email-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                (input)="suggestUsername()"
+                                type="email"
+                                id="input-email"
+                                name="email"
+                                class="form-control"
+                                placeholder="syncatechpmf@domain.com"
+                                [(ngModel)]="registrationModel.email"
+                                required
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+                            <label for="input-email" class="form-label">Email</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12"> <!-- field za username-->
+                        <div class="form-floating mb-3">
+                            <input
+                                #input_username
+                                type="text"
+                                id="input-username"
+                                name="username"
+                                class="form-control"
+                                placeholder="username"
+                                [(ngModel)]="registrationModel.username"
+                                required
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+                            <label for="input-username" class="form-label">Username</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12"> <!-- field za password | Omoguciti promenu unutar main aplikacije od strane user-a |-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="text"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="12345"
+                                [(ngModel)]="registrationModel.password"
+                                required
+                                spellcheck="false"
+                            >
+                            <label for="password" class="form-label">Password</label>
+                        </div>
+                        <!-- vvv Da li mora da bude "password" vvv -->
+                    </div>
+    
+                    <!-- Napravi da bude dropDown -->
+                    <!-- ! -->
+                    <!-- ! -->
+                    <!-- ! -->
+                    <div class="col-12"> <!-- field za companyRole-->
+                        <div class="form-floating mb-3">
+                            <select id="companyRoleId" class="form-select" aria-label="companyRoleId" [(ngModel)]="registrationModel.companyRole" name="companyRoleId">
+                                <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
+                            </select>
+                            <label for="companyRoleId" class="form-label">Company Role</label>
+                        </div>
+    
+                    </div>
+    
+                    <div class="col-12"> <!-- field za address-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="addres"
+                                id="addres"
+                                name="addres"
+                                class="form-control"
+                                placeholder="Radoja Domanovica 12"
+                                [(ngModel)]="registrationModel.address"
+                                spellcheck="false"
+                            >
+                            <label for="addres" class="form-label">Address</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-12"> <!-- field za contactPhone-->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="tel"
+                                id="contactPhone"
+                                name="contactPhone"
+                                class="form-control"
+                                placeholder="0612345678"
+                                [(ngModel)]="registrationModel.contactPhone"
+                                spellcheck="false"
+                            >
+                            <label for="contactPhone" class="form-label">Phone</label>
+                        </div>
+                        
+                    </div>
+                </form>
+                <!-- End of Form -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="formRegisterUser" class="btn btn-primary" data-bs-dismiss="modal">Register</button>
+            </div>
+        </div>
+    </div>
+</div>

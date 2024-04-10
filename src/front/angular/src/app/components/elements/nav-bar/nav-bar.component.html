@@ -1,0 +1,103 @@
+<app-spinner></app-spinner>
+
+<nav class="navbar navbar-expand-lg navigation navbar-custom-color px-4">
+  <div class="container-fluid">
+    <div class="logo">
+      <a class="navbar-brand" routerLink="/home">ProjSync</a>
+    </div>
+    <button class="navbar-toggler button-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 left--menu">
+
+        <div class="dropdown" dropdown>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle item-nav" dropdownToggle>Your work</a>
+            <ul class="dropdown-menu" *dropdownMenu>
+              <li><a class="dropdown-item item" href="#">Your Projects</a></li>
+              <li><a class="dropdown-item item" href="#">Your Tasks</a></li>
+            </ul>
+          </li>
+        </div>
+
+        <div class="dropdown" dropdown>
+          <a class="nav-link dropdown-toggle item-nav" dropdownToggle>People</a>
+            <ul class="dropdown-menu item" *dropdownMenu>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
+              <li class="divider dropdown-divider"></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown" dropdown>
+          <a class="nav-link dropdown-toggle item-nav" dropdownToggle>Dashboard</a>
+            <ul class="dropdown-menu" *dropdownMenu>
+              <li><a class="dropdown-item item" href="#">people_opt1</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
+              <li class="divider dropdown-divider item"></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown" dropdown>
+          <a class="nav-link dropdown-toggle item-nav" dropdownToggle>Projects</a>
+            <ul class="dropdown-menu" *dropdownMenu>
+              <li><a class="dropdown-item item" [routerLink]="['/home/projects']">Projects</a></li>
+              <li><a class="dropdown-item item" href="#">people_opt_2</a></li>
+              <li class="divider dropdown-divider"></li>
+              <li><a class="dropdown-item item" (click)="logout()">Logout</a></li>
+            </ul>
+        </div>
+        
+      </ul>
+
+      <div class="d-flex right--side">
+        <form class="d-flex" role="search">
+          <input id="navbar-general-serach" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        </form>
+        <!-- <div class="notification-wrap"> -->
+          <i class="fa-solid fa-bell px-3" (click)="toggleNotifyCollapsed()"></i>
+          <app-notification [notify_collapsed]="notify_collapsed"></app-notification>
+        <!-- </div> -->
+        <i class="fa-solid fa-gear px-3"></i>
+        
+        <!-- POPOVER -->
+        <div>
+          <p-overlayPanel #op>
+              <ng-template pTemplate="content">
+                <div class="dropdown-div" id="dropdown-user-info">
+                  
+                  <div class="image">
+                    <img id="small_user_image" class="biggerImage" src="{{getDefaultImage()}}" alt="user-image" draggable="false">
+                  </div>
+                  <div class="info">
+                    <div class="fullname"> {{getFullName()}} </div>
+                    <div class="email"> {{getEmail()}} </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="dropdown-div">
+                  <div style="font-weight: bold;">Settings</div>
+                  <div>
+                    <span class="clickable" routerLink="/home/edit-profile">Edit My Profile</span>
+                  </div>
+                  <div>
+                    <span class="clickable" (click)="logout()">Logout</span>
+                  </div>
+                </div>
+                
+              </ng-template>
+          </p-overlayPanel>
+          <img id="profile-image" 
+            src="../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" 
+            alt="user-image" draggable="false" 
+            (click)="op.toggle($event)" 
+            (click)="setSmallerUserPicture()">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</nav>

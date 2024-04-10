@@ -1,0 +1,61 @@
+#page-wrapper {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+input[type="checkbox"] {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: none;
+    background: none;
+}
+
+input[type="checkbox"]:before {
+    content: '\f005';
+    font-family: 'Font Awesome 5 Free';
+    font-weight:900;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 24px;
+    color: #ccc;
+}
+
+input[type="checkbox"]:checked:before {
+    color: #5E5BF4;
+}
+
+th{
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.nav .nav-item{
+    cursor: pointer;
+}
+
+.profilecontent img {
+    width: 20px;
+    height: 20px;
+}
+
+.progress-bar-wrapper{
+    width: 20vh;
+}
+
+@media screen and (max-width: 960px) {
+    .progress-bar-wrapper{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}

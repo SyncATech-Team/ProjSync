@@ -1,0 +1,99 @@
+.navbar .logo{
+    margin-right: 6vh;
+}
+
+.button-collapse{
+    background-color: #fff;
+}
+
+.navbar-custom-color {
+    background: #263238;
+}
+
+.navbar .logo:hover{
+    margin-right: 6vh;
+    cursor: pointer;
+}
+
+.navbar .logo .navbar-sub-brand{
+    color: #fff;
+}
+
+.navbar .navbar-brand{
+    color: #605dff;
+    font-weight: bold;
+    font-size: 26px;   
+}
+
+.left--menu{
+    font-size: 18px;
+}
+
+.left--menu .item-nav{
+    color: #fff;
+    cursor: pointer;
+}
+
+.left--menu .item{
+    cursor: pointer;
+}
+
+.right--side{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.right--side button{
+    border: 1px solid black;
+    margin-left: 2vh;
+}
+
+.right--side i{
+    color: #fff;
+    margin-left: 10px;
+    font-size: 22px;
+    margin: auto;
+    cursor: pointer;
+}
+
+.notification-wrap {
+    position: relative;
+}
+
+#profile-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.underline:hover {
+    text-decoration: 2px underline;
+    cursor: pointer;
+}
+
+.biggerImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+#dropdown-user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.clickable {
+    font-size: 14px;
+}
+
+.clickable:hover {
+    text-decoration: 2pt underline;
+    cursor: pointer;
+}
+
+.email {
+    font-size: 12px;
+}

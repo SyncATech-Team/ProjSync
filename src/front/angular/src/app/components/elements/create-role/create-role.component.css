@@ -1,0 +1,37 @@
+input[type="checkbox"] {
+    margin-right: 5%;
+}
+
+.permission-card {
+    padding: 5px;
+}
+
+.permission-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* margin-bottom: 5px; */
+}
+
+.permission-switch div {
+    width: 100%;
+    text-align: left;
+    margin-left: 1%;
+    font-weight: 500;
+}
+
+.permission-description {
+    font-style: italic;
+    font-size: 12px;
+    color: red;
+}
+
+:host ::ng-deep .p-inputswitch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:host ::ng-deep .p-inputswitch-checked span {
+    background-color: #22c55e;
+}

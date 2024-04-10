@@ -1,0 +1,50 @@
+<div id="pageWraper">
+    <app-nav-bar></app-nav-bar>
+    <div id="contentPages">
+
+        <app-project-sidebar 
+            [projectName]="projectName"></app-project-sidebar>
+
+        <div id="content">
+            <div class="container" id="projectHeader">
+                <h1>{{project.name}}</h1>
+                <img *ngIf="1==1; else secondImageSource"
+                src={{getDefaultImagePath()}} alt="project-default-image">
+                <ng-template #secondImageSource>
+                    <img src="{{getDefaultImagePath()}}" alt="project-image">
+                </ng-template>
+            </div>
+            <hr class="mt-2 mb-3" />
+            <div class="container">
+                <p>Project key: {{project.key}}</p>
+            </div>
+            <div class="container">
+                <p>Project visibility: {{project.visibilityName}}</p>
+            </div>
+            <div class="container">
+                <p>Project type: {{project.typeName}}</p>
+            </div>
+            <div class="container">
+                <p id="descriptionLabel">Description: </p>
+                <p id="description">
+                    {{project.description}} 
+                </p>
+            </div>
+            <div class="container">
+                <p>Owner: {{project.ownerUsername}}</p>
+            </div>
+            <div class="container">
+                <p>Creation date: {{project.creationDate | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="container">
+                <p>Due date: {{project.dueDate | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <div class="container">
+                <p>Bugdet: {{project.budget}}</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
