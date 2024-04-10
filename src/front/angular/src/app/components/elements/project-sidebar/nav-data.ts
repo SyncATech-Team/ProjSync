@@ -38,5 +38,10 @@ export const navbarData = [
         routeLink: '/home/projects/gantt/',
         icon: 'fa-solid fa-chart-gantt',
         label: 'Gantt'
+    },
+    {
+        routeLink: '/home/projects/kanban/',
+        icon: 'fa-solid fa-chart-kanban',
+        label: 'Kanban'
     }
 ];

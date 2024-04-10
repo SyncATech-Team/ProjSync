@@ -1,0 +1,20 @@
+<app-spinner></app-spinner>
+<p-toast></p-toast>
+<app-nav-bar></app-nav-bar>
+
+<div id="page-wrapper">
+
+  <div id="side">
+    <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
+  </div>
+
+  <div class="wrapper">
+    <h2>Issue Board</h2>
+    <div class="pr-5 py-7 pl-10 h-100 w-100 d-flex flex-column">
+      <board-filter></board-filter>
+      <board-dnd></board-dnd>
+    </div>
+  </div>
+
+  <svg-definitions></svg-definitions>
+</div>
