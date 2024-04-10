@@ -22,7 +22,7 @@ export class IssueService {
   }
 
   getAllTasksInGroup(groupId: number) {
-    return this.http.get<IssuesInGroup[]>(`${this.baseUrl}Tasks/groupId?groupId=${groupId}`);
+    return this.http.get<IssuesInGroup[]>(`${this.baseUrl}Issues/groupId?groupId=${groupId}`);
   }
 
   getAllIssueStatus(){

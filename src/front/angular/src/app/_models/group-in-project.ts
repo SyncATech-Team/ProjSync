@@ -1,5 +1,5 @@
 export interface GroupInProject{
     id: number;
     projectName : string;
-    groupName : string;
+    name : string;
 }

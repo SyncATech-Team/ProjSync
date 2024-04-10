@@ -57,7 +57,7 @@ namespace backAPI.Controllers
                 var ttype = await _taskTypeRepository.GetTaskTypeById(task.TypeId);
                 var tpriority = await _taskPriorityRepository.GetTaskPriorityById(task.StatusId);
                 var tstatus = await _taskStatusRepository.GetTaskTypeById(task.StatusId);
-                var taskGroup = await _taskGroupRepository.GetGroupAsync(task.Id);
+                var taskGroup = await _taskGroupRepository.GetGroupAsync(task.GroupId);
                 IssueDto taskDto = new()
                 {
                     Name = task.Name,

@@ -20,7 +20,7 @@ export class CreateGroupComponent implements OnInit {
   groupInProject : GroupInProject = {
     id : -1,
     projectName : "",
-    groupName : ""
+    name : ""
   }
 
   constructor(
@@ -44,7 +44,7 @@ export class CreateGroupComponent implements OnInit {
     if(this.projectName){
       // console.log(this.form.controls['group-name'].value);
       // console.log(this.projectName);
-      this.groupInProject.groupName = this.form.controls['group-name'].value;
+      this.groupInProject.name = this.form.controls['group-name'].value;
       this.groupInProject.projectName = this.projectName;
       console.log(this.groupInProject);
       
