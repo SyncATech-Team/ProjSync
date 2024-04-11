@@ -162,6 +162,7 @@ export class CreateTaskComponent implements OnInit {
         this._issueService.createIssue(this.issue).subscribe({
           next : (response) => {
             this.msgPopUpService.showSuccess("Project successfully created");
+            this._modal.close();
           },
           error : (error) => {
             console.log(error);

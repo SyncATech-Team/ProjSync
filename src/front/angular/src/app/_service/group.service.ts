@@ -3,6 +3,7 @@ import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { GroupInProject } from "../_models/group-in-project";
 import { EventEmitter } from "@angular/core";
+import { GroupInProjectSend } from "../_models/group-in-project-send";
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,7 @@ export class GroupService{
         return this.http.get<GroupInProject[]>(`${this.baseUrl}IssuesGroup/projectName?projectName=${projectName}`);
     }
     
-    createGroup(model : GroupInProject) {
+    createGroup(model : GroupInProjectSend) {
         return this.http.post<void>(`${this.baseUrl}IssuesGroup`,model);
     }
     
