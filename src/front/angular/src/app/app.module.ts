@@ -99,6 +99,7 @@ import { CreateTaskComponent } from './components/elements/create-task/create-ta
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
+import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 
 @NgModule({
   declarations: [
@@ -148,7 +149,8 @@ import { CreateGroupComponent } from './components/elements/create-group/create-
     IssueCommentComponent,
     IssueCommentsComponent,
     BoardFilterComponent,
-    IssueReporterComponent
+    IssueReporterComponent,
+    ProjectKanbanPageComponent
   ],
   imports: [
     BrowserModule,
