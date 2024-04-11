@@ -77,7 +77,9 @@
                 (onPage)="pageChange($event)"
                 [globalFilterFields]="['name','key','typeName','ownerUsername','creationDate','dueDate']"
                 currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries"
-                [columns]="selectedColumns" >
+                [resizableColumns]="true"
+                [reorderableColumns]="true"
+                [columns]="showColumns" >
                 
                 <!-- Clear all filters -->
                 <!-- <ng-template pTemplate="caption">
@@ -91,145 +93,154 @@
                 </ng-template> -->
                 <ng-template pTemplate="caption">
                     <div class="table-header">
-                        <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" selectedItemsLabel="{0} columns selected" [style]="{'width': '30vh'}" placeholder="Choose Columns"></p-multiSelect>
+                        <p-multiSelect 
+                        [options]="columns" 
+                        [(ngModel)]="selectedColumns" 
+                        selectedItemsLabel="{0} columns selected" 
+                        [style]="{'width': '30vh'}" 
+                        placeholder="Choose Columns"
+                        (onChange)="onSelectedChange()" >
+                    </p-multiSelect>
                     </div>
                 </ng-template>
 
-                <ng-template pTemplate="header" >
+                <ng-template pTemplate="header" let-columns>
                     <tr>
-
-                        <th pSortableColumn="name">
-                            <div class="flex align-items-center">
-                                Name
-                                <p-sortIcon field="name"></p-sortIcon>
-                                <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                        <ng-container *ngFor="let column of columns">
+                            <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="name">
+                                <div class="flex align-items-center">
+                                    Name
+                                    <p-sortIcon field="name"></p-sortIcon>
+                                    <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Key' && selectedColumns.includes('Key')" pSortableColumn="key">
+                                <div class="flex align-items-center">
+                                Key
+                                <p-sortIcon field="key"></p-sortIcon>
+                                <p-columnFilter type="text" field="key" display="menu"></p-columnFilter>
                             </div>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Key')" pSortableColumn="key">
-                            <div class="flex align-items-center">
-                            Key
-                            <p-sortIcon field="key"></p-sortIcon>
-                            <p-columnFilter type="text" field="key" display="menu"></p-columnFilter>
-                        </div>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Type')" pSortableColumn="typeName">
-                            <div class="flex align-items-center">
-                            Type
-                            <p-sortIcon field="typeName"></p-sortIcon>
-                            <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-                                <ng-template pTemplate="header">
-                                    <div class="px-3 pt-3 pb-0">
-                                        <span class="font-bold">Type</span>
-                                    </div>
-                                </ng-template>
-                                <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                    <p-multiSelect [ngModel]="value" [options]="Types" placeholder="Any" (onChange)="filter($event.value)">
-                                        <ng-template let-project let-option pTemplate="item" >
-                                            <div class="inline-block vertical-align-middle">
-                                                <span class="ml-1 mt-1">{{ option }}</span>
-                                            </div>
-                                        </ng-template>
-                                    </p-multiSelect>
-                                </ng-template>
-                            </p-columnFilter>
-                        </div>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Description')" pSortableColumn="description">
-                            <div class="flex align-items-center">
-                            Description
-                            <p-sortIcon field="description"></p-sortIcon>
-                            <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedColumns.includes('Type')" pSortableColumn="typeName">
+                                <div class="flex align-items-center">
+                                Type
+                                <p-sortIcon field="typeName"></p-sortIcon>
+                                <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template pTemplate="header">
+                                        <div class="px-3 pt-3 pb-0">
+                                            <span class="font-bold">Type</span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
+                                        <p-multiSelect [ngModel]="value" [options]="Types" placeholder="Any" (onChange)="filter($event.value)">
+                                            <ng-template let-project let-option pTemplate="item" >
+                                                <div class="inline-block vertical-align-middle">
+                                                    <span class="ml-1 mt-1">{{ option }}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </ng-template>
+                                </p-columnFilter>
                             </div>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Owner')" pSortableColumn="ownerUsername">
-                            <div class="flex align-items-center">
-                            Owner
-                            <p-sortIcon field="ownerUsername"></p-sortIcon>
-                            <p-columnFilter type="text" field="ownerUsername" display="menu"></p-columnFilter>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Description' && selectedColumns.includes('Description')" pSortableColumn="description">
+                                <div class="flex align-items-center">
+                                Description
+                                <p-sortIcon field="description"></p-sortIcon>
+                                <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Owner' && selectedColumns.includes('Owner')" pSortableColumn="ownerUsername">
+                                <div class="flex align-items-center">
+                                Owner
+                                <p-sortIcon field="ownerUsername"></p-sortIcon>
+                                <p-columnFilter type="text" field="ownerUsername" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" pSortableColumn="creationDate">
+                                <div class="flex align-items-center">
+                                Creation Date
+                                <p-sortIcon field="creationDate"></p-sortIcon>
+                                <p-columnFilter type="date" field="creationDate" display="menu">
+                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                        <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                    </ng-template>
+                                </p-columnFilter>
                             </div>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Creation Date')" pSortableColumn="creationDate">
-                            <div class="flex align-items-center">
-                            Creation Date
-                            <p-sortIcon field="creationDate"></p-sortIcon>
-                            <p-columnFilter type="date" field="creationDate" display="menu">
-                                <ng-template pTemplate="filter" let-filter="filterCallback">
-                                    <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
-                                </ng-template>
-                            </p-columnFilter>
-                        </div>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
-                            <div class="flex align-items-center">
-                            Due Date
-                            <p-sortIcon field="dueDate"></p-sortIcon>
-                            <p-columnFilter type="date" field="dueDate" display="menu">
-                                <ng-template pTemplate="filter" let-filter="filterCallback">
-                                    <p-calendar dateFormat="dd/MM/yy" (onSelect)="filter($event)"></p-calendar>
-                                </ng-template>
-                            </p-columnFilter>
-                            </div>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Budget')" pSortableColumn="budget">
-                            Budget
-                            <p-sortIcon field="budget"></p-sortIcon>
-                            <p-columnFilter type="numeric" field="budget" display="menu"></p-columnFilter>
-                        </th>
-                        <th *ngIf="selectedColumns.includes('Progress')" >Progress</th>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
+                                <div class="flex align-items-center">
+                                Due Date
+                                <p-sortIcon field="dueDate"></p-sortIcon>
+                                <p-columnFilter type="date" field="dueDate" display="menu">
+                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                        <p-calendar dateFormat="dd/MM/yy" (onSelect)="filter($event)"></p-calendar>
+                                    </ng-template>
+                                </p-columnFilter>
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Budget' && selectedColumns.includes('Budget')" pSortableColumn="budget">
+                                Budget
+                                <p-sortIcon field="budget"></p-sortIcon>
+                                <p-columnFilter type="numeric" field="budget" display="menu"></p-columnFilter>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')" >Progress</th>
+                        </ng-container>
                     </tr>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-project>
+                <ng-template pTemplate="body" let-project let-columns="columns">
                     <tr>
-
-                        <td style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
-                            <div class="profilecontent">
-                                <img *ngIf="1==1; else secondImageSource"
-                                src={{getDefaultImagePath()}} alt="user-default-image">
-                                <ng-template #secondImageSource>
-                                    <img src="{{getDefaultImagePath()}}" alt="user-image">
-                                </ng-template>
-                            </div>
-                            <div>
-                                <a style="text-decoration: none;" 
-                                    routerLink="projects/{{project.name}}"
-                                    title="{{project.name}}">{{ getProjectName(project.name) }}</a>
-                            </div>
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Key')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
-                            {{ project.key }}
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Type')" style="width: 23vh;">
-                            <span class="p-column-title" style="font-weight: bold;">Type</span>
-                            {{ project.typeName }}
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Description')" style="width: 23vh;">
-                            <span class="p-column-title" style="font-weight: bold;">Description</span>
-                            {{ project.description }}
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Owner')" style="width: 20vh; ">
-                            <span class="p-column-title" style="font-weight: bold">Owner</span>
-                            {{ project.ownerUsername }}
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Creation Date')" style="width: 25vh; ">
-                            <span class="p-column-title" style="font-weight: bold">Creation Date</span>
-                            {{ project.creationDate | date: 'dd/MM/yyyy' }}
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Due Date')" style="width: 20vh; ">
-                            <span class="p-column-title" style="font-weight: bold">Due Date</span>
-                            {{ project.dueDate | date: 'dd/MM/yyyy'   }}
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Budget')" style="width: 23vh;">
-                            <span class="p-column-title" style="font-weight: bold;">Budget</span>
-                            {{ project.budget }}
-                        </td>
-                        <td *ngIf="selectedColumns.includes('Progress')" style="width: 20vh;">
-                            <div class="progress-bar-wrapper">
-                                <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
-                                
-                                <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>
-                            </div>
-                        </td>
+                        <ng-container *ngFor="let column of columns">
+                            <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
+                                <div class="profilecontent">
+                                    <img *ngIf="1==1; else secondImageSource"
+                                    src={{getDefaultImagePath()}} alt="user-default-image">
+                                    <ng-template #secondImageSource>
+                                        <img src="{{getDefaultImagePath()}}" alt="user-image">
+                                    </ng-template>
+                                </div>
+                                <div>
+                                    <a style="text-decoration: none;" 
+                                        routerLink="projects/{{project.name}}"
+                                        title="{{project.name}}">{{ getProjectName(project.name) }}</a>
+                                </div>
+                            </td>
+                            <td *ngIf="column=='Key' && selectedColumns.includes('Key')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
+                                {{ project.key }}
+                            </td>
+                            <td *ngIf="column=='Type' && selectedColumns.includes('Type')" style="width: 23vh;">
+                                <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                {{ project.typeName }}
+                            </td>
+                            <td *ngIf="column=='Description' && selectedColumns.includes('Description')" style="width: 23vh;">
+                                <span class="p-column-title" style="font-weight: bold;">Description</span>
+                                {{ project.description }}
+                            </td>
+                            <td *ngIf="column=='Owner' && selectedColumns.includes('Owner')" style="width: 20vh; ">
+                                <span class="p-column-title" style="font-weight: bold">Owner</span>
+                                {{ project.ownerUsername }}
+                            </td>
+                            <td *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" style="width: 25vh; ">
+                                <span class="p-column-title" style="font-weight: bold">Creation Date</span>
+                                {{ project.creationDate | date: 'dd/MM/yyyy' }}
+                            </td>
+                            <td *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" style="width: 20vh; ">
+                                <span class="p-column-title" style="font-weight: bold">Due Date</span>
+                                {{ project.dueDate | date: 'dd/MM/yyyy'   }}
+                            </td>
+                            <td *ngIf="column=='Budget' && selectedColumns.includes('Budget')" style="width: 23vh;">
+                                <span class="p-column-title" style="font-weight: bold;">Budget</span>
+                                {{ project.budget }}
+                            </td>
+                            <td *ngIf="column=='Progress' && selectedColumns.includes('Progress')" style="width: 20vh;">
+                                <div class="progress-bar-wrapper">
+                                    <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
+                                    
+                                    <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>
+                                </div>
+                            </td>
+                        </ng-container>
                     </tr>
                 </ng-template>
                

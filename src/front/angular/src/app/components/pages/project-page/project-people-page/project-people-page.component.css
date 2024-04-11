@@ -11,6 +11,11 @@
     overflow-y: auto;
 }
 
+.content th{
+    border: 1px solid rgb(226, 232, 240);
+    border-top: 0;
+}
+
 .table-header{
     display: flex;
     justify-content: space-between;

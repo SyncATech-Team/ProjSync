@@ -48,6 +48,8 @@
 
 th{
     text-align: center;
+    border: 1px solid rgb(226, 232, 240);
+    border-top: 0;
 }
 td{
     text-align: center;

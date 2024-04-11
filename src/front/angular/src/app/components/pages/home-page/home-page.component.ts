@@ -30,12 +30,14 @@ export class HomePageComponent implements OnInit {
 
   selectedColumns!: string[];
   columns!: string[];
+  showColumns!: string[];
 
   constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService,private companyroleService: CompanyroleService) { }
 
   ngOnInit(): void {
     this.columns = ['Key','Type','Description','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
+    this.showColumns = ['Name',...this.selectedColumns];
     this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
@@ -126,5 +128,18 @@ export class HomePageComponent implements OnInit {
       s = projectName;
 
     return s;
+  }
+
+  onSelectedChange(){
+    this.selectedColumns.forEach(item => {
+      if(!this.showColumns.includes(item)){
+        this.showColumns.push(item);
+      }
+    });
+    this.showColumns.forEach((item,index) => {
+      if(!this.selectedColumns.includes(item) && item!=='Username' && item !==''){
+        this.showColumns.splice(index,1);
+      }
+    })
   }
 }

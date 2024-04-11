@@ -23,6 +23,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   visibleSide: boolean = true;
   selectedColumns!: string[];
   columns!: string[];
+  showColumns!: string[];
 
   tasks : any[] = [];
   tasks_backup: any[]=[];
@@ -217,6 +218,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.columns = ['Type','Status','Priority','Description','Created Date','Updated Date','Due Date','Reporter','Group','Percentage'];
     this.selectedColumns = ['Type','Priority','Due Date','Reporter','Percentage'];
+    this.showColumns = ['Name',...this.selectedColumns];
     // this.tasksByGroup = this.getTasksByGroup();
     if(this.projectName)
       this.groupService.getAllGroups(this.projectName).subscribe({
@@ -317,5 +319,18 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     }
     this.tasks = filteredTasks;
     this.tasksByGroup = this.getTasksByGroup();
+  }
+
+  onSelectedChange(){
+    this.selectedColumns.forEach(item => {
+      if(!this.showColumns.includes(item)){
+        this.showColumns.push(item);
+      }
+    });
+    this.showColumns.forEach((item,index) => {
+      if(!this.selectedColumns.includes(item) && item!=='Username' && item !==''){
+        this.showColumns.splice(index,1);
+      }
+    })
   }
 }
