@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GroupService } from '../../../_service/group.service';
-import { GroupInProject } from '../../../_models/group-in-project';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { GroupInProjectSend } from '../../../_models/group-in-project-send';
 
 @Component({
   selector: 'app-create-group',
@@ -17,10 +17,9 @@ export class CreateGroupComponent implements OnInit {
 
   groupName : string = '';
 
-  groupInProject : GroupInProject = {
-    id : -1,
-    projectName : "",
-    name : ""
+  groupInProject : GroupInProjectSend = {
+    ProjectName : "",
+    GroupName : ""
   }
 
   constructor(
@@ -44,8 +43,8 @@ export class CreateGroupComponent implements OnInit {
     if(this.projectName){
       // console.log(this.form.controls['group-name'].value);
       // console.log(this.projectName);
-      this.groupInProject.name = this.form.controls['group-name'].value;
-      this.groupInProject.projectName = this.projectName;
+      this.groupInProject.GroupName = this.form.controls['group-name'].value;
+      this.groupInProject.ProjectName = this.projectName;
       console.log(this.groupInProject);
       
       this.groupService.createGroup(this.groupInProject).subscribe({
