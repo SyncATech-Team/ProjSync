@@ -20,7 +20,7 @@ export const navbarData = [
         label: 'Summary'
     },
     {
-        routeLink : '',
+        routeLink : '/home/projects/documents/',
         icon: 'fa-regular fa-file',
         label: 'Documents'
     },

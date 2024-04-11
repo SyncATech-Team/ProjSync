@@ -52,6 +52,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { ProjectDocumentsPageComponent } from './components/pages/project-page/project-documents-page/project-documents-page.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { IssueCardComponent } from './components/elements/issues/issue-card/issue-card.component';
 import { BoardDndComponent } from './components/elements/board/board-dnd/board-dnd.component';
@@ -128,6 +129,7 @@ import { ProjectKanbanPageComponent } from './components/pages/project-page/proj
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
     ProjectTasksPageComponent,
+    ProjectDocumentsPageComponent,
     CreateTaskComponent,
     CreateGroupComponent,
     ProjectGanttPageComponent,
