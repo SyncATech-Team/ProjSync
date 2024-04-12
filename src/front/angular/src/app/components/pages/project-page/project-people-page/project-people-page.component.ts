@@ -77,15 +77,6 @@ export class ProjectPeoplePageComponent implements OnInit{
       }
     });
 
-    // this.companyRole.getAllCompanyRoles().subscribe({
-    //   next: (response) => {
-    //     this.userRole = response;
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //   }
-    // });
-
     this.userService.getAllUsers().subscribe({
       next: (response) => {
         this.getUserProfilePhotos(this.users);
@@ -95,7 +86,7 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.getUserProfilePhotos(this.allUsers);
       },
       error: (error) => {
-        console.log(error);
+        console.log(error); 
       }
     });
 
