@@ -54,6 +54,13 @@ th{
     width: 20vh;
 }
 
+.input-search input{
+    padding-left: 30px;
+}
+.input-search i{
+    padding-left: 10px;
+}
+
 @media screen and (max-width: 960px) {
     .progress-bar-wrapper{
         display: flex;

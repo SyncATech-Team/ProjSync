@@ -21,6 +21,7 @@ interface UploadEvent {
 export class EditProfilePageComponent implements OnInit {
   @ViewChild('fileInputRef') fileInputRef: ElementRef | undefined;
 
+  imageLoading: boolean = false;
   username : string = '';
   user?: UserGetter;
   editUser: UserGetter = {
@@ -128,6 +129,7 @@ export class EditProfilePageComponent implements OnInit {
   } 
 
   onFileSelected(event: any){
+    this.imageLoading = true;
     //POKUPIM FAJL ZA SLANJE
     if(event.target.files && event.target.files.length > 0){
       const selectedFile = event.target.files[0];
@@ -143,11 +145,15 @@ export class EditProfilePageComponent implements OnInit {
           this.msgPopupService.showSuccess("Successfully uploaded image");
           this.ngOnInit();
 
-          if(this.fileInputRef)
+          if(this.fileInputRef){
             this.fileInputRef.nativeElement.value = '';
+          }
+          this.imageLoading = false;
+          this.messageService.add({ severity: 'success', summary: 'Successfully', detail: 'Profile photo added', life: 3000 });
         },
         error: error => {
-          this.msgPopupService.showError("Unable to upload image");
+          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Image not added', life: 3000 });
+          this.imageLoading = false;
         }
       });
     }
@@ -162,10 +168,12 @@ export class EditProfilePageComponent implements OnInit {
     let image = element as HTMLImageElement;
 
     if(src === "SLIKA_JE_NULL") {
-      if(this.user)
+      if(this.user){
         image.src = this.userProfilePhoto.getDefaultImageForUser(this.user.username);
-      else
+      }
+      else{
         image.src = this.userProfilePhoto.getFirstDefaultImagePath();
+      }
     }
     else {
       image.src = src;
@@ -173,12 +181,15 @@ export class EditProfilePageComponent implements OnInit {
   }
 
   removePhoto(){
+    this.imageLoading = true;
     if(this.user){
       this.userProfilePhoto.removeUserImage(this.user.username).subscribe({
         next : respones =>{
+          this.imageLoading = false;
           this.ngOnInit();
         },
         error: error => {
+          this.imageLoading = false;
           console.log(error.error);
         }
       });
@@ -194,7 +205,7 @@ export class EditProfilePageComponent implements OnInit {
         acceptButtonStyleClass: 'p-button-danger p-button-sm rounded',
         accept: () => {
             this.removePhoto();
-            this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Profile photo removed', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Profile photo removed', life: 3000 });
         },
         reject: () => {
             this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });

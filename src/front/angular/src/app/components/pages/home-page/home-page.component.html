@@ -15,16 +15,11 @@
         <div class="row" style="margin-bottom: 20px;">
             
             <!-- Search -->
-            <div class="p-input-icon-left ml-auto col-md-2 col-3" style="padding-left: 0%; ">
+            <div class="p-input-icon-left ml-auto col-md-2 col-3 input-search">
+                <input id="home-projects-search" name="projects-serach" class="form-control"
+                type="search" placeholder="Search" aria-label="Search" 
+                [(ngModel)]="searchTerm" (input)="filterProjectsByName()" icon="pi pi-search">
                 <i class="pi pi-search"></i>
-                <input id="home-projects-search" name="projects-serach" class="form-control" style="padding-left: 17%;"
-                    type="search" placeholder="Search" aria-label="Search" 
-                    [(ngModel)]="searchTerm" (input)="filterProjectsByName()">
-            </div>
-            
-            <!-- Filter -->
-            <div class="col-md-2 col-3">
-                <app-filter-project></app-filter-project>
             </div>
             
             <!-- Create project option -->
