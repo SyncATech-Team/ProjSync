@@ -149,9 +149,10 @@ export class EditProfilePageComponent implements OnInit {
             this.fileInputRef.nativeElement.value = '';
           }
           this.imageLoading = false;
+          this.messageService.add({ severity: 'success', summary: 'Successfully', detail: 'Profile photo added', life: 3000 });
         },
         error: error => {
-          this.msgPopupService.showError("Unable to upload image");
+          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Image not added', life: 3000 });
           this.imageLoading = false;
         }
       });
@@ -204,7 +205,7 @@ export class EditProfilePageComponent implements OnInit {
         acceptButtonStyleClass: 'p-button-danger p-button-sm rounded',
         accept: () => {
             this.removePhoto();
-            this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Profile photo removed', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Profile photo removed', life: 3000 });
         },
         reject: () => {
             this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
