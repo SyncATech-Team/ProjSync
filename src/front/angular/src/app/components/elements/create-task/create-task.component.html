@@ -24,8 +24,16 @@
         <p-dropdown formControlName="issue-status" optionLabel="name" [options]="issueStatus" placeholder="Select issue status" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Description</p>
-        <!-- [(ngModel)]="value" -->
-        <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea spellcheck="false"></textarea>
+        <!-- <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea spellcheck="false"></textarea> -->
+        <!-- (onEditorCreated)="editorCreated($event)" [modules]="editorOptions" -->
+        <ng-container *ngIf="true">
+            <quill-editor class="content-editor"
+                          formControlName="issue-description"
+                          [placeholder]="''"
+                          >
+            </quill-editor>
+        
+        </ng-container>
 
         <div class="calendar-wrapper">
             <div class="created-date">
