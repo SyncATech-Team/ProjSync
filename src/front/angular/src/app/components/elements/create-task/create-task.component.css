@@ -127,3 +127,10 @@
     height: 30px;
     border-radius: 50%;
 }
+
+/* DESKRIPCIJA CREATE TASK */
+
+:host ::ng-deep .content-editor .ql-editor {
+    height: 6rem;
+    overflow-y: auto;
+}
