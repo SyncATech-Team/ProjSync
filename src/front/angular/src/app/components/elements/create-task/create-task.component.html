@@ -43,7 +43,25 @@
 
         <p>Reporter</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-reporter" [options]="users" optionLabel="username" placeholder="Select reporter" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown
+            formControlName="issue-reporter" 
+            [options]="users" optionLabel="username" 
+            placeholder="Select reporter" 
+            class="input-size" 
+            [showClear]="true">
+            <ng-template let-user pTemplate="selectedItem">
+                <div class="profilecontent">
+                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                    <span>{{ user.username }}</span>
+                </div>
+            </ng-template>
+            <ng-template let-user pTemplate="item">
+                <div class="profilecontent">
+                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                    <span>{{ user.username }}</span>
+                </div>
+            </ng-template>
+        </p-dropdown>
 
         <p>Assigned</p>
         <p-multiSelect

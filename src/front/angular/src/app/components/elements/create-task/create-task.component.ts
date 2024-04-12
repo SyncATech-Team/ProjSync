@@ -16,6 +16,8 @@ import { AccountService } from '../../../_service/account.service';
 import { GroupInProject } from '../../../_models/group-in-project';
 import { GroupService } from '../../../_service/group.service';
 import { UserOnProjectService } from '../../../_service/userOnProject.service';
+import { PhotoForUser } from '../../../_models/photo-for-user';
+import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 
 @Component({
   selector: 'app-create-task',
@@ -32,6 +34,7 @@ export class CreateTaskComponent implements OnInit {
   issueTypes : IssueType[] = [];
   issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
+  usersPhotos: PhotoForUser[] = [];
 
   selectedAssignees : UserGetter[] = [];
   currentUser? : string;
@@ -64,7 +67,8 @@ export class CreateTaskComponent implements OnInit {
     private messageService: MessageService,
     public dialogService: DialogService,
     private accountServis: AccountService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private userPictureService: UserProfilePicture
   ) { 
     this.currentUser = this.accountServis.getCurrentUser()?.username;
     this.form = this.formBuilder.group({
@@ -97,6 +101,7 @@ export class CreateTaskComponent implements OnInit {
       this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
         next: (response) => {
           this.users = response.filter(user => user.username !== 'admin');
+          this.getUserProfilePhotos(this.users);
         },
         error: (error) => {
           console.log(error);
@@ -194,5 +199,45 @@ export class CreateTaskComponent implements OnInit {
     this.ref.onClose.subscribe((data: any) => {
       this.ngOnInit();
     });
+  }
+
+  getUserProfilePhotos(users: UserGetter[]) {
+    for(const user of users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            let path = response['fileContents'];
+            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username, 
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
+
+  getUserImagePath(username: string,users: UserGetter[]) {
+    let index = users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersPhotos[ind].photoSource;
   }
 }

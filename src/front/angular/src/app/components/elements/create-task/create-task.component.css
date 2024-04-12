@@ -59,11 +59,13 @@
 
 :host ::ng-deep .form-group .input-size span{
     margin-left: 8px;
-    height: 2rem;
+}
+
+:host ::ng-deep .form-group .input-size span{
+    padding: 5px;
 }
 
 :host ::ng-deep .form-group input,
-:host ::ng-deep .form-group .input-size span,
 :host ::ng-deep .form-group .input-size li{
     padding: 5px;
 }
@@ -116,4 +118,12 @@
         display: flex;
         flex-direction: column;
     }
+}
+
+/* SLICICE NA DROPDOWN */
+
+.profilecontent img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
