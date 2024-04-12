@@ -72,7 +72,20 @@
             placeholder="Assignee"
             [showClear]="true"
             class="multi-select-dropdown"
-        ></p-multiSelect>
+        >
+            <ng-template let-user pTemplate="selectedItem">
+                <div class="profilecontent">
+                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                    <span>{{ user.username }}</span>
+                </div>
+            </ng-template>
+            <ng-template let-user pTemplate="item">
+                <div class="profilecontent">
+                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                    <span>{{ user.username }}</span>
+                </div>
+            </ng-template>
+        </p-multiSelect>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->
