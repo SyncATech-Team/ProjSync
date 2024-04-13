@@ -52,21 +52,25 @@ export class HomePageComponent implements OnInit {
   }
 
   initializeProjects(): void {
-    this.projectService.getAllProjects().subscribe({
-      next: (response) => {
-        this.projects = response;
-        this.projects.forEach((project)=>{ 
-          project.isExtanded = false;
-          project.isFavorite = false;
-          project.creationDate = new Date(project.creationDate);
-          project.dueDate = new Date(project.dueDate); 
-        });
-        this.filterProjects(this.visibilityFilter);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+    var user = this.accoutService.getCurrentUser();
+    if(user?.username)
+    {
+      this.projectService.getAllProjectsForUser(user.username).subscribe({
+        next: (response) => {
+          this.projects = response;
+          this.projects.forEach((project)=>{ 
+            project.isExtanded = false;
+            project.isFavorite = false;
+            project.creationDate = new Date(project.creationDate);
+            project.dueDate = new Date(project.dueDate); 
+          });
+          this.filterProjects(this.visibilityFilter);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
   }
   
   filterProjects(filter :string ):void {
