@@ -50,20 +50,19 @@ namespace backAPI.Repositories.Implementation.Issues
             return task;
         }
 
-        public async Task<bool> CreateIssueDependency(int originIssueId, int targetIssueId) {
-            var exists = _dataContext.IssueDependencies.FirstOrDefaultAsync<IssueDependencies>(
-                i => i.OriginId == originIssueId && i.TargetId == targetIssueId);
-
-            if(exists == null) {
-                return false;
+        public async Task<bool> AddIssueDependencies(IEnumerable<Tuple<int, int>> dependencies) {
+            List<IssueDependencies> dependenciesList = new List<IssueDependencies>();
+            foreach (var dependency in dependencies) {
+                var exists = await _dataContext.IssueDependencies.FirstOrDefaultAsync<IssueDependencies>(
+                    i => i.OriginId == dependency.Item1 && i.TargetId == dependency.Item2);
+                if (exists == null)
+                    dependenciesList.Add(new IssueDependencies {
+                        OriginId = dependency.Item1,
+                        TargetId = dependency.Item2,
+                    });
             }
+            await _dataContext.IssueDependencies.AddRangeAsync(dependenciesList);
 
-            await _dataContext.IssueDependencies.AddAsync(new IssueDependencies {
-                OriginId = originIssueId,
-                TargetId = targetIssueId
-            });
-
-            await _dataContext.SaveChangesAsync();
             return true;
         }
 

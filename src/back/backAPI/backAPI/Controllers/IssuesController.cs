@@ -229,10 +229,14 @@ namespace backAPI.Controllers
 
             await _userOnIssueRepository.AddUserOnIssue(usersToInsert);
 
+            List<Tuple<int, int>> dependenciesToInsert = new List<Tuple<int, int>>();
             if(creationModel.DependentOnIssues != null) {
                 foreach (var dependentOnIssueId in creationModel.DependentOnIssues) {
-                    await _issueRepository.CreateIssueDependency(created.Id, dependentOnIssueId);
+                    Tuple<int, int> e = new Tuple<int, int>(created.Id, dependentOnIssueId);
+                    dependenciesToInsert.Add(e);
                 }
+
+
             }
 
             return Ok();

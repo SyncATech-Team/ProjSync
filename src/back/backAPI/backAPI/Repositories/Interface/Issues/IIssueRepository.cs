@@ -19,12 +19,12 @@ namespace backAPI.Repositories.Interface.Issues
 
         Task<IEnumerable<IssueGroup>> GetAllGroupsForGivenProject(int projectId);
 
-        Task<bool> CreateIssueDependency(int originIssueId, int targetIssueId);
-
         Task<IEnumerable<int>> GetAssigneeIds(int issueId);
 
         Task<int> GetReporterId(int issueId);
 
         Task<IEnumerable<int>> GetDependentIssues(int issueId);
+
+        Task<bool> AddIssueDependencies(IEnumerable<Tuple<int, int>> dependencies);
     }
 }
