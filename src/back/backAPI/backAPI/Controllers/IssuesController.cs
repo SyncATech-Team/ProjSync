@@ -95,7 +95,7 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("projectId")]
-        public async Task<ActionResult<IEnumerable<IssueGroup>>> GetAllIssuesForProject(int projectId)
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetAllIssuesForProject(int projectId)
         {
             var groups = await _issueRepository.GetAllGroupsForGivenProject(projectId);
             List<IssueDto> result = new List<IssueDto>();

@@ -54,3 +54,11 @@ th{
 td{
     text-align: center;
 }
+
+.alignt-text-left {
+    text-align: left;
+}
+
+.test :host ::ng-deep .p-progressbar-value {
+    background-color: red;
+}
