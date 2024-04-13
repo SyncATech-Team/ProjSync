@@ -62,6 +62,7 @@ namespace backAPI.Controllers
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
                 var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+                Console.WriteLine(issueDependencies);
 
                 List<string> assigneeUsernames = new List<string>();
                 foreach( var assignee in assigneeIds ) {
@@ -94,10 +95,11 @@ namespace backAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("projectId")]
-        public async Task<ActionResult<IEnumerable<IssueDto>>> GetAllIssuesForProject(int projectId)
+        [HttpGet("projectName")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetAllIssuesForProject(string projectName)
         {
-            var groups = await _issueRepository.GetAllGroupsForGivenProject(projectId);
+            var projectByName = await _projectsRepository.GetProjectByName(projectName);
+            var groups = await _issueRepository.GetAllGroupsForGivenProject(projectByName.Id);
             List<IssueDto> result = new List<IssueDto>();
 
             foreach (var group in groups)
@@ -113,7 +115,7 @@ namespace backAPI.Controllers
                     var reporterId = await _issueRepository.GetReporterId(issue.Id);
                     var reporterUsername = await _usersRepository.GetUserById(reporterId);
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
-                    var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
+                    var project = projectByName;
                     var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
 
                     List<string> assigneeUsernames = new List<string>();

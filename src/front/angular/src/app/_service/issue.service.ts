@@ -31,6 +31,10 @@ export class IssueService {
     return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/groupId?groupId=${groupId}`);
   }
 
+  getAllIssuesForProject(projectName: string) {
+    return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/projectName?projectName=${projectName}`);
+  }
+
   createIssue(model: CreateIssueModel){
     return this.http.post<IssueModel>(this.baseUrl + "Issues", model);
   }
