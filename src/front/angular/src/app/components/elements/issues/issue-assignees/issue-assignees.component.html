@@ -1,0 +1,24 @@
+<div class="mt-6 mb-1 text-uppercase text-muted font-weight-bold">
+  Assignees
+</div>
+
+<p-button *ngFor="let assignee of assignees"
+  [text]="true">
+
+  <div class="d-flex align-items-center items-center">
+    <p-avatar
+      [image]="assignee?.avatarUrl"
+      shape="circle"
+      size="normal">
+    </p-avatar>
+    <span class="m-2">
+      {{ assignee?.name }}
+    </span>
+    <svg-icon (click)="removeUser(assignee?.id)"
+              title="Remove user"
+              [size]="20"
+              [name]="'times'"
+              class="text-textLight">
+    </svg-icon>
+  </div>
+</p-button>
