@@ -152,17 +152,9 @@ constructor(
     private msgPopupService: MessagePopupService
 ) {}
 
-ngAfterViewInit(): void {
-    setTimeout(() => {
-        if(this.ganttComponent)
-            this.ganttComponent.scrollToDate(getUnixTime(new Date()))
-    }
-    , 200)
-}
-
 ngOnInit(): void {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
-
+    
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
         next: response => {
             let data = response;
@@ -175,8 +167,7 @@ ngOnInit(): void {
                 let dependentOnList: string[] = [];
                 for(let issueId of issue.dependentOnIssues)
                     dependentOnList.push("" + issueId);
-                console.log(dependentOnList);
-
+                
                 dataIssues.push({
                     id: "" + issue.id,
                     title: issue.name,
@@ -186,15 +177,15 @@ ngOnInit(): void {
                     links: dependentOnList,
                     expandable: true,
                     draggable: true,
-                    progress: issue.completed
+                    progress: issue.completed/100,
+                    reporterUsername: issue.reporterUsername
                 });
             }
             this.items = dataIssues;
-
+            
             this.viewType = GanttViewType.day;
             this.selectedViewType = GanttViewType.day;
-            this.scrollToToday();
-
+            
         },
         error: error => {
             console.log("Error fetching tasks: " + error.error);
@@ -202,9 +193,13 @@ ngOnInit(): void {
     });
 }
 
+ngAfterViewInit(): void {
+    this.scrollToToday();
+}
+
 // ngAfterViewInit() {
-//     setTimeout(() => this.ganttComponent.scrollToDate(1627729997), 200);
-// }
+    //     setTimeout(() => this.ganttComponent.scrollToDate(1627729997), 200);
+    // }
 
 barClick(event: GanttBarClickEvent) {
     // this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
@@ -243,7 +238,7 @@ print(name: string) {
 
 scrollToToday() {
     if(this.ganttComponent)
-      this.ganttComponent.scrollToToday();
+      this.ganttComponent.scrollToDate(getUnixTime(new Date()));
 }
 
 switchChange() {
@@ -271,17 +266,7 @@ viewChange(event: GanttView) {
 }
 
 refresh() {
-    this.loading = true;
-    of(this.randomItems(30))
-        .pipe(
-            // delay(2000),
-            finalize(() => {
-                this.loading = false;
-            })
-        )
-        .subscribe((res) => {
-            this.items = res;
-        });
+    this.ngOnInit();
 }
 
 onDragDropped(event: GanttTableDragDroppedEvent) {
