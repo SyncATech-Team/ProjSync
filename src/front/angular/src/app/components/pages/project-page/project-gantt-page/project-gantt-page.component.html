@@ -70,7 +70,7 @@
                         (dragEnded)="onDragEnded($event)"
                     >
                         <ngx-gantt-column name="Name" width="160px" [showExpandIcon]="true">
-                            <ng-template #cell let-item="item"> {{ item.title }} </ng-template>    
+                            <ng-template #cell let-item="item"> <span title="{{ item.title }}"> {{ item.title }} </span> </ng-template>    
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Start date">
