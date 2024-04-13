@@ -141,7 +141,7 @@ export class HomePageComponent implements OnInit {
       }
     });
     this.showColumns.forEach((item,index) => {
-      if(!this.selectedColumns.includes(item) && item!=='Username' && item !==''){
+      if(!this.selectedColumns.includes(item) && item!=='Name' && item !==''){
         this.showColumns.splice(index,1);
       }
     })
