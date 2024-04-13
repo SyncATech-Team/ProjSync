@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class UserOnIssueMigration : Migration
+    public partial class UpdatedMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,21 +89,6 @@ namespace backAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IssueType", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ProjectRoles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true),
-                    RoleLevel = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectRoles", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -460,33 +445,6 @@ namespace backAPI.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "GroupsOnProjects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    GroupId = table.Column<int>(type: "int", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupsOnProjects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GroupsOnProjects_IssueGroups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "IssueGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupsOnProjects_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Issues",
                 columns: table => new
                 {
@@ -502,7 +460,7 @@ namespace backAPI.Migrations
                     DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
-                    DependentOn = table.Column<int>(type: "int", nullable: true)
+                    Completed = table.Column<double>(type: "double", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -537,12 +495,6 @@ namespace backAPI.Migrations
                         principalTable: "IssueType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Issues_Issues_DependentOn",
-                        column: x => x.DependentOn,
-                        principalTable: "Issues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -573,6 +525,33 @@ namespace backAPI.Migrations
                         principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "IssueDependencies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    OriginId = table.Column<int>(type: "int", nullable: false),
+                    TargetId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IssueDependencies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IssueDependencies_Issues_OriginId",
+                        column: x => x.OriginId,
+                        principalTable: "Issues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_IssueDependencies_Issues_TargetId",
+                        column: x => x.TargetId,
+                        principalTable: "Issues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -659,16 +638,6 @@ namespace backAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupsOnProjects_GroupId",
-                table: "GroupsOnProjects",
-                column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupsOnProjects_ProjectId",
-                table: "GroupsOnProjects",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_IssueComments_IssueId",
                 table: "IssueComments",
                 column: "IssueId");
@@ -677,6 +646,16 @@ namespace backAPI.Migrations
                 name: "IX_IssueComments_UserId",
                 table: "IssueComments",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IssueDependencies_OriginId",
+                table: "IssueDependencies",
+                column: "OriginId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IssueDependencies_TargetId",
+                table: "IssueDependencies",
+                column: "TargetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IssueGroups_ProjectId",
@@ -688,11 +667,6 @@ namespace backAPI.Migrations
                 table: "IssuePriorities",
                 column: "Name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issues_DependentOn",
-                table: "Issues",
-                column: "DependentOn");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_GroupId",
@@ -734,12 +708,6 @@ namespace backAPI.Migrations
                 name: "IX_ProjectDocumentations_ProjectId",
                 table: "ProjectDocumentations",
                 column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectRoles_Name",
-                table: "ProjectRoles",
-                column: "Name",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_Key",
@@ -825,19 +793,16 @@ namespace backAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "GroupsOnProjects");
+                name: "IssueComments");
 
             migrationBuilder.DropTable(
-                name: "IssueComments");
+                name: "IssueDependencies");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "ProjectDocumentations");
-
-            migrationBuilder.DropTable(
-                name: "ProjectRoles");
 
             migrationBuilder.DropTable(
                 name: "UsersOnIssues");

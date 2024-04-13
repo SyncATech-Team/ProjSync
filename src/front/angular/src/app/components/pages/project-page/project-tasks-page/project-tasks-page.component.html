@@ -163,10 +163,10 @@
                                         </ng-template>
                                     </p-columnFilter>
                                 </th>
-                                <th pReorderableColumn pResizableColumn *ngIf="column=='Percentage' && selectedColumns.includes('Percentage')" pSortableColumn="percentage">
-                                    Percentage
-                                    <p-sortIcon field="percentage"></p-sortIcon>
-                                    <p-columnFilter type="numeric" field="percentage" display="menu"></p-columnFilter>
+                                <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedColumns.includes('Completed')" pSortableColumn="completed">
+                                    Completed
+                                    <p-sortIcon field="completed"></p-sortIcon>
+                                    <p-columnFilter type="numeric" field="completed" display="menu"></p-columnFilter>
                                 </th>
                         </ng-container>
                         </tr>
@@ -306,10 +306,10 @@
                                                     </ng-template>
                                                 </p-columnFilter>
                                             </th>
-                                            <th *ngIf="selectedColumns.includes('Percentage')" pSortableColumn="percentage">
-                                                Percentage
-                                                <p-sortIcon field="percentage"></p-sortIcon>
-                                                <p-columnFilter type="numeric" field="percentage" display="menu"></p-columnFilter>
+                                            <th *ngIf="selectedColumns.includes('Completed')" pSortableColumn="completed">
+                                                Completed
+                                                <p-sortIcon field="completed"></p-sortIcon>
+                                                <p-columnFilter type="numeric" field="completed" display="menu"></p-columnFilter>
                                             </th>
                                         </tr>
                                     </ng-template>
@@ -318,7 +318,7 @@
                     
                                             <td style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                                 
-                                                <div>
+                                                <div class="alignt-text-left">
                                                     <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
                                                 </div>
                                             </td>
@@ -358,9 +358,9 @@
                                                 <span class="p-column-title" style="font-weight: bold">Updated Date</span>
                                                 {{ task.updatedDate | date : 'dd/MM/yyyy' }}
                                             </td>
-                                            <td *ngIf="selectedColumns.includes('Percentage')" style="width: 16vh; ">
-                                                <span class="p-column-title" style="font-weight: bold">Percentage</span>
-                                                {{ task.percentage}} 
+                                            <td class="test" *ngIf="selectedColumns.includes('Completed')" style="width: 16vh; ">
+                                                <span class="p-column-title" style="font-weight: bold">Completed</span>
+                                                <p-progressBar [value]=task.completed></p-progressBar>
                                             </td>
                                             
                                         </tr>
@@ -377,7 +377,7 @@
                             <ng-container *ngFor="let column of columns">
                                 <td *ngIf="column=='Name'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                     
-                                    <div>
+                                    <div class="alignt-text-left">
                                         <a style="text-decoration: none;" routerLink="">{{ task.name }}</a>
                                     </div>
                                 </td>
@@ -417,9 +417,9 @@
                                     <span class="p-column-title" style="font-weight: bold">Updated Date</span>
                                     {{ task.updatedDate | date : 'dd/MM/yyyy' }}
                                 </td>
-                                <td *ngIf="column=='Percentage' && selectedColumns.includes('Percentage')" style="width: 16vh; ">
-                                    <span class="p-column-title" style="font-weight: bold">Percentage</span>
-                                    {{ task.percentage}} 
+                                <td *ngIf="column=='Completed' && selectedColumns.includes('Completed')" style="width: 16vh; ">
+                                    <span class="p-column-title" style="font-weight: bold">Completed</span>
+                                    <p-progressBar [value]=task.completed></p-progressBar>
                                 </td>
                             </ng-container>
                         </tr>

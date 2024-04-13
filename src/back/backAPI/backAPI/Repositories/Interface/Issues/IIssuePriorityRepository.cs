@@ -4,8 +4,8 @@ namespace backAPI.Repositories.Interface.Issues
 {
     public interface IIssuePriorityRepository
     {
-        Task<IssuePriority> GetTaskPriorityByName(string name);
-        Task<IssuePriority> GetTaskPriorityById(int id);
+        Task<IssuePriority> GetIssuePriorityByName(string name);
+        Task<IssuePriority> GetIssuePriorityById(int id);
         Task<List<IssuePriority>> GetAllIssuePrioritys();
     }
 }

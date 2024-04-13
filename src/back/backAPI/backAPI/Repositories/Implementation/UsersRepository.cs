@@ -58,6 +58,13 @@ namespace backAPI.Repositories.Implementation
         }
 
         /* **********************************************************************************
+         * GetUserById
+         * ********************************************************************************** */
+        public async Task<User> GetUserById(int id) {
+            return await dataContext.Users.SingleOrDefaultAsync(user => user.Id == id);
+        }
+
+        /* **********************************************************************************
          * DeleteUser
          * ********************************************************************************** */
         public async Task<bool> DeleteUser(string username) {
@@ -152,6 +159,10 @@ namespace backAPI.Repositories.Implementation
         public async Task<bool> UserExistsByEmail(string email)
         {
             return await dataContext.Users.AnyAsync(x => x.Email == email);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersFromIDarray(string[] arr) {
+            return dataContext.Users.Where(u => arr.Contains(u.UserName));
         }
 
         /* ****************************************************************************************************************************** */
