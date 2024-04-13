@@ -6,7 +6,7 @@ import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IssueType } from '../../../_models/issue-type';
-import { IssuePriority } from '../../../_models/issue-prioritys';
+import { IssuePriority, JIssue } from '../../../_models/issue';
 import { IssuesInGroup } from '../../../_models/issues-in-group';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { IssueStatus } from '../../../_models/issue-status';
@@ -18,6 +18,9 @@ import { GroupService } from '../../../_service/group.service';
 import { UserOnProjectService } from '../../../_service/userOnProject.service';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { IssueUtil } from '../../utils/issue-util';
+import { IssuePriorityIcon } from '../../../_models/issue-priority-icon';
+import { ProjectConst } from '../../config/const';
 
 @Component({
   selector: 'app-create-task',
@@ -32,7 +35,7 @@ export class CreateTaskComponent implements OnInit {
   users : UserGetter[] = [];
   groupsOnProject: GroupInProject [] = [];
   issueTypes : IssueType[] = [];
-  issuePrioritys : IssuePriority[] = [];
+  // issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
   usersPhotos: PhotoForUser[] = [];
 
@@ -85,7 +88,20 @@ export class CreateTaskComponent implements OnInit {
     });
   }
 
+  jIssue!: JIssue;
+  selectedPriority!: IssuePriority;
+  get selectedPriorityIcon() {
+    return IssueUtil.getIssuePriorityIcon(this.selectedPriority);
+  }
+
+  priorities!: IssuePriorityIcon[];
+
+  isPrioritySelected(priority: IssuePriority) {
+    return priority === this.selectedPriority;
+  }
+
   ngOnInit(): void {
+    this.priorities = ProjectConst.PrioritiesWithIcon;
     this.projectName = this._dialogConfig.data.projectName;
     if(this.projectName)
       this.groupService.getAllGroups(this.projectName).subscribe({
@@ -116,15 +132,6 @@ export class CreateTaskComponent implements OnInit {
           console.log(error);
         }
       });
-
-      this._issueService.getAllIssuePrioritys().subscribe({
-        next: (response) => {
-          this.issuePrioritys = response;
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      })
 
       this._issueService.getAllIssueStatus().subscribe({
         next: (response) => {

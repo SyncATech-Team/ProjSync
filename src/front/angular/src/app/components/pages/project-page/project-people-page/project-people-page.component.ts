@@ -245,8 +245,8 @@ export class ProjectPeoplePageComponent implements OnInit{
   showProfile(username : string){
     this.ref = this.dialogService.open(UserProfileComponent, {
       header : "User profile",
-      height : '50%',
-      width: '40%',
+      height : '60%',
+      width: window.innerWidth < 610 ? '100%' : '35%',
       contentStyle: { 
         overflow: 'auto',
       },
@@ -255,6 +255,7 @@ export class ProjectPeoplePageComponent implements OnInit{
       modal: true,
       dismissableMask: true,
       closeOnEscape: true,
+      maximizable: window.innerWidth < 480,
       data: {
         username: username,
         usersPhotos: this.usersPhotos,

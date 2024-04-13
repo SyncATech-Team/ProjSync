@@ -9,7 +9,7 @@
         </div>
 
         <div class="username-created">
-            <span class="title">&#64;{{ user.username }} &bull;  Member since {{ user.createdAt }}</span>
+            <span class="title">&#64;{{ user.username }} &bull;  Member since {{ user.createdAt | date:'MMMM dd, yyyy' }}</span>
         </div>
     </div>
 </div>

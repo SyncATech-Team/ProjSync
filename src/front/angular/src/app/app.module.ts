@@ -102,6 +102,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 import { UserProfileComponent } from './components/elements/user-profile/user-profile.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -204,6 +205,7 @@ import { UserProfileComponent } from './components/elements/user-profile/user-pr
     MessageService,
     ConfirmationService,
     DialogService,
+    DatePipe,
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
   ],
   bootstrap: [AppComponent]

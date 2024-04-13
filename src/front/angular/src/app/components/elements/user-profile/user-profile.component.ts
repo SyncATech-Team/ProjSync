@@ -47,15 +47,8 @@ export class UserProfileComponent implements OnInit{
     this.usersPhotos = this._dialogConfig.data.usersPhotos;
     this.users = this._dialogConfig.data.users;
     
-    if(this.username)
-      this.userService.getUser(this.username).subscribe({
-        next: (response) => {
-          this.user = response;
-        },
-        error: (error) => {
-
-        }
-      });
+    const filteredUsers = this.users.filter(u => u.username === this.username);
+    this.user = filteredUsers[0];
   }
 
   getUserImage(){
