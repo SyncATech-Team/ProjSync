@@ -59,7 +59,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
           this.groupsInProject = response;
 
           this.tasksByGroup = this.getTasksByGroup();
-          console.log(this.tasks);
+          // console.log(this.tasks);
           this.tasks_backup = this.tasks;
         },
         error: (error) => {

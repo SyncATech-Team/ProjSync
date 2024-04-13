@@ -85,13 +85,11 @@ namespace backAPI.Repositories.Implementation.Issues
         }
 
         public async Task<IEnumerable<int>> GetDependentIssues(int issueId) {
-            IEnumerable<int> res = new List<int>();
-            var elements = _dataContext.IssueDependencies.Where(elem => elem.TargetId == issueId);
-            foreach (var elem in elements) {
-                res.Append(elem.OriginId);
-            }
+            var elements = await _dataContext.IssueDependencies
+                .Where(elem => elem.TargetId == issueId)
+                .ToListAsync();
 
-            return res;
+            return elements.Select(elem => elem.OriginId);
         }
     }
 }
