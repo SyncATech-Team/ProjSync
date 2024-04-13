@@ -89,16 +89,8 @@ export class CreateTaskComponent implements OnInit {
   }
 
   jIssue!: JIssue;
-  selectedPriority!: IssuePriority;
-  get selectedPriorityIcon() {
-    return IssueUtil.getIssuePriorityIcon(this.selectedPriority);
-  }
-
+  selectedPriorityModel! : IssuePriorityIcon;
   priorities!: IssuePriorityIcon[];
-
-  isPrioritySelected(priority: IssuePriority) {
-    return priority === this.selectedPriority;
-  }
 
   ngOnInit(): void {
     this.priorities = ProjectConst.PrioritiesWithIcon;
@@ -150,8 +142,8 @@ export class CreateTaskComponent implements OnInit {
       try {
         this.issueCreator.name = this.form.controls['issue-name'].value;
         this.issueCreator.typeName = this.form.controls['issue-type'].value.name;
-        this.issueCreator.statusName = this.form.controls['issue-status'].value;
-        this.issueCreator.priorityName = this.form.controls['issue-priority'].value.name;
+        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
+        this.issueCreator.priorityName = this.selectedPriorityModel.value;
         this.issueCreator.description = this.form.controls['issue-description'].value;
         this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
         this.issueCreator.updatedDate = new Date();
@@ -163,7 +155,6 @@ export class CreateTaskComponent implements OnInit {
         this.issueCreator.dependentOnIssues = [];  // ZA SADA PRAZAN STRING TREBA OMOGUCITI I BIRANJE ZAVISNOSTI
         this.issueCreator.projectName = this.projectName;
         this.issueCreator.groupName = this.form.controls['issue-group'].value.name;
-        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
 
         if(this.issueCreator.dueDate < this.issueCreator.createdDate){
           this.msgPopUpService.showError("Unable to create task, due date is before creation date");
