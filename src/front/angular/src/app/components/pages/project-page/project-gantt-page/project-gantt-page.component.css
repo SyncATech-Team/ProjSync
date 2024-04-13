@@ -15,3 +15,8 @@
     width: 82%;
     height: 80vh;
 }
+
+:host ::ng-deep .gantt-bar-content-progress {
+    z-index: -1;
+    background-color: green;
+}
