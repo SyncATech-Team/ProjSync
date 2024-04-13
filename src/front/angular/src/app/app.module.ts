@@ -101,6 +101,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
+import { UserProfileComponent } from './components/elements/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +153,8 @@ import { ProjectKanbanPageComponent } from './components/pages/project-page/proj
     IssueCommentsComponent,
     BoardFilterComponent,
     IssueReporterComponent,
-    ProjectKanbanPageComponent
+    ProjectKanbanPageComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

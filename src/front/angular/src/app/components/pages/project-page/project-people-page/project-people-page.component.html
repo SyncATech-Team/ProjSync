@@ -82,7 +82,7 @@
                     <ng-container *ngFor="let column of columns">
                         <td *ngIf="column=='Username'">
                             <span class="p-column-title" style="font-weight: bold;">Account</span>
-                            <div class="profilecontent">
+                            <div class="profilecontent" (click)="showProfile(user.username)">
                                 <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
                                 <span>{{ user.username }}</span>
                             </div>

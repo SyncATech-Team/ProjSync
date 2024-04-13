@@ -134,3 +134,10 @@
     height: 6rem;
     overflow-y: auto;
 }
+
+/* Privremeno onemogucena funcija dodavanja linka videa i slike */
+:host ::ng-deep .content-editor .ql-link,
+:host ::ng-deep .content-editor .ql-video,
+:host ::ng-deep .content-editor .ql-image {
+    display: none;
+}

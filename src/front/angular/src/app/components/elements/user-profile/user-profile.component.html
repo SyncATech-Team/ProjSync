@@ -1,0 +1,15 @@
+<div class="containeer wrapper">
+    <div class="user-summary">
+        <div class="userProfilePicture">
+            <img src="{{ getUserImage() }}" alt="" draggable="false">
+        </div>
+
+        <div class="flName">
+            <span class="title">{{ user.firstName }} {{ user.lastName }}</span>
+        </div>
+
+        <div class="username-created">
+            <span class="title">&#64;{{ user.username }} &bull;  Member since {{ user.createdAt }}</span>
+        </div>
+    </div>
+</div>
