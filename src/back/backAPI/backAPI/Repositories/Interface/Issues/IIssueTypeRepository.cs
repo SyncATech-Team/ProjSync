@@ -4,8 +4,8 @@ namespace backAPI.Repositories.Interface.Issues
 {
     public interface IIssueTypeRepository
     {
-        Task<IssueType> GetTaskTypeByName(string name);
-        Task<IssueType> GetTaskTypeById(int id);
+        Task<IssueType> GetIssueTypeByName(string name);
+        Task<IssueType> GetIssueTypeById(int id);
         Task <List<IssueType>> GetAllIssueTypes();
     }
 }

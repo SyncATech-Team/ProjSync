@@ -1,4 +1,6 @@
-export interface IssuesInGroup {
+
+
+export interface IssueModel {
     id: number,
     name: string,
     typeName: string,
@@ -12,7 +14,7 @@ export interface IssuesInGroup {
     projectName: string,
     groupName: string,
     reporterUsername: string,
-    assigneeUsernames : string[],
-    dependentOn: number[]
+    assigneeUsernames: string[],
+    dependentOnIssues: number[],
+    completed: number
 }
-
