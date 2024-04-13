@@ -1,4 +1,5 @@
 export interface IssuesInGroup {
+    id: number,
     name: string,
     typeName: string,
     statusName: string,
@@ -7,11 +8,11 @@ export interface IssuesInGroup {
     createdDate: Date,
     updatedDate: Date,
     dueDate: Date,
-    reporterUsername: string,
-    assignedTo : string[],
-    groupName: string,
+    ownerUsername: string,
     projectName: string,
-    dependentOn: number | null,
-    issueOwner : string
+    groupName: string,
+    reporterUsername: string,
+    assigneeUsernames : string[],
+    dependentOn: number[]
 }
 

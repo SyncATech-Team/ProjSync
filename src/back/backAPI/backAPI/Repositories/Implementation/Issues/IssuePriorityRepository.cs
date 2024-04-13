@@ -15,12 +15,12 @@ namespace backAPI.Repositories.Implementation.Issues
             _dataContext = dataContext;
         }
 
-        public async Task<IssuePriority> GetTaskPriorityById(int id)
+        public async Task<IssuePriority> GetIssuePriorityById(int id)
         {
             return await _dataContext.IssuePriority.Where(x => x.Id == id).FirstAsync();
         }
 
-        public async Task<IssuePriority> GetTaskPriorityByName(string name)
+        public async Task<IssuePriority> GetIssuePriorityByName(string name)
         {
             return await _dataContext.IssuePriority.Where(x => x.Name == name).FirstAsync();
         }

@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240409145244_UserOnIssueMigration")]
-    partial class UserOnIssueMigration
+    [Migration("20240411210158_UpdatedMigration")]
+    partial class UpdatedMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -185,38 +185,17 @@ namespace backAPI.Migrations
                     b.ToTable("CompanyRoles");
                 });
 
-            modelBuilder.Entity("backAPI.Entities.Domain.GroupsOnProject", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("GroupsOnProjects");
-                });
-
             modelBuilder.Entity("backAPI.Entities.Domain.Issue", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<double>("Completed")
+                        .HasColumnType("double");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("DependentOn")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
@@ -247,8 +226,6 @@ namespace backAPI.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DependentOn");
 
                     b.HasIndex("GroupId");
 
@@ -291,6 +268,27 @@ namespace backAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("IssueComments");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDependencies", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("OriginId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TargetId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OriginId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("IssueDependencies");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>
@@ -463,26 +461,6 @@ namespace backAPI.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectDocumentations");
-                });
-
-            modelBuilder.Entity("backAPI.Entities.Domain.ProjectRoles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("RoleLevel")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("ProjectRoles");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.ProjectType", b =>
@@ -750,32 +728,8 @@ namespace backAPI.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backAPI.Entities.Domain.GroupsOnProject", b =>
-                {
-                    b.HasOne("backAPI.Entities.Domain.IssueGroup", "IssueGroup")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IssueGroup");
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("backAPI.Entities.Domain.Issue", b =>
                 {
-                    b.HasOne("backAPI.Entities.Domain.Issue", "DependentIssue")
-                        .WithMany()
-                        .HasForeignKey("DependentOn")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("backAPI.Entities.Domain.IssueGroup", "IssueGroup")
                         .WithMany()
                         .HasForeignKey("GroupId")
@@ -806,8 +760,6 @@ namespace backAPI.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("DependentIssue");
-
                     b.Navigation("IssueGroup");
 
                     b.Navigation("IssuePriority");
@@ -836,6 +788,25 @@ namespace backAPI.Migrations
                     b.Navigation("Issue");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDependencies", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Issue", "Origin")
+                        .WithMany()
+                        .HasForeignKey("OriginId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.Issue", "Target")
+                        .WithMany()
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Origin");
+
+                    b.Navigation("Target");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>

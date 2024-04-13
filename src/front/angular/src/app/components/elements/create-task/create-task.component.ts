@@ -37,6 +37,7 @@ export class CreateTaskComponent implements OnInit {
   currentUser? : string;
 
   issue : IssuesInGroup = {
+    id: -1,
     name: "",
     typeName: "",
     statusName: "",
@@ -48,9 +49,9 @@ export class CreateTaskComponent implements OnInit {
     reporterUsername: "",
     groupName: "",
     projectName: "",
-    dependentOn: null,
-    assignedTo: [],
-    issueOwner: ""
+    dependentOn: [],
+    assigneeUsernames: [],
+    ownerUsername: ""
   }
 
   constructor(
@@ -145,13 +146,13 @@ export class CreateTaskComponent implements OnInit {
       this.issue.dueDate = this.form.controls['issue-due-date'].value;
       this.issue.statusName = this.form.controls['issue-status'].value.name;
       this.issue.reporterUsername = this.form.controls['issue-reporter'].value.username;
-      this.issue.dependentOn = null;
+      this.issue.dependentOn = [];
       this.issue.updatedDate = new Date();
       if(this.currentUser)
-        this.issue.issueOwner = this.currentUser;
+        this.issue.ownerUsername = this.currentUser;
       
       const assignedToUsernames = this.selectedAssignees.map(user => user.username);
-      this.issue.assignedTo = assignedToUsernames;
+      this.issue.assigneeUsernames = assignedToUsernames;
 
       console.log(this.issue);
 
