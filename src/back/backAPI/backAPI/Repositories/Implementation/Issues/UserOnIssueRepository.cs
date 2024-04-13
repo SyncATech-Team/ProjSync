@@ -20,5 +20,11 @@ namespace backAPI.Repositories.Implementation.Issues
             await _dataContext.SaveChangesAsync();
             return userOnIssue;
         }
+
+        public async Task<bool> AddUserOnIssue(IEnumerable<UsersOnIssue> usersOnIssue) {
+            await _dataContext.UsersOnIssues.AddRangeAsync(usersOnIssue);
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

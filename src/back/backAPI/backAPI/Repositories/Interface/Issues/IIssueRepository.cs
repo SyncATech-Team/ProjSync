@@ -9,14 +9,22 @@ namespace backAPI.Repositories.Interface.Issues
         /// </summary>
         /// <param name="groupId"></param>
         /// <returns></returns>
-        Task<IEnumerable<Issue>> GetAllTasksForGivenGroup(int groupId);
+        Task<IEnumerable<Issue>> GetAllIssuesForGivenGroup(int groupId);
         /// <summary>
         /// Funkcija za kreiranje novog zadatka
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
-        Task<Issue> CreateTaskAsync(Issue task);
+        Task<Issue> CreateIssueAsync(Issue task);
 
-        Task<IEnumerable<Entities.Domain.IssueGroup>> GetAllGroupsForGivenProject(int projectId);
+        Task<IEnumerable<IssueGroup>> GetAllGroupsForGivenProject(int projectId);
+
+        Task<IEnumerable<int>> GetAssigneeIds(int issueId);
+
+        Task<int> GetReporterId(int issueId);
+
+        Task<IEnumerable<int>> GetDependentIssues(int issueId);
+
+        Task<bool> AddIssueDependencies(IEnumerable<Tuple<int, int>> dependencies);
     }
 }

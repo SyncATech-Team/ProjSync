@@ -95,12 +95,6 @@ namespace backAPI.Data
                 .OnDelete(DeleteBehavior.Restrict); // FK type
 
             modelBuilder.Entity<Issue>()
-                .HasOne(t => t.DependentIssue)
-                .WithMany()
-                .HasForeignKey(t => t.DependentOn)
-                .OnDelete(DeleteBehavior.Restrict); // FK parent issue
-
-            modelBuilder.Entity<Issue>()
                 .HasOne(t => t.IssueStatus)
                 .WithMany()
                 .HasForeignKey(t => t.StatusId)
@@ -132,21 +126,6 @@ namespace backAPI.Data
                 .WithMany()
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);  // pri brisanju grupe brisu se svi taskovi koji pripadaju toj grupi
-
-            /* **************************************************************************
-             * Strani kljucevi u tabeli >> GroupsOnProject <<
-             * ************************************************************************** */
-            modelBuilder.Entity<GroupsOnProject>()
-                .HasOne(t => t.IssueGroup)
-                .WithMany()
-                .HasForeignKey(t => t.GroupId)
-                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju grupe brisu se sve veze koje se nalaze ovde
-
-            modelBuilder.Entity<GroupsOnProject>()
-                .HasOne(t => t.Project)
-                .WithMany()
-                .HasForeignKey(t => t.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);  // pri brisanju projekta (koje se nece desiti) brisu se grupe
 
             /* **************************************************************************
              * Strani kljucevi u tabeli >> IssueComment <<
@@ -211,6 +190,21 @@ namespace backAPI.Data
                 .HasForeignKey(t => t.IssueId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> IssueDependencies <<
+             * ************************************************************************** */
+            modelBuilder.Entity<IssueDependencies>()
+                .HasOne(i => i.Origin)
+                .WithMany()
+                .HasForeignKey(t => t.OriginId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<IssueDependencies>()
+                .HasOne(i => i.Target)
+                .WithMany()
+                .HasForeignKey(t => t.TargetId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             /* *******************************************************************************************************************
              * *******************************************************************************************************************
              * *******************************************************************************************************************
@@ -244,11 +238,6 @@ namespace backAPI.Data
                 .HasIndex(t => t.Key)
                 .IsUnique(true);
 
-            // UNIQUE project roles name                    [DEPRECATED?]
-            modelBuilder.Entity<ProjectRoles>()
-                .HasIndex(r => r.Name)
-                .IsUnique(true);
-
             // UNIQUE - ProjectType - Name
             modelBuilder.Entity<ProjectType>()
                 .HasIndex(t => t.Name)
@@ -272,20 +261,25 @@ namespace backAPI.Data
 
         public DbSet<CompanyRole> CRoles { get; set; }
         public DbSet<WorkingHours> WorkHours { get; set; }
+        public DbSet<UsersOnIssue> UsersOnIssues { get; set; }
+        public DbSet<UsersOnProject> UsersOnProjects { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        
+
+        // PROJECT
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectVisibility> ProjectVisibilities { get; set; }
         public DbSet<ProjectType> ProjectTypes { get; set; }
+        public DbSet<ProjectDocumentation> ProjectDocumentation { get; set; }
+
+
+        // ISSUE
         public DbSet<Issue> Issues { get; set; }
         public DbSet<IssueType> IssueTypes { get; set; }
         public DbSet<IssuePriority> IssuePriority { get; set; }
-        public DbSet<ProjectRoles> ProjectRoles { get; set; }
-        public DbSet<UsersOnIssue> UsersOnIssues { get; set; }
-        public DbSet<UsersOnProject> UsersOnProjects { get; set; }
-        public DbSet<ProjectDocumentation> ProjectDocumentation { get; set; }
-        public DbSet<IssueComment> IssueComments { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
         public DbSet<IssueGroup> IssueGroups { get; set; }
-        public DbSet<GroupsOnProject> GroupsOnProjects { get; set; }
         public DbSet<IssueStatus> IssueStatuses { get; set; }
+        public DbSet<IssueComment> IssueComments { get; set; }
+        public DbSet<IssueDependencies> IssueDependencies { get; set; }
     }
 }
