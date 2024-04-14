@@ -84,6 +84,41 @@ namespace backAPI.Controllers
                 VisibilityName = visibility.Name
             };
         }
+
+        [HttpGet("user/{username}")]
+        public async Task<IActionResult> GetProjectsForUser(string username)
+        {
+            var user = await _usersRepository.GetUserByUsername(username);
+            List<ProjectDto> dTOProjects = new List<ProjectDto>();
+
+            if (user == null)
+            {
+                return NotFound("There is no user with specified username");
+            }
+
+            var projects = await _projectsRepository.GetProjectsForUserAsync(username);
+
+            foreach (var project in projects)
+            {
+                
+                dTOProjects.Add(new ProjectDto
+                {
+                    Name = project.Name,
+                    Key = project.Key,
+                    Description = project.Description,
+                    TypeName = _projectTypesRepository.GetProjectTypeById(project.TypeId).Result.Name,
+                    CreationDate = project.CreationDate,
+                    DueDate = project.DueDate,
+                    OwnerUsername = await _usersRepository.IdToUsername(project.OwnerId),
+                    Budget = project.Budget,
+                    VisibilityName = _projectVisibilitiesRepository.GetProjectVisibilityByIdAsync(project.VisibilityId).Result.Name
+
+                });
+            }
+
+            return Ok(dTOProjects);
+        }
+
         /* ***************************************************************************************
          * Create new project
          * *************************************************************************************** */
