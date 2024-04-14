@@ -1,4 +1,5 @@
 ﻿using backAPI.Data;
+using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -90,6 +91,19 @@ namespace backAPI.Repositories.Implementation.Issues
                 .ToListAsync();
 
             return elements.Select(elem => elem.OriginId);
+        }
+
+        public async Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model) {
+            var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+            if(exists == null) {
+                return false;
+            }
+
+            exists.CreatedDate = model.StartDate.AddDays(1);        // dodatak +1 zbog front-a???
+            exists.UpdatedDate = DateTime.Now;
+            exists.DueDate = model.EndDate;
+            await _dataContext.SaveChangesAsync();
+            return true;
         }
     }
 }

@@ -21,11 +21,12 @@ import {
 } from '@worktile/gantt';
 import { finalize, of } from 'rxjs';
 // import { delay } from 'rxjs/operators';
-import { addDays, getUnixTime } from 'date-fns';
+import { addDays, fromUnixTime, getUnixTime } from 'date-fns';
 import { IssueService } from '../../../../_service/issue.service';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
 
 import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
+import { IssueDateUpdate } from '../../../../_models/issue-date-update.model';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -194,7 +195,7 @@ ngOnInit(): void {
 }
 
 ngAfterViewInit(): void {
-    this.scrollToToday();
+    // this.scrollToToday();
 }
 
 // ngAfterViewInit() {
@@ -213,6 +214,24 @@ dragMoved(event: GanttDragEvent) {}
 
 dragEnded(event: GanttDragEvent) {
     // this.msgPopupService.showInfo(`Event: dragEnded ${event.item.title}`);
+    let issueId = event.item.id as unknown as number;
+    let newStartDate = fromUnixTime(event.item.start!);
+    let newEndDate = fromUnixTime(event.item.end!);
+    
+    let model: IssueDateUpdate = {
+        id: issueId,
+        startDate: newStartDate,
+        endDate: newEndDate
+    }
+    this.issueService.updateIssueStartEndDate(issueId, model).subscribe({
+        next: response => {
+            console.log("OK!!! " + response);
+        },
+        error: error => {
+            console.log("ERROR!!! " + error.error);
+        }
+    });
+    
     this.items = [...this.items];
 }
 

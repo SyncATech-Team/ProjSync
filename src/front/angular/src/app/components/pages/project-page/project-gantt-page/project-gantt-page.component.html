@@ -70,19 +70,27 @@
                         (dragEnded)="onDragEnded($event)"
                     >
                         <ngx-gantt-column name="Name" width="160px" [showExpandIcon]="true">
-                            <ng-template #cell let-item="item"> <span title="{{ item.title }}"> {{ item.title }} </span> </ng-template>    
+                            <ng-template #cell let-item="item"> 
+                                <span title="{{ item.title }}"> {{ item.title }} </span>
+                            </ng-template>    
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Start date">
-                            <ng-template #cell let-item="item">{{ item.start * 1000 | date : 'dd.MM.yyyy' }}</ng-template>
+                            <ng-template #cell let-item="item">
+                                <span title='{{item.start * 1000 | date: "dd.MM.yyyy"}}'> {{ item.start * 1000 | date : 'dd.MM.yyyy' }} </span>
+                            </ng-template>
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Due date">
-                            <ng-template #cell let-item="item"> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </ng-template>
+                            <ng-template #cell let-item="item"> 
+                                <span title='{{item.end * 1000 | date: "dd.MM.yyyy"}}'> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </span>
+                            </ng-template>
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Reporter">
-                            <ng-template #cell let-item="item"> {{ item.reporterUsername }} </ng-template>
+                            <ng-template #cell let-item="item">
+                                <span title="{{item.reporterUsername}}">{{ item.reporterUsername }}</span>
+                            </ng-template>
                         </ngx-gantt-column>
 
                     </ngx-gantt-table>

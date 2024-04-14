@@ -243,5 +243,16 @@ namespace backAPI.Controllers
 
             return Ok();
         }
+
+        [HttpPut("issueId")]
+        public async Task<IActionResult> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto updateDate) {
+            var updated = await _issueRepository.UpdateIssueStartEndDate(issueId, updateDate);
+            if(updated == false) {
+                return BadRequest("Not valid call");
+            }
+            return Ok();
+        }
+
+
     }
 }
