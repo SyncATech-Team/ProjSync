@@ -1,0 +1,36 @@
+<div class="containeer wrapper">
+    <div class="user-summary">
+        <div class="userProfilePicture">
+            <img src="{{ getUserImage() }}" alt="" draggable="false">
+        </div>
+
+        <div class="flName">
+            <span class="title">{{ user.firstName }} {{ user.lastName }}</span>
+        </div>
+
+        <div class="username-created">
+            <span class="title">&#64;{{ user.username }} &bull;  Member since {{ user.createdAt | date:'MMMM dd, yyyy' }}</span>
+        </div>
+
+        <div class="userInfo container">
+            <div class="address" *ngIf="user.address != null">
+                <i class="fa-solid fa-house"></i><span> {{user.address}}</span>
+            </div>
+
+            <div class="contact" *ngIf="user.contactPhone != null">
+                <i class="fa-solid fa-phone"></i><span> {{user.contactPhone}}</span>
+            </div>
+
+            <div class="mail" *ngIf="user.email != null">
+                <i class="fa-solid fa-envelope"></i><span> <a href="mailto:{{user.email}}"> {{user.email}}</a></span>
+            </div>
+        </div>
+
+        <div class="userProject container">
+            <p class="title">User projects</p>
+            <ul>
+                <li *ngFor="let project of userProjects">{{ project.name }}</li>
+            </ul>
+        </div>
+    </div>
+</div>

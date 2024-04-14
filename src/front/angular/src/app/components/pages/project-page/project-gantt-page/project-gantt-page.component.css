@@ -15,3 +15,11 @@
     z-index: -1;
     background-color: green;
 }
+
+:host ::ng-deep .empty-text {
+    display: none;
+}
+
+:host ::ng-deep .empty-icon {
+    display: none;
+}

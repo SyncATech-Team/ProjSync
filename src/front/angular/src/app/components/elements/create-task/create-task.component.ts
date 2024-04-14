@@ -5,16 +5,20 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { UserGetter } from '../../../_models/user-getter';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IssueType } from '../../../_models/issue-type';
-import { IssuePriority } from '../../../_models/issue-prioritys';
+import { IssuePriority, JIssue } from '../../../_models/issue';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { IssueStatus } from '../../../_models/issue-status';
 import { CreateGroupComponent } from '../create-group/create-group.component';
-import { MessageService } from 'primeng/api';
 import { AccountService } from '../../../_service/account.service';
 import { GroupInProject } from '../../../_models/group-in-project';
 import { GroupService } from '../../../_service/group.service';
 import { UserOnProjectService } from '../../../_service/userOnProject.service';
+import { PhotoForUser } from '../../../_models/photo-for-user';
+import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { IssuePriorityIcon } from '../../../_models/issue-priority-icon';
+import { ProjectConst } from '../../config/const';
 import { CreateIssueModel } from '../../../_models/create-issue.model';
+import { IssueTypeWithIcon } from '../../../_models/issue-type-icon';
 
 @Component({
   selector: 'app-create-task',
@@ -28,9 +32,10 @@ export class CreateTaskComponent implements OnInit {
   projectName: string | null = '';
   users : UserGetter[] = [];
   groupsOnProject: GroupInProject [] = [];
-  issueTypes : IssueType[] = [];
-  issuePrioritys : IssuePriority[] = [];
+  // issueTypes : IssueType[] = [];
+  // issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
+  usersPhotos: PhotoForUser[] = [];
 
   selectedAssignees : UserGetter[] = [];
   currentUser? : string;
@@ -61,10 +66,10 @@ export class CreateTaskComponent implements OnInit {
     private userOnProject : UserOnProjectService,
     private formBuilder : FormBuilder,
     private msgPopUpService : MessagePopupService,
-    private messageService: MessageService,
     public dialogService: DialogService,
     private accountServis: AccountService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private userPictureService: UserProfilePicture
   ) { 
     this.currentUser = this.accountServis.getCurrentUser()?.username;
     this.form = this.formBuilder.group({
@@ -81,7 +86,16 @@ export class CreateTaskComponent implements OnInit {
     });
   }
 
+  jIssue!: JIssue;
+  selectedPriorityModel! : IssuePriorityIcon;
+  priorities!: IssuePriorityIcon[];
+
+  issueTypes!: IssueTypeWithIcon[];
+  selectedIssueType!: IssueTypeWithIcon;
+
   ngOnInit(): void {
+    this.issueTypes = ProjectConst.IssueTypesWithIcon;
+    this.priorities = ProjectConst.PrioritiesWithIcon;
     this.projectName = this._dialogConfig.data.projectName;
     if(this.projectName)
       this.groupService.getAllGroups(this.projectName).subscribe({
@@ -97,29 +111,21 @@ export class CreateTaskComponent implements OnInit {
       this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
         next: (response) => {
           this.users = response.filter(user => user.username !== 'admin');
+          this.getUserProfilePhotos(this.users);
         },
         error: (error) => {
           console.log(error);
         }
       });
 
-      this._issueService.getAllIssueTypes().subscribe({
-        next: (response) => {
-          this.issueTypes = response;
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
-
-      this._issueService.getAllIssuePrioritys().subscribe({
-        next: (response) => {
-          this.issuePrioritys = response;
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      })
+      // this._issueService.getAllIssueTypes().subscribe({
+      //   next: (response) => {
+      //     this.issueTypes = response;
+      //   },
+      //   error: (error) => {
+      //     console.log(error);
+      //   }
+      // });
 
       this._issueService.getAllIssueStatus().subscribe({
         next: (response) => {
@@ -137,9 +143,12 @@ export class CreateTaskComponent implements OnInit {
 
       try {
         this.issueCreator.name = this.form.controls['issue-name'].value;
-        this.issueCreator.typeName = this.form.controls['issue-type'].value.name;
-        this.issueCreator.statusName = this.form.controls['issue-status'].value;
-        this.issueCreator.priorityName = this.form.controls['issue-priority'].value.name;
+        this.selectedIssueType = this.form.controls['issue-type'].value;
+        console.log(this.form.controls['issue-type']);
+        console.log(this.selectedIssueType.value);
+        this.issueCreator.typeName = this.selectedIssueType.value;
+        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
+        this.issueCreator.priorityName = this.selectedPriorityModel.value;
         this.issueCreator.description = this.form.controls['issue-description'].value;
         this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
         this.issueCreator.updatedDate = new Date();
@@ -151,7 +160,6 @@ export class CreateTaskComponent implements OnInit {
         this.issueCreator.dependentOnIssues = [];  // ZA SADA PRAZAN STRING TREBA OMOGUCITI I BIRANJE ZAVISNOSTI
         this.issueCreator.projectName = this.projectName;
         this.issueCreator.groupName = this.form.controls['issue-group'].value.name;
-        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
 
         if(this.issueCreator.dueDate < this.issueCreator.createdDate){
           this.msgPopUpService.showError("Unable to create task, due date is before creation date");
@@ -196,5 +204,45 @@ export class CreateTaskComponent implements OnInit {
     this.ref.onClose.subscribe((data: any) => {
       this.ngOnInit();
     });
+  }
+
+  getUserProfilePhotos(users: UserGetter[]) {
+    for(const user of users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            let path = response['fileContents'];
+            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username, 
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
+
+  getUserImagePath(username: string,users: UserGetter[]) {
+    let index = users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersPhotos[ind].photoSource;
   }
 }

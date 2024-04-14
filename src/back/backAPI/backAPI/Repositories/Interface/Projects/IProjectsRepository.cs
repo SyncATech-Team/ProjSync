@@ -22,5 +22,7 @@ namespace backAPI.Repositories.Interface.Projects
         Task<Project> GetProjectById(int id);
 
         Task<IEnumerable<int>> GetTaskGroupIds(int projectId);
+
+        Task<IEnumerable<Project>> GetProjectsForUserAsync(string username);
     }
 }

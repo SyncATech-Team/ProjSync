@@ -11,6 +11,8 @@ import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { PhotoForUser } from '../../../../_models/photo-for-user';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UserProfileComponent } from '../../../elements/user-profile/user-profile.component';
 
 @Component({
   selector: 'app-project-people-page',
@@ -41,6 +43,7 @@ export class ProjectPeoplePageComponent implements OnInit{
   showColumns!: string[];
 
   usersPhotos: PhotoForUser[] = [];
+  ref: DynamicDialogRef | undefined;
 
   @ViewChild('createRoleForm') formRecipe?: NgForm;
 
@@ -52,7 +55,8 @@ export class ProjectPeoplePageComponent implements OnInit{
     private msgPopupService: MessagePopupService,
     private userService: UserService,
     private projectService: ProjectService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    private dialogService : DialogService
   ) {}
 
   ngOnInit(): void {
@@ -224,6 +228,7 @@ export class ProjectPeoplePageComponent implements OnInit{
   updateOptions(dropdown :any){
     dropdown.options = this.allUsers;
   }
+
   onSelectedChange(){
     this.selectedColumns.forEach(item => {
       if(!this.showColumns.includes(item)){
@@ -235,5 +240,27 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.showColumns.splice(index,1);
       }
     })
+  }
+
+  showProfile(username : string){
+    this.ref = this.dialogService.open(UserProfileComponent, {
+      header : "User profile",
+      height : '60%',
+      width: window.innerWidth < 700 ? '80%' : '40%',
+      contentStyle: { 
+        overflow: 'auto',
+      },
+      baseZIndex: 10000,
+      closable: true,
+      modal: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      maximizable: window.innerWidth < 610,
+      data: {
+        username: username,
+        usersPhotos: this.usersPhotos,
+        users: this.users
+      }
+    });
   }
 }

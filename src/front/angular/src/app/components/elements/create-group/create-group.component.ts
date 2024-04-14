@@ -53,7 +53,7 @@ export class CreateGroupComponent implements OnInit {
           this._modal.close();          
         },
         error : (error) => {
-          console.log(error);
+          this.msgPopUpService.showError("Unable to create group. Duplicate name inside project!");
         }
       });
     }

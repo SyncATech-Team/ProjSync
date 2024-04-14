@@ -13,19 +13,58 @@
 
         <p>Issue type</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="name" placeholder="Select issue type" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-type" [options]="issueTypes" [(ngModel)]="selectedIssueType" optionLabel="value" placeholder="Select issue type" class="input-size" [showClear]="true">
+        <ng-template let-type pTemplate="selectedItem">
+            <svg-icon [name]="type.icon"
+                    [size]="20"
+                    [style.color]="type.color">
+            </svg-icon>
+            <span>{{ type.value }}</span>
+        </ng-template>
+        <ng-template let-type pTemplate="content">
+            <svg-icon [name]="type.icon"
+                    [size]="20"
+                    [style.color]="type.color">
+            </svg-icon>
+            <span>{{ type.value }}</span>
+        </ng-template>
+        </p-dropdown>
 
         <p>Issue priority</p>
-        <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown [options]="issuePrioritys" optionLabel="name" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown [options]="priorities" [(ngModel)]="selectedPriorityModel" optionLabel="value" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true">
+            <ng-template let-priority pTemplate="selectedItem">
+                <svg-icon [name]="priority.icon"
+                        [size]="20"
+                        [style.color]="priority.color">
+                </svg-icon>
+                <span>{{ priority.value }}</span>
+            </ng-template>
+            
+            <ng-template let-priority pTemplate="content">
+                <svg-icon [name]="priority.icon"
+                        [size]="20"
+                        [style.color]="priority.color">
+                </svg-icon>
+                <span>{{ priority.value }}</span>
+            </ng-template>
+        </p-dropdown>
+        
+        <!-- <issue-priority [issue]="jIssue"></issue-priority> -->
 
         <p>Issue status</p>
         <!-- [(ngModel)]="value1" -->
         <p-dropdown formControlName="issue-status" optionLabel="name" [options]="issueStatus" placeholder="Select issue status" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Description</p>
-        <!-- [(ngModel)]="value" -->
-        <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea spellcheck="false"></textarea>
+        <!-- <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea spellcheck="false"></textarea> -->
+        <!-- (onEditorCreated)="editorCreated($event)" [modules]="editorOptions" -->
+        <ng-container *ngIf="true">
+            <quill-editor class="content-editor"
+                          formControlName="issue-description"
+                          [placeholder]="'Enter description'"
+                          >
+            </quill-editor>
+        </ng-container>
 
         <div class="calendar-wrapper">
             <div class="created-date">
@@ -43,18 +82,35 @@
 
         <p>Reporter</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-reporter" [options]="users" optionLabel="username" placeholder="Select reporter" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown
+            formControlName="issue-reporter" 
+            [options]="users" optionLabel="username" 
+            placeholder="Select reporter" 
+            class="input-size" 
+            [showClear]="true">
+            <ng-template let-user pTemplate="selectedItem">
+                <div class="profilecontent">
+                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                    <span>{{ user.username }}</span>
+                </div>
+            </ng-template>
+            <ng-template let-user pTemplate="item">
+                <div class="profilecontent">
+                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                    <span>{{ user.username }}</span>
+                </div>
+            </ng-template>
+        </p-dropdown>
 
         <p>Assigned</p>
-        <p-multiSelect
-            formControlName="issue-assigner"
-            [options]="users"
-            optionLabel="username"
-            [(ngModel)]="selectedAssignees"
-            placeholder="Assignee"
-            [showClear]="true"
-            class="multi-select-dropdown"
-        ></p-multiSelect>
+        <p-multiSelect [options]="users" [(ngModel)]="selectedAssignees" placeholder="Select a Country" optionLabel="username" class="multi-select-dropdown">
+            <ng-template let-user pTemplate="item">
+                <div class="profilecontent">
+                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                    <span>{{ user.username }}</span>
+                </div>
+            </ng-template>
+        </p-multiSelect>
 
         <div class="btns">
             <!--  [disabled]="!projectName2" -->
