@@ -1,8 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {UntilDestroy} from "@ngneat/until-destroy";
 import {JIssue} from "../../../../_models/issue";
 import {JUser} from "../../../../_models/user-issues";
 import {ProjectService} from "../../../state/project/project.service";
+import {OverlayPanel} from "primeng/overlaypanel";
 
 @Component({
   selector: 'issue-assignees',
@@ -15,9 +16,10 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   @Input() users!: JUser[] | null;
   assignees!: (JUser | undefined)[];
 
-  constructor(private _projectService: ProjectService) {}
+  constructor(private _projectService: ProjectService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.cdr.markForCheck();
     if (this.users) {
       // @ts-ignore
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
@@ -40,11 +42,12 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
     });
   }
 
-  addUserToIssue(user: JUser) {
+  addUserToIssue(user: JUser, op: OverlayPanel) {
     this._projectService.updateIssue({
       ...this.issue,
       userIds: [...this.issue.userIds, user.id]
     });
+    op.hide();
   }
 
   isUserSelected(user: JUser): boolean {
