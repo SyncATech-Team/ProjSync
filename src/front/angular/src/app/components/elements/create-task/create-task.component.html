@@ -13,18 +13,39 @@
 
         <p>Issue type</p>
         <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="name" placeholder="Select issue type" class="input-size" [showClear]="true"></p-dropdown>
+        <p-dropdown formControlName="issue-type" [options]="issueTypes" [(ngModel)]="selectedIssueType" optionLabel="value" placeholder="Select issue type" class="input-size" [showClear]="true">
+        <ng-template let-type pTemplate="selectedItem">
+            <svg-icon [name]="type.icon"
+                    [size]="20"
+                    [style.color]="type.color">
+            </svg-icon>
+            <span>{{ type.value }}</span>
+        </ng-template>
+        <ng-template let-type pTemplate="content">
+            <svg-icon [name]="type.icon"
+                    [size]="20"
+                    [style.color]="type.color">
+            </svg-icon>
+            <span>{{ type.value }}</span>
+        </ng-template>
+        </p-dropdown>
 
         <p>Issue priority</p>
         <p-dropdown [options]="priorities" [(ngModel)]="selectedPriorityModel" optionLabel="value" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true">
+            <ng-template let-priority pTemplate="selectedItem">
+                <svg-icon [name]="priority.icon"
+                        [size]="20"
+                        [style.color]="priority.color">
+                </svg-icon>
+                <span>{{ priority.value }}</span>
+            </ng-template>
+            
             <ng-template let-priority pTemplate="content">
-                <div class="d-flex items-center">
-                    <svg-icon [name]="priority.icon"
-                            [size]="20"
-                            [style.color]="priority.color">
-                    </svg-icon>
-                    <span>{{ priority.value }}</span>
-                </div>
+                <svg-icon [name]="priority.icon"
+                        [size]="20"
+                        [style.color]="priority.color">
+                </svg-icon>
+                <span>{{ priority.value }}</span>
             </ng-template>
         </p-dropdown>
         
@@ -82,21 +103,7 @@
         </p-dropdown>
 
         <p>Assigned</p>
-        <p-multiSelect
-            formControlName="issue-assigner"
-            [options]="users"
-            optionLabel="username"
-            [(ngModel)]="selectedAssignees"
-            placeholder="Assignee"
-            [showClear]="true"
-            class="multi-select-dropdown"
-        >
-            <ng-template let-user pTemplate="selectedItem">
-                <div class="profilecontent">
-                    <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
-                    <span>{{ user.username }}</span>
-                </div>
-            </ng-template>
+        <p-multiSelect [options]="users" [(ngModel)]="selectedAssignees" placeholder="Select a Country" optionLabel="username" class="multi-select-dropdown">
             <ng-template let-user pTemplate="item">
                 <div class="profilecontent">
                     <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">

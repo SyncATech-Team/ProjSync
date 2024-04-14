@@ -9,17 +9,16 @@ import { IssuePriority, JIssue } from '../../../_models/issue';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { IssueStatus } from '../../../_models/issue-status';
 import { CreateGroupComponent } from '../create-group/create-group.component';
-import { MessageService } from 'primeng/api';
 import { AccountService } from '../../../_service/account.service';
 import { GroupInProject } from '../../../_models/group-in-project';
 import { GroupService } from '../../../_service/group.service';
 import { UserOnProjectService } from '../../../_service/userOnProject.service';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
-import { IssueUtil } from '../../utils/issue-util';
 import { IssuePriorityIcon } from '../../../_models/issue-priority-icon';
 import { ProjectConst } from '../../config/const';
 import { CreateIssueModel } from '../../../_models/create-issue.model';
+import { IssueTypeWithIcon } from '../../../_models/issue-type-icon';
 
 @Component({
   selector: 'app-create-task',
@@ -33,7 +32,7 @@ export class CreateTaskComponent implements OnInit {
   projectName: string | null = '';
   users : UserGetter[] = [];
   groupsOnProject: GroupInProject [] = [];
-  issueTypes : IssueType[] = [];
+  // issueTypes : IssueType[] = [];
   // issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
   usersPhotos: PhotoForUser[] = [];
@@ -67,7 +66,6 @@ export class CreateTaskComponent implements OnInit {
     private userOnProject : UserOnProjectService,
     private formBuilder : FormBuilder,
     private msgPopUpService : MessagePopupService,
-    private messageService: MessageService,
     public dialogService: DialogService,
     private accountServis: AccountService,
     private groupService: GroupService,
@@ -92,7 +90,11 @@ export class CreateTaskComponent implements OnInit {
   selectedPriorityModel! : IssuePriorityIcon;
   priorities!: IssuePriorityIcon[];
 
+  issueTypes!: IssueTypeWithIcon[];
+  selectedIssueType!: IssueTypeWithIcon;
+
   ngOnInit(): void {
+    this.issueTypes = ProjectConst.IssueTypesWithIcon;
     this.priorities = ProjectConst.PrioritiesWithIcon;
     this.projectName = this._dialogConfig.data.projectName;
     if(this.projectName)
@@ -116,14 +118,14 @@ export class CreateTaskComponent implements OnInit {
         }
       });
 
-      this._issueService.getAllIssueTypes().subscribe({
-        next: (response) => {
-          this.issueTypes = response;
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
+      // this._issueService.getAllIssueTypes().subscribe({
+      //   next: (response) => {
+      //     this.issueTypes = response;
+      //   },
+      //   error: (error) => {
+      //     console.log(error);
+      //   }
+      // });
 
       this._issueService.getAllIssueStatus().subscribe({
         next: (response) => {
@@ -141,7 +143,10 @@ export class CreateTaskComponent implements OnInit {
 
       try {
         this.issueCreator.name = this.form.controls['issue-name'].value;
-        this.issueCreator.typeName = this.form.controls['issue-type'].value.name;
+        this.selectedIssueType = this.form.controls['issue-type'].value;
+        console.log(this.form.controls['issue-type']);
+        console.log(this.selectedIssueType.value);
+        this.issueCreator.typeName = this.selectedIssueType.value;
         this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
         this.issueCreator.priorityName = this.selectedPriorityModel.value;
         this.issueCreator.description = this.form.controls['issue-description'].value;
