@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<app-spinner></app-spinner>
+<!-- <app-spinner></app-spinner> -->
 <app-nav-bar></app-nav-bar>
 
 <div class="wrapper">
@@ -71,25 +71,25 @@
                     >
                         <ngx-gantt-column name="Name" width="160px" [showExpandIcon]="true">
                             <ng-template #cell let-item="item"> 
-                                <span title="{{ item.title }}"> {{ item.title }} </span>
+                                <div pTooltip="{{ item.title }}"> {{ item.title }} </div>
                             </ng-template>    
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Start date">
                             <ng-template #cell let-item="item">
-                                <span title='{{item.start * 1000 | date: "dd.MM.yyyy"}}'> {{ item.start * 1000 | date : 'dd.MM.yyyy' }} </span>
+                                <div pTooltip='{{item.start * 1000 | date: "dd.MM.yyyy"}}'> {{ item.start * 1000 | date : 'dd.MM.yyyy' }} </div>
                             </ng-template>
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Due date">
                             <ng-template #cell let-item="item"> 
-                                <span title='{{item.end * 1000 | date: "dd.MM.yyyy"}}'> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </span>
+                                <div pTooltip='{{item.end * 1000 | date: "dd.MM.yyyy"}}'> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </div>
                             </ng-template>
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Reporter">
                             <ng-template #cell let-item="item">
-                                <span title="{{item.reporterUsername}}">{{ item.reporterUsername }}</span>
+                                <div pTooltip="{{item.reporterUsername}}">{{ item.reporterUsername }}</div>
                             </ng-template>
                         </ngx-gantt-column>
 

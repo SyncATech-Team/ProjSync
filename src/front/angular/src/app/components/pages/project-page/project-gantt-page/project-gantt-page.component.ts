@@ -157,6 +157,7 @@ constructor(
 ngOnInit(): void {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     
+    this.loading = true;
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
         next: response => {
             let data = response;
@@ -187,6 +188,7 @@ ngOnInit(): void {
             
             this.viewType = GanttViewType.day;
             this.selectedViewType = GanttViewType.day;
+            this.loading = false;
             
         },
         error: error => {
@@ -247,11 +249,10 @@ dragEnded(event: GanttDragEvent) {
         startDate: newStartDate,
         endDate: newEndDate
     }
-    this.loading = true;
+    
     this.issueService.updateIssueStartEndDate(issueId, model).subscribe({
         next: response => {
             this.msgPopupService.showInfo("Successfully changed timeline!");
-            this.loading = false;
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
