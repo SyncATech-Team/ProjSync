@@ -208,6 +208,29 @@ barClick(event: GanttBarClickEvent) {
 }
 
 lineClick(event: GanttLineClickEvent) {
+    let source = event.source;
+    let target = event.target;
+    
+    console.log(source.id);
+    console.log(target.id);
+
+    let model: IssueDependencyUpdater = {
+        originId: source!.id as unknown as number,
+        targetId: target!.id as unknown as number,
+        isDelete: true
+    }
+
+    this.issueService.createOrDeleteIssueDependency(model).subscribe({
+        next: response => {
+            this.msgPopupService.showInfo("Successfully deleted a dependency!");
+            this.refresh();
+        },
+        error: error => {
+            console.log("ERROR!!! " + error.error);
+        }
+    })
+    
+    this.items = [...this.items];
     // this.msgPopupService.showInfo(`Event: lineClick ${event.source.title} to ${event.target.title} line`)
 }
 
@@ -224,9 +247,11 @@ dragEnded(event: GanttDragEvent) {
         startDate: newStartDate,
         endDate: newEndDate
     }
+    this.loading = true;
     this.issueService.updateIssueStartEndDate(issueId, model).subscribe({
         next: response => {
             this.msgPopupService.showInfo("Successfully changed timeline!");
+            this.loading = false;
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
@@ -247,10 +272,10 @@ linkDragEnded(event: GanttLinkDragEvent) {
     let source = event.source;
     let target = event.target;
     let type = event.type;
-    
+
     let model: IssueDependencyUpdater = {
-        originId: target!.id as unknown as number,
-        targetId: source!.id as unknown as number,
+        originId: source!.id as unknown as number,
+        targetId: target!.id as unknown as number,
         isDelete: false
     }
 

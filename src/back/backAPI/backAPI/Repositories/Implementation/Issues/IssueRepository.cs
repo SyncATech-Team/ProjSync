@@ -87,10 +87,10 @@ namespace backAPI.Repositories.Implementation.Issues
 
         public async Task<IEnumerable<int>> GetDependentIssues(int issueId) {
             var elements = await _dataContext.IssueDependencies
-                .Where(elem => elem.TargetId == issueId)
+                .Where(elem => elem.OriginId == issueId)
                 .ToListAsync();
 
-            return elements.Select(elem => elem.OriginId);
+            return elements.Select(elem => elem.TargetId);
         }
 
         public async Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model) {
