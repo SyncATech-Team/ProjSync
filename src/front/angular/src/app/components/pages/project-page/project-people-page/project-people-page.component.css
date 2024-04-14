@@ -21,12 +21,14 @@
     justify-content: space-between;
 }
 
+.profilecontent{
+    cursor: pointer;
+}
 
 .profilecontent img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    cursor: pointer;
 }
 
 .search-container {

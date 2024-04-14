@@ -33,6 +33,32 @@
     align-items: center;
 }
 
+@media screen and (max-width: 450px) {
+    .userInfo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .userInfo .contact,
+    .userInfo .mail{
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 1265px) {
+    .userInfo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .userInfo .contact,
+    .userInfo .mail{
+        margin-top: 20px;
+    }
+}
+
 @media screen and (max-width: 1500px) {
     .userInfo .address i,
     .userInfo .contact i,
@@ -57,4 +83,11 @@
 
 .userProject ul{
     margin-left: 1.5rem;
+}
+
+.card{
+    background-color: red;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #dfe7ef;
 }

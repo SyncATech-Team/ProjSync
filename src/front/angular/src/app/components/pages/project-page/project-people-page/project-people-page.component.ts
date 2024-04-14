@@ -246,7 +246,7 @@ export class ProjectPeoplePageComponent implements OnInit{
     this.ref = this.dialogService.open(UserProfileComponent, {
       header : "User profile",
       height : '60%',
-      width: window.innerWidth < 610 ? '100%' : '35%',
+      width: window.innerWidth < 700 ? '80%' : '40%',
       contentStyle: { 
         overflow: 'auto',
       },
