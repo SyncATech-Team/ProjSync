@@ -5,6 +5,9 @@ import { UserService } from '../../../_service/user.service';
 import { response } from 'express';
 import { UserGetter } from '../../../_models/user-getter';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { Project } from '../../../_models/project.model';
+import { UserOnProjectService } from '../../../_service/userOnProject.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-user-profile',
@@ -33,10 +36,13 @@ export class UserProfileComponent implements OnInit{
     isActive: false
   }
 
+  userProjects : Project[] = [];
+
   constructor(
     private _dialogConfig : DynamicDialogConfig,
     private userService: UserService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    private userOnProjectService: UserOnProjectService
   ){
 
   }
@@ -49,6 +55,17 @@ export class UserProfileComponent implements OnInit{
     
     const filteredUsers = this.users.filter(u => u.username === this.username);
     this.user = filteredUsers[0];
+    console.log(this.user);
+
+    if(this.username)
+    this.userOnProjectService.getAllProjectsByUser(this.username).subscribe({
+      next : (response) => {
+        this.userProjects = response;
+      },
+      error : (error) => {
+        console.log(error.error);
+      }
+    });
   }
 
   getUserImage(){

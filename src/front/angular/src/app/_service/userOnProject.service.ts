@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { UserGetter } from "../_models/user-getter";
+import { Project } from "../_models/project.model";
 
 interface UserOnProjectData {
     projectName: string;
@@ -19,6 +20,10 @@ export class UserOnProjectService {
 
     getAllUsersOnProject(projectName: string) {
         return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject?projectName=${projectName}`);
+    }
+
+    getAllProjectsByUser(username: string){
+        return this.http.get<Project[]>(`${this.baseUrl}UserOnProject/user/${username}`);
     }
 
     removeUserFromProject(projectName : string, username : string){

@@ -24,3 +24,37 @@
     font-weight: 500;
     font-size: 22px;
 }
+
+/* USER INFO */
+.userInfo{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center;
+}
+
+@media screen and (max-width: 1500px) {
+    .userInfo .address i,
+    .userInfo .contact i,
+    .userInfo .mail i{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* User projects */
+
+.userProject{
+    margin-top: 20px;
+}
+
+.userProject .title{
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.userProject ul{
+    margin-left: 1.5rem;
+}

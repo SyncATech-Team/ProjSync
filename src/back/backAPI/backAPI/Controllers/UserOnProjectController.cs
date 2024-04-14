@@ -64,6 +64,12 @@ namespace backAPI.Controllers
         [HttpGet("user/{username}")]
         public async Task<IActionResult> GetProjectsByUser(string username)
         {
+            var user = await _usersRepository.GetUserByUsername(username);
+            if(user == null)
+            {
+                return NotFound("User not found");
+            }
+
             List<ProjectDto> dTOProjects = new List<ProjectDto>();
 
             var projects = await _userOnProjectRepository.GetProjectsByUser(username);
