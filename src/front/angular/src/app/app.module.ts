@@ -102,6 +102,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 import { IssueAssigneesComponent } from './components/elements/issues/issue-assignees/issue-assignees.component';
+import { UserProfileComponent } from './components/elements/user-profile/user-profile.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -154,7 +156,8 @@ import { IssueAssigneesComponent } from './components/elements/issues/issue-assi
     IssueAssigneesComponent,
     BoardFilterComponent,
     IssueReporterComponent,
-    ProjectKanbanPageComponent
+    ProjectKanbanPageComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -204,6 +207,7 @@ import { IssueAssigneesComponent } from './components/elements/issues/issue-assi
     MessageService,
     ConfirmationService,
     DialogService,
+    DatePipe,
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
   ],
   bootstrap: [AppComponent]

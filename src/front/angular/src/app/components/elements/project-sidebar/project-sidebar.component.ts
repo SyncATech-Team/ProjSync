@@ -143,10 +143,7 @@ export class ProjectSidebarComponent implements OnInit {
         if (data) {
             const buttonType = data?.buttonType;
             summary_and_detail = buttonType ? { summary: 'No Product Selected', detail: `Pressed '${buttonType}' button` } : { summary: 'Product Selected', detail: data?.name };
-        } else {
-            summary_and_detail = { summary: 'Task not added', detail: 'Pressed Close button' };
         }
-        this.messageService.add({ severity: 'info', ...summary_and_detail, life: 3000 });
       });
       console.log(this.projectName);
   }
