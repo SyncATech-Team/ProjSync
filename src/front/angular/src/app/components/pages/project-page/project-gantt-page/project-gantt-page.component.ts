@@ -27,6 +27,7 @@ import { MessagePopupService } from '../../../../_service/message-popup.service'
 
 import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
 import { IssueDateUpdate } from '../../../../_models/issue-date-update.model';
+import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -225,7 +226,7 @@ dragEnded(event: GanttDragEvent) {
     }
     this.issueService.updateIssueStartEndDate(issueId, model).subscribe({
         next: response => {
-            console.log("OK!!! " + response);
+            this.msgPopupService.showInfo("Successfully changed timeline!");
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
@@ -237,16 +238,31 @@ dragEnded(event: GanttDragEvent) {
 
 selectedChange(event: GanttSelectedEvent) {
   if(this.ganttComponent && event.current?.start) {
-    console.log("Scroll required to: " + event.current.start);
     event.current && this.ganttComponent.scrollToDate(event.current?.start);
   }
-    // this.thyNotify.info(
-    //     'Event: selectedChange',
-    //     `当前选中的 item 的 id 为 ${(event.selectedValue as GanttItem[]).map((item) => item.id).join('、')}`
-    // );
 }
 
 linkDragEnded(event: GanttLinkDragEvent) {
+
+    let source = event.source;
+    let target = event.target;
+    let type = event.type;
+    
+    let model: IssueDependencyUpdater = {
+        originId: target!.id as unknown as number,
+        targetId: source!.id as unknown as number,
+        isDelete: false
+    }
+
+    this.issueService.createOrDeleteIssueDependency(model).subscribe({
+        next: response => {
+            this.msgPopupService.showInfo("Successfully created a dependency!");
+        },
+        error: error => {
+            console.log("ERROR!!! " + error.error);
+        }
+    })
+
     this.items = [...this.items];
     // this.thyNotify.info('Event: linkDragEnded', `创建了关联关系`);
 }
@@ -280,7 +296,6 @@ selectView(type: GanttViewType) {
 }
 
 viewChange(event: GanttView) {
-    console.log(event.viewType);
     this.selectedViewType = event.viewType;
 }
 

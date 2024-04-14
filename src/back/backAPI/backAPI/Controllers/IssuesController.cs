@@ -253,6 +253,10 @@ namespace backAPI.Controllers
             return Ok();
         }
 
-
+        [HttpPut]
+        public async Task<IActionResult> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
+            var changed = await _issueRepository.CreateOrDeleteDependency(model);
+            return Ok();
+        }
     }
 }

@@ -105,5 +105,22 @@ namespace backAPI.Repositories.Implementation.Issues
             await _dataContext.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
+            if(model.IsDelete) {
+                await _dataContext.IssueDependencies
+                    .Where(elem => elem.OriginId == model.OriginId && elem.TargetId == model.TargetId)
+                    .ExecuteDeleteAsync();
+            }
+            else {
+                await _dataContext.IssueDependencies.AddAsync(new IssueDependencies {
+                    OriginId = model.OriginId,
+                    TargetId = model.TargetId
+                });
+            }
+
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
     }
 }
