@@ -1,10 +1,9 @@
+<p-confirmDialog></p-confirmDialog>
 <app-nav-bar></app-nav-bar>
 <div class="wrapper">
     <app-project-sidebar 
     [projectName]="projectName"></app-project-sidebar>
     
-    <p-toast></p-toast>
-    <p-confirmDialog></p-confirmDialog>
     
     <div class="content">
     <!-- Numeracija strana -->
@@ -16,6 +15,8 @@
             [rows]="5"
             [showCurrentPageReport]="true"
             [resizableColumns]="true"
+            [reorderableColumns]="true"
+            [columns]="showColumns"
             [rowsPerPageOptions]="[5,10, 25, 50]"
             [paginator]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -35,7 +36,14 @@
                         </div>
                         <p-dropdown class="dropdown" [options]="userRole" (onChange)="search()" [(ngModel)]="selectedRole" [style]="{minWidth: '14rem'}" placeholder="Select role" [showClear]="true"></p-dropdown>
                         <div style="padding-inline: 16px;">
-                            <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" selectedItemsLabel="{0} columns selected" [style]="{'width': '30vh'}" placeholder="Choose Columns"></p-multiSelect>
+                            <p-multiSelect 
+                            [options]="columns" 
+                            [(ngModel)]="selectedColumns" 
+                            selectedItemsLabel="{0} columns selected" 
+                            [style]="{'width': '30vh'}" 
+                            placeholder="Choose Columns"
+                            (onChange)="onSelectedChange()"
+                            ></p-multiSelect>
                         </div>
                     </div>
                     
@@ -53,75 +61,79 @@
             </ng-template>
 
             <!-- Table header -->
-            <ng-template pTemplate="header">
+            <ng-template pTemplate="header" let-columns>
                 <tr class="header">
-                    <th pResizableColumn>Username</th>
-                    <th pResizableColumn *ngIf="selectedColumns.includes('Email address')">Email address</th>
-                    <th pResizableColumn *ngIf="selectedColumns.includes('Firstname')">Firstname</th>
-                    <th pResizableColumn *ngIf="selectedColumns.includes('Lastname')">Lastname</th>
-                    <th pResizableColumn *ngIf="selectedColumns.includes('Role')">Role</th>
-                    <th pResizableColumn *ngIf="selectedColumns.includes('Address')">Address</th>
-                    <th pResizableColumn *ngIf="selectedColumns.includes('Contact phone')">Contact phone</th>
-                    <th pResizableColumn *ngIf="selectedColumns.includes('Status')">Status</th>
-                    <th pResizableColumn></th>
+                    <ng-container *ngFor="let column of columns">
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Username'">Username</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Email address' && selectedColumns.includes('Email address')">Email address</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Firstname' && selectedColumns.includes('Firstname')">Firstname</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Lastname' && selectedColumns.includes('Lastname')">Lastname</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Role' && selectedColumns.includes('Role')">Role</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Address' && selectedColumns.includes('Address')">Address</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Contact phone' && selectedColumns.includes('Contact phone')">Contact phone</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedColumns.includes('Status')">Status</th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column==''"></th>
+                    </ng-container>
                 </tr>
             </ng-template>
             
-            <ng-template class="table-users" pTemplate="body" let-user>
+            <ng-template class="table-users" pTemplate="body" let-user let-columns="columns">
                 <tr [ngClass]="{'active-user' : user.isActive, 'inactive-user': !user.isActive}">
-                    <td>
-                        <span class="p-column-title" style="font-weight: bold;">Account</span>
-                        <div class="profilecontent">
-                            <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
-                            <span>{{ user.username }}</span>
-                        </div>
-                    </td>
-
-                    <td *ngIf="selectedColumns.includes('Email address')">
-                        <span class="p-column-title" style="font-weight: bold;">Email</span>
-                        <a class="mail" href="mailto:{{user.email}}"> {{user.email}}</a>
-                    </td>
-
-                    <td *ngIf="selectedColumns.includes('Firstname')">
-                        <span class="p-column-title" style="font-weight: bold;">Firstname</span>
-                        <span > {{user.firstName }}</span>
-                    </td>
-
-                    <td *ngIf="selectedColumns.includes('Lastname')">
-                        <span class="p-column-title" style="font-weight: bold;">Lastname</span>
-                        <span> {{user.lastName }}</span>
-                    </td>
-
-                    <td *ngIf="selectedColumns.includes('Role')">
-                        <span class="p-column-title" style="font-weight: bold;">Company role</span>
-                        {{ user.companyRoleName }}
-                    </td>
-
-                    <td *ngIf="selectedColumns.includes('Address')">
-                        <span class="p-column-title" style="font-weight: bold;">Address</span>
-                        <span> {{user.address }}</span>
-                    </td>
-
-                    <td *ngIf="selectedColumns.includes('Contact phone')">
-                        <span class="p-column-title" style="font-weight: bold;">Contact phone</span>
-                        <span> {{user.contactPhone }}</span>
-                    </td>
-
-                    <td *ngIf="selectedColumns.includes('Status')">
-                        <span class="p-column-title" style="font-weight: bold;">Status</span>
-                        <span> {{user.status }}</span>
-                    </td>
-
-                    <td><span class="p-column-title" style="font-weight: bold">Actions</span>
-                        <div *ngIf="project && (user.username !== project.ownerUsername)" class="action">
-                            <div class="deleteBtn">
-                                <button type="button" pButton pRipple icon="fa-solid fa-right-from-bracket" 
-                                    (click)="deleteUserFromProject($event, user.username)"
-                                    class="p-button-danger mr-2"
-                                    tooltipPosition="bottom"></button>
+                    <ng-container *ngFor="let column of columns">
+                        <td *ngIf="column=='Username'">
+                            <span class="p-column-title" style="font-weight: bold;">Account</span>
+                            <div class="profilecontent" (click)="showProfile(user.username)">
+                                <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                                <span pTooltip="User profile">{{ user.username }}</span>
                             </div>
-                        </div>
-                    </td>
+                        </td>
+
+                        <td *ngIf="column=='Email address' && selectedColumns.includes('Email address')">
+                            <span class="p-column-title" style="font-weight: bold;">Email</span>
+                            <a class="mail" href="mailto:{{user.email}}"> {{user.email}}</a>
+                        </td>
+
+                        <td *ngIf="column=='Firstname' && selectedColumns.includes('Firstname')">
+                            <span class="p-column-title" style="font-weight: bold;">Firstname</span>
+                            <span > {{user.firstName }}</span>
+                        </td>
+
+                        <td *ngIf="column=='Lastname' && selectedColumns.includes('Lastname')">
+                            <span class="p-column-title" style="font-weight: bold;">Lastname</span>
+                            <span> {{user.lastName }}</span>
+                        </td>
+
+                        <td *ngIf="column=='Role' && selectedColumns.includes('Role')">
+                            <span class="p-column-title" style="font-weight: bold;">Company role</span>
+                            {{ user.companyRoleName }}
+                        </td>
+
+                        <td *ngIf="column=='Address' && selectedColumns.includes('Address')">
+                            <span class="p-column-title" style="font-weight: bold;">Address</span>
+                            <span> {{user.address }}</span>
+                        </td>
+
+                        <td *ngIf="column=='Contact phone' && selectedColumns.includes('Contact phone')">
+                            <span class="p-column-title" style="font-weight: bold;">Contact phone</span>
+                            <span> {{user.contactPhone }}</span>
+                        </td>
+
+                        <td *ngIf="column=='Status' && selectedColumns.includes('Status')">
+                            <span class="p-column-title" style="font-weight: bold;">Status</span>
+                            <span> {{user.status }}</span>
+                        </td>
+
+                        <td *ngIf="column==''"><span class="p-column-title" style="font-weight: bold">Actions</span>
+                            <div *ngIf="project && (user.username !== project.ownerUsername)" class="action">
+                                <div class="deleteBtn">
+                                    <button type="button" pButton pRipple icon="fa-solid fa-right-from-bracket" 
+                                        (click)="deleteUserFromProject($event, user.username)"
+                                        class="p-button-danger mr-2"
+                                        tooltipPosition="bottom"></button>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
                 </tr>
             </ng-template>
         </p-table>

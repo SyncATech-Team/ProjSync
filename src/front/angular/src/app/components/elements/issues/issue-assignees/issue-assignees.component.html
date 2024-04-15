@@ -1,0 +1,51 @@
+<div class="mt-6 mb-1 text-uppercase text-muted font-weight-bold">
+  Assignees
+</div>
+
+<p-button *ngFor="let assignee of assignees"
+  [text]="true"
+  [raised]="true">
+
+  <div class="d-flex align-items-center items-center">
+    <p-avatar
+      [image]="assignee?.avatarUrl"
+      shape="circle"
+      size="normal">
+    </p-avatar>
+    <span class="m-2">
+      {{ assignee?.name }}
+    </span>
+    <svg-icon (click)="removeUser(assignee?.id)"
+              title="Remove user"
+              [size]="20"
+              [name]="'times'"
+              class="text-textLight">
+    </svg-icon>
+  </div>
+</p-button>
+
+<a class="add-more" (click)="op.toggle($event)"
+   style="font-size: 12.5px; cursor: pointer; display: flex; align-items: center; color: #0052cc;">
+  <i class="mr-1"></i>
+  Add Assignee
+</a>
+
+<p-overlayPanel #op>
+  <ng-template pTemplate="content">
+    <ng-container *ngFor="let option of users">
+      <div class="select-item"
+           *ngIf="!isUserSelected(option)"
+           (click)="addUserToIssue(option, op)">
+        <div class="d-flex align-items-center items-center">
+          <p-avatar
+            [image]="option?.avatarUrl"
+            shape="circle"
+            size="normal"
+            [pTooltip]="option?.name">
+          </p-avatar>
+          <span class="m-2"> {{ option?.name }} </span>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</p-overlayPanel>

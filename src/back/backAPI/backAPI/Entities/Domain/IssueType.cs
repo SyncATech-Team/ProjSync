@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backAPI.Entities.Domain
 {
-    [Table("TaskTypes")]
+    [Table("IssueType")]
     public class IssueType
     {
         [Key]

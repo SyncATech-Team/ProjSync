@@ -11,6 +11,8 @@ import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { PhotoForUser } from '../../../../_models/photo-for-user';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UserProfileComponent } from '../../../elements/user-profile/user-profile.component';
 
 @Component({
   selector: 'app-project-people-page',
@@ -38,8 +40,10 @@ export class ProjectPeoplePageComponent implements OnInit{
   userForAdd: string = '';
   selectedColumns!: string[];
   columns!: string[];
+  showColumns!: string[];
 
   usersPhotos: PhotoForUser[] = [];
+  ref: DynamicDialogRef | undefined;
 
   @ViewChild('createRoleForm') formRecipe?: NgForm;
 
@@ -51,12 +55,14 @@ export class ProjectPeoplePageComponent implements OnInit{
     private msgPopupService: MessagePopupService,
     private userService: UserService,
     private projectService: ProjectService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    private dialogService : DialogService
   ) {}
 
   ngOnInit(): void {
     this.columns = ['Email address','Firstname','Lastname','Role','Address','Contact phone','Status'];
     this.selectedColumns = ['Email address','Firstname','Lastname','Role'];
+    this.showColumns = ['Username',...this.selectedColumns,''];
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     this.initialize();
   }
@@ -75,15 +81,6 @@ export class ProjectPeoplePageComponent implements OnInit{
       }
     });
 
-    // this.companyRole.getAllCompanyRoles().subscribe({
-    //   next: (response) => {
-    //     this.userRole = response;
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //   }
-    // });
-
     this.userService.getAllUsers().subscribe({
       next: (response) => {
         this.getUserProfilePhotos(this.users);
@@ -93,7 +90,7 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.getUserProfilePhotos(this.allUsers);
       },
       error: (error) => {
-        console.log(error);
+        console.log(error); 
       }
     });
 
@@ -232,4 +229,38 @@ export class ProjectPeoplePageComponent implements OnInit{
     dropdown.options = this.allUsers;
   }
 
+  onSelectedChange(){
+    this.selectedColumns.forEach(item => {
+      if(!this.showColumns.includes(item)){
+        this.showColumns.push(item);
+      }
+    });
+    this.showColumns.forEach((item,index) => {
+      if(!this.selectedColumns.includes(item) && item!=='Username' && item !==''){
+        this.showColumns.splice(index,1);
+      }
+    })
+  }
+
+  showProfile(username : string){
+    this.ref = this.dialogService.open(UserProfileComponent, {
+      header : "User profile",
+      height : '60%',
+      width: window.innerWidth < 700 ? '80%' : '40%',
+      contentStyle: { 
+        overflow: 'auto',
+      },
+      baseZIndex: 10000,
+      closable: true,
+      modal: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      maximizable: window.innerWidth < 610,
+      data: {
+        username: username,
+        usersPhotos: this.usersPhotos,
+        users: this.users
+      }
+    });
+  }
 }

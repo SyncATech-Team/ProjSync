@@ -20,7 +20,7 @@ export const navbarData = [
         label: 'Summary'
     },
     {
-        routeLink : '',
+        routeLink : '/home/projects/documents/',
         icon: 'fa-regular fa-file',
         label: 'Documents'
     },
@@ -38,5 +38,10 @@ export const navbarData = [
         routeLink: '/home/projects/gantt/',
         icon: 'fa-solid fa-chart-gantt',
         label: 'Gantt'
+    },
+    {
+        routeLink: '/home/projects/kanban/',
+        icon: 'fa-solid fa-chart-simple fa-rotate-180',
+        label: 'Kanban'
     }
 ];

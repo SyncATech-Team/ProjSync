@@ -1,0 +1,11 @@
+<div class="container">
+    <form class="form-group" (ngSubmit)="onSubmit()" [formGroup]="form">
+        <p>Group name</p>
+        <input type="text" formControlName="group-name" pInputText class="input-size" placeholder="Enter group name" class="groupName"/>
+        <div class="btns">
+            <!--  [disabled]="!projectName2" -->
+            <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
+            <p-button label="Close" severity="secondary" (click)="closeModal()"></p-button>
+        </div>
+    </form>
+</div>

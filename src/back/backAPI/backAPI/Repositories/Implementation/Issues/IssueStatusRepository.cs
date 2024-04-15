@@ -15,14 +15,19 @@ namespace backAPI.Repositories.Implementation.Issues
             _dataContext = dataContext;
         }
 
-        public async Task<IssueStatus> GetTaskTypeById(int id)
+        public async Task<IssueStatus> GetIssueStatusById(int id)
         {
             return await _dataContext.IssueStatuses.Where(type => type.Id == id).FirstAsync();
         }
 
-        public async Task<IssueStatus> GetTaskTypeByName(string name)
+        public async Task<IssueStatus> GetIssueStatusByName(string name)
         {
             return await _dataContext.IssueStatuses.Where(type => type.Name == name).FirstAsync();
+        }
+
+        public async Task<List<IssueStatus>> GetAllIssueStatus()
+        {
+            return await _dataContext.IssueStatuses.ToListAsync();
         }
     }
 }

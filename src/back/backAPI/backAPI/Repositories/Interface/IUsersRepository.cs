@@ -33,6 +33,13 @@ namespace backAPI.Repositories.Interface
         Task<User> GetUserByUsername(string username);
 
         /// <summary>
+        /// Funkcija koja za prosledjeni id vraca korisnika
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<User> GetUserById(int id);
+
+        /// <summary>
         /// Funkcija koja za prosledjeni id korisnika brise njegove podatke iz baze
         /// </summary>
         /// <param name="id"></param>
@@ -86,5 +93,7 @@ namespace backAPI.Repositories.Interface
         Task<bool> UserExistsByEmail(string email);
 
         Task UpdateUserProfilePhoto(string username, string photoURL);
+
+        Task<IEnumerable<User>> GetUsersFromIDarray(string[] arr);
     }
 }

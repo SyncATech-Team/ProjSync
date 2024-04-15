@@ -50,6 +50,8 @@ builder.Services.AddScoped<IIssueTypeRepository, IssueTypeRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IProjectDocumentationRepository, ProjectDocumentationRepository>();
+builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
 
 var app = builder.Build();
 
@@ -126,7 +128,7 @@ if (!context.IssuePriority.Any()) {
 if(!context.IssueTypes.Any()) {
     await context.IssueTypes.AddRangeAsync(
         new IssueType { Id = 1, Name = "Task"},
-        new IssueType { Id = 2, Name = "Problem"},
+        new IssueType { Id = 2, Name = "Bug"},
         new IssueType { Id = 3, Name = "Story"}
     );
 }
