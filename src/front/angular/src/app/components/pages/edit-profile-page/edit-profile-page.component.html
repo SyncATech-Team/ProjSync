@@ -169,12 +169,15 @@
         </div>
 
         <div id="imageUpload">
-            <div class="show-img">
+            <div class="show-img" *ngIf="!imageLoading; else loadingTemplate">
                 <img id="profile-image2" 
                 draggable="false" 
                 src="../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" 
                 alt="user photo">
             </div>
+            <ng-template #loadingTemplate>
+                <div class="my-img-container"></div>
+            </ng-template>
             <div class="btns-wrapper">
                 <input id="fileInput" #fileInputRef type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
                 <label for="files" class="files-btn">Select file</label>

@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   GanttBarClickEvent,
@@ -52,42 +52,22 @@ import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
     }
 ]
 })
-export class ProjectGanttPageComponent implements OnInit {
+export class ProjectGanttPageComponent implements OnInit, AfterViewInit {
 
   projectName: string = '';
+    viewOptions = { /*Opcije premestene u global config*/ };
 
-    /**
-     * Opcije za prikaz gantt-a
-     */
-    viewOptions = {
-        // Opcije premestene u global config
-    };
-
-  /**
-   * Opcije koje postoje za prikaz
-   */
-  views = [
-    {
-        name: 'Day',
-        value: GanttViewType.day
-    },
-    {
-        name: 'Week',
-        value: GanttViewType.week
-    },
-    {
-        name: 'Month',
-        value: GanttViewType.month
-    },
-    {
-        name: 'Quarter',
-        value: GanttViewType.quarter
-    },
-    {
-        name: 'Year',
-        value: GanttViewType.year
-    }
+/**
+ * Opcije koje postoje za prikaz
+*/
+views = [
+    { name: 'Day', value: GanttViewType.day },
+    { name: 'Week', value: GanttViewType.week },
+    { name: 'Month', value: GanttViewType.month },
+    { name: 'Quarter', value: GanttViewType.quarter },
+    { name: 'Year', value: GanttViewType.year }
 ];
+
 /**
  * Inicijalni prikaz pri otvaranju strane
  */
@@ -157,8 +137,8 @@ baselineItems: GanttBaselineItem[] = [];
 options = {
     viewType: GanttViewType.day
 };
-@HostBinding('class.gantt-example-component') class = true;
 
+@HostBinding('class.gantt-example-component') class = true;
 @ViewChild('gantt') ganttComponent?: NgxGanttComponent;
 
 dropEnterPredicate = (event: GanttTableDragEnterPredicateContext) => {
@@ -173,55 +153,53 @@ constructor(
 ) {}
 
 ngOnInit(): void {
-    // init items children
-
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
-    // this.items = this.randomItems(100);
-
-    // this.loading = true;
-    this.issueService.getTasksTest().subscribe({
+    
+    this.issueService.getAllIssuesForProject(this.projectName).subscribe({
         next: response => {
-            let data = JSON.parse(JSON.stringify(response));
+            let data = response;
             const dataIssues = [];
-            for(let issue of data['issues']) {
-                let startDate = new Date(issue['createdAt']);
-                let endDate = new Date(issue['createdAt']);
-                endDate.setDate(endDate.getDate() + 5);
-
+            
+            for(let issue of data) {
+                let startDate = new Date(issue.createdDate);
+                let endDate = new Date(issue.dueDate);
+                
+                let dependentOnList: string[] = [];
+                for(let issueId of issue.dependentOnIssues)
+                    dependentOnList.push("" + issueId);
+                
                 dataIssues.push({
-                    id: issue['id'],
-                    title: issue['title'],
+                    id: "" + issue.id,
+                    title: issue.name,
                     start: getUnixTime(startDate),
                     end: getUnixTime(endDate),
                     group_id: '0000',
+                    links: dependentOnList,
                     expandable: true,
-                    color: "red"
-                    // progress: 0.5
+                    draggable: true,
+                    progress: issue.completed/100,
+                    reporterUsername: issue.reporterUsername
                 });
             }
             this.items = dataIssues;
-
-            this.viewType = GanttViewType.month;
-            this.selectedViewType = GanttViewType.month;
-            // this.loading = false;
-            this.scrollToToday();
             
-            // this.items.forEach((item, index) => {
-            //     if (index % 5 === 0) {
-            //         item.children = this.randomItems(this.random(1, 5), item);
-            //     }
-            // });
-            // console.log(this.items);
+            this.viewType = GanttViewType.day;
+            this.selectedViewType = GanttViewType.day;
+            
         },
         error: error => {
             console.log("Error fetching tasks: " + error.error);
         }
-    })
+    });
+}
+
+ngAfterViewInit(): void {
+    this.scrollToToday();
 }
 
 // ngAfterViewInit() {
-//     setTimeout(() => this.ganttComponent.scrollToDate(1627729997), 200);
-// }
+    //     setTimeout(() => this.ganttComponent.scrollToDate(1627729997), 200);
+    // }
 
 barClick(event: GanttBarClickEvent) {
     // this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
@@ -260,7 +238,7 @@ print(name: string) {
 
 scrollToToday() {
     if(this.ganttComponent)
-      this.ganttComponent.scrollToToday();
+      this.ganttComponent.scrollToDate(getUnixTime(new Date()));
 }
 
 switchChange() {
@@ -288,17 +266,7 @@ viewChange(event: GanttView) {
 }
 
 refresh() {
-    this.loading = true;
-    of(this.randomItems(30))
-        .pipe(
-            // delay(2000),
-            finalize(() => {
-                this.loading = false;
-            })
-        )
-        .subscribe((res) => {
-            this.items = res;
-        });
+    this.ngOnInit();
 }
 
 onDragDropped(event: GanttTableDragDroppedEvent) {

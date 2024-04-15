@@ -1,4 +1,5 @@
 ﻿using backAPI.DTO;
+using backAPI.DTO.Projects;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
@@ -7,15 +8,21 @@ namespace backAPI.Controllers
 {
     public class UserOnProjectController : BaseApiController
     {
+        private readonly IUsersRepository _usersRepository;
         private readonly IUserOnProjectRepository _userOnProjectRepository;
         private readonly IProjectsRepository _projectRepository;
         private readonly ICompanyRolesRepository _companyRolesRepository;
+        private readonly IProjectTypesRepository _projectTypesRepository;
+        private readonly IProjectVisibilitiesRepository _projectVisibilitiesRepository;
 
-        public UserOnProjectController(IUserOnProjectRepository userOnProjectRepository, IProjectsRepository projectRepository, ICompanyRolesRepository companyRolesRepository)
+        public UserOnProjectController(IUserOnProjectRepository userOnProjectRepository, IProjectsRepository projectRepository, ICompanyRolesRepository companyRolesRepository, IProjectTypesRepository projectTypesRepository, IUsersRepository usersRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository)
         {
             _userOnProjectRepository = userOnProjectRepository;
             _projectRepository = projectRepository;
             _companyRolesRepository = companyRolesRepository;
+            _projectTypesRepository = projectTypesRepository;
+            _usersRepository = usersRepository; 
+            _projectVisibilitiesRepository = projectVisibilitiesRepository;
         }
 
         [HttpGet]
@@ -52,6 +59,37 @@ namespace backAPI.Controllers
             }
             
             return Ok(dTOUsers);
+        }
+
+        [HttpGet("user/{username}")]
+        public async Task<IActionResult> GetProjectsByUser(string username)
+        {
+            var user = await _usersRepository.GetUserByUsername(username);
+            if(user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            List<ProjectDto> dTOProjects = new List<ProjectDto>();
+
+            var projects = await _userOnProjectRepository.GetProjectsByUser(username);
+            foreach (var project in projects) {
+                dTOProjects.Add(new ProjectDto
+                {
+                    Name = project.Name,
+                    Description = project.Description,
+                    Key = project.Key,
+                    TypeName = _projectTypesRepository.GetProjectTypeById(project.TypeId).Result.Name,
+                    OwnerUsername = _usersRepository.GetUserById(project.OwnerId).Result.UserName,
+                    ParentProjectName = null,
+                    CreationDate = project.CreationDate,
+                    DueDate = project.DueDate,
+                    Budget = project.Budget,
+                    VisibilityName = _projectVisibilitiesRepository.GetProjectVisibilityByIdAsync(project.VisibilityId).Result.Name
+                });
+            }
+
+            return Ok(dTOProjects);
         }
 
         [HttpPost]

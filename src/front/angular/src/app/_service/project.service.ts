@@ -14,6 +14,10 @@ export class ProjectService {
     return this.http.get<Project[]>(this.baseUrl + "Projects");
   }
 
+  getAllProjectsForUser(username: string){
+    return this.http.get<Project[]>(this.baseUrl + `Projects/user/${username}`);
+  }
+
   getProjectByName(projectName: string | null){
     return this.http.get<Project>(this.baseUrl + `Projects/${projectName}`);
   }

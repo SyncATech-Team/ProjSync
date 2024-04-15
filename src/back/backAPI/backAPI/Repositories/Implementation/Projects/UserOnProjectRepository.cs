@@ -66,6 +66,28 @@ namespace backAPI.Repositories.Implementation.Projects
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Project>> GetProjectsByUser(string username)
+        {
+            var user = await usersRepository.GetUserByUsername(username);
+            if (user == null)
+            {
+                return Enumerable.Empty<Project>();
+            }
+
+            return await dataContext.Users
+                .Where(u => u.Id == user.Id)
+                .Join(dataContext.UsersOnProjects,
+                    u => u.Id,
+                    up => up.UserId,
+                    (u, up) => new { User = u, ProjectId = up})
+                .Join(dataContext.Projects,
+                    up => up.ProjectId.ProjectId,
+                    p => p.Id,
+                    (up, p) => new {Projects = p})
+                .Select(p => p.Projects)
+                .ToListAsync();
+        }
+
         public async Task<bool> RemoveUserFromProjectAsync(string projectName, string username)
         {
             var project = await projectsRepository.GetProjectByName(projectName);

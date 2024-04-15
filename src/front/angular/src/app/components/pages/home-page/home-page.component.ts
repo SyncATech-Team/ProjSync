@@ -30,12 +30,14 @@ export class HomePageComponent implements OnInit {
 
   selectedColumns!: string[];
   columns!: string[];
+  showColumns!: string[];
 
   constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService,private companyroleService: CompanyroleService) { }
 
   ngOnInit(): void {
     this.columns = ['Key','Type','Description','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
+    this.showColumns = ['Name',...this.selectedColumns];
     this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
@@ -50,21 +52,25 @@ export class HomePageComponent implements OnInit {
   }
 
   initializeProjects(): void {
-    this.projectService.getAllProjects().subscribe({
-      next: (response) => {
-        this.projects = response;
-        this.projects.forEach((project)=>{ 
-          project.isExtanded = false;
-          project.isFavorite = false;
-          project.creationDate = new Date(project.creationDate);
-          project.dueDate = new Date(project.dueDate); 
-        });
-        this.filterProjects(this.visibilityFilter);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+    var user = this.accoutService.getCurrentUser();
+    if(user?.username)
+    {
+      this.projectService.getAllProjectsForUser(user.username).subscribe({
+        next: (response) => {
+          this.projects = response;
+          this.projects.forEach((project)=>{ 
+            project.isExtanded = false;
+            project.isFavorite = false;
+            project.creationDate = new Date(project.creationDate);
+            project.dueDate = new Date(project.dueDate); 
+          });
+          this.filterProjects(this.visibilityFilter);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
   }
   
   filterProjects(filter :string ):void {
@@ -126,5 +132,18 @@ export class HomePageComponent implements OnInit {
       s = projectName;
 
     return s;
+  }
+
+  onSelectedChange(){
+    this.selectedColumns.forEach(item => {
+      if(!this.showColumns.includes(item)){
+        this.showColumns.push(item);
+      }
+    });
+    this.showColumns.forEach((item,index) => {
+      if(!this.selectedColumns.includes(item) && item!=='Name' && item !==''){
+        this.showColumns.splice(index,1);
+      }
+    })
   }
 }

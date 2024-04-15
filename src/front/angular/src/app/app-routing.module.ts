@@ -17,8 +17,10 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
 import { ProjectSettingsPageComponent } from './components/pages/project-page/project-settings-page/project-settings-page.component';
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { HomeGuard } from './_guards/home.guard';
+import { ProjectDocumentsPageComponent } from './components/pages/project-page/project-documents-page/project-documents-page.component';
 import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
+import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 
 
 const routes: Routes = [
@@ -40,7 +42,9 @@ const routes: Routes = [
       { path: 'home/projects/people/:projectName', component: ProjectPeoplePageComponent, canActivate: [HomeGuard]},
       { path: 'home/projects/tasks/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
       { path: 'home/projects/gantt/:projectName', component: ProjectGanttPageComponent, canActivate: [HomeGuard] },
+      { path: 'home/projects/kanban/:projectName', component: ProjectKanbanPageComponent, canActivate: [HomeGuard] },
       { path: 'home/projects/settings/:projectName', component: ProjectSettingsPageComponent, canActivate: [HomeGuard] },
+      { path: 'home/projects/documents/:projectName', component: ProjectDocumentsPageComponent, canActivate: [HomeGuard] },
       { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
       { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
       { path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard] },

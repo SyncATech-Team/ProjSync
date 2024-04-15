@@ -1,0 +1,143 @@
+.form-group p{
+    margin-bottom: 4px;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #42526e;
+}
+
+.issue-group-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.issue-group-wrapper .dropdown-groups{
+    width: 60%;
+}
+
+@media screen and (max-width: 560px) {
+    .issue-group-wrapper{
+        display: flex;
+        flex-direction: column;
+    }
+
+    :host ::ng-deep .issue-group-wrapper .add-new-group button{
+        margin-top: 10px;
+    }
+}
+
+:host ::ng-deep .issue-group-wrapper .add-new-group button{
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+:host ::ng-deep .issue-group-wrapper .add-new-group button{
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+:host ::ng-deep .form-group input,
+:host ::ng-deep .form-group .p-dropdown{
+    width: 100%;
+}
+
+/* MULTISELECT POCETAK*/
+
+:host ::ng-deep .form-group .multi-select-dropdown .p-inputwrapper{
+    width: 100%;
+    height: 2rem;
+}
+
+:host ::ng-deep .form-group .multi-select-dropdown .p-inputwrapper .p-multiselect-label{
+    padding-left: 13px;
+    padding-top: 4px;
+    padding-bottom: 0;
+    padding-right: 0;
+}
+
+/* MULTISELECT KRAJ*/
+
+:host ::ng-deep .form-group .input-size span{
+    margin-left: 8px;
+}
+
+:host ::ng-deep .form-group .input-size span{
+    padding: 5px;
+}
+
+:host ::ng-deep .form-group input,
+:host ::ng-deep .form-group .input-size li{
+    padding: 5px;
+}
+
+:host ::ng-deep .form-group .btns{
+    margin-top: 10px;
+}
+
+:host ::ng-deep .form-group .btns .p-button{
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+.calendar-wrapper{
+    display: flex;
+}
+
+.calendar-wrapper .created-date{
+    margin-right: 20px;
+}
+
+:host ::ng-deep .date2 button,
+:host ::ng-deep .date1 button{
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    height: 2rem;
+}
+
+:host ::ng-deep .issue-status button:first-child{
+    border-top-right-radius: 6px;
+}
+
+
+:host ::ng-deep .date2 input,
+:host ::ng-deep .date1 input{
+    height: 2rem;
+}
+
+.form-group .issueName{
+    padding-left: 13px;
+}
+
+:host ::ng-deep .issue-status button:last-child{
+    border-bottom-right-radius: 6px;
+}
+
+@media screen and (max-width: 760px) {
+    .calendar-wrapper{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* SLICICE NA DROPDOWN */
+
+.profilecontent img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* DESKRIPCIJA CREATE TASK */
+
+:host ::ng-deep .content-editor .ql-editor {
+    height: 6rem;
+    overflow-y: auto;
+}
+
+/* Privremeno onemogucena funcija dodavanja linka videa i slike */
+:host ::ng-deep .content-editor .ql-link,
+:host ::ng-deep .content-editor .ql-video,
+:host ::ng-deep .content-editor .ql-image {
+    display: none;
+}

@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : '' ">
     <!-- Header od sidenav -->
     <div class="logo-container">
@@ -16,12 +17,14 @@
     <!-- Linkovi -->
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="[data.routeLink + projectName]"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact:true}">
+            <a class="sidenav-nav-link" 
+               [routerLink]="data.label === 'Create task' ? null : [data.routeLink + projectName]"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact:true}"
+               (click)="handleNavigation(data.label)">
                 <i [class]="data.icon" class="sidenav-link-icon"></i>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{ data.label }}</span>
             </a>
         </li>
-    </ul>
+    </ul>    
 </div>

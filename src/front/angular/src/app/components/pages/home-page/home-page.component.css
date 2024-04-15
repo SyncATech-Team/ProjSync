@@ -37,6 +37,8 @@ th{
     position: sticky;
     top: 0;
     z-index: 999;
+    border: 1px solid rgb(226, 232, 240);
+    border-top: 0;
 }
 
 .nav .nav-item{
@@ -50,6 +52,13 @@ th{
 
 .progress-bar-wrapper{
     width: 20vh;
+}
+
+.input-search input{
+    padding-left: 30px;
+}
+.input-search i{
+    padding-left: 10px;
 }
 
 @media screen and (max-width: 960px) {

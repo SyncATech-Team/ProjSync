@@ -52,6 +52,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { ProjectDocumentsPageComponent } from './components/pages/project-page/project-documents-page/project-documents-page.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { IssueCardComponent } from './components/elements/issues/issue-card/issue-card.component';
 import { BoardDndComponent } from './components/elements/board/board-dnd/board-dnd.component';
@@ -95,6 +96,14 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 // END OF GANTT MODULES
 
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { CreateTaskComponent } from './components/elements/create-task/create-task.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
+import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
+import { IssueAssigneesComponent } from './components/elements/issues/issue-assignees/issue-assignees.component';
+import { UserProfileComponent } from './components/elements/user-profile/user-profile.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -123,6 +132,9 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ProjectSettingsPageComponent,
     EditProfilePageComponent,
     ProjectTasksPageComponent,
+    ProjectDocumentsPageComponent,
+    CreateTaskComponent,
+    CreateGroupComponent,
     ProjectGanttPageComponent,
     SpinnerComponent,
     IssueCardComponent,
@@ -141,8 +153,11 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     IssuePriorityComponent,
     IssueCommentComponent,
     IssueCommentsComponent,
+    IssueAssigneesComponent,
     BoardFilterComponent,
-    IssueReporterComponent
+    IssueReporterComponent,
+    ProjectKanbanPageComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -192,6 +207,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     MessageService,
     ConfirmationService,
     DialogService,
+    DatePipe,
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
   ],
   bootstrap: [AppComponent]

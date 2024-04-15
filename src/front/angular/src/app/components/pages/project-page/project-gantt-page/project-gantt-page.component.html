@@ -70,7 +70,7 @@
                         (dragEnded)="onDragEnded($event)"
                     >
                         <ngx-gantt-column name="Name" width="160px" [showExpandIcon]="true">
-                            <ng-template #cell let-item="item"> {{ item.title }} </ng-template>    
+                            <ng-template #cell let-item="item"> <div pTooltip="{{ item.title }}"> {{ item.title }} </div> </ng-template>    
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Start date">
@@ -81,13 +81,13 @@
                             <ng-template #cell let-item="item"> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </ng-template>
                         </ngx-gantt-column>
 
-                        <ngx-gantt-column name="Assignee">
-                            <ng-template #cell let-item="item"> TO DO </ng-template>
+                        <ngx-gantt-column name="Reporter">
+                            <ng-template #cell let-item="item"> {{ item.reporterUsername }} </ng-template>
                         </ngx-gantt-column>
 
                     </ngx-gantt-table>
                     <ng-template #bar let-item="item">
-                        <span style="color: #fff">&nbsp;&nbsp;{{ item.title }} </span>
+                        <span style="color: #000">&nbsp;&nbsp;{{ item.title }} </span>
                     </ng-template>
                 </ngx-gantt>
             </thy-content>
