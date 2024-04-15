@@ -9,11 +9,13 @@
 
         <p>Issue name</p>
         <!-- [(ngModel)]="value" -->
-        <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" class="issueName" spellcheck="false"/>
+        <!-- <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" class="issueName" spellcheck="false"/> -->
+        <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" spellcheck="false"/>
+
 
         <p>Issue type</p>
-        <!-- [(ngModel)]="projectType2" -->
-        <p-dropdown formControlName="issue-type" [options]="issueTypes" [(ngModel)]="selectedIssueType" optionLabel="value" placeholder="Select issue type" class="input-size" [showClear]="true">
+        <!-- [(ngModel)]="selectedIssueType" -->
+        <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="value" placeholder="Select issue type" class="input-size" [showClear]="true">
         <ng-template let-type pTemplate="selectedItem">
             <svg-icon [name]="type.icon"
                     [size]="20"
@@ -31,7 +33,8 @@
         </p-dropdown>
 
         <p>Issue priority</p>
-        <p-dropdown [options]="priorities" [(ngModel)]="selectedPriorityModel" optionLabel="value" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true">
+        <!-- [(ngModel)]="selectedPriorityModel" -->
+        <p-dropdown [options]="priorities"  optionLabel="value" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true">
             <ng-template let-priority pTemplate="selectedItem">
                 <svg-icon [name]="priority.icon"
                         [size]="20"
@@ -103,7 +106,8 @@
         </p-dropdown>
 
         <p>Assigned</p>
-        <p-multiSelect [options]="users" [(ngModel)]="selectedAssignees" placeholder="Select a Country" optionLabel="username" class="multi-select-dropdown">
+        <!-- [(ngModel)]="selectedAssignees" -->
+        <p-multiSelect [options]="users"  placeholder="Select a Country" optionLabel="username" class="multi-select-dropdown">
             <ng-template let-user pTemplate="item">
                 <div class="profilecontent">
                     <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">

@@ -143,12 +143,16 @@ export class CreateTaskComponent implements OnInit {
 
       try {
         this.issueCreator.name = this.form.controls['issue-name'].value;
+
         this.selectedIssueType = this.form.controls['issue-type'].value;
-        console.log(this.form.controls['issue-type']);
-        console.log(this.selectedIssueType.value);
         this.issueCreator.typeName = this.selectedIssueType.value;
+
         this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
+        // this.issueCreator.priorityName = this.selectedPriorityModel.value;
+        this.selectedPriorityModel = this.form.controls['issue-priority'].value;
         this.issueCreator.priorityName = this.selectedPriorityModel.value;
+        console.log(this.selectedPriorityModel);
+
         this.issueCreator.description = this.form.controls['issue-description'].value;
         this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
         this.issueCreator.updatedDate = new Date();
