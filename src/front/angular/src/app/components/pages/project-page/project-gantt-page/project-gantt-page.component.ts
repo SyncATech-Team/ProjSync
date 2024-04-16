@@ -27,6 +27,8 @@ import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
 import { IssueDateUpdate } from '../../../../_models/issue-date-update.model';
 import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
 import { ConfirmationService } from 'primeng/api';
+import { GroupService } from '../../../../_service/group.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -90,6 +92,10 @@ loading = false;
 
 items: GanttItem[] = [];
 
+groups: GanttGroup[] = [];
+
+expanded = false;
+
 /**
  * Koje opcije se prikazuju u toolbar-u
  */
@@ -116,12 +122,34 @@ constructor(
     private issueService: IssueService,
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
+    private groupService: GroupService
 ) {}
 
 ngOnInit(): void {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
-    
+
     this.loading = true;
+
+    this.groupService.getAllGroups(this.projectName).subscribe({
+        next: response => {
+            let data = response;
+            const dataGroups = [];
+
+            for(let group of data) {
+                dataGroups.push({
+                    id: "" + group.id,
+                    title: group.name,
+                    expanded: this.expanded
+                })
+            }
+            this.groups = dataGroups;
+            console.log(this.groups);
+        },
+        error: error => {
+            console.log("ERROR!!!");
+        } 
+    })
+
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
         next: response => {
             let data = response;
@@ -140,7 +168,7 @@ ngOnInit(): void {
                     title: issue.name,
                     start: getUnixTime(startDate),
                     end: getUnixTime(endDate),
-                    group_id: '0000',
+                    group_id: "" + issue.groupId,
                     links: dependentOnList,
                     expandable: true,
                     draggable: true,
@@ -316,6 +344,14 @@ onDragEnded(event: GanttTableDragEndedEvent) {
     console.log('Drag ended', event);
 }
 
-
+expandAllGroups() {
+    if (this.expanded) {
+        this.expanded = false;
+        this.ganttComponent!.collapseAll();
+    } else {
+        this.expanded = true;
+        this.ganttComponent!.expandAll();
+    }
+}
 
 }

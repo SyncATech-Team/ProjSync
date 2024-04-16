@@ -16,5 +16,6 @@ export interface IssueModel {
     reporterUsername: string,
     assigneeUsernames: string[],
     dependentOnIssues: number[],
-    completed: number
+    completed: number,
+    groupId?: number
 }

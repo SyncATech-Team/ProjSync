@@ -25,6 +25,7 @@
                     &nbsp; &nbsp; &nbsp;
                     <thy-button thyType="primary" thySize="sm" (click)="scrollToToday()">Today</thy-button>
                     &nbsp; &nbsp; &nbsp;
+                    <thy-button thyType="primary" thySize="sm" (click)="expandAllGroups()">Collapse groups</thy-button>
                     <!-- Otkomentarisati za pokusaj printa -->
                     <!-- <thy-button thyType="primary" thySize="sm" (click)="print('gantt-example')"> ↓ 导出为图片 </thy-button> -->
                     <!-- &nbsp; &nbsp; &nbsp; -->
@@ -39,6 +40,7 @@
                 <ngx-gantt
                     #gantt
                     class="gantt"
+                    [groups]="groups"
                     [items]="items"
                     [baselineItems]="baselineItems"
                     [viewType]="viewType"
@@ -60,7 +62,7 @@
                     (linkDragEnded)="linkDragEnded($event)"
                 >
                     <ngx-gantt-table
-                        [draggable]="true"
+                        [draggable]="false"
                         [dropEnterPredicate]="dropEnterPredicate"
                         (dragDropped)="onDragDropped($event)"
                         (dragStarted)="onDragStarted($event)"
