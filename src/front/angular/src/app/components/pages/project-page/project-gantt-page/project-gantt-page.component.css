@@ -24,3 +24,17 @@
     background-color: red;
     display: none !important;
 }
+
+:host ::ng-deep .btn-group-outline-default thy-button:hover {
+    background-color: lightblue;
+    border: 1px solid black;
+}
+
+:host ::ng-deep .btn-group-outline-default .active {
+    background-color: lightblue;
+}
+
+:host ::ng-deep .thy-btn[thytype="primary"] {
+    background-color: lightblue;
+    color: black;
+}

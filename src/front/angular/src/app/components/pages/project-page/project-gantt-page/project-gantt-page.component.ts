@@ -28,7 +28,6 @@ import { IssueDateUpdate } from '../../../../_models/issue-date-update.model';
 import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
 import { ConfirmationService } from 'primeng/api';
 import { GroupService } from '../../../../_service/group.service';
-import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-project-gantt-page',
