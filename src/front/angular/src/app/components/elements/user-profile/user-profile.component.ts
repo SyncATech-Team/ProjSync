@@ -8,6 +8,7 @@ import { UserProfilePicture } from '../../../_service/userProfilePicture.service
 import { Project } from '../../../_models/project.model';
 import { UserOnProjectService } from '../../../_service/userOnProject.service';
 import { error } from 'console';
+import { getTime } from 'date-fns';
 
 @Component({
   selector: 'app-user-profile',
@@ -37,6 +38,7 @@ export class UserProfileComponent implements OnInit{
   }
 
   userProjects : Project[] = [];
+  today: Date = new Date();
 
   constructor(
     private _dialogConfig : DynamicDialogConfig,

@@ -28,9 +28,22 @@
 
         <div class="userProject container">
             <p class="title">User projects</p>
-            <ul>
-                <li *ngFor="let project of userProjects">{{ project.name }}</li>
-            </ul>
+            <div class="content-section">
+                <ul>
+                    <li *ngFor="let project of userProjects" class="about-product">
+                        <div class="project">
+                            {{ project.name }}
+                        </div>
+                        <span class="status">
+                            
+                        Due date: {{ project.dueDate | date:'MMMM dd, yyyy' }}
+                        </span>
+                        <div class="button-wrapper">
+                            <button class="content-button status-button open">Open</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
