@@ -19,8 +19,6 @@ import {
   NgxGanttComponent,
   GanttGroup
 } from '@worktile/gantt';
-import { finalize, of } from 'rxjs';
-// import { delay } from 'rxjs/operators';
 import { addDays, fromUnixTime, getUnixTime } from 'date-fns';
 import { IssueService } from '../../../../_service/issue.service';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
@@ -28,6 +26,7 @@ import { MessagePopupService } from '../../../../_service/message-popup.service'
 import { GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
 import { IssueDateUpdate } from '../../../../_models/issue-date-update.model';
 import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -91,42 +90,6 @@ loading = false;
 
 items: GanttItem[] = [];
 
-random(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
-randomItems(length: number, parent?: GanttItem, group?: string) {
-  const items = [];
-  for (let i = 0; i < length; i++) {
-      const start = addDays(new Date(), this.random(-200, 200));
-      const end = addDays(start, this.random(0, 100));
-      items.push({
-          id: `${parent?.id || group || ''}${Math.floor(Math.random() * 100000000)}`,
-          title: `${parent?.title || 'Task'}-${i}`,
-          start: getUnixTime(start),
-          end: getUnixTime(end),
-          group_id: group,
-          expandable: true
-      });
-  }
-  return items;
-}
-
-randomGroupsAndItems(length: number) {
-  const groups: GanttGroup[] = [];
-  let items: GanttItem[] = [];
-  for (let i = 0; i < length; i++) {
-      groups.push({
-          id: `00000${i}`,
-          title: `Group-${i}`
-      });
-      items = [...items, ... this.randomItems(6, undefined, groups[i].id)];
-  }
-  return {
-      groups,
-      items
-  };
-}
 /**
  * Koje opcije se prikazuju u toolbar-u
  */
@@ -151,7 +114,8 @@ constructor(
     private route: ActivatedRoute,
     private printService: GanttPrintService,
     private issueService: IssueService,
-    private msgPopupService: MessagePopupService
+    private msgPopupService: MessagePopupService,
+    private confirmationService: ConfirmationService,
 ) {}
 
 ngOnInit(): void {
@@ -210,29 +174,42 @@ barClick(event: GanttBarClickEvent) {
 }
 
 lineClick(event: GanttLineClickEvent) {
-    let source = event.source;
-    let target = event.target;
-    
-    console.log(source.id);
-    console.log(target.id);
 
-    let model: IssueDependencyUpdater = {
-        originId: source!.id as unknown as number,
-        targetId: target!.id as unknown as number,
-        isDelete: true
-    }
+    this.confirmationService.confirm({
+        message: 'Do you want to delete this dependency?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass:"p-button-danger p-button-text",
+        rejectButtonStyleClass:"p-button-text p-button-text",
+        acceptIcon:"none",
+        rejectIcon:"none",
 
-    this.issueService.createOrDeleteIssueDependency(model).subscribe({
-        next: response => {
-            this.msgPopupService.showInfo("Successfully deleted a dependency!");
-            this.refresh();
+        accept: () => {
+            let source = event.source;
+            let target = event.target;
+            
+            let model: IssueDependencyUpdater = {
+                originId: source!.id as unknown as number,
+                targetId: target!.id as unknown as number,
+                isDelete: true
+            }
+
+            this.issueService.createOrDeleteIssueDependency(model).subscribe({
+                next: response => {
+                    this.msgPopupService.showInfo("Successfully deleted a dependency!");
+                    this.refresh();
+                },
+                error: error => {
+                    console.log("ERROR!!! " + error.error);
+                }
+            })
+            
+            this.items = [...this.items];
         },
-        error: error => {
-            console.log("ERROR!!! " + error.error);
+        reject: () => {
+
         }
     })
-    
-    this.items = [...this.items];
     // this.msgPopupService.showInfo(`Event: lineClick ${event.source.title} to ${event.target.title} line`)
 }
 
@@ -300,20 +277,6 @@ print(name: string) {
 scrollToToday() {
     if(this.ganttComponent)
       this.ganttComponent.scrollToDate(getUnixTime(new Date()));
-}
-
-switchChange() {
-    if (this.isBaselineChecked) {
-        this.baselineItems = [
-            { id: '000000', start: 1627728888, end: 1628421197 },
-            { id: '000001', start: 1617361997, end: 1625483597 },
-            { id: '000002', start: 1610536397, end: 1610622797 },
-            { id: '000003', start: 1628507597, end: 1633345997 },
-            { id: '000004', start: 1624705997 }
-        ];
-    } else {
-        this.baselineItems = [];
-    }
 }
 
 selectView(type: GanttViewType) {
