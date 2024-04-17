@@ -1,134 +1,123 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class TypeTaskMigration : Migration
+    public partial class MigrationSQLite : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySQL:Charset", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "CompanyRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true),
-                    CanManageProjects = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CanManageTasks = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CanUpdateTaskProgress = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CanLeaveComments = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CanUploadFiles = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    CanManageProjects = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CanManageTasks = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CanUpdateTaskProgress = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CanLeaveComments = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CanUploadFiles = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompanyRoles", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "IssuePriorities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IssuePriorities", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "IssueStatuses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IssueStatuses", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "IssueType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IssueType", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "ProjectTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectTypes", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "ProjectVisibilities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectVisibilities", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "longtext", nullable: true),
-                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -139,41 +128,40 @@ namespace backAPI.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(type: "longtext", nullable: true),
-                    LastName = table.Column<string>(type: "longtext", nullable: true),
-                    CompanyRoleId = table.Column<int>(type: "int", nullable: false),
-                    ProfilePhoto = table.Column<string>(type: "longtext", nullable: true),
-                    Address = table.Column<string>(type: "longtext", nullable: true),
-                    ContactPhone = table.Column<string>(type: "longtext", nullable: true),
-                    Status = table.Column<string>(type: "longtext", nullable: true),
-                    IsVerified = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PreferedLanguage = table.Column<string>(type: "longtext", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "longtext", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "longtext", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", nullable: true),
+                    CompanyRoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProfilePhoto = table.Column<string>(type: "TEXT", nullable: true),
+                    Address = table.Column<string>(type: "TEXT", nullable: true),
+                    ContactPhone = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
+                    IsVerified = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PreferedLanguage = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,18 +172,17 @@ namespace backAPI.Migrations
                         principalTable: "CompanyRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "longtext", nullable: true),
-                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,17 +193,16 @@ namespace backAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "varchar(255)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -227,16 +213,15 @@ namespace backAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId1 = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -258,17 +243,16 @@ namespace backAPI.Migrations
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Value = table.Column<string>(type: "longtext", nullable: true)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,18 +263,17 @@ namespace backAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Notifications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Message = table.Column<string>(type: "longtext", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Message = table.Column<string>(type: "TEXT", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -301,26 +284,25 @@ namespace backAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: true),
-                    Key = table.Column<string>(type: "varchar(255)", nullable: true),
-                    TypeId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: true),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    IconPath = table.Column<string>(type: "longtext", nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Budget = table.Column<double>(type: "double", nullable: true),
-                    VisibilityId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Key = table.Column<string>(type: "TEXT", nullable: true),
+                    TypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    OwnerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IconPath = table.Column<string>(type: "TEXT", nullable: true),
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Budget = table.Column<double>(type: "REAL", nullable: true),
+                    VisibilityId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -349,16 +331,15 @@ namespace backAPI.Migrations
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorkingHours",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    SpecificDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    HoursWorking = table.Column<double>(type: "double", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SpecificDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    HoursWorking = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -369,17 +350,16 @@ namespace backAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "IssueGroups",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ProjectId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -390,19 +370,18 @@ namespace backAPI.Migrations
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "ProjectDocumentations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "longtext", nullable: true),
-                    Path = table.Column<string>(type: "longtext", nullable: true),
-                    ProjectId = table.Column<int>(type: "int", nullable: false),
-                    DateUploaded = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Path = table.Column<string>(type: "TEXT", nullable: true),
+                    ProjectId = table.Column<int>(type: "INTEGER", nullable: false),
+                    DateUploaded = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -413,18 +392,17 @@ namespace backAPI.Migrations
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "UsersOnProjects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false),
-                    UserColor = table.Column<string>(type: "longtext", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProjectId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserColor = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -441,26 +419,25 @@ namespace backAPI.Migrations
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Issues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    TypeId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
-                    PriorityId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    GroupId = table.Column<int>(type: "int", nullable: false),
-                    Completed = table.Column<double>(type: "double", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    TypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    StatusId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PriorityId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    OwnerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    GroupId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Completed = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -495,20 +472,19 @@ namespace backAPI.Migrations
                         principalTable: "IssueType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "IssueComments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    IssueId = table.Column<int>(type: "int", nullable: false),
-                    Parent = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "longtext", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IssueId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Parent = table.Column<int>(type: "INTEGER", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -525,17 +501,16 @@ namespace backAPI.Migrations
                         principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "IssueDependencies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    OriginId = table.Column<int>(type: "int", nullable: false),
-                    TargetId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    OriginId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TargetId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -552,19 +527,18 @@ namespace backAPI.Migrations
                         principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "UsersOnIssues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    IssueId = table.Column<int>(type: "int", nullable: false),
-                    Reporting = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CompletionLevel = table.Column<double>(type: "double", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IssueId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Reporting = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CompletionLevel = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -581,8 +555,7 @@ namespace backAPI.Migrations
                         principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

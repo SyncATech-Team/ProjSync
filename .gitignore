@@ -71,3 +71,5 @@ artifacts/
 *.svclog
 *.scc
 
+# SQLite database
+/src/back/backAPI/backAPI/database.db
