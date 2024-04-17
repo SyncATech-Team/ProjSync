@@ -66,6 +66,7 @@ Console.ForegroundColor = ConsoleColor.Yellow;
 Console.WriteLine("Adding CORS policy");
 Console.WriteLine("");
 
+/*
 int numOfOrigins = int.Parse(builder.Configuration["AllowedCorsOrigins:NumOfOrigins"]);
 string[] origins = new string[numOfOrigins];
 for (int i = 0; i < numOfOrigins; i++) {
@@ -76,11 +77,15 @@ for (int i = 0; i < numOfOrigins; i++) {
     origins[i] = address;
 }
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(origins));
+// app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+*/
 
 Console.WriteLine("");
 Console.WriteLine("CORS policy specified...");
 
 Console.ForegroundColor = ConsoleColor.White;
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthorization();
 app.MapControllers();

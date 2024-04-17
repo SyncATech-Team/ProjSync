@@ -75,3 +75,4 @@ artifacts/
 /src/back/backAPI/backAPI/database.db
 /src/back/backAPI/backAPI/database.db-shm
 /src/back/backAPI/backAPI/database.db-wal
+src/back/backAPI/backAPI/out

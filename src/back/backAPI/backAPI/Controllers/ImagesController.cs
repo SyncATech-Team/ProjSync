@@ -25,7 +25,7 @@ namespace backAPI.Controllers
                 return NotFound("User or image not found");
             }
 
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\") + user.ProfilePhoto;
+            var imagePath = "../" + user.ProfilePhoto;
             var imageBytes = await System.IO.File.ReadAllBytesAsync(imagePath);
                 
 
@@ -50,7 +50,7 @@ namespace backAPI.Controllers
             var user = await _usersRepository.GetUserByUsername(username);
             if (user.ProfilePhoto != null)
             {
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\") + user.ProfilePhoto;
+                var imagePath = "../" + user.ProfilePhoto;
                 Console.WriteLine("TEST");
                 System.IO.File.Delete(imagePath);
 
@@ -70,7 +70,7 @@ namespace backAPI.Controllers
                 return BadRequest(new {message = "User or image not found" });
             }
 
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\") + user.ProfilePhoto;
+            var imagePath = "../" + user.ProfilePhoto;
 
             if (System.IO.File.Exists(imagePath))
             {
