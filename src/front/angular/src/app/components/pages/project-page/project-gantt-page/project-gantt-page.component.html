@@ -1,5 +1,6 @@
-<app-spinner></app-spinner>
 <p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<!-- <app-spinner></app-spinner> -->
 <app-nav-bar></app-nav-bar>
 
 <div class="wrapper">
@@ -24,6 +25,7 @@
                     &nbsp; &nbsp; &nbsp;
                     <thy-button thyType="primary" thySize="sm" (click)="scrollToToday()">Today</thy-button>
                     &nbsp; &nbsp; &nbsp;
+                    <thy-button thyType="primary" thySize="sm" (click)="expandAllGroups()">Collapse groups</thy-button>
                     <!-- Otkomentarisati za pokusaj printa -->
                     <!-- <thy-button thyType="primary" thySize="sm" (click)="print('gantt-example')"> ↓ 导出为图片 </thy-button> -->
                     <!-- &nbsp; &nbsp; &nbsp; -->
@@ -32,23 +34,20 @@
                     <!-- <span>Toolbar: </span>
                     <thy-switch class="baseline-switch" [(ngModel)]="isShowToolbarChecked"> </thy-switch> -->
                     
-                    <!-- Otkomentarisati za baseline comparison -->
-                    <!-- &nbsp; &nbsp; &nbsp;
-                    <span>Baseline comparison: </span>
-                    <thy-switch class="baseline-switch" [(ngModel)]="isBaselineChecked" (ngModelChange)="switchChange()">Compare </thy-switch> -->
                     </ng-template>
             </thy-header>
             <thy-content>
                 <ngx-gantt
                     #gantt
                     class="gantt"
+                    [groups]="groups"
                     [items]="items"
                     [baselineItems]="baselineItems"
                     [viewType]="viewType"
                     [draggable]="true"
                     [linkable]="true"
                     [selectable]="true"
-                    [multiple]="true"
+                    [multiple]="false"
                     [viewOptions]="viewOptions"
                     [showToolbar]="isShowToolbarChecked"
                     [toolbarOptions]="toolbarOptions"
@@ -63,26 +62,34 @@
                     (linkDragEnded)="linkDragEnded($event)"
                 >
                     <ngx-gantt-table
-                        [draggable]="true"
+                        [draggable]="false"
                         [dropEnterPredicate]="dropEnterPredicate"
                         (dragDropped)="onDragDropped($event)"
                         (dragStarted)="onDragStarted($event)"
                         (dragEnded)="onDragEnded($event)"
                     >
                         <ngx-gantt-column name="Name" width="160px" [showExpandIcon]="true">
-                            <ng-template #cell let-item="item"> <div pTooltip="{{ item.title }}"> {{ item.title }} </div> </ng-template>    
+                            <ng-template #cell let-item="item"> 
+                                <div pTooltip="{{ item.title }}"> {{ item.title }} </div>
+                            </ng-template>    
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Start date">
-                            <ng-template #cell let-item="item">{{ item.start * 1000 | date : 'dd.MM.yyyy' }}</ng-template>
+                            <ng-template #cell let-item="item">
+                                <div pTooltip='{{item.start * 1000 | date: "dd.MM.yyyy"}}'> {{ item.start * 1000 | date : 'dd.MM.yyyy' }} </div>
+                            </ng-template>
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Due date">
-                            <ng-template #cell let-item="item"> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </ng-template>
+                            <ng-template #cell let-item="item"> 
+                                <div pTooltip='{{item.end * 1000 | date: "dd.MM.yyyy"}}'> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </div>
+                            </ng-template>
                         </ngx-gantt-column>
 
                         <ngx-gantt-column name="Reporter">
-                            <ng-template #cell let-item="item"> {{ item.reporterUsername }} </ng-template>
+                            <ng-template #cell let-item="item">
+                                <div pTooltip="{{item.reporterUsername}}">{{ item.reporterUsername }}</div>
+                            </ng-template>
                         </ngx-gantt-column>
 
                     </ngx-gantt-table>

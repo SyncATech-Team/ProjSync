@@ -101,8 +101,7 @@ export class NavBarComponent implements OnInit {
   setSmallerUserPicture() {
     let element = document.getElementById("small_user_image");
     if(element == null) return;
-
-    console.log("NIJE NULL: " + element);
+    
     let image = element as HTMLImageElement;
 
     let vecaSlika = document.getElementById("profile-image") as HTMLImageElement;

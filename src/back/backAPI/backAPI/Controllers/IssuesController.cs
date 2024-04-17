@@ -87,7 +87,8 @@ namespace backAPI.Controllers
                     ReporterUsername = reporterUsername.UserName,
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
-                    Completed = issue.Completed
+                    Completed = issue.Completed,
+                    GroupId = issueGroup.Id
                 };
                 result.Add(issueDto);
             }
@@ -140,7 +141,8 @@ namespace backAPI.Controllers
                         ReporterUsername = reporterUsername.UserName,
                         AssigneeUsernames = assigneeUsernames.ToArray(),
                         DependentOnIssues = issueDependencies.ToArray(),
-                        Completed = issue.Completed
+                        Completed = issue.Completed,
+                        GroupId = issue.GroupId
                     };
                     result.Add(issueDto);
                 }
@@ -166,22 +168,6 @@ namespace backAPI.Controllers
             var completed = 0.0;
 
             var issueReporter = await _usersRepository.GetUserByUsername(creationModel.ReporterUsername);
-
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Creating issue...");
-            Console.WriteLine(issueName + "\n" 
-                + issueType + "\n" 
-                + issueStatus + "\n"
-                + issuePriority + "\n"
-                + issueDescription + "\n"
-                + issueCreatedDate + "\n"
-                + issueUpdatedDate + "\n"
-                + issueDueDate + "\n"
-                + issueOwner + "\n"
-                + project.Name + "\n"
-                + issueGroup.Name + "\n");
-            Console.WriteLine(issueReporter.UserName);
-            Console.BackgroundColor = ConsoleColor.Black;
 
             // Prevodjenje username - ova iz niza assignees u njihove id-jeve
             var assignedToIds = await _usersRepository.GetUsersFromIDarray(creationModel.AssigneeUsernames);
@@ -241,6 +227,21 @@ namespace backAPI.Controllers
 
             }
 
+            return Ok();
+        }
+
+        [HttpPut("issueId")]
+        public async Task<IActionResult> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto updateDate) {
+            var updated = await _issueRepository.UpdateIssueStartEndDate(issueId, updateDate);
+            if(updated == false) {
+                return BadRequest("Not valid call");
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
+            var changed = await _issueRepository.CreateOrDeleteDependency(model);
             return Ok();
         }
     }

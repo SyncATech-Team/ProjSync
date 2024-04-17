@@ -1,4 +1,5 @@
-﻿using backAPI.Entities.Domain;
+﻿using backAPI.DTO.Issues;
+using backAPI.Entities.Domain;
 
 namespace backAPI.Repositories.Interface.Issues
 {
@@ -26,5 +27,7 @@ namespace backAPI.Repositories.Interface.Issues
         Task<IEnumerable<int>> GetDependentIssues(int issueId);
 
         Task<bool> AddIssueDependencies(IEnumerable<Tuple<int, int>> dependencies);
+        Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model);
+        Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model);
     }
 }
