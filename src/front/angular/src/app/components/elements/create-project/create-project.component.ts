@@ -114,7 +114,7 @@ export class CreateProjectComponent implements OnInit{
           // this.formCreateProject.reset();
         },
         error: (error)=>{
-          this.msgPopUpService.showError("Unable to create project");
+          this.msgPopUpService.showError("Unable to create project. Some fields are empty.");
         }
       });
     }

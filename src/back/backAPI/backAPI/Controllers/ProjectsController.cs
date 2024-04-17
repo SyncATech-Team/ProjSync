@@ -136,7 +136,12 @@ namespace backAPI.Controllers
                 return BadRequest("Project key is taken");
             }
 
-            await _projectsRepository.CreateProject(projectDto);
+            var temp = await _projectsRepository.CreateProject(projectDto);
+
+            if(temp == null)
+            {
+                return BadRequest("Project name or type or visibility is null");
+            }
 
             return Ok();
         }
