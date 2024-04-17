@@ -20,5 +20,6 @@
         public string[] AssigneeUsernames { get; set; }
         public int[] DependentOnIssues { get; set; }
         public double Completed {  get; set; }
+        public int GroupId { get; set; }            // za dovlacenje grupe
     }
 }
