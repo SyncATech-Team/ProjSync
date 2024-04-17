@@ -255,7 +255,7 @@ export class ProjectPeoplePageComponent implements OnInit{
       modal: true,
       dismissableMask: true,
       closeOnEscape: true,
-      maximizable: window.innerWidth < 610,
+      maximizable: true,
       data: {
         username: username,
         usersPhotos: this.usersPhotos,

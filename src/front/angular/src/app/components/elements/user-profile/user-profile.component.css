@@ -78,16 +78,42 @@
 .userProject .title{
     font-weight: 500;
     font-size: 20px;
-    margin-bottom: 5px;
+    margin-bottom: 14px;
 }
 
 .userProject ul{
-    margin-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 14px;
+    background-color: #d8dde6;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-weight: 500;
+    color: #666565;
+    cursor: pointer;
 }
 
-.card{
-    background-color: red;
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid #dfe7ef;
+.userProject ul li{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 18px;
+    font-size: 16px;
+}
+
+.userProject ul li:hover{
+    background-color: rgba(109, 111, 118, 0.4);
+    border-radius: 13px 13px 13px 13px;
+}
+
+.userProject ul li .button-wrapper button{
+    font-size: 15px;
+    padding: 3px 15px;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    color: #fff;
+    cursor: pointer;
+    background-color: transparent;
 }

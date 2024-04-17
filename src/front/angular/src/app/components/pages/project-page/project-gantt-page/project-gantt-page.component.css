@@ -3,16 +3,11 @@
 }
 
 .content{
-    display: contents;
-}
-
-.display-block {
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 20px;
-    
-    width: 82%;
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
     height: 80vh;
 }
 
@@ -25,6 +20,21 @@
     display: none;
 }
 
-:host ::ng-deep .empty-icon {
-    display: none;
+:host ::ng-deep .gantt-expand-icon {
+    background-color: red;
+    display: none !important;
+}
+
+:host ::ng-deep .btn-group-outline-default thy-button:hover {
+    background-color: lightblue;
+    border: 1px solid black;
+}
+
+:host ::ng-deep .btn-group-outline-default .active {
+    background-color: lightblue;
+}
+
+:host ::ng-deep .thy-btn[thytype="primary"] {
+    background-color: lightblue;
+    color: black;
 }
