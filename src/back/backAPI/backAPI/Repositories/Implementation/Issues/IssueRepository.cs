@@ -1,4 +1,5 @@
 ﻿using backAPI.Data;
+using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -86,10 +87,40 @@ namespace backAPI.Repositories.Implementation.Issues
 
         public async Task<IEnumerable<int>> GetDependentIssues(int issueId) {
             var elements = await _dataContext.IssueDependencies
-                .Where(elem => elem.TargetId == issueId)
+                .Where(elem => elem.OriginId == issueId)
                 .ToListAsync();
 
-            return elements.Select(elem => elem.OriginId);
+            return elements.Select(elem => elem.TargetId);
+        }
+
+        public async Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model) {
+            var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+            if(exists == null) {
+                return false;
+            }
+
+            exists.CreatedDate = model.StartDate.AddDays(1);        // dodatak +1 zbog front-a???
+            exists.UpdatedDate = DateTime.Now;
+            exists.DueDate = model.EndDate;
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
+            if(model.IsDelete) {
+                await _dataContext.IssueDependencies
+                    .Where(elem => elem.OriginId == model.OriginId && elem.TargetId == model.TargetId)
+                    .ExecuteDeleteAsync();
+            }
+            else {
+                await _dataContext.IssueDependencies.AddAsync(new IssueDependencies {
+                    OriginId = model.OriginId,
+                    TargetId = model.TargetId
+                });
+            }
+
+            await _dataContext.SaveChangesAsync();
+            return true;
         }
     }
 }

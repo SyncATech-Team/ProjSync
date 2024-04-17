@@ -7,10 +7,10 @@
         <div id="content">
             <h2>Tasks</h2>
             <div id="tasks">
-  
+                  
                 <p-table
                     #dt1
-                    *ngIf="visible"
+                    *ngIf="visible && (groupView ? tasksByGroup.length : tasks.length)"
                     [value]="groupView ? tasksByGroup : tasks"
                     dataKey="{{dataKey}}"
                     [globalFilterFields]="['name']"

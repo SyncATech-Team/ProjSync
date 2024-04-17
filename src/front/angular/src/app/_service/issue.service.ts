@@ -7,6 +7,8 @@ import { IssueStatus } from '../_models/issue-status';
 import { Observable } from 'rxjs';
 import { CreateIssueModel } from '../_models/create-issue.model';
 import { IssueModel } from '../_models/model-issue.model';
+import { IssueDateUpdate } from '../_models/issue-date-update.model';
+import { IssueDependencyUpdater } from '../_models/issue-dependency-create-delete';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +41,13 @@ export class IssueService {
     return this.http.post<IssueModel>(this.baseUrl + "Issues", model);
   }
 
+  updateIssueStartEndDate(issueId: number, model: IssueDateUpdate) {
+    return this.http.put<boolean>(`${this.baseUrl}Issues/issueId?issueId=${issueId}`, model);
+  }
+
+  createOrDeleteIssueDependency(model: IssueDependencyUpdater) {
+    return this.http.put<boolean>(`${this.baseUrl}Issues/`, model);
+  }
 
   getTasksTest() : Observable<JSON> {
     return this.http.get<JSON>("../../assets/testing-data/tasks.json");
