@@ -26,7 +26,7 @@ export class HomePageComponent implements OnInit {
   visibilityFilter: string = 'private';
   first = 0;
   rows = 10;
-  totalRecords = 11;
+  totalRecords = 0;
 
   permitions: any;
 
@@ -40,7 +40,7 @@ export class HomePageComponent implements OnInit {
     this.columns = ['Key','Type','Description','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
-    //this.initializeProjects();
+    this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
         this.Types = response.map(item => item.name);
@@ -66,6 +66,7 @@ export class HomePageComponent implements OnInit {
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
           });
+          this.totalRecords=this.projects.length;
           this.filterProjects(this.visibilityFilter);
         },
         error: (error) => {
