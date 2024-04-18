@@ -59,7 +59,7 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 
 ### Tech Stack <a name="tech-stack"></a>
 
-Što se tehnologija tiče, navedena aplikacija je razvijena korišćenjem savremenih web tehnologija - Angular kao frontend, dok je za potrebe serverske strane korišćen .NET framework i MySQL baza podataka.
+Što se tehnologija tiče, navedena aplikacija je razvijena korišćenjem savremenih web tehnologija - Angular kao frontend, dok je za potrebe serverske strane korišćen .NET framework i SQLite baza podataka.
 
 <details>
   <summary>Client</summary>
@@ -183,28 +183,28 @@ Example command:
 ### Deployment
 
 Za potrebne deployment-a aplikacije potrebno je build-ovati frontend sledecim nizom komandi:
-* Premestiti se u direktorijum ```sh /src/front/angular ```
-* Pokrenuti komandu ```sh ng build ```. Kao rezultat ove komande kreirace se build-ovana verzija za production u direktorijum _dist_.
+* Premestiti se u direktorijum ```/src/front/angular ```
+* Pokrenuti komandu ```ng build ```. Kao rezultat ove komande kreirace se build-ovana verzija za production u direktorijum _dist_.
 
 Backend deo aplikacije publish-ovati sledecim nizom komandi:
-* Premestiti se u direktorijum ```sh /src/back/backAPI/backAPI ```
-* Pokrenuti komandu ```sh dotnet publish -c Release -o out ```. Kao rezultat ove komande u trenutnom direktorijumu ce biti kreiran novi direktorijum pod nazivom _out_ u kome ce se nalaziti potrebni .dll, dependency i ostali fajlovi.
+* Premestiti se u direktorijum ```/src/back/backAPI/backAPI ```
+* Pokrenuti komandu ```dotnet publish -c Release -o out ```. Kao rezultat ove komande u trenutnom direktorijumu ce biti kreiran novi direktorijum pod nazivom _out_ u kome ce se nalaziti potrebni .dll, dependency i ostali fajlovi.
 * Prekopirati fajl baze podataka sa ekstenzijom **.db** u out direktorijum.
 
 Kao rezultat prethodnih komandi kreirani su svi potrebni fajlovi za deployment.  
 Sada je potrebno prekopirati kreirane build fajlove u odgovarajuce direktorijume na serveru.
 
-Direktorijum ```sh dist ``` u kome je buildovan frontend potrebno je prekopirati na server komandom:
+Direktorijum ```dist ``` u kome je buildovan frontend potrebno je prekopirati na server komandom:
 ```sh
   scp -r ./dist/angular syncatech@softeng.pmf.kg.ac.rs:~/production/front
 ```
-***Napomena: Navedenu komandu potrebno je pokrenuti iz direktorijuma ```sh /src/front/angular ```.
+***Napomena: Navedenu komandu potrebno je pokrenuti iz direktorijuma ```/src/front/angular ```.
 
 Direktorijum ``` out ``` u kome je publishovana Release verzija backend-a i baze podataka potrebno je prekopirati na server komandom:
 ```sh
   scp -r ./out syncatech@softeng.pmf.kg.ac.rs:~/production/back
 ```
-***Napomena: Navedenu komandu potrebno je pokrenuti iz direktorijuma ```sh /src/back/backAPI/backAPI ```
+***Napomena: Navedenu komandu potrebno je pokrenuti iz direktorijuma ```/src/back/backAPI/backAPI ```
 
 Nakon izvrsenih komandi na serveru se u odgovarajucim direktorijumima nalaze potrebne verzije za pokretanje aplikacije.
 
@@ -214,9 +214,9 @@ Radi lakseg iskustva u radu sa terminalima na serveru moguce je koristiti komand
   screen -S production-front # kreira prozor za pokretanje frontend dela aplikacije
   screen -S production-back # kreira prozor za pokretanje backend dela aplikacije
 ```
-Iz jednog screen-a moguce je izaci prosledjivanjem signala sa tastature ```sh CTRL + A + D ```  
-Moguce je izlistati trenutno aktuelne screen-ove komandom ```sh screen -ls ```  
-Moguce je aktivirati screen komandom ```sh screen -r naziv ```
+Iz jednog screen-a moguce je izaci prosledjivanjem signala sa tastature ```CTRL + A + D ```  
+Moguce je izlistati trenutno aktuelne screen-ove komandom ```screen -ls ```  
+Moguce je aktivirati screen komandom ```screen -r naziv ```
 
 Aplikaciju je potrebno pokrenuti startovanjem frontend i backend dela sledecim komandama:  
 ```sh
