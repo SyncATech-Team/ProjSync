@@ -5,6 +5,7 @@ import { ProjectService } from '../../../_service/project.service';
 import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectType } from '../../../_models/project-type';
 import { CompanyroleService } from '../../../_service/companyrole.service';
+import { TableLazyLoadEvent } from 'primeng/table';
 
 
 
@@ -25,6 +26,7 @@ export class HomePageComponent implements OnInit {
   visibilityFilter: string = 'private';
   first = 0;
   rows = 10;
+  totalRecords = 11;
 
   permitions: any;
 
@@ -38,7 +40,7 @@ export class HomePageComponent implements OnInit {
     this.columns = ['Key','Type','Description','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
-    this.initializeProjects();
+    //this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
         this.Types = response.map(item => item.name);
@@ -145,5 +147,28 @@ export class HomePageComponent implements OnInit {
         this.showColumns.splice(index,1);
       }
     })
+  }
+
+  loadProjects(event: TableLazyLoadEvent){
+    
+    var user = this.accoutService.getCurrentUser();
+
+    if(user?.username )
+    {
+      this.projectService.getPaginationAllProjectsForUser(user.username,event).subscribe({
+        next: (response) => {
+          this.projects = response;
+          this.projects.forEach((project)=>{ 
+            project.isExtanded = false;
+            project.isFavorite = false;
+            project.creationDate = new Date(project.creationDate);
+            project.dueDate = new Date(project.dueDate);
+          });
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
   }
 }

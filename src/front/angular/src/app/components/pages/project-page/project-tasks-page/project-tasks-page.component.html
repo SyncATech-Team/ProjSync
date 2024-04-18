@@ -28,7 +28,9 @@
                     currentPageReportTemplate="Showing {first} to {last} of {{issuesInGroup.length}} entries"
                     [resizableColumns]="true"
                     [reorderableColumns]="true"
-                    [columns]="showColumns" >
+                    [columns]="showColumns" 
+                    [lazy]="true"
+                    (onLazyLoad)="loadIssues($event)">
                     
                     
                     <ng-template pTemplate="caption">

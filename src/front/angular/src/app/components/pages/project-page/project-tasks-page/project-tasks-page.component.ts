@@ -6,6 +6,7 @@ import { GroupInProject } from '../../../../_models/group-in-project';
 import { GroupService } from '../../../../_service/group.service';
 import { IssueModel } from '../../../../_models/model-issue.model';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { TableLazyLoadEvent } from 'primeng/table';
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -166,5 +167,9 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         this.showColumns.splice(index,1);
       }
     })
+  }
+
+  loadIssues($event: TableLazyLoadEvent){
+    console.log($event);
   }
 }

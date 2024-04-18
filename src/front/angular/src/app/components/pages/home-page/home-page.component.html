@@ -44,7 +44,7 @@
 
             <p-table
                 #dt2
-                [value]="projectsShow"
+                [value]="projects"
                 dataKey="name"
                 [globalFilterFields]="['name']"
                 [tableStyle]="{'width': '100%'}"
@@ -54,6 +54,7 @@
                 [paginator]="true"
                 [rows]="5"
                 [first]="first"
+                [totalRecords]="totalRecords"
                 [rowsPerPageOptions]="[5, 10, 25, 50]"
                 [showCurrentPageReport]="true"
                 sortMode="multiple"
@@ -62,7 +63,9 @@
                 currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries"
                 [resizableColumns]="true"
                 [reorderableColumns]="true"
-                [columns]="showColumns" >
+                [columns]="showColumns"
+                [lazy]="true"
+                (onLazyLoad)="loadProjects($event)" >
                 
                 <!-- Clear all filters -->
                 <!-- <ng-template pTemplate="caption">

@@ -156,5 +156,24 @@ namespace backAPI.Repositories.Implementation.Projects
                 .Select(x => x.Project)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Project>> GetPaginationProjectsForUserAsync(string username, int limit, int skip)
+        {
+
+            return await dataContext.Users
+                .Join(dataContext.UsersOnProjects,
+                    u => u.Id,
+                    up => up.UserId,
+                    (u, up) => new { User = u, UserProject = up })
+                .Join(dataContext.Projects,
+                    up => up.UserProject.ProjectId,
+                    p => p.Id,
+                    (up, p) => new { up.User, Project = p })
+                .Where(x => x.User.UserName == username)
+                .Select(x => x.Project)
+                .Skip(skip)
+                .Take(limit)
+                .ToListAsync();
+        }
     }
 }
