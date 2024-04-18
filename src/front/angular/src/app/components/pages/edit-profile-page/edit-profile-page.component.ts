@@ -119,11 +119,11 @@ export class EditProfilePageComponent implements OnInit {
     this.editUser.isActive = this.user?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
     this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
       next: response => {
-        this.msgPopupService.showSuccess("Successfully edited user info");
+        this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully edited user info', life: 3000 });
         this.ngOnInit();
       },
       error: error => {
-        this.msgPopupService.showError("Unable to edit user info");
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Unable to edit user info', life: 3000 });
       }
     });
   } 

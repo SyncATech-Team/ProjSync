@@ -29,10 +29,17 @@ namespace backAPI.Repositories.Implementation.Projects
 
         public async Task<Project> CreateProject(ProjectDto request)
         {
+            Console.WriteLine(request.Name + " " + request.OwnerUsername + " " + request.VisibilityName);
+            if (request.VisibilityName == "" || request.Name == "" || request.Key == "" || request.TypeName == "" || request.OwnerUsername == "")
+            {
+                Console.WriteLine("USOOO U NULLL");
+                return null;
+            }
+
             var user = await usersRepository.GetUserByUsername(request.OwnerUsername);
             var type = await projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName);
             var visibility = await projectVisibilitiesRepository.GetProjectVisibilityByNameAsync(request.VisibilityName);
-
+            
             var project = new Project
             {
                 Name = request.Name,

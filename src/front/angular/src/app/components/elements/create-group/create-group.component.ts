@@ -43,6 +43,11 @@ export class CreateGroupComponent implements OnInit {
     if(this.projectName){
       // console.log(this.form.controls['group-name'].value);
       // console.log(this.projectName);
+      console.log(this.form.controls['group-name'].value);
+      if(this.form.controls['group-name'].value == null){
+        this.msgPopUpService.showError("Unable to create group. Group name can not be empty.");
+        return;
+      }
       this.groupInProject.GroupName = this.form.controls['group-name'].value;
       this.groupInProject.ProjectName = this.projectName;
       console.log(this.groupInProject);
