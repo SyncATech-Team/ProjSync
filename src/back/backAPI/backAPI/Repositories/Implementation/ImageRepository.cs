@@ -37,7 +37,7 @@ namespace backAPI.Repositories.Implementation
                 var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
 
                 // PUTANJA DO USER-IMAGES FOLDERA
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "..\\user-images");
+                var uploadsFolder = Path.Combine("../user-images");
 
                 if (!Directory.Exists(uploadsFolder))
                 {
@@ -73,7 +73,7 @@ namespace backAPI.Repositories.Implementation
             }
 
             var user = await _usersRepository.GetUserByUsername(username);
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "..\\user-images", user.ProfilePhoto);
+            var imagePath = Path.Combine("../user-images", user.ProfilePhoto);
 
             if (System.IO.File.Exists(imagePath))
             {
