@@ -25,6 +25,8 @@
     }
 }
 
+/* DODAVANJE NOVE GRUPE */
+
 :host ::ng-deep .issue-group-wrapper .add-new-group button{
     padding: 2px 8px;
     border-radius: 6px;
@@ -56,10 +58,6 @@
 }
 
 /* MULTISELECT KRAJ*/
-
-:host ::ng-deep .form-group .input-size span{
-    margin-left: 8px;
-}
 
 :host ::ng-deep .form-group .input-size span{
     padding: 5px;

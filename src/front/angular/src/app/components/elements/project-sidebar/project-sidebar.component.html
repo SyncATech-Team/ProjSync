@@ -21,7 +21,7 @@
                [routerLink]="data.label === 'Create task' ? null : [data.routeLink + projectName]"
                routerLinkActive="active"
                [routerLinkActiveOptions]="{exact:true}"
-               (click)="handleNavigation(data.label)">
+               (click)="handleNavigation(data.label)" style="cursor: pointer;">
                 <i [class]="data.icon" class="sidenav-link-icon"></i>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{ data.label }}</span>
             </a>

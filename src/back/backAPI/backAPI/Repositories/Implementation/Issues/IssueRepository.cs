@@ -22,6 +22,12 @@ namespace backAPI.Repositories.Implementation.Issues
         /* *****************************************************************************************
         * Dohvati sve zadatke za odredjenu grupu
         * ***************************************************************************************** */
+        public async Task<Issue> GetIssueById(int issueId)
+        {
+            var issue = await _dataContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+            return issue;
+        }
+
         public async Task<IEnumerable<Issue>> GetAllIssuesForGivenGroup(int groupId)
         {
             var tasks = await _dataContext.Issues.Where(t => t.GroupId == groupId).ToListAsync();

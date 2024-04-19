@@ -10,6 +10,7 @@ namespace backAPI.Repositories.Interface.Issues
         /// </summary>
         /// <param name="groupId"></param>
         /// <returns></returns>
+        Task<Issue> GetIssueById(int issueId);
         Task<IEnumerable<Issue>> GetAllIssuesForGivenGroup(int groupId);
         /// <summary>
         /// Funkcija za kreiranje novog zadatka
