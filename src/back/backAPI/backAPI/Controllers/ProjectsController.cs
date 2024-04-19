@@ -121,10 +121,11 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("pagination/user/{username}")]
-        public async Task<IActionResult> GetPaginationProjectsForUser(string username,int skip,int limit,string criteria)
+        public async Task<IActionResult> GetPaginationProjectsForUser(string username,string criteria)
         {
             var user = await _usersRepository.GetUserByUsername(username);
             List<ProjectDto> dTOProjects = new List<ProjectDto>();
+            ProjectLazyLoadDto lazyLoadDto = new ProjectLazyLoadDto();
 
             if (user == null)
             {
@@ -133,9 +134,9 @@ namespace backAPI.Controllers
 
             dynamic criteriaObj = JsonConvert.DeserializeObject(criteria);
 
-            var projects = await _projectsRepository.GetPaginationProjectsForUserAsync(username,(int)criteriaObj.rows, (int)criteriaObj.first);
+            var result = await _projectsRepository.GetPaginationProjectsForUserAsync(username,(int)criteriaObj.rows, (int)criteriaObj.first);
 
-            foreach (var project in projects)
+            foreach (var project in result.projects)
             {
 
                 dTOProjects.Add(new ProjectDto
@@ -152,8 +153,11 @@ namespace backAPI.Controllers
 
                 });
             }
-            
-            return Ok(dTOProjects);
+
+            lazyLoadDto.Projects = dTOProjects;
+            lazyLoadDto.NumberOfRecords = result.numberOfRecords;
+
+            return Ok(lazyLoadDto);
         }
 
         /* ***************************************************************************************

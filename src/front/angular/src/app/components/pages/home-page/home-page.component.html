@@ -60,7 +60,7 @@
                 sortMode="multiple"
                 (onPage)="pageChange($event)"
                 [globalFilterFields]="['name','key','typeName','ownerUsername','creationDate','dueDate']"
-                currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries"
+                currentPageReportTemplate="Showing {first} to {last} of {{totalRecords}} entries"
                 [resizableColumns]="true"
                 [reorderableColumns]="true"
                 [columns]="showColumns"

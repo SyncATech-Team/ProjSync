@@ -157,10 +157,9 @@ namespace backAPI.Repositories.Implementation.Projects
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Project>> GetPaginationProjectsForUserAsync(string username, int limit, int skip)
+        public async Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, int limit, int skip)
         {
-
-            return await dataContext.Users
+            var projects = dataContext.Users
                 .Join(dataContext.UsersOnProjects,
                     u => u.Id,
                     up => up.UserId,
@@ -170,10 +169,12 @@ namespace backAPI.Repositories.Implementation.Projects
                     p => p.Id,
                     (up, p) => new { up.User, Project = p })
                 .Where(x => x.User.UserName == username)
-                .Select(x => x.Project)
-                .Skip(skip)
-                .Take(limit)
-                .ToListAsync();
+                .Select(x => x.Project);
+
+            int numberOfRecords = projects.Count();
+
+
+            return  (await projects.Skip(skip).Take(limit).ToListAsync(), numberOfRecords);
         }
     }
 }

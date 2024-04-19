@@ -40,7 +40,7 @@ export class HomePageComponent implements OnInit {
     this.columns = ['Key','Type','Description','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
-    this.initializeProjects();
+    //this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
         this.Types = response.map(item => item.name);
@@ -158,7 +158,8 @@ export class HomePageComponent implements OnInit {
     {
       this.projectService.getPaginationAllProjectsForUser(user.username,event).subscribe({
         next: (response) => {
-          this.projects = response;
+          this.projects = response.projects;
+          this.totalRecords = response.numberOfRecords;
           this.projects.forEach((project)=>{ 
             project.isExtanded = false;
             project.isFavorite = false;
