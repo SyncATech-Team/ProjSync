@@ -56,7 +56,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.columns = ['Type','Status','Priority','Description','Created Date','Updated Date','Due Date','Reporter','Group','Completed'];
+    this.columns = ['Type','Status','Priority','Created Date','Updated Date','Due Date','Reporter','Group','Completed'];
     this.selectedColumns = ['Type','Priority','Due Date','Reporter','Completed'];
     this.showColumns = ['Name',...this.selectedColumns];
     // this.tasksByGroup = this.getTasksByGroup();
