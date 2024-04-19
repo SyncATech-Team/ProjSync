@@ -1,5 +1,6 @@
 ﻿using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
 
 namespace backAPI.Repositories.Interface.Projects
 {
@@ -24,6 +25,6 @@ namespace backAPI.Repositories.Interface.Projects
         Task<IEnumerable<int>> GetTaskGroupIds(int projectId);
 
         Task<IEnumerable<Project>> GetProjectsForUserAsync(string username);
-        Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, int limit, int skip);
+        Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, int limit, int skip,Criteria criteria);
     }
 }

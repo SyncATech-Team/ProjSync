@@ -1,5 +1,6 @@
 ﻿using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
@@ -132,9 +133,9 @@ namespace backAPI.Controllers
                 return NotFound("There is no user with specified username");
             }
 
-            dynamic criteriaObj = JsonConvert.DeserializeObject(criteria);
+            Criteria criteriaObj = JsonConvert.DeserializeObject<Criteria>(criteria);
 
-            var result = await _projectsRepository.GetPaginationProjectsForUserAsync(username,(int)criteriaObj.rows, (int)criteriaObj.first);
+            var result = await _projectsRepository.GetPaginationProjectsForUserAsync(username,criteriaObj.Rows, criteriaObj.First,criteriaObj);
 
             foreach (var project in result.projects)
             {

@@ -5,6 +5,7 @@ using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.EntityFrameworkCore;
+using backAPI.Other.Helpers;
 
 namespace backAPI.Repositories.Implementation.Projects
 {
@@ -157,7 +158,7 @@ namespace backAPI.Repositories.Implementation.Projects
                 .ToListAsync();
         }
 
-        public async Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, int limit, int skip)
+        public async Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, int limit, int skip, Criteria criteria)
         {
             var projects = dataContext.Users
                 .Join(dataContext.UsersOnProjects,
@@ -168,13 +169,245 @@ namespace backAPI.Repositories.Implementation.Projects
                     up => up.UserProject.ProjectId,
                     p => p.Id,
                     (up, p) => new { up.User, Project = p })
-                .Where(x => x.User.UserName == username)
-                .Select(x => x.Project);
+                .Join(dataContext.ProjectTypes,
+                    p => p.Project.TypeId,
+                    pt => pt.Id,
+                    (p, pt) => new { p.Project, p.User, ProjectType = pt })
+                .Join(dataContext.Users,
+                    p => p.Project.OwnerId,
+                    uo => uo.Id,
+                    (p, uo) => new {p.Project, p.User, p.ProjectType, Owner = uo})
+                .Where(x => x.User.UserName == username);
 
             int numberOfRecords = projects.Count();
 
+            if (criteria.MultiSortMeta.Count>0)
+            {
+                MultiSortMeta firstOrder = criteria.MultiSortMeta[0];
+                criteria.MultiSortMeta.RemoveAt(0);
+                var orderedProjects = projects.OrderBy(p => p.Project.Name);
 
-            return  (await projects.Skip(skip).Take(limit).ToListAsync(), numberOfRecords);
+                if (firstOrder.Order == 1)
+                {
+                    if (firstOrder.Field == "name")
+                    {
+                        orderedProjects = projects.OrderBy(p => p.Project.Name);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "key")
+                        {
+                            orderedProjects = projects.OrderBy(p => p.Project.Key);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "description")
+                            {
+                                orderedProjects = projects.OrderBy(p => p.Project.Description);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "typeName")
+                                {
+                                    orderedProjects = projects.OrderBy(p => p.ProjectType.Name);
+                                }
+                                else
+                                {
+                                    if (firstOrder.Field == "creationDate")
+                                    {
+                                        orderedProjects = projects.OrderBy(p => p.Project.CreationDate);
+                                    }
+                                    else
+                                    {
+                                        if (firstOrder.Field == "dueDate")
+                                        {
+                                            orderedProjects = projects.OrderBy(p => p.Project.DueDate);
+                                        }
+                                        else
+                                        {
+                                            if (firstOrder.Field == "ownerUsername")
+                                            {
+                                                orderedProjects = projects.OrderBy(p => p.Owner.UserName);
+                                            }
+                                            else
+                                            {
+                                                orderedProjects = projects.OrderBy(p => p.Project.Budget);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (firstOrder.Field == "name")
+                    {
+                        orderedProjects = projects.OrderByDescending(p => p.Project.Name);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "key")
+                        {
+                            orderedProjects = projects.OrderByDescending(p => p.Project.Key);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "description")
+                            {
+                                orderedProjects = projects.OrderByDescending(p => p.Project.Description);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "typeName")
+                                {
+                                    orderedProjects = projects.OrderByDescending(p => p.ProjectType.Name);
+                                }
+                                else
+                                {
+                                    if (firstOrder.Field == "creationDate")
+                                    {
+                                        orderedProjects = projects.OrderByDescending(p => p.Project.CreationDate);
+                                    }
+                                    else
+                                    {
+                                        if (firstOrder.Field == "dueDate")
+                                        {
+                                            orderedProjects = projects.OrderByDescending(p => p.Project.DueDate);
+                                        }
+                                        else
+                                        {
+                                            if (firstOrder.Field == "ownerUsername")
+                                            {
+                                                orderedProjects = projects.OrderByDescending(p => p.Owner.UserName);
+                                            }
+                                            else
+                                            {
+                                                orderedProjects = projects.OrderByDescending(p => p.Project.Budget);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                foreach (var order in criteria.MultiSortMeta)
+                {
+                    if (order.Order == 1)
+                    {
+                        if (order.Field == "name")
+                        {
+                            orderedProjects = orderedProjects.ThenBy(p => p.Project.Name);
+                        }
+                        else
+                        {
+                            if (order.Field == "key")
+                            {
+                                orderedProjects = orderedProjects.ThenBy(p => p.Project.Key);
+                            }
+                            else
+                            {
+                                if (order.Field == "description")
+                                {
+                                    orderedProjects = orderedProjects.ThenBy(p => p.Project.Description);
+                                }
+                                else
+                                {
+                                    if (order.Field == "typeName")
+                                    {
+                                        orderedProjects = orderedProjects.ThenBy(p => p.ProjectType.Name);
+                                    }
+                                    else
+                                    {
+                                        if (order.Field == "creationDate")
+                                        {
+                                            orderedProjects = orderedProjects.ThenBy(p => p.Project.CreationDate);
+                                        }
+                                        else
+                                        {
+                                            if (order.Field == "dueDate")
+                                            {
+                                                orderedProjects = orderedProjects.ThenBy(p => p.Project.DueDate);
+                                            }
+                                            else
+                                            {
+                                                if (order.Field == "ownerUsername")
+                                                {
+                                                    orderedProjects = orderedProjects.ThenBy(p => p.Owner.UserName);
+                                                }
+                                                else
+                                                {
+                                                    orderedProjects = orderedProjects.ThenBy(p => p.Project.Budget);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (order.Field == "name")
+                        {
+                            orderedProjects = orderedProjects.ThenByDescending(p => p.Project.Name);
+                        }
+                        else
+                        {
+                            if (order.Field == "key")
+                            {
+                                orderedProjects = orderedProjects.ThenByDescending(p => p.Project.Key);
+                            }
+                            else
+                            {
+                                if (order.Field == "description")
+                                {
+                                    orderedProjects = orderedProjects.ThenByDescending(p => p.Project.Description);
+                                }
+                                else
+                                {
+                                    if (order.Field == "typeName")
+                                    {
+                                        orderedProjects = orderedProjects.ThenByDescending(p => p.ProjectType.Name);
+                                    }
+                                    else
+                                    {
+                                        if (order.Field == "creationDate")
+                                        {
+                                            orderedProjects = orderedProjects.ThenByDescending(p => p.Project.CreationDate);
+                                        }
+                                        else
+                                        {
+                                            if (order.Field == "dueDate")
+                                            {
+                                                orderedProjects = orderedProjects.ThenByDescending(p => p.Project.DueDate);
+                                            }
+                                            else
+                                            {
+                                                if (order.Field == "ownerUsername")
+                                                {
+                                                    orderedProjects = orderedProjects.ThenByDescending(p => p.Owner.UserName);
+                                                }
+                                                else
+                                                {
+                                                    orderedProjects = orderedProjects.ThenByDescending(p => p.Project.Budget);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return (await orderedProjects.Select(x => x.Project).Skip(skip).Take(limit).ToListAsync(), numberOfRecords);
+            }
+            
+
+            return  (await projects.Select(x => x.Project).Skip(skip).Take(limit).ToListAsync(), numberOfRecords);
         }
     }
 }

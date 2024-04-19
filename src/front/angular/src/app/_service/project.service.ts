@@ -21,12 +21,18 @@ export class ProjectService {
   }
 
   getPaginationAllProjectsForUser(username: string,event: TableLazyLoadEvent){
+    let empty: any[] = [];
     var criteriaObj = {
       first: event.first,
       rows: event.rows,
-      filters: event.filters,
+      filters: empty,
       multiSortMeta: event.multiSortMeta ? event.multiSortMeta : []
     }
+    for(var field in event.filters){
+        criteriaObj.filters.push({...{fieldfilters: event.filters[field]},field}); 
+    }
+    criteriaObj.filters = criteriaObj.filters.filter(item => item.fieldfilters[0].value!=null);
+
     var criteria = encodeURIComponent( JSON.stringify(criteriaObj));
     console.log(criteriaObj);
    
