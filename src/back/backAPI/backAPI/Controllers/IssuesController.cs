@@ -6,6 +6,7 @@ using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace backAPI.Controllers
 {
@@ -42,6 +43,53 @@ namespace backAPI.Controllers
                 _issuePriorityRepository = issuePriorityRepository;
                 _issueGroupRepository = issueGroupRepository;
                 _userOnIssueRepository = userOnIssueRepository;
+        }
+
+        [HttpGet("issueId")]
+        public async Task<ActionResult<IssueDto>> GetIssueById(int issueId)
+        {
+            var issue = await _issueRepository.GetIssueById(issueId);
+
+            var issueType = await _issueTypeRepository.GetIssueTypeById(issue.TypeId);
+            var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.StatusId);
+            var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
+            var issueGroup = await _issueGroupRepository.GetGroupAsync(issue.GroupId);
+            var issueOwner = await _usersRepository.GetUserById(issue.OwnerId);
+            var reporterId = await _issueRepository.GetReporterId(issue.Id);
+            var reporterUsername = await _usersRepository.GetUserById(reporterId);
+            var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
+            var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
+            var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+            List<string> assigneeUsernames = new List<string>();
+            foreach (var assignee in assigneeIds)
+            {
+                var user = await _usersRepository.GetUserById(assignee);
+                assigneeUsernames.Add(user.UserName);
+            }
+
+            IssueDto issueDto = new IssueDto
+            {
+                Id = issue.Id,
+                Name = issue.Name,
+                TypeName = issueType.Name,
+                StatusName = issueStatus.Name,
+                PriorityName = issuePriority.Name,
+                Description = issue.Description,
+                CreatedDate = issue.CreatedDate,
+                UpdatedDate = issue.UpdatedDate,
+                DueDate = issue.DueDate,
+                OwnerUsername = issueOwner.UserName,
+                ProjectName = project.Name,
+                GroupName = issueGroup.Name,
+                ReporterUsername = reporterUsername.UserName,
+                AssigneeUsernames = assigneeUsernames.ToArray(),
+                DependentOnIssues = issueDependencies.ToArray(),
+                Completed = issue.Completed,
+                GroupId = issueGroup.Id
+
+            };
+            
+            return issueDto;
         }
 
         [HttpGet("groupId")]

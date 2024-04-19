@@ -6,6 +6,9 @@ import { GroupInProject } from '../../../../_models/group-in-project';
 import { GroupService } from '../../../../_service/group.service';
 import { IssueModel } from '../../../../_models/model-issue.model';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { IssueModalComponent } from '../../../elements/issues/issue-modal/issue-modal.component';
+import { ProjectQuery } from '../../../state/project/project.query';
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -40,10 +43,14 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   first = 0;
   rows = 10;
 
+  ref: DynamicDialogRef | undefined;
+
   constructor (
     private route: ActivatedRoute, 
     private issueService: IssueService, 
-    private groupService : GroupService
+    private groupService : GroupService,
+    private _projectQuery: ProjectQuery, 
+    private _modalService: DialogService
   ) {
     this.projectName = route.snapshot.paramMap.get('projectName');
   }
@@ -166,5 +173,23 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         this.showColumns.splice(index,1);
       }
     })
+  }
+
+  openIssueModal(issueId : string){
+    this.ref = this._modalService.open(IssueModalComponent, {
+      header: 'Issue - update',
+      width: '65%',
+      modal:true,
+      closable: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+      },
+      data: {
+        issue$: this._projectQuery.issueById$(issueId)
+      }
+    });
   }
 }
