@@ -119,6 +119,16 @@ namespace backAPI.Controllers
             return Ok(dTOProjects);
         }
 
+        /// <summary>
+        /// Dohvatanje projekta sa svim zadacima
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{projectName}/all")]
+        public async Task<ActionResult<IEnumerable<ProjectWithIssuesDto>>> GetProjectByNameWithIssues(string projectName)
+        {
+            return Ok(projectName);
+        }
+
         /* ***************************************************************************************
          * Create new project
          * *************************************************************************************** */
