@@ -9,7 +9,19 @@
   </div>
 
   <div class="wrapper">
-    <h2>Issue Board</h2>
+    
+    <div id="tasks-header">
+      <div id="add-task-div">
+          <button class="selected-button">Create task</button>
+      </div>
+
+      <div id="change-view">
+          <thy-button routerLink="/home/projects/tasks/{{projectName}}">List</thy-button>
+          <thy-button class="selected-button">Kanban</thy-button>
+          <thy-button routerLink="/home/projects/gantt/{{projectName}}">Gantt</thy-button>
+      </div>
+    </div>
+
     <div class="pr-5 py-7 pl-10 h-100 w-100 d-flex flex-column kan-board">
       <board-filter></board-filter>
       <board-dnd></board-dnd>

@@ -1,11 +1,27 @@
-<app-spinner></app-spinner>
+<ng-container *ngIf="!clickedModalForCreatingTask">
+    <!-- 
+        Komentar:   Primeni spinner na celoj stranici ukoliko nije selektovan popup za dodavanje zadataka
+                    jer je na modalu stavljen spinner dok on dovuce grupe, prioritete i sl.
+    -->
+    <app-spinner></app-spinner>
+</ng-container>
 
 <div id="pageWraper">
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
         <app-project-sidebar *ngIf="visibleSide" [projectName]="projectName"></app-project-sidebar>
         <div id="content">
-            <h2>Tasks</h2>
+            <div id="tasks-header">
+                <div id="add-task-div">
+                    <button class="selected-button" (click)="showCreateTaskPopupTaskList()">Create task</button>
+                </div>
+
+                <div id="change-view">
+                    <thy-button class="selected-button">List</thy-button>
+                    <thy-button routerLink="/home/projects/kanban/{{projectName}}">Kanban</thy-button>
+                    <thy-button routerLink="/home/projects/gantt/{{projectName}}">Gantt</thy-button>
+                </div>
+            </div>
             <div id="tasks">
                   
                 <p-table
@@ -54,7 +70,7 @@
                     </ng-template>
 
                     <ng-template *ngIf="!groupView" pTemplate="header" let-columns>
-                        <tr>
+                        <tr class="first-row">
                             <ng-container *ngFor="let column of columns">
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Name'" pSortableColumn="name">
                                     Name
