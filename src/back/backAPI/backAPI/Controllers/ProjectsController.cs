@@ -1,6 +1,9 @@
-﻿using backAPI.DTO.Issues;
+﻿using backAPI.Data;
+using backAPI.DTO;
+using backAPI.DTO.Issues;
 using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
+using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Implementation.Issues;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
@@ -21,11 +24,13 @@ namespace backAPI.Controllers
         private readonly IIssuePriorityRepository _issuePriorityRepository;
         private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
+        private readonly IUserOnProjectRepository _userOnProjectRepository;
 
         public ProjectsController(IProjectsRepository projectsRepository, IUsersRepository usersRepository,
             IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository,
             IIssueRepository issueRepository,IIssueTypeRepository issueTypeRepository, IIssueStatusRepository issueStatusRepository,
-            IIssuePriorityRepository issuePriorityRepository, IIssueGroupRepository issueGroupRepository, IUserOnIssueRepository userOnIssueRepository)
+            IIssuePriorityRepository issuePriorityRepository, IIssueGroupRepository issueGroupRepository, IUserOnIssueRepository userOnIssueRepository,
+            IUserOnProjectRepository userOnProjectRepository)
         {
             _projectsRepository = projectsRepository;
             _usersRepository = usersRepository;
@@ -37,6 +42,7 @@ namespace backAPI.Controllers
             _issuePriorityRepository = issuePriorityRepository;
             _issueGroupRepository = issueGroupRepository;
             _userOnIssueRepository = userOnIssueRepository;
+            _userOnProjectRepository = userOnProjectRepository;
         }
         /* ***************************************************************************************
          * Get all projects
@@ -145,16 +151,45 @@ namespace backAPI.Controllers
         {
             var projectByName = await _projectsRepository.GetProjectByName(projectName);
             var groups = await _issueRepository.GetAllGroupsForGivenProject(projectByName.Id);
-            ProjectWithIssuesDto result = new ProjectWithIssuesDto();
 
+            ProjectWithIssuesDto result = new ProjectWithIssuesDto();
+            var type = await _projectTypesRepository.GetProjectTypeById(projectByName.TypeId);
             result.Id = projectByName.Id.ToString();
             result.Name = projectName;
             result.Description = projectByName.Description;
-            result.ProjectCategory = projectByName.ProjectType.ToString();
+            result.ProjectCategory = type.Name;
             result.CreatedAt = projectByName.CreationDate.ToString();
-            // update date
+            // update date 
 
             List<JIssueDto> issues = new List<JIssueDto>();
+            List<UserDto> users = new List<UserDto>();
+
+            IEnumerable<User> usersOnProjects = await _userOnProjectRepository.GetUsersOnProjectAsync(projectName);
+            // dohvatanje svih user-a na projektu
+            foreach(var user in usersOnProjects)
+            {
+                UserDto userDto = new UserDto
+                {
+                    Id = user.Id.ToString(),
+                    AvatarUrl = user.ProfilePhoto,
+                    Name = user.FirstName + " " + user.LastName,
+                    Username = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ProfilePhoto = user.ProfilePhoto,
+                    Address = user.Address,
+                    ContactPhone = user.ContactPhone,
+                    Status = user.Status,
+                    IsVerified = user.IsVerified,
+                    PreferedLanguage = user.PreferedLanguage,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt,
+                    isActive = user.IsActive
+                };
+
+                users.Add(userDto);
+            }
 
             foreach (var group in groups)
             {
@@ -165,15 +200,14 @@ namespace backAPI.Controllers
                     var issueType = await _issueTypeRepository.GetIssueTypeById(issue.TypeId);
                     var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.StatusId);
                     var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
-                    var issueOwner = await _usersRepository.GetUserById(issue.OwnerId);
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                     var project = projectByName;
 
-                    List<string> assigneeUsernames = new List<string>();
+                    List<string> assigneeIdsList = new List<string>();
                     foreach (var assignee in assigneeIds)
                     {
                         var user = await _usersRepository.GetUserById(assignee);
-                        assigneeUsernames.Add(user.UserName);
+                        assigneeIdsList.Add(user.Id.ToString());
                     }
 
                     JIssueDto issueDto = new JIssueDto
@@ -191,9 +225,9 @@ namespace backAPI.Controllers
                         CreatedAt = issue.CreatedDate.ToString(),
                         UpdatedAt = issue.UpdatedDate.ToString(),
                         DueDate = issue.DueDate.ToString(),
-                        ReporterId = issueOwner.Id.ToString(),
+                        ReporterId = issue.OwnerId.ToString(),
                         ProjectId = project.Id.ToString(),
-                        UserIds = assigneeUsernames
+                        UserIds = assigneeIdsList
                     };
 
                     issues.Add(issueDto);
@@ -201,6 +235,7 @@ namespace backAPI.Controllers
             }
 
             result.issues = issues.ToArray();
+            result.users = users.ToArray();
 
             return Ok(result);
         }
