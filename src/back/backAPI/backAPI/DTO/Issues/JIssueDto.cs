@@ -17,6 +17,7 @@ namespace backAPI.DTO.Issues
         public double TimeRemaining { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
+        public string DueDate { get; set; }
         public string ReporterId { get; set; }
         public List<string> UserIds { get; set; }
         // public List<JComment> Comments { get; set; }

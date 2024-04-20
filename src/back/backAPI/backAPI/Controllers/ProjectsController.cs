@@ -1,6 +1,9 @@
-﻿using backAPI.DTO.Projects;
+﻿using backAPI.DTO.Issues;
+using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
+using backAPI.Repositories.Implementation.Issues;
 using backAPI.Repositories.Interface;
+using backAPI.Repositories.Interface.Issues;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,14 +15,28 @@ namespace backAPI.Controllers
         private readonly IUsersRepository _usersRepository;
         private readonly IProjectTypesRepository _projectTypesRepository;
         private readonly IProjectVisibilitiesRepository _projectVisibilitiesRepository;
+        private readonly IIssueRepository _issueRepository;
+        private readonly IIssueTypeRepository _issueTypeRepository;
+        private readonly IIssueStatusRepository _issueStatusRepository;
+        private readonly IIssuePriorityRepository _issuePriorityRepository;
+        private readonly IIssueGroupRepository _issueGroupRepository;
+        private readonly IUserOnIssueRepository _userOnIssueRepository;
 
         public ProjectsController(IProjectsRepository projectsRepository, IUsersRepository usersRepository,
-            IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository)
+            IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository,
+            IIssueRepository issueRepository,IIssueTypeRepository issueTypeRepository, IIssueStatusRepository issueStatusRepository,
+            IIssuePriorityRepository issuePriorityRepository, IIssueGroupRepository issueGroupRepository, IUserOnIssueRepository userOnIssueRepository)
         {
             _projectsRepository = projectsRepository;
             _usersRepository = usersRepository;
             _projectTypesRepository = projectTypesRepository;
             _projectVisibilitiesRepository = projectVisibilitiesRepository;
+            _issueRepository = issueRepository;
+            _issueTypeRepository = issueTypeRepository;
+            _issueStatusRepository = issueStatusRepository;
+            _issuePriorityRepository = issuePriorityRepository;
+            _issueGroupRepository = issueGroupRepository;
+            _userOnIssueRepository = userOnIssueRepository;
         }
         /* ***************************************************************************************
          * Get all projects
@@ -126,7 +143,66 @@ namespace backAPI.Controllers
         [HttpGet("{projectName}/all")]
         public async Task<ActionResult<IEnumerable<ProjectWithIssuesDto>>> GetProjectByNameWithIssues(string projectName)
         {
-            return Ok(projectName);
+            var projectByName = await _projectsRepository.GetProjectByName(projectName);
+            var groups = await _issueRepository.GetAllGroupsForGivenProject(projectByName.Id);
+            ProjectWithIssuesDto result = new ProjectWithIssuesDto();
+
+            result.Id = projectByName.Id.ToString();
+            result.Name = projectName;
+            result.Description = projectByName.Description;
+            result.ProjectCategory = projectByName.ProjectType.ToString();
+            result.CreatedAt = projectByName.CreationDate.ToString();
+            // update date
+
+            List<JIssueDto> issues = new List<JIssueDto>();
+
+            foreach (var group in groups)
+            {
+                var issuesInGroup = await _issueRepository.GetAllIssuesForGivenGroup(group.Id);
+
+                foreach (var issue in issuesInGroup)
+                {
+                    var issueType = await _issueTypeRepository.GetIssueTypeById(issue.TypeId);
+                    var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.StatusId);
+                    var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
+                    var issueOwner = await _usersRepository.GetUserById(issue.OwnerId);
+                    var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
+                    var project = projectByName;
+
+                    List<string> assigneeUsernames = new List<string>();
+                    foreach (var assignee in assigneeIds)
+                    {
+                        var user = await _usersRepository.GetUserById(assignee);
+                        assigneeUsernames.Add(user.UserName);
+                    }
+
+                    JIssueDto issueDto = new JIssueDto
+                    {
+                        Id = issue.Id.ToString(),
+                        Title = issue.Name,
+                        Type = issueType.Name,
+                        Status = issueStatus.Name,
+                        Priority = issuePriority.Name,
+                        ListPosition = issue.ListPosition,
+                        Description = issue.Description,
+                        Estimate = 0,
+                        TimeSpent = 0,
+                        TimeRemaining = 0,
+                        CreatedAt = issue.CreatedDate.ToString(),
+                        UpdatedAt = issue.UpdatedDate.ToString(),
+                        DueDate = issue.DueDate.ToString(),
+                        ReporterId = issueOwner.Id.ToString(),
+                        ProjectId = project.Id.ToString(),
+                        UserIds = assigneeUsernames
+                    };
+
+                    issues.Add(issueDto);
+                }
+            }
+
+            result.issues = issues.ToArray();
+
+            return Ok(result);
         }
 
         /* ***************************************************************************************
