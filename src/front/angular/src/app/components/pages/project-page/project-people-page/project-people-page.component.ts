@@ -74,7 +74,9 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.users = response;
         this.users_backup = response;
         console.log(this.usersPhotos);
-        this.userRole = this.users_backup.map(user => user.companyRoleName);
+        // this.userRole = this.users_backup.map(user => user.companyRoleName);
+        const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
+        this.userRole = Array.from(uniqueRoles);
       },
       error: (error) => {
         console.log(error);
@@ -186,7 +188,9 @@ export class ProjectPeoplePageComponent implements OnInit{
             if(indexToRemoveBackup !== -1) {
               this.users_backup.splice(indexToRemoveBackup, 1);
             }
-            this.userRole = this.users_backup.map(user => user.companyRoleName);
+            // this.userRole = this.users_backup.map(user => user.companyRoleName);
+            const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
+            this.userRole = Array.from(uniqueRoles);
             this.msgPopupService.showSuccess("User removed from project successfully.");
           },
           error: error => {
@@ -213,7 +217,9 @@ export class ProjectPeoplePageComponent implements OnInit{
           next: (response) => {
             this.users = response;
             this.users_backup = response;
-            this.userRole = this.users_backup.map(user => user.companyRoleName);
+            // this.userRole = this.users_backup.map(user => user.companyRoleName);
+            const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
+            this.userRole = Array.from(uniqueRoles);
           },
           error: (error) => {
             console.log(error);
