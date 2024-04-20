@@ -228,3 +228,7 @@ button {
 #login-btn-div {
   text-align: center;
 }
+
+::placeholder {
+  color: lightgray;
+}
