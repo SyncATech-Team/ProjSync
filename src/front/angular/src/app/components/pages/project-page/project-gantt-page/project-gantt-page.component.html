@@ -11,6 +11,18 @@
 
     <div class="content">
 
+        <div id="tasks-header">
+            <div id="add-task-div">
+                <button class="selected-button" (click)="showCreateTaskPopupTaskGantt()">Create task</button>
+            </div>
+
+            <div id="change-view">
+                <thy-button routerLink="/home/projects/tasks/{{projectName}}">List</thy-button>
+                <thy-button>Kanban</thy-button>
+                <thy-button class="selected-button">Gantt</thy-button>
+            </div>
+        </div>
+
         <thy-layout class="display-block">
             <thy-header class="header-with-baseline">
                 <ng-template #headerContent>

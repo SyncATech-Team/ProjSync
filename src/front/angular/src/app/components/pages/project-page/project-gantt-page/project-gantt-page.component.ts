@@ -28,6 +28,8 @@ import { IssueDateUpdate } from '../../../../_models/issue-date-update.model';
 import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
 import { ConfirmationService } from 'primeng/api';
 import { GroupService } from '../../../../_service/group.service';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -95,6 +97,8 @@ groups: GanttGroup[] = [];
 
 expanded = false;
 
+ref: DynamicDialogRef | undefined;
+
 /**
  * Koje opcije se prikazuju u toolbar-u
  */
@@ -121,7 +125,8 @@ constructor(
     private issueService: IssueService,
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
-    private groupService: GroupService
+    private groupService: GroupService, 
+    private _modalService: DialogService
 ) {}
 
 ngOnInit(): void {
@@ -142,7 +147,7 @@ ngOnInit(): void {
                 })
             }
             this.groups = dataGroups;
-            console.log(this.groups);
+            // console.log(this.groups);
         },
         error: error => {
             console.log("ERROR!!!");
@@ -352,5 +357,30 @@ expandAllGroups() {
         this.ganttComponent!.expandAll();
     }
 }
+
+showCreateTaskPopupTaskGantt() {
+    this.ref = this._modalService.open(CreateTaskComponent, {
+      header: 'Create task',
+        width: '50%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        data: {
+          projectName: this.projectName
+        }
+    });
+
+    this.ref.onClose.subscribe((data: any) => {
+      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+
+      console.log("Response: " + data + " . Refreshing tasks...");
+      this.refresh();
+    });
+
+  }
 
 }
