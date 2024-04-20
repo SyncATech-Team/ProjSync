@@ -45,6 +45,10 @@
     padding-inline: 10px;
 }
 
+:host ::ng-deep .search .p-input-icon-right input{
+    max-width: 14rem;
+}
+
 th{
     text-align: center;
     border: 1px solid rgb(226, 232, 240);
