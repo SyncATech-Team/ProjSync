@@ -6,6 +6,9 @@
 
 .navbar .logo{
     margin-right: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .button-collapse{
@@ -102,4 +105,15 @@
 
 .email {
     font-size: 12px;
+}
+
+.logo a {
+    font-size: unset !important;
+}
+
+.navbar-brand img {
+    height: 100%;
+    width: 100px;
+    padding: 0px;
+    margin: 0px;
 }
