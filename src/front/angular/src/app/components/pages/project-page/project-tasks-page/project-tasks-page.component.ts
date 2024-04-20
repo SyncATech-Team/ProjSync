@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IssueService } from '../../../../_service/issue.service';
@@ -36,7 +36,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   groupsInProject : GroupInProject[] = [];
   issuesInGroup : IssueModel[] = [];
 
-  issueType: string [] = ['Task','Problem','Story'];
+  issueType: string [] = ['Task','Bug','Story'];
   issuePriority: string [] = ['Lowest','Low','Medium','High','Highest'];
   issueStatus: string [] = ['Planning','In progress','Done'];
 
@@ -133,7 +133,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         case 'high':
             return 'warning';
 
-        case 'problem':
+        case 'bug':
             return 'danger';
 
         case 'story':
