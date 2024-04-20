@@ -65,3 +65,8 @@ td{
 .test :host ::ng-deep .p-progressbar-value {
     background-color: red;
 }
+
+:host ::ng-deep p-tag span {
+    /* display: block; */
+    width: 100% !important;
+}
