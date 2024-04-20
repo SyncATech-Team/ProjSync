@@ -1,3 +1,5 @@
+<app-spinner></app-spinner>
+
 <div id="container-wrapper" class="container">
     <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
         <p>Issue group</p>
@@ -105,7 +107,7 @@
 
         <div class="btns">
             <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
-            <p-button label="Close" severity="secondary" (click)="closeModal()"></p-button>
+            <p-button label="Close" severity="secondary" (click)="closeModal('exited')"></p-button>
         </div>
     </form>
 </div>

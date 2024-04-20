@@ -55,7 +55,7 @@ export class CreateGroupComponent implements OnInit {
       this.groupService.createGroup(this.groupInProject).subscribe({
         next : (response) => {
           this.msgPopUpService.showSuccess("Group successfully created");
-          this._modal.close();          
+          this.closeModal("created-group");        
         },
         error : (error) => {
           this.msgPopUpService.showError("Unable to create group. Duplicate name inside project!");
@@ -64,7 +64,7 @@ export class CreateGroupComponent implements OnInit {
     }
   }
 
-  closeModal() {
-    this._modal.close();
+  closeModal(param: string) {
+    this._modal.close(param);
   }
 }

@@ -5,11 +5,6 @@ export const navbarData = [
         label: 'Tasks'
     },
     {
-        routeLink : '',
-        icon: 'fa-solid fa-file-circle-plus',
-        label: 'Create task'
-    },
-    {
         routeLink : '/home/projects/people/',
         icon: 'fa-solid fa-people-group',
         label: 'People'
