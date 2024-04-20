@@ -103,6 +103,8 @@ import { IssueAssigneesComponent } from './components/elements/issues/issue-assi
 import { UserProfileComponent } from './components/elements/user-profile/user-profile.component';
 import { DatePipe } from '@angular/common';
 
+import { CookieService } from 'ngx-cookie-service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -198,6 +200,7 @@ import { DatePipe } from '@angular/common';
     InputSwitchModule
   ],
   providers: [
+    CookieService,
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
