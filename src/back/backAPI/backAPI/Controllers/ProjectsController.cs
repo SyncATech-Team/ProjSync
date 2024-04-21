@@ -159,7 +159,6 @@ namespace backAPI.Controllers
             result.Description = projectByName.Description;
             result.ProjectCategory = type.Name;
             result.CreatedAt = projectByName.CreationDate.ToString();
-            // update date 
 
             List<JIssueDto> issues = new List<JIssueDto>();
             List<UserDto> users = new List<UserDto>();
@@ -204,10 +203,9 @@ namespace backAPI.Controllers
                     var project = projectByName;
 
                     List<string> assigneeIdsList = new List<string>();
-                    foreach (var assignee in assigneeIds)
+                    foreach (var assigneeId in assigneeIds)
                     {
-                        var user = await _usersRepository.GetUserById(assignee);
-                        assigneeIdsList.Add(user.Id.ToString());
+                        assigneeIdsList.Add(assigneeId.ToString());
                     }
 
                     JIssueDto issueDto = new JIssueDto
