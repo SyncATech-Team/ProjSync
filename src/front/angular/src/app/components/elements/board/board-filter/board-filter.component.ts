@@ -6,6 +6,7 @@ import {FilterQuery} from "../../../state/filter/filter.query";
 import {FilterService} from "../../../state/filter/filter.service";
 import {debounceTime, distinctUntilChanged} from "rxjs";
 import {JUser} from "../../../../_models/user-issues";
+import {AccountService} from "../../../../_service/account.service";
 
 @Component({
   selector: 'board-filter',
@@ -20,7 +21,8 @@ export class BoardFilterComponent implements OnInit {
   constructor(
     public projectQuery: ProjectQuery,
     public filterQuery: FilterQuery,
-    public filterService: FilterService
+    public filterService: FilterService,
+    private accountService: AccountService
   ) {
     this.userIds = [];
   }
@@ -46,7 +48,9 @@ export class BoardFilterComponent implements OnInit {
   }
 
   onlyMyIssueChanged() {
-    this.filterService.toggleOnlyMyIssue();
+    this.resetAll();
+    var userId = this.accountService.getCurrentUser()?.id;
+    this.filterService.toggleUserId(userId!.toString());
   }
 
   userChanged(user: JUser) {

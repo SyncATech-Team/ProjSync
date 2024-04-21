@@ -133,6 +133,7 @@ namespace backAPI.Controllers
 
                 return new LoginResponseDto
                 {
+                    Id = user.Id,
                     Username = user.UserName,
                     Token = await _tokenService.CreateToken(user)
                 };
@@ -158,6 +159,7 @@ namespace backAPI.Controllers
 
             return new LoginResponseDto
             {
+                Id = user.Id,
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user)
             };
