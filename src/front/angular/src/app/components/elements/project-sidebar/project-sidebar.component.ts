@@ -145,6 +145,5 @@ export class ProjectSidebarComponent implements OnInit {
             summary_and_detail = buttonType ? { summary: 'No Product Selected', detail: `Pressed '${buttonType}' button` } : { summary: 'Product Selected', detail: data?.name };
         }
       });
-      console.log(this.projectName);
   }
 }

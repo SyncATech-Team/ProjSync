@@ -172,7 +172,7 @@ export class CreateTaskComponent implements OnInit {
           this._issueService.createIssue(this.issueCreator).subscribe({
             next : (response) => {
               this.msgPopUpService.showSuccess("Task successfully created");
-              this._modal.close();
+              this.closeModal("created-task");
             },
             error : (error) => {
               console.log(error);
@@ -186,8 +186,8 @@ export class CreateTaskComponent implements OnInit {
     }
   }
 
-  closeModal() {
-    this._modal.close();
+  closeModal(param: string) {
+    this._modal.close(param);
   }
 
   showCreateGroupPopUp(){
@@ -206,6 +206,8 @@ export class CreateTaskComponent implements OnInit {
     });
   
     this.ref.onClose.subscribe((data: any) => {
+      if(data != "created-group") return;     // NE REFRESHUJ MODAL ZA KREIRANJE ZADATKA UKOLIKO NIJE DODATA GRUPA
+
       this.ngOnInit();
     });
   }

@@ -9,6 +9,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../../elements/issues/issue-modal/issue-modal.component';
 import { ProjectQuery } from '../../../state/project/project.query';
+import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -36,7 +37,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   groupsInProject : GroupInProject[] = [];
   issuesInGroup : IssueModel[] = [];
 
-  issueType: string [] = ['Task','Problem','Story'];
+  issueType: string [] = ['Task','Bug','Story'];
   issuePriority: string [] = ['Lowest','Low','Medium','High','Highest'];
   issueStatus: string [] = ['Planning','In progress','Done'];
 
@@ -44,6 +45,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   rows = 10;
 
   ref: DynamicDialogRef | undefined;
+
+  clickedModalForCreatingTask: boolean = false;
 
   constructor (
     private route: ActivatedRoute, 
@@ -133,7 +136,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         case 'high':
             return 'warning';
 
-        case 'problem':
+        case 'bug':
             return 'danger';
 
         case 'story':
@@ -192,4 +195,36 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  showCreateTaskPopupTaskList() {
+    this.clickedModalForCreatingTask = true;
+    this.ref = this._modalService.open(CreateTaskComponent, {
+      header: 'Create task',
+        width: '50%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        data: {
+          projectName: this.projectName
+        }
+    });
+
+    this.ref.onClose.subscribe((data: any) => {
+      this.clickedModalForCreatingTask = false;
+      
+      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+
+      console.log("Response: " + data + " . Refreshing tasks...");
+      this.tasks = [];
+      this.tasksByGroup = [];
+      this.tasks_backup = [];
+      this.ngOnInit();
+    });
+
+  }
+
 }

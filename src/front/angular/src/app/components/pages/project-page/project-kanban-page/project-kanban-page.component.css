@@ -8,3 +8,25 @@
     height: 100vh;
     overflow: scroll;
 }
+
+#tasks-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#tasks-header thy-button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 0px;
+}
+
+#change-view thy-button:hover {
+    background-color: cadetblue;
+    border: 1px solid black;
+}
+
+.selected-button {
+    background-color: cadetblue;
+    border: 1px solid black;
+}
