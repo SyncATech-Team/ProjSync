@@ -6,6 +6,7 @@ using backAPI.Repositories.Interface.Projects;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.EntityFrameworkCore;
 using backAPI.Other.Helpers;
+using Newtonsoft.Json.Linq;
 
 namespace backAPI.Repositories.Implementation.Projects
 {
@@ -178,6 +179,251 @@ namespace backAPI.Repositories.Implementation.Projects
                     uo => uo.Id,
                     (p, uo) => new {p.Project, p.User, p.ProjectType, Owner = uo})
                 .Where(x => x.User.UserName == username);
+
+
+            if(criteria.Filters.Count > 0)
+            {
+                foreach(var filter in criteria.Filters)
+                {
+                    foreach(var fieldFilter in filter.Fieldfilters)
+                    {
+                        if(fieldFilter.Value.GetType() == typeof(string))
+                        {
+                            if (fieldFilter.MatchMode == "startsWith")
+                            {
+                                if (filter.Field == "name")
+                                {
+                                    projects = projects.Where(p => p.Project.Name.StartsWith((string)fieldFilter.Value));
+                                }
+                                else
+                                {
+                                    if (filter.Field == "key")
+                                    {
+                                        projects = projects.Where(p => p.Project.Key.StartsWith((string)fieldFilter.Value));
+                                    }
+                                    else
+                                    {
+                                        if (filter.Field == "ownerUsername")
+                                        {
+                                            projects = projects.Where(p => p.Owner.UserName.StartsWith((string)fieldFilter.Value));
+                                        }
+                                        else
+                                        {
+                                            projects = projects.Where(p => p.Project.Description.StartsWith((string)fieldFilter.Value));
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (fieldFilter.MatchMode == "contains")
+                                {
+                                    if (filter.Field == "name")
+                                    {
+                                        projects = projects.Where(p => p.Project.Name.Contains((string)fieldFilter.Value));
+                                    }
+                                    else
+                                    {
+                                        if (filter.Field == "key")
+                                        {
+                                            projects = projects.Where(p => p.Project.Key.Contains((string)fieldFilter.Value));
+                                        }
+                                        else
+                                        {
+                                            if (filter.Field == "ownerUsername")
+                                            {
+                                                projects = projects.Where(p => p.Owner.UserName.Contains((string)fieldFilter.Value));
+                                            }
+                                            else
+                                            {
+                                                projects = projects.Where(p => p.Project.Description.Contains((string)fieldFilter.Value));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (fieldFilter.MatchMode == "notContains")
+                                    {
+                                        if (filter.Field == "name")
+                                        {
+                                            projects = projects.Where(p => !p.Project.Name.Contains((string)fieldFilter.Value));
+                                        }
+                                        else
+                                        {
+                                            if (filter.Field == "key")
+                                            {
+                                                projects = projects.Where(p => !p.Project.Key.Contains((string)fieldFilter.Value));
+                                            }
+                                            else
+                                            {
+                                                if (filter.Field == "ownerUsername")
+                                                {
+                                                    projects = projects.Where(p => !p.Owner.UserName.Contains((string)fieldFilter.Value));
+                                                }
+                                                else
+                                                {
+                                                    projects = projects.Where(p => !p.Project.Description.Contains((string)fieldFilter.Value));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (fieldFilter.MatchMode == "endsWith")
+                                        {
+                                            if (filter.Field == "name")
+                                            {
+                                                projects = projects.Where(p => p.Project.Name.EndsWith((string)fieldFilter.Value));
+                                            }
+                                            else
+                                            {
+                                                if (filter.Field == "key")
+                                                {
+                                                    projects = projects.Where(p => p.Project.Key.EndsWith((string)fieldFilter.Value));
+                                                }
+                                                else
+                                                {
+                                                    if (filter.Field == "ownerUsername")
+                                                    {
+                                                        projects = projects.Where(p => p.Owner.UserName.EndsWith((string)fieldFilter.Value));
+                                                    }
+                                                    else
+                                                    {
+                                                        projects = projects.Where(p => p.Project.Description.EndsWith((string)fieldFilter.Value));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (fieldFilter.MatchMode == "equals")
+                                            {
+                                                if (filter.Field == "name")
+                                                {
+                                                    projects = projects.Where(p => p.Project.Name.Equals((string)fieldFilter.Value));
+                                                }
+                                                else
+                                                {
+                                                    if (filter.Field == "key")
+                                                    {
+                                                        projects = projects.Where(p => p.Project.Key.Equals((string)fieldFilter.Value));
+                                                    }
+                                                    else
+                                                    {
+                                                        if (filter.Field == "ownerUsername")
+                                                        {
+                                                            projects = projects.Where(p => p.Owner.UserName.Equals((string)fieldFilter.Value));
+                                                        }
+                                                        else
+                                                        {
+                                                            projects = projects.Where(p => p.Project.Description.Equals((string)fieldFilter.Value));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (fieldFilter.MatchMode == "notEquals")
+                                                {
+                                                    if (filter.Field == "name")
+                                                    {
+                                                        projects = projects.Where(p => !p.Project.Name.Equals((string)fieldFilter.Value));
+                                                    }
+                                                    else
+                                                    {
+                                                        if (filter.Field == "key")
+                                                        {
+                                                            projects = projects.Where(p => !p.Project.Key.Equals((string)fieldFilter.Value));
+                                                        }
+                                                        else
+                                                        {
+                                                            if (filter.Field == "ownerUsername")
+                                                            {
+                                                                projects = projects.Where(p => !p.Owner.UserName.Equals((string)fieldFilter.Value));
+                                                            }
+                                                            else
+                                                            {
+                                                                projects = projects.Where(p => !p.Project.Description.Equals((string)fieldFilter.Value));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(fieldFilter.Value.GetType() == typeof(DateTime))
+                            {
+                                if(fieldFilter.MatchMode == "dateIs")
+                                {
+                                    if(filter.Field == "creationDate") 
+                                    {
+                                        projects = projects.Where(p => p.Project.CreationDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                    }
+                                    else
+                                    {
+                                        projects = projects.Where(p => p.Project.DueDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                    }
+                                }
+                                else
+                                {
+                                    if (fieldFilter.MatchMode == "dateIsNot")
+                                    {
+                                        if (filter.Field == "creationDate")
+                                        {
+                                            projects = projects.Where(p => !p.Project.CreationDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        }
+                                        else
+                                        {
+                                            projects = projects.Where(p => !p.Project.DueDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (fieldFilter.MatchMode == "dateAfter")
+                                        {
+                                            if (filter.Field == "creationDate")
+                                            {
+                                                projects = projects.Where(p => p.Project.CreationDate.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            }
+                                            else
+                                            {
+                                                projects = projects.Where(p => p.Project.DueDate.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (fieldFilter.MatchMode == "dateBefore")
+                                            {
+                                                if (filter.Field == "creationDate")
+                                                {
+                                                    projects = projects.Where(p => p.Project.CreationDate.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                }
+                                                else
+                                                {
+                                                    projects = projects.Where(p => p.Project.DueDate.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                projects = projects.Where(p => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(p.ProjectType.Name));
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
 
             int numberOfRecords = projects.Count();
 
