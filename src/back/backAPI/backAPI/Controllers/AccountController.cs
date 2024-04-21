@@ -162,5 +162,20 @@ namespace backAPI.Controllers
                 Token = await _tokenService.CreateToken(user)
             };
         }
+
+        [HttpPost("change-password-auth-user")]
+        public async Task<ActionResult<string>> ChangePasswordOfLoggedUser(ChangePasswordDto changePassword) {
+            var user = await _userManager.FindByNameAsync(changePassword.Username);
+            if (user == null) return BadRequest(new { message = "There is no user with given username" });    // unlikely
+
+            var changedPasswordResult = await _userManager.ChangePasswordAsync(user, changePassword.CurrentPassword, changePassword.NewPassword);
+        
+            if(!changedPasswordResult.Succeeded) {
+                return BadRequest(new { message = "Invalid password" });
+            }
+
+            return Ok(new { message = "Password changed" });
+        }
+
     }
 }
