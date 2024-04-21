@@ -8,6 +8,7 @@ import { UserGetter } from '../_models/user-getter';
 import { ResetPassword } from '../_models/reset-password';
 import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-response';
 import { CompanyroleService } from './companyrole.service';
+import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
 
 @Injectable({
   providedIn: 'root'
@@ -95,6 +96,10 @@ export class AccountService {
         }
       })
     );
+  }
+
+  changePasswordForAuthorizedUser(model: AuthUserChangePassword) {
+    return this.http.post<string>(this.baseUrl + "Account/change-password-auth-user", model);
   }
 
   logout() {
