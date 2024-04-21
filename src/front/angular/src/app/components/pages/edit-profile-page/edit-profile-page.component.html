@@ -136,6 +136,7 @@
                         <div class="col-md-6"> <!-- field za new password-->
                             <div class="form-floating mb-3">
                                 <input
+                                    (change)="theSamePasswords()"
                                     type="password"
                                     id="newpswd"
                                     name="newpswdName"
@@ -153,9 +154,11 @@
                         <div class="col-md-6"> <!-- field za new password again -->
                             <div class="form-floating mb-3">
                                 <input
+                                    (change)="theSamePasswords()"
                                     type="password"
                                     id="newpswdverify"
                                     name="newpswdverify"
+                                    [(ngModel)]="newPasswordAgain"
                                     class="form-control required-field"
                                     required
                                     placeholder="Verify New Password"
@@ -169,7 +172,8 @@
                 </div>
 
                 <div id="changePasswordSubmit">
-                    <button type="submit" form="changePasswordForm" class="btn btn-primary">Change password</button>
+                    <button type="submit" form="changePasswordForm" class="btn btn-primary" [disabled]="!theSamePasswords()">Change password</button>
+                    <span id="error-display-span"></span>
                 </div>
                 <br><br><br><br>
 

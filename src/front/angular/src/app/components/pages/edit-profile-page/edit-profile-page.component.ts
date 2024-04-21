@@ -49,6 +49,10 @@ export class EditProfilePageComponent implements OnInit {
     newPassword: ""
   }
 
+  newPasswordAgain: string = "";
+
+  pattern = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+
   constructor(private userService: UserService,
     private messageService: MessageService,
     private msgPopupService: MessagePopupService,
@@ -235,4 +239,35 @@ export class EditProfilePageComponent implements OnInit {
       });
     }
   }
+
+  theSamePasswords() {
+    let check = this.changePasswordFields.newPassword === this.newPasswordAgain;
+    if(check == false) {
+      document.getElementById("newpswdverify")?.classList.add("problem");
+      document.getElementById("newpswd")?.classList.add("problem");
+    }
+    else {
+      document.getElementById("newpswdverify")?.classList.remove("problem");
+      document.getElementById("newpswd")?.classList.remove("problem");
+    }
+
+    check = check && this.changePasswordFields.newPassword != "" && this.newPasswordAgain != "";
+    if(check == false || this.changePasswordFields.currentPassword == "") return false;
+
+    if(!this.pattern.test(this.changePasswordFields.newPassword)) {
+      document.getElementById("error-display-span")!.innerHTML = `
+      Invalid password pattern  
+      <i 
+          class="pi pi-question-circle"
+          style="color: black"
+          title="Password needs to be at least 6 characters long and have one upper letter and one digit"></i>
+      `;
+    }
+    else {
+      document.getElementById("error-display-span")!.innerHTML = "";
+    }
+
+    return check && this.changePasswordFields.currentPassword != "";
+  }
+
 }
