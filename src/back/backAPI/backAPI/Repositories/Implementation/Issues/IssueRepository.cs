@@ -75,7 +75,7 @@ namespace backAPI.Repositories.Implementation.Issues
 
         public async Task<IEnumerable<int>> GetAssigneeIds(int issueId) {
             List<int> res = new List<int>();
-            var elements = _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false);
+            var elements = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false).ToListAsync();
             foreach(var elem in elements) {
                 res.Add(elem.UserId);
             }
