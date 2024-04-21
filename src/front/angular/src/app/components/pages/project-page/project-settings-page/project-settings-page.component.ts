@@ -97,7 +97,7 @@ export class ProjectSettingsPageComponent implements OnInit {
         next:(response)=>{
             this.router.navigate(["home/projects/settings/"+this.project.name]);
             this.projectName=this.project.name;
-            this.msgPopupService.showSuccess("Project name updated");
+            this.msgPopupService.showSuccess("Project edited");
           },
           error: (error)=>{
             console.log(error);
