@@ -8,9 +8,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './project-kanban-page.component.css'
 })
 export class ProjectKanbanPageComponent implements OnInit {
-  
+
   projectName: string = '';
-  
+
   constructor(
     private _projectService: ProjectService,
     private route: ActivatedRoute
@@ -19,6 +19,6 @@ export class ProjectKanbanPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
-    this._projectService.getProject();
+    this._projectService.getProject(this.projectName);
   }
 }

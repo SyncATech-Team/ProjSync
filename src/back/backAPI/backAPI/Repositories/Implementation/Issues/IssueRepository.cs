@@ -4,6 +4,7 @@ using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation.Issues
 {
@@ -11,14 +12,17 @@ namespace backAPI.Repositories.Implementation.Issues
     {
 
         private readonly DataContext _dataContext;
+        private readonly IUserOnIssueRepository _userOnIssueRepository;
 
         /* *****************************************************************************************
          * Konstruktor
          * ***************************************************************************************** */
-        public IssueRepository(DataContext dataContext)
+        public IssueRepository(DataContext dataContext, IUserOnIssueRepository userOnIssueRepository)
         {
             _dataContext = dataContext;
+            _userOnIssueRepository = userOnIssueRepository;
         }
+
         /* *****************************************************************************************
         * Dohvati sve zadatke za odredjenu grupu
         * ***************************************************************************************** */
@@ -74,10 +78,10 @@ namespace backAPI.Repositories.Implementation.Issues
         }
 
         public async Task<IEnumerable<int>> GetAssigneeIds(int issueId) {
-            IEnumerable<int> res = new List<int>();
-            var elements = _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false);
+            List<int> res = new List<int>();
+            var elements = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false).ToListAsync();
             foreach(var elem in elements) {
-                res.Append(elem.UserId);
+                res.Add(elem.UserId);
             }
 
             return res;
@@ -110,6 +114,58 @@ namespace backAPI.Repositories.Implementation.Issues
             exists.DueDate = model.EndDate;
             await _dataContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> UpdateIssue(int issueId, JIssueDto model)
+        {
+            var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+            if (exists == null)
+            {
+                return false;
+            }
+
+            exists.UpdatedDate = DateTime.Now;
+            exists.Description = model.Description;
+            exists.Name = model.Title;
+            exists.ListPosition = model.ListPosition;
+            exists.OwnerId = Int32.Parse(model.ReporterId);
+            IssueStatus issueStatus = await _dataContext.IssueStatuses.Where(type => type.Name == model.Status).FirstAsync();
+            IssuePriority issuePriority =  await _dataContext.IssuePriority.Where(type => type.Name == model.Priority).FirstAsync();
+            IssueType issueType = await _dataContext.IssueTypes.Where(type => type.Name == model.Type).FirstAsync();
+            
+            exists.StatusId = issueStatus.Id;
+            exists.PriorityId = issuePriority.Id;
+            exists.TypeId = issueType.Id;
+
+            List<UsersOnIssue> usersToInsert =
+            [
+                new UsersOnIssue
+                {
+                    UserId = exists.OwnerId,
+                    IssueId = issueId,
+                    Reporting = true,
+                    CompletionLevel = 0.0
+                },
+            ];
+
+            foreach (var assigneeId in model.UserIds)
+            {
+
+                usersToInsert.Add(new UsersOnIssue
+                {
+                    UserId = Int32.Parse(assigneeId),
+                    IssueId = issueId,
+                    Reporting = false,
+                });
+            }
+
+            var toRemove =  await _dataContext.UsersOnIssues.Where(uoi => uoi.IssueId == issueId).ToListAsync();
+            _dataContext.UsersOnIssues.RemoveRange(toRemove);
+
+            _dataContext.UsersOnIssues.AddRange(usersToInsert);
+
+            await _dataContext.SaveChangesAsync();
+                return true;
         }
 
         public async Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {

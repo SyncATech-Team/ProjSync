@@ -9,6 +9,8 @@ import {JIssue} from "../../../_models/issue";
 import {JComment} from "../../../_models/comment";
 import {DateUtil} from "../../utils/date-util";
 import {ProjectStore} from "./project.store";
+import {environment} from "../../../../environments/environment";
+import {is} from "date-fns/locale";
 
 
 @Injectable({
@@ -18,17 +20,13 @@ export class ProjectService {
   baseUrl: string;
 
   constructor(private _http: HttpClient, private _store: ProjectStore) {
-    // this.baseUrl = environment.apiUrl;
-    this.baseUrl = '/assets/data';
+    this.baseUrl = environment.apiUrl;
+    // this.baseUrl = '/assets/data';
   }
 
-  setLoading(isLoading: boolean) {
-    this._store.setLoading(isLoading);
-  }
-
-  getProject() {
+  getProject(projectName: string) {
     this._http
-      .get<JProject>(`${this.baseUrl}/project.json`)
+      .get<JProject>(`${this.baseUrl}Projects/${projectName}/all`)
       .pipe(
         setLoading(this._store),
         tap((project) => {
@@ -45,15 +43,7 @@ export class ProjectService {
       .subscribe();
   }
 
-  updateProject(project: Partial<JProject>) {
-    this._store.update((state) => ({
-      ...state,
-      ...project
-    }));
-  }
-
   updateIssue(issue: JIssue) {
-    issue.updatedAt = DateUtil.getNow();
     this._store.update((state) => {
       const issues = arrayUpsert(state.issues, issue.id, issue);
       return {
@@ -61,6 +51,9 @@ export class ProjectService {
         issues
       };
     });
+
+    this._http
+      .put(`${this.baseUrl}Issues/kb/${issue.id}`, issue).subscribe();
   }
 
   deleteIssue(issueId: string) {
