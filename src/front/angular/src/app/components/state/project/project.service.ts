@@ -23,10 +23,6 @@ export class ProjectService {
     // this.baseUrl = '/assets/data';
   }
 
-  setLoading(isLoading: boolean) {
-    this._store.setLoading(isLoading);
-  }
-
   getProject(projectName: string) {
     this._http
       .get<JProject>(`${this.baseUrl}Projects/${projectName}/all`)
@@ -44,13 +40,6 @@ export class ProjectService {
         })
       )
       .subscribe();
-  }
-
-  updateProject(project: Partial<JProject>) {
-    this._store.update((state) => ({
-      ...state,
-      ...project
-    }));
   }
 
   updateIssue(issue: JIssue) {
