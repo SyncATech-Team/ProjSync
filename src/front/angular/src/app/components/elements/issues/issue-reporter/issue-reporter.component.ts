@@ -91,7 +91,6 @@ export class IssueReporterComponent implements OnInit, OnChanges {
 
     let ind = this.usersPhotos.findIndex(u => u.username == username);
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
-    console.log('[userPhotoSource]', this.usersPhotos[ind].photoSource);
     return this.usersPhotos[ind].photoSource;
   }
 }
