@@ -218,9 +218,12 @@
                             </td>
                             <td *ngIf="column=='Progress' && selectedColumns.includes('Progress')" style="width: 20vh;">
                                 <div class="progress-bar-wrapper">
-                                    <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
+                                    <!-- <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
                                     
-                                    <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>
+                                    <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div> -->
+                                    
+                                    <!-- [value]=task.completed -->
+                                    <p-progressBar></p-progressBar>
                                 </div>
                             </td>
                         </ng-container>
