@@ -8,7 +8,7 @@
 
   <div class="d-flex align-items-center items-center">
     <p-avatar
-      [image]="assignee?.avatarUrl"
+      [image]="UserImagePath(assignee?.username)"
       shape="circle"
       size="normal">
     </p-avatar>
@@ -38,7 +38,7 @@
            (click)="addUserToIssue(option, op)">
         <div class="d-flex align-items-center items-center">
           <p-avatar
-            [image]="option?.avatarUrl"
+            [image]="UserImagePath(option?.username)"
             shape="circle"
             size="normal"
             [pTooltip]="option?.name">

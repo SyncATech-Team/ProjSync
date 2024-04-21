@@ -6,8 +6,9 @@ import { IssueUtil } from '../../../utils/issue-util';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../issue-modal/issue-modal.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
-import {ProjectQuery} from "../../../state/project/project.query";
+import { ProjectQuery } from "../../../state/project/project.query";
+import { PhotoForUser } from "../../../../_models/photo-for-user";
+import { UserProfilePicture } from "../../../../_service/userProfilePicture.service";
 
 @UntilDestroy()
 @Component({
@@ -21,14 +22,18 @@ export class IssueCardComponent implements OnChanges, OnInit {
   issueTypeIcon!: string;
   priorityIcon!: IssuePriorityIcon;
 
+  usersPhotos: PhotoForUser[] = [];
+
   ref: DynamicDialogRef | undefined;
 
-  constructor(private _projectQuery: ProjectQuery, private _modalService: DialogService) { }
+  constructor(private _projectQuery: ProjectQuery,  private userPictureService: UserProfilePicture, private _modalService: DialogService) { }
 
   ngOnInit(): void {
     this._projectQuery.users$.pipe(untilDestroyed(this)).subscribe((users) => {
       this.assignees = this.issue.userIds.map((userId) => users.find((x) => x.id === userId));
     });
+
+    this.getUserProfilePhotos(this.assignees);
   }
 
 
@@ -53,6 +58,49 @@ export class IssueCardComponent implements OnChanges, OnInit {
         issue$: this._projectQuery.issueById$(issueId)
       }
     });
+  }
+
+  getUserProfilePhotos(users: (JUser | undefined)[]) {
+    if (!users) return;
+    for(const user of users) {
+      if (!user) return;
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            var path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username,
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
+
+  UserImagePath(username: string | undefined): string {
+    if (!this.assignees) return "";
+    let index = this.assignees.findIndex(u => u!.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(this.assignees[index]!.profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(this.assignees[index]!.username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    console.log('[userPhotoSource]', this.usersPhotos[ind].photoSource);
+    return this.usersPhotos[ind].photoSource;
   }
 
 }

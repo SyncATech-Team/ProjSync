@@ -49,7 +49,7 @@ export class BoardFilterComponent implements OnInit {
 
   onlyMyIssueChanged() {
     this.resetAll();
-    var userId = this.accountService.getCurrentUser()?.id;
+    const userId: number | undefined = this.accountService.getCurrentUser()?.id;
     this.filterService.toggleUserId(userId!.toString());
   }
 

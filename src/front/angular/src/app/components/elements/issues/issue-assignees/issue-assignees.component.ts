@@ -4,6 +4,8 @@ import {JIssue} from "../../../../_models/issue";
 import {JUser} from "../../../../_models/user-issues";
 import {ProjectService} from "../../../state/project/project.service";
 import {OverlayPanel} from "primeng/overlaypanel";
+import {PhotoForUser} from "../../../../_models/photo-for-user";
+import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
 
 @Component({
   selector: 'issue-assignees',
@@ -15,8 +17,10 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
   @Input() users!: JUser[] | null;
   assignees!: (JUser | undefined)[];
+  usersPhotos: PhotoForUser[] = [];
 
-  constructor(private _projectService: ProjectService, private cdr: ChangeDetectorRef) {}
+  constructor(private _projectService: ProjectService, private userPictureService: UserProfilePicture,
+              private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.cdr.markForCheck();
@@ -24,6 +28,7 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
       // @ts-ignore
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
     }
+    this.getUserProfilePhotos(this.users);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -52,5 +57,47 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
 
   isUserSelected(user: JUser): boolean {
     return this.issue.userIds.includes(user.id);
+  }
+
+  getUserProfilePhotos(users: JUser[] | null) {
+    if (!users) return;
+    for(const user of users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            var path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username,
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
+
+  UserImagePath(username: string | undefined): string {
+    if (!this.users) return "";
+    let index = this.users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(this.users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(this.users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    console.log('[userPhotoSource]', this.usersPhotos[ind].photoSource);
+    return this.usersPhotos[ind].photoSource;
   }
 }
