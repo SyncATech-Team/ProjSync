@@ -193,13 +193,13 @@ ngOnInit(): void {
     });
 }
 
-ngAfterViewInit(): void {
+// ngAfterViewInit(): void {
     // this.scrollToToday();
-}
+// }
 
-// ngAfterViewInit() {
-    //     setTimeout(() => this.ganttComponent.scrollToDate(1627729997), 200);
-    // }
+ngAfterViewInit() {
+    setTimeout(() => this.ganttComponent!.scrollToToday(), 200);
+}
 
 barClick(event: GanttBarClickEvent) {
     // this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
