@@ -15,7 +15,7 @@ import { CompanyroleService } from '../../../_service/companyrole.service';
 })
 export class HomePageComponent implements OnInit {
 
-  projectComplitionByTime : number = 0;
+  projectCompletionMap: Map<string, number> = new Map<string, number>();
 
   projects: Project[]=[];
   Types: any[]=[];
@@ -66,7 +66,8 @@ export class HomePageComponent implements OnInit {
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
 
-            this.projectComplitionByTime = this.calculateProjectCompletion(project.creationDate, project.dueDate);
+            const completion = this.calculateProjectCompletion(project.creationDate, project.dueDate);
+            this.projectCompletionMap.set(project.key, completion);
           });
           this.filterProjects(this.visibilityFilter);
         },

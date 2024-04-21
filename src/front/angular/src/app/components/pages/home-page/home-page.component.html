@@ -223,7 +223,18 @@
                                     <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div> -->
                                     
                                     <!-- [value]=task.completed -->
-                                    <p-progressBar [value] = projectComplitionByTime [style]="{'margin-bottom': '5px'}"></p-progressBar>
+                                    <p-progressBar 
+                                    [value]="projectCompletionMap.get(project.key)"
+                                    [pTooltip]="tooltipContent"
+                                    tooltipPosition="top" 
+                                    [style]="{'margin-bottom': '5px'}"></p-progressBar>
+                                    <ng-template #tooltipContent>
+                                        <div class="flex align-items-center">
+                                            <i class="fa-regular fa-clock"></i>
+                                            <span> <b> Remaining</b> time {{ projectCompletionMap.get(project.key) }}%</span>
+                                        </div>
+                                    </ng-template>
+                                    
                                     <p-progressBar></p-progressBar>
                                 </div>
                             </td>
