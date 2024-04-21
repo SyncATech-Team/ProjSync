@@ -7,15 +7,13 @@ export enum IssueType {
 }
 
 export enum IssueStatus {
-  BACKLOG = 'Backlog',
-  SELECTED = 'Selected',
-  IN_PROGRESS = 'InProgress',
+  PLANNING = 'Planning',
+  IN_PROGRESS = 'In progress',
   DONE = 'Done'
 }
 
 export const IssueStatusDisplay = {
-  [IssueStatus.BACKLOG]: 'Backlog',
-  [IssueStatus.SELECTED]: 'Selected for Development',
+  [IssueStatus.PLANNING]: 'Planning',
   [IssueStatus.IN_PROGRESS]: 'In progress',
   [IssueStatus.DONE]: 'Done'
 };

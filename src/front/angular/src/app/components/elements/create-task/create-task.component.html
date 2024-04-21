@@ -40,7 +40,7 @@
                 </svg-icon>
                 <span>{{ priority.value }}</span>
             </ng-template>
-            
+
             <ng-template let-priority pTemplate="content">
                 <svg-icon [name]="priority.icon"
                         [size]="20"
@@ -70,16 +70,16 @@
 
             <div class="due-date">
                 <p>Due Date</p>
-                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="dd/mm/yyyy"></p-calendar>                
+                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="dd/mm/yyyy"></p-calendar>
             </div>
         </div>
 
         <p>Reporter</p>
         <p-dropdown
-            formControlName="issue-reporter" 
-            [options]="users" optionLabel="username" 
-            placeholder="Select reporter" 
-            class="input-size" 
+            formControlName="issue-reporter"
+            [options]="users" optionLabel="username"
+            placeholder="Select reporter"
+            class="input-size"
             [showClear]="true">
             <ng-template let-user pTemplate="selectedItem">
                 <div class="profilecontent">
@@ -96,7 +96,7 @@
         </p-dropdown>
 
         <p>Assigned</p>
-        <p-multiSelect [options]="users"  placeholder="Select a assignee" optionLabel="username" class="multi-select-dropdown">
+        <p-multiSelect [options]="users" formControlName="issue-assigner" placeholder="Select a assignee" optionLabel="username" class="multi-select-dropdown">
             <ng-template let-user pTemplate="item">
                 <div class="profilecontent">
                     <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">

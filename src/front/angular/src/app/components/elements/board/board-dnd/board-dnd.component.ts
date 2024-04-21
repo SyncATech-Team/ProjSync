@@ -13,8 +13,7 @@ import {ProjectQuery} from "../../../state/project/project.query";
 })
 export class BoardDndComponent {
   issueStatuses: IssueStatus[] = [
-    IssueStatus.BACKLOG,
-    IssueStatus.SELECTED,
+    IssueStatus.PLANNING,
     IssueStatus.IN_PROGRESS,
     IssueStatus.DONE
   ];

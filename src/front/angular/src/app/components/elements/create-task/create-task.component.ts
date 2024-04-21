@@ -36,8 +36,6 @@ export class CreateTaskComponent implements OnInit {
   // issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
   usersPhotos: PhotoForUser[] = [];
-
-  selectedAssignees : UserGetter[] = [];
   currentUser? : string;
 
   issueCreator : CreateIssueModel = {
@@ -70,7 +68,7 @@ export class CreateTaskComponent implements OnInit {
     private accountServis: AccountService,
     private groupService: GroupService,
     private userPictureService: UserProfilePicture
-  ) { 
+  ) {
     this.currentUser = this.accountServis.getCurrentUser()?.username;
     this.form = this.formBuilder.group({
       'issue-group': [],
@@ -106,7 +104,7 @@ export class CreateTaskComponent implements OnInit {
           console.log(error);
         }
       });
-    
+
     if(this.projectName)
       this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
         next: (response) => {
@@ -159,8 +157,8 @@ export class CreateTaskComponent implements OnInit {
         this.issueCreator.dueDate = this.form.controls['issue-due-date'].value;
         this.issueCreator.ownerUsername = this.currentUser!;
         this.issueCreator.reporterUsername = this.form.controls['issue-reporter'].value.username;
-        const assignedToUsernames = this.selectedAssignees.map(user => user.username);
-        this.issueCreator.assigneeUsernames = assignedToUsernames;
+        this.issueCreator.assigneeUsernames =
+          this.form.controls['issue-assigner'].value.map((user: UserGetter) => user.username);
         this.issueCreator.dependentOnIssues = [];  // ZA SADA PRAZAN STRING TREBA OMOGUCITI I BIRANJE ZAVISNOSTI
         this.issueCreator.projectName = this.projectName;
         this.issueCreator.groupName = this.form.controls['issue-group'].value.name;
@@ -204,7 +202,7 @@ export class CreateTaskComponent implements OnInit {
         projectName: this.projectName,
       }
     });
-  
+
     this.ref.onClose.subscribe((data: any) => {
       if(data != "created-group") return;     // NE REFRESHUJ MODAL ZA KREIRANJE ZADATKA UKOLIKO NIJE DODATA GRUPA
 
@@ -220,7 +218,7 @@ export class CreateTaskComponent implements OnInit {
             let path = response['fileContents'];
             path = this.userPictureService.decodeBase64Image(response['fileContents']);
             var ph: PhotoForUser = {
-              username: user.username, 
+              username: user.username,
               photoSource: path
             };
             this.usersPhotos.push(ph);
