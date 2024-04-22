@@ -21,12 +21,13 @@ import { ProjectDocumentsPageComponent } from './components/pages/project-page/p
 import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
+import { loginGuard } from './_guards/login.guard';
 
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
+  { path: 'login', component: LoginPageComponent, canActivate: [loginGuard]},
   { path: 'test', component: SamotestComponent },
-  { path: 'login', component: LoginPageComponent },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },
   {

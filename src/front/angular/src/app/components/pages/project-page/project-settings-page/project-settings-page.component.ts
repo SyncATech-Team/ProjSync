@@ -85,23 +85,25 @@ export class ProjectSettingsPageComponent implements OnInit {
 
   onSubmit() {
     this.project.name = this.form.value.name;
-    this.project.description = this.form.value.description;
-    this.project.typeName = this.form.value.category.name;
+    // this.project.typeName = this.form.value.category.name;
     
-    if(this.projectName){
-      if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName){
-        this.projectService.updateProject(this.projectName,this.project).subscribe({
-          next:(response)=>{
-              this.router.navigate(["home/projects/settings/"+this.project.name]);
-              this.projectName=this.project.name;
-              this.msgPopupService.showSuccess("Project name updated");
-            },
-            error: (error)=>{
-              console.log(error);
-              this.msgPopupService.showError("Project name failed to update");
-            }
-          });
-      }
+    console.log(this.form.value.category.name);
+    console.log(this.project.typeName);
+    if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName){
+      this.project.description = this.form.value.description;
+      this.project.typeName = this.form.value.category.name;
+
+      this.projectService.updateProject(this.projectName!,this.project).subscribe({
+        next:(response)=>{
+            this.router.navigate(["home/projects/settings/"+this.project.name]);
+            this.projectName=this.project.name;
+            this.msgPopupService.showSuccess("Project edited");
+          },
+          error: (error)=>{
+            console.log(error);
+            this.msgPopupService.showError("Project name failed to update");
+          }
+        });
     }
   }
 
