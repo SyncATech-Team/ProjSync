@@ -218,16 +218,13 @@
                             </td>
                             <td *ngIf="column=='Progress' && selectedColumns.includes('Progress')" style="width: 20vh;">
                                 <div class="progress-bar-wrapper">
-                                    <!-- <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
-                                    
-                                    <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div> -->
-                                    
-                                    <!-- [value]=task.completed -->
                                     <p-progressBar 
                                     [value]="projectCompletionMap.get(project.key)"
                                     [pTooltip]="tooltipContent"
                                     tooltipPosition="top" 
-                                    [style]="{'margin-bottom': '5px'}"></p-progressBar>
+                                    [style]="{'margin-bottom': '5px'}"
+                                    class="time-progress"
+                                    [ngClass]="getProgressBarClass(projectCompletionMap.get(project.key))"></p-progressBar>
                                     <ng-template #tooltipContent>
                                         <div class="flex align-items-center">
                                             <i class="fa-regular fa-clock"></i>

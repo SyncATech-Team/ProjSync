@@ -50,10 +50,6 @@ th{
     height: 20px;
 }
 
-.progress-bar-wrapper{
-    width: 20vh;
-}
-
 .input-search input{
     padding-left: 30px;
 }
@@ -67,4 +63,23 @@ th{
         flex-direction: column;
         width: 100%;
     }
+}
+
+/* BOJE PROGRESS BAR ZA PREOSTALO VREME */
+
+:host ::ng-deep .progress-bar-wrapper{
+    width: 20vh;
+}
+
+:host ::ng-deep .progress-bar-wrapper .progress-green .ng-star-inserted{
+    background-color: #22c55e;
+}
+  
+:host ::ng-deep .progress-bar-wrapper .progress-yellow .ng-star-inserted {
+    background: rgb(247,207,0);
+    background: linear-gradient(90deg, rgba(247,207,0,1) 0%, rgba(255,103,0,1) 49%, rgba(239,68,68,1) 100%);
+}
+  
+:host ::ng-deep .progress-bar-wrapper .progress-red .ng-star-inserted {
+    background-color: #ef4444;
 }

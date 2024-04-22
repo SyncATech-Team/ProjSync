@@ -86,9 +86,9 @@ export class HomePageComponent implements OnInit {
     }
 
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)); // Ukupan broj dana planiran za trajanje projekta
-    console.log(totalDays);
+    // console.log(totalDays);
     const remainingDays = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24)); // Broj preostalih dana do kraja projekta
-    console.log("Preostalo " + remainingDays);
+    // console.log("Preostalo " + remainingDays);
     const completedDays = totalDays - remainingDays; // Broj dana koji su već prošli
     
 
@@ -98,6 +98,20 @@ export class HomePageComponent implements OnInit {
 
     const completionPercentage = (completedDays / totalDays) * 100;
     return parseFloat(completionPercentage.toFixed(1));
+  }
+
+  getProgressBarClass(percentage: number | undefined): string {
+    if(percentage != undefined){
+      if (percentage <= 30) {
+        console.log("TEST " + percentage);
+        return 'progress-green'; 
+      } else if (percentage <= 70) {
+        return 'progress-yellow';
+      } else {
+        return 'progress-red';
+      }
+    }
+    else return "";
   }
   
   filterProjects(filter :string ):void {
