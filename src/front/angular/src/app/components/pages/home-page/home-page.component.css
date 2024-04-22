@@ -57,6 +57,10 @@ th{
     padding-left: 10px;
 }
 
+:host ::ng-deep .progress-bar-wrapper{
+    width: 20vh;
+}
+
 @media screen and (max-width: 960px) {
     .progress-bar-wrapper{
         display: flex;
@@ -67,19 +71,15 @@ th{
 
 /* BOJE PROGRESS BAR ZA PREOSTALO VREME */
 
-:host ::ng-deep .progress-bar-wrapper{
-    width: 20vh;
-}
-
-:host ::ng-deep .progress-bar-wrapper .progress-green .ng-star-inserted{
+:host ::ng-deep .progress-bar-wrapper .progress-green .p-progressbar-value{
     background-color: #22c55e;
 }
   
-:host ::ng-deep .progress-bar-wrapper .progress-yellow .ng-star-inserted {
+:host ::ng-deep .progress-bar-wrapper .progress-yellow .p-progressbar-value {
     background: rgb(247,207,0);
-    background: linear-gradient(90deg, rgba(247,207,0,1) 0%, rgba(255,103,0,1) 49%, rgba(239,68,68,1) 100%);
+    background: linear-gradient(90deg, rgba(247,207,0,1) 0%, rgba(250,151,84,0.8128501400560224) 48%, rgba(239,148,68,0.9332983193277311) 100%);
 }
   
-:host ::ng-deep .progress-bar-wrapper .progress-red .ng-star-inserted {
+:host ::ng-deep .progress-bar-wrapper .progress-red .p-progressbar-value {
     background-color: #ef4444;
 }

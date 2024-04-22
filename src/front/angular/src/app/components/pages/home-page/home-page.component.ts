@@ -16,6 +16,7 @@ import { CompanyroleService } from '../../../_service/companyrole.service';
 export class HomePageComponent implements OnInit {
 
   projectCompletionMap: Map<string, number> = new Map<string, number>();
+  sortOrder: 'asc' | 'desc' = 'asc';
 
   projects: Project[]=[];
   Types: any[]=[];
@@ -103,7 +104,6 @@ export class HomePageComponent implements OnInit {
   getProgressBarClass(percentage: number | undefined): string {
     if(percentage != undefined){
       if (percentage <= 30) {
-        console.log("TEST " + percentage);
         return 'progress-green'; 
       } else if (percentage <= 70) {
         return 'progress-yellow';
