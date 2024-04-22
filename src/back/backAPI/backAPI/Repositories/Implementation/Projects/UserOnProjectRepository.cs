@@ -5,6 +5,7 @@ using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.EntityFrameworkCore;
+using Mysqlx.Crud;
 
 namespace backAPI.Repositories.Implementation.Projects
 {
@@ -122,12 +123,256 @@ namespace backAPI.Repositories.Implementation.Projects
                     up => up.UserProject.ProjectId,
                     p => p.Id,
                     (up, p) => new { up.User, Project = p })
-                .Where(x => x.Project.Name == projectName)
-                .Select(x => x.User);
-
+                .Join(dataContext.CRoles,
+                    u => u.User.CompanyRoleId,
+                    cr => cr.Id,
+                    (u, cr) => new { u.User, u.Project, CompanyRole =  cr })
+                .Where(x => x.Project.Name == projectName);
+                
             int numberOfRecords = users.Count();
 
-            return (await users.Skip(criteria.First).Take(criteria.Rows).ToListAsync(),numberOfRecords);
+            if(criteria.MultiSortMeta.Count > 0)
+            {
+                MultiSortMeta firstOrder = criteria.MultiSortMeta[0];
+                criteria.MultiSortMeta.RemoveAt(0);
+                var orderdUsers = users.OrderBy(u => u.User.UserName);
+
+                if (firstOrder.Order == 1)
+                {
+                    if (firstOrder.Field == "username")
+                    {
+                        orderdUsers = users.OrderBy(u => u.User.UserName);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "email")
+                        {
+                            orderdUsers = users.OrderBy(u => u.User.Email);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "firstName")
+                            {
+                                orderdUsers = users.OrderBy(u => u.User.FirstName);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "lastName")
+                                {
+                                    orderdUsers = users.OrderBy(u => u.User.LastName);
+                                }
+                                else
+                                {
+                                    if (firstOrder.Field == "companyRoleName")
+                                    {
+                                        orderdUsers = users.OrderBy(u => u.CompanyRole.Name);
+                                    }
+                                    else
+                                    {
+                                        if (firstOrder.Field == "address")
+                                        {
+                                            orderdUsers = users.OrderBy(u => u.User.Address);
+                                        }
+                                        else
+                                        {
+                                            if (firstOrder.Field == "status")
+                                            {
+                                                orderdUsers = users.OrderBy(u => u.User.Status);
+                                            }
+                                            else
+                                            {
+                                                orderdUsers = users.OrderBy(u => u.User.ContactPhone);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (firstOrder.Field == "username")
+                    {
+                        orderdUsers = users.OrderByDescending(u => u.User.UserName);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "email")
+                        {
+                            orderdUsers = users.OrderByDescending(u => u.User.Email);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "firstName")
+                            {
+                                orderdUsers = users.OrderByDescending(u => u.User.FirstName);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "lastName")
+                                {
+                                    orderdUsers = users.OrderByDescending(u => u.User.LastName);
+                                }
+                                else
+                                {
+                                    if (firstOrder.Field == "companyRoleName")
+                                    {
+                                        orderdUsers = users.OrderByDescending(u => u.CompanyRole.Name);
+                                    }
+                                    else
+                                    {
+                                        if (firstOrder.Field == "address")
+                                        {
+                                            orderdUsers = users.OrderByDescending(u => u.User.Address);
+                                        }
+                                        else
+                                        {
+                                            if (firstOrder.Field == "status")
+                                            {
+                                                orderdUsers = users.OrderByDescending(u => u.User.Status);
+                                            }
+                                            else
+                                            {
+                                                orderdUsers = users.OrderByDescending(u => u.User.ContactPhone);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                foreach (var order in criteria.MultiSortMeta) 
+                {
+                    if (order.Order == 1)
+                    {
+                        if(order.Field == "username")
+                        {
+                            orderdUsers = orderdUsers.ThenBy(u => u.User.UserName);
+                        }
+                        else
+                        {
+                            if (order.Field == "email")
+                            {
+                                orderdUsers = orderdUsers.ThenBy(u => u.User.Email);
+                            }
+                            else
+                            {
+                                if (order.Field == "firstName")
+                                {
+                                    orderdUsers = orderdUsers.ThenBy(u => u.User.FirstName);
+                                }
+                                else
+                                {
+                                    if (order.Field == "lastName")
+                                    {
+                                        orderdUsers = orderdUsers.ThenBy(u => u.User.LastName);
+                                    }
+                                    else
+                                    {
+                                        if (order.Field == "companyRoleName")
+                                        {
+                                            orderdUsers = orderdUsers.ThenBy(u => u.CompanyRole.Name);
+                                        }
+                                        else
+                                        {
+                                            if (order.Field == "address")
+                                            {
+                                                orderdUsers = orderdUsers.ThenBy(u => u.User.Address);
+                                            }
+                                            else
+                                            {
+                                                if (order.Field == "status")
+                                                {
+                                                    orderdUsers = orderdUsers.ThenBy(u => u.User.Status);
+                                                }
+                                                else
+                                                {
+                                                    orderdUsers = orderdUsers.ThenBy(u => u.User.ContactPhone);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (order.Field == "username")
+                        {
+                            orderdUsers = orderdUsers.ThenByDescending(u => u.User.UserName);
+                        }
+                        else
+                        {
+                            if (order.Field == "email")
+                            {
+                                orderdUsers = orderdUsers.ThenByDescending(u => u.User.Email);
+                            }
+                            else
+                            {
+                                if (order.Field == "firstName")
+                                {
+                                    orderdUsers = orderdUsers.ThenByDescending(u => u.User.FirstName);
+                                }
+                                else
+                                {
+                                    if (order.Field == "lastName")
+                                    {
+                                        orderdUsers = orderdUsers.ThenByDescending(u => u.User.LastName);
+                                    }
+                                    else
+                                    {
+                                        if (order.Field == "companyRoleName")
+                                        {
+                                            orderdUsers = orderdUsers.ThenByDescending(u => u.CompanyRole.Name);
+                                        }
+                                        else
+                                        {
+                                            if (order.Field == "address")
+                                            {
+                                                orderdUsers = orderdUsers.ThenByDescending(u => u.User.Address);
+                                            }
+                                            else
+                                            {
+                                                if (order.Field == "status")
+                                                {
+                                                    orderdUsers = orderdUsers.ThenByDescending(u => u.User.Status);
+                                                }
+                                                else
+                                                {
+                                                    orderdUsers = orderdUsers.ThenByDescending(u => u.User.ContactPhone);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return (await orderdUsers.Select(x => x.User).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
+            }
+
+            return (await users.Select(x => x.User).Skip(criteria.First).Take(criteria.Rows).ToListAsync(),numberOfRecords);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersNotOnProjectAsync(string projectName)
+        {
+            return dataContext.Users.ToArray().Except(await dataContext.Users
+                .Join(dataContext.UsersOnProjects,
+                    u => u.Id,
+                    up => up.UserId,
+                    (u, up) => new { User = u, UserProject = up })
+                .Join(dataContext.Projects,
+                    up => up.UserProject.ProjectId,
+                    p => p.Id,
+                    (up, p) => new { up.User, Project = p })
+                .Where(x => x.Project.Name == projectName)
+                .Select(x => x.User)
+                .ToListAsync());
         }
     }
 }

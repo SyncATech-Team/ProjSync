@@ -32,8 +32,6 @@ export class ProjectPeoplePageComponent implements OnInit{
   selectedRole: string = '';
     
   projectName: string = '';
-  projectType: string = '';
-  projectKey: string = '';
 
   searchTerm: string = '';
   color: string = '#ff0000';
@@ -49,6 +47,7 @@ export class ProjectPeoplePageComponent implements OnInit{
   first = 0;
   rows = 10;
   totalRecords = 0;
+  lastLazyLoadEvent!: TableLazyLoadEvent;
 
   @ViewChild('createRoleForm') formRecipe?: NgForm;
 
@@ -86,24 +85,22 @@ export class ProjectPeoplePageComponent implements OnInit{
     //   }
     // });
 
-    this.userService.getAllUsers().subscribe({
-      next: (response) => {
-        this.getUserProfilePhotos(this.users);
-        this.allUsers = response.filter(user => user.username !== 'admin');
-        var userNames = this.users_backup.map(user => user.username);
-        this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username));
-        this.getUserProfilePhotos(this.allUsers);
-      },
-      error: (error) => {
-        console.log(error); 
-      }
-    });
+    // this.userService.getAllUsers().subscribe({
+    //   next: (response) => {
+    //     this.getUserProfilePhotos(this.users);
+    //     this.allUsers = response.filter(user => user.username !== 'admin');
+    //     var userNames = this.users_backup.map(user => user.username);
+    //     this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username));
+    //     this.getUserProfilePhotos(this.allUsers);
+    //   },
+    //   error: (error) => {
+    //     console.log(error); 
+    //   }
+    // });
 
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response) => {
         this.project = response;
-        this.projectType = this.project.typeName;
-        this.projectKey = this.project.key;
       },
       error: (error) => {
         console.log(error);
@@ -184,14 +181,14 @@ export class ProjectPeoplePageComponent implements OnInit{
             const indexToRemove = this.users.findIndex(user => user.username === username);
             if (indexToRemove !== -1) {
               this.allUsers.push(this.users[indexToRemove]);
-              this.users.splice(indexToRemove, 1);
             }
     
-            const indexToRemoveBackup = this.users_backup.findIndex(user => user.username === username);
-            if(indexToRemoveBackup !== -1) {
-              this.users_backup.splice(indexToRemoveBackup, 1);
-            }
+            // const indexToRemoveBackup = this.users_backup.findIndex(user => user.username === username);
+            // if(indexToRemoveBackup !== -1) {
+            //   this.users_backup.splice(indexToRemoveBackup, 1);
+            // }
             this.userRole = this.users_backup.map(user => user.companyRoleName);
+            this.loadUsers(this.lastLazyLoadEvent);
             this.msgPopupService.showSuccess("User removed from project successfully.");
           },
           error: error => {
@@ -212,18 +209,19 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.msgPopupService.showSuccess("Successfully added new user!");
         this.allUsers = this.allUsers.filter(user => user.username !== (this.userForAdd as any).username);
         this.userForAdd = "";
+        this.loadUsers(this.lastLazyLoadEvent);
 
         console.log(this.color);        
-        this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
-          next: (response) => {
-            this.users = response;
-            this.users_backup = response;
-            this.userRole = this.users_backup.map(user => user.companyRoleName);
-          },
-          error: (error) => {
-            console.log(error);
-          }
-        });
+        // this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
+        //   next: (response) => {
+        //     this.users = response;
+        //     this.users_backup = response;
+        //     this.userRole = this.users_backup.map(user => user.companyRoleName);
+        //   },
+        //   error: (error) => {
+        //     console.log(error);
+        //   }
+        // });
       },
       error: (error) => {
         this.msgPopupService.showError("Unable to add new user! Make sure there are no duplicate names.")
@@ -275,12 +273,11 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
 
   loadUsers(event: TableLazyLoadEvent){
-    
+    this.lastLazyLoadEvent = event;
     if(this.projectName)
     {
       this.userOnProjectService.getPaginationAllUsersOnProject(this.projectName,event).subscribe({
         next: (response) => {
-          console.log(response);
           this.users = response.users;
           this.totalRecords = response.numberOfRecords;
         },
@@ -288,6 +285,15 @@ export class ProjectPeoplePageComponent implements OnInit{
           console.log(err);
         }
       });
+    }
+    if(this.allUsers.length == 0){
+      this.userOnProjectService.getAllUsersNotOnProject(this.projectName).subscribe({
+        next: (response) => {
+          this.getUserProfilePhotos(this.users);
+          this.allUsers = response.filter(user => user.companyRoleName !== 'Administrator');
+          this.getUserProfilePhotos(this.allUsers);
+        }
+      })
     }
   }
 }

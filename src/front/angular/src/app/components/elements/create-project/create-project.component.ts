@@ -108,7 +108,7 @@ export class CreateProjectComponent implements OnInit{
     else{
       this.projectService.createProject(this.creationModel).subscribe({
         next: (response)=>{
-          this.homePage.initializeProjects();
+          this.homePage.loadProjects(this.homePage.lastLazyLoadEvent);
           this.msgPopUpService.showSuccess("Project successfully created");
           this.onSuccessfulCreation();
           // this.formCreateProject.reset();

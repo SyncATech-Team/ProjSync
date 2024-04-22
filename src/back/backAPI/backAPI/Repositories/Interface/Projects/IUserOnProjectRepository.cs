@@ -11,5 +11,6 @@ namespace backAPI.Repositories.Interface.Projects
         Task<bool> RemoveUserFromProjectAsync(string projectName, string username);
         Task<IEnumerable<Project>> GetProjectsByUser(string username);
         Task<(IEnumerable<User> users, int numberOfRecords)> GetPaginationUsersOnProjectAsync(string projectName,Criteria criteria);
+        Task<IEnumerable<User>> GetUsersNotOnProjectAsync(string projectName);
     }
 }

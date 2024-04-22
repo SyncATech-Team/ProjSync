@@ -24,6 +24,10 @@ export class UserOnProjectService {
         return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject?projectName=${projectName}`);
     }
 
+    getAllUsersNotOnProject(projectName: string) {
+        return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject/notOn?projectName=${projectName}`);
+    }
+
     getPaginationAllUsersOnProject(projectName: string,event: TableLazyLoadEvent){
         let empty: any[] = [];
         var criteriaObj = {

@@ -136,6 +136,42 @@ namespace backAPI.Controllers
             return Ok(lazyLoadDto);
         }
 
+        [HttpGet("notOn")]
+        public async Task<IActionResult> GetUsersNotOnProject(string projectName)
+        {
+            var project = await _projectRepository.GetProjectByName(projectName);
+            List<UserDto> dTOUsers = new List<UserDto>();
+
+            if (project == null)
+            {
+                return NotFound("Project not found");
+            }
+
+            var users = await _userOnProjectRepository.GetUsersNotOnProjectAsync(project.Name);
+            foreach (var user in users)
+            {
+                dTOUsers.Add(new UserDto
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name,
+                    ProfilePhoto = user.ProfilePhoto,
+                    Address = user.Address,
+                    ContactPhone = user.ContactPhone,
+                    Status = user.Status,
+                    IsVerified = user.IsVerified,
+                    PreferedLanguage = user.PreferedLanguage,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt,
+                    isActive = user.IsActive
+                });
+            }
+
+            return Ok(dTOUsers);
+        }
+
         [HttpPost]
         
         public async Task<IActionResult> AddUserOnProject(string projectName, string username, string color)
