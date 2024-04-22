@@ -120,19 +120,6 @@ export class CreateProjectComponent implements OnInit{
     }
   }
 
-  /* TODO 
-     
-    -Errors
-    -provera due date < current date
-    -reset poja unutar forme nakon uspesnog pravljenja zadatka
-    -key (back?)
-    
-    - your -> private || YOUR
-    - stared -> favorite
-    - expend -> complition bar & time icon
-    - odma videti sve MOJE projekte/taskove
 
-  
-  */
 
 }

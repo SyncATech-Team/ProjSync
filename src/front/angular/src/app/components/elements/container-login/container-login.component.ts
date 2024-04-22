@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 import { EmailValidationService } from '../../../_service/email_validator.service';
+import { MessagePopupService } from '../../../_service/message-popup.service';
 
 @Component({
   selector: 'container-login',
@@ -20,7 +21,8 @@ export class ContainerLoginComponent {
   constructor(
     public accountService: AccountService, 
     private router: Router,
-    private mailValidationService: EmailValidationService
+    private mailValidationService: EmailValidationService,
+    private msgPopUpService: MessagePopupService
   ) { }
 
   togglePasswordVisibility() {
@@ -41,6 +43,7 @@ export class ContainerLoginComponent {
 
       // TODO: Prikazati gresku kada npr korisnik unese pogresnu lozinku ili username
       error: error => {
+        this.msgPopUpService.showError("Invalid credentials");
         let x = document.getElementById("invalid_login_div");
         if(x != null) x.hidden = false;
       }
