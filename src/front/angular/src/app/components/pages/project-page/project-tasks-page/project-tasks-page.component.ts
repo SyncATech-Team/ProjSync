@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IssueService } from '../../../../_service/issue.service';
@@ -10,6 +10,10 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../../elements/issues/issue-modal/issue-modal.component';
 import { ProjectQuery } from '../../../state/project/project.query';
 import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
+import {ProjectService} from "../../../state/project/project.service";
+import {untilDestroyed} from "@ngneat/until-destroy";
+import {JUser} from "../../../../_models/user-issues";
+import {JIssue} from "../../../../_models/issue";
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -49,13 +53,15 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   clickedModalForCreatingTask: boolean = false;
 
   constructor (
-    private route: ActivatedRoute, 
-    private issueService: IssueService, 
+    private route: ActivatedRoute,
+    private issueService: IssueService,
     private groupService : GroupService,
-    private _projectQuery: ProjectQuery, 
-    private _modalService: DialogService
+    private _projectQuery: ProjectQuery,
+    private _modalService: DialogService,
+    private _projectService: ProjectService,
   ) {
     this.projectName = route.snapshot.paramMap.get('projectName');
+    this._projectService.getProject(this.projectName!);
   }
 
   ngOnInit(): void {
@@ -109,7 +115,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.first = event.first;
     this.rows = event.rows;
   }
-  
+
   changeView():void {
     if(this.groupView){
       this.dataKey = 'group';
@@ -117,7 +123,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     else{
       this.dataKey = 'name';
     }
-      
+
     this.visible = false;
     setTimeout(() => this.visible = true, 0);
   }
@@ -157,7 +163,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     alert("Ne koristiti - Potrebno napisati optimalnije ili ukloniti.");
     // let searchTerm = this.searchTerm.toLowerCase().trim();
     // let filteredTasks = [...this.tasks_backup];
-  
+
     // if (searchTerm) {
     //   filteredTasks = filteredTasks.filter(task => task.name.toLowerCase().includes(searchTerm));
     // }
@@ -191,7 +197,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
           '640px': '90vw'
       },
       data: {
-        issue$: this._projectQuery.issueById$(issueId)
+        issue$: this._projectQuery.issueById$(issueId.toString())
       }
     });
   }
@@ -215,7 +221,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
     this.ref.onClose.subscribe((data: any) => {
       this.clickedModalForCreatingTask = false;
-      
+
       if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
 
       console.log("Response: " + data + " . Refreshing tasks...");
