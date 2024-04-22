@@ -71,7 +71,7 @@ export class ProjectPeoplePageComponent implements OnInit{
     this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
       next: (response) => {
         
-        this.users = response;
+        this.users = response.filter(user => user.isActive == true);
         this.users_backup = response;
         console.log(this.usersPhotos);
         // this.userRole = this.users_backup.map(user => user.companyRoleName);
@@ -88,7 +88,7 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.getUserProfilePhotos(this.users);
         this.allUsers = response.filter(user => user.username !== 'admin');
         var userNames = this.users_backup.map(user => user.username);
-        this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username));
+        this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username) && user.isActive == true);
         this.getUserProfilePhotos(this.allUsers);
       },
       error: (error) => {
@@ -262,6 +262,10 @@ export class ProjectPeoplePageComponent implements OnInit{
       dismissableMask: true,
       closeOnEscape: true,
       maximizable: true,
+      breakpoints: {
+        '1100px':'75vw',
+        '400px' : '90vw'
+      },
       data: {
         username: username,
         usersPhotos: this.usersPhotos,
