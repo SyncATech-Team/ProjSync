@@ -27,7 +27,13 @@
                     <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true" [(ngModel)]="projectType2"></p-dropdown>
 
                     <span class="title">Description</span>
-                    <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description" [(ngModel)]="projectDescription2"></textarea>
+                    <!-- <textarea rows="2" pInputTextarea></textarea> -->
+                    <quill-editor class="content-editor"
+                        [(ngModel)]="projectDescription2"
+                        formControlName="description"
+                        [placeholder]="'Enter description'"
+                        >
+                    </quill-editor>
 
                     <div class="btns">
                         <button type="submit" pButton pRipple label="Submit" class="p-button-primary" [disabled]="!projectName2"></button>
