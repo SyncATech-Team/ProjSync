@@ -3,6 +3,7 @@ import { AccountService } from '../../../_service/account.service';
 import { Router } from '@angular/router';
 import { EmailValidationService } from '../../../_service/email_validator.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'container-login',
@@ -22,7 +23,8 @@ export class ContainerLoginComponent {
     public accountService: AccountService, 
     private router: Router,
     private mailValidationService: EmailValidationService,
-    private msgPopUpService: MessagePopupService
+    private msgPopUpService: MessagePopupService,
+    private messageService: MessageService
   ) { }
 
   togglePasswordVisibility() {
@@ -43,7 +45,14 @@ export class ContainerLoginComponent {
 
       // TODO: Prikazati gresku kada npr korisnik unese pogresnu lozinku ili username
       error: error => {
-        this.msgPopUpService.showError("Invalid credentials");
+        this.messageService.add(
+          {
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Invalide credentials'
+          }
+      );
+        console.log("fail")
         let x = document.getElementById("invalid_login_div");
         if(x != null) x.hidden = false;
       }
