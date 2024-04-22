@@ -159,7 +159,7 @@ namespace backAPI.Repositories.Implementation.Projects
                 .ToListAsync();
         }
 
-        public async Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, int limit, int skip, Criteria criteria)
+        public async Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, Criteria criteria)
         {
             var projects = dataContext.Users
                 .Join(dataContext.UsersOnProjects,
@@ -177,17 +177,17 @@ namespace backAPI.Repositories.Implementation.Projects
                 .Join(dataContext.Users,
                     p => p.Project.OwnerId,
                     uo => uo.Id,
-                    (p, uo) => new {p.Project, p.User, p.ProjectType, Owner = uo})
+                    (p, uo) => new { p.Project, p.User, p.ProjectType, Owner = uo })
                 .Where(x => x.User.UserName == username);
 
 
-            if(criteria.Filters.Count > 0)
+            if (criteria.Filters.Count > 0)
             {
-                foreach(var filter in criteria.Filters)
+                foreach (var filter in criteria.Filters)
                 {
-                    foreach(var fieldFilter in filter.Fieldfilters)
+                    foreach (var fieldFilter in filter.Fieldfilters)
                     {
-                        if(fieldFilter.Value.GetType() == typeof(string))
+                        if (fieldFilter.Value.GetType() == typeof(string))
                         {
                             if (fieldFilter.MatchMode == "startsWith")
                             {
@@ -357,11 +357,11 @@ namespace backAPI.Repositories.Implementation.Projects
                         }
                         else
                         {
-                            if(fieldFilter.Value.GetType() == typeof(DateTime))
+                            if (fieldFilter.Value.GetType() == typeof(DateTime))
                             {
-                                if(fieldFilter.MatchMode == "dateIs")
+                                if (fieldFilter.MatchMode == "dateIs")
                                 {
-                                    if(filter.Field == "creationDate") 
+                                    if (filter.Field == "creationDate")
                                     {
                                         projects = projects.Where(p => p.Project.CreationDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
                                     }
@@ -427,7 +427,7 @@ namespace backAPI.Repositories.Implementation.Projects
 
             int numberOfRecords = projects.Count();
 
-            if (criteria.MultiSortMeta.Count>0)
+            if (criteria.MultiSortMeta.Count > 0)
             {
                 MultiSortMeta firstOrder = criteria.MultiSortMeta[0];
                 criteria.MultiSortMeta.RemoveAt(0);
@@ -649,11 +649,11 @@ namespace backAPI.Repositories.Implementation.Projects
                         }
                     }
                 }
-                return (await orderedProjects.Select(x => x.Project).Skip(skip).Take(limit).ToListAsync(), numberOfRecords);
+                return (await orderedProjects.Select(x => x.Project).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
             }
-            
 
-            return  (await projects.Select(x => x.Project).Skip(skip).Take(limit).ToListAsync(), numberOfRecords);
+
+            return (await projects.Select(x => x.Project).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
         }
     }
 }

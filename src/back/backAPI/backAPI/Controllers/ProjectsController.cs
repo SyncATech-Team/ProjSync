@@ -135,7 +135,7 @@ namespace backAPI.Controllers
 
             Criteria criteriaObj = JsonConvert.DeserializeObject<Criteria>(criteria);
 
-            var result = await _projectsRepository.GetPaginationProjectsForUserAsync(username,criteriaObj.Rows, criteriaObj.First,criteriaObj);
+            var result = await _projectsRepository.GetPaginationProjectsForUserAsync(username, criteriaObj);
 
             foreach (var project in result.projects)
             {

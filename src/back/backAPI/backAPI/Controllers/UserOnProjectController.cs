@@ -1,8 +1,10 @@
 ﻿using backAPI.DTO;
 using backAPI.DTO.Projects;
+using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace backAPI.Controllers
 {
@@ -90,6 +92,48 @@ namespace backAPI.Controllers
             }
 
             return Ok(dTOProjects);
+        }
+
+        [HttpGet("pagination")]
+        public async Task<IActionResult> GetPaginationProjectsByUser(string projectName,string criteria)
+        {
+            var project = await _projectRepository.GetProjectByName(projectName);
+            List<UserDto> dTOUsers = new List<UserDto>();
+            UsersOnProjectLazyLoadDto lazyLoadDto = new UsersOnProjectLazyLoadDto();
+
+            if (project == null)
+            {
+                return NotFound("Project not found");
+            }
+
+            Criteria criteriaObj = JsonConvert.DeserializeObject<Criteria>(criteria);
+
+            var result = await _userOnProjectRepository.GetPaginationUsersOnProjectAsync(project.Name,criteriaObj);
+            foreach (var user in result.users)
+            {
+                dTOUsers.Add(new UserDto
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name,
+                    ProfilePhoto = user.ProfilePhoto,
+                    Address = user.Address,
+                    ContactPhone = user.ContactPhone,
+                    Status = user.Status,
+                    IsVerified = user.IsVerified,
+                    PreferedLanguage = user.PreferedLanguage,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt,
+                    isActive = user.IsActive
+                });
+            }
+
+            lazyLoadDto.Users = dTOUsers;
+            lazyLoadDto.NumberOfRecords = result.numberOfRecords;
+
+            return Ok(lazyLoadDto);
         }
 
         [HttpPost]

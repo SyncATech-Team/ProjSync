@@ -10,19 +10,25 @@
         <p-table
             #dt
             [value]="users"
-            dataKey="id"
+            dataKey="name"
             [rowHover]="true"
+            [paginator]="true"
             [rows]="5"
+            [first]="first"
+            [totalRecords]="totalRecords"
             [showCurrentPageReport]="true"
             [resizableColumns]="true"
             [reorderableColumns]="true"
             [columns]="showColumns"
             [rowsPerPageOptions]="[5,10, 25, 50]"
-            [paginator]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [filterDelay]="0"
-            [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+            [globalFilterFields]="['name']"
             responsiveLayout="stack" [breakpoint]="'960px'"
+            (onPage)="pageChange($event)"
+            [lazy]="true"
+            (onLazyLoad)="loadUsers($event)"
+            sortMode="multiple"
         >
             <!-- Pretraga korisnika -->
             <ng-template pTemplate="caption">
@@ -64,14 +70,38 @@
             <ng-template pTemplate="header" let-columns>
                 <tr class="header">
                     <ng-container *ngFor="let column of columns">
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Username'">Username</th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Email address' && selectedColumns.includes('Email address')">Email address</th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Firstname' && selectedColumns.includes('Firstname')">Firstname</th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Lastname' && selectedColumns.includes('Lastname')">Lastname</th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Role' && selectedColumns.includes('Role')">Role</th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Address' && selectedColumns.includes('Address')">Address</th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Contact phone' && selectedColumns.includes('Contact phone')">Contact phone</th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedColumns.includes('Status')">Status</th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="username" *ngIf="column=='Username'">
+                            Username
+                            <p-sortIcon field="username"></p-sortIcon>
+                        </th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="email" *ngIf="column=='Email address' && selectedColumns.includes('Email address')" >
+                            Email address
+                            <p-sortIcon field="email"></p-sortIcon>
+                        </th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="firstName" *ngIf="column=='Firstname' && selectedColumns.includes('Firstname')">
+                            Firstname
+                            <p-sortIcon field="firstName"></p-sortIcon>
+                        </th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="lastname" *ngIf="column=='Lastname' && selectedColumns.includes('Lastname')">
+                            Lastname
+                            <p-sortIcon field="lastname"></p-sortIcon>
+                        </th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="companyRoleName" *ngIf="column=='Role' && selectedColumns.includes('Role')">
+                            Role
+                            <p-sortIcon field="companyRoleName"></p-sortIcon>
+                        </th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="address" *ngIf="column=='Address' && selectedColumns.includes('Address')">
+                            Address
+                            <p-sortIcon field="address"></p-sortIcon>
+                        </th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="contactPhone" *ngIf="column=='Contact phone' && selectedColumns.includes('Contact phone')">
+                            Contact phone
+                            <p-sortIcon field="contactPhone"></p-sortIcon>
+                        </th>
+                        <th pReorderableColumn pResizableColumn pSortableColumn="status" *ngIf="column=='Status' && selectedColumns.includes('Status')">
+                            Status
+                            <p-sortIcon field="status"></p-sortIcon>
+                        </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column==''"></th>
                     </ng-container>
                 </tr>

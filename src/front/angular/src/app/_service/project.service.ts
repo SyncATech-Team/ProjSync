@@ -38,7 +38,6 @@ export class ProjectService {
    
     return this.http.get<ProjectLazyLoad>(this.baseUrl + `Projects/pagination/user/${username}?criteria=${criteria}`);
     
-    //return this.http.request<Project[]>("get",`Projects/pagination/user/${username}?criteria=`+ encodeURIComponent( JSON.stringify(event)));
   }
 
   getProjectByName(projectName: string | null){

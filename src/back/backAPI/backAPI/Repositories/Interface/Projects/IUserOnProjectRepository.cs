@@ -1,5 +1,6 @@
 ﻿using backAPI.DTO;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
 
 namespace backAPI.Repositories.Interface.Projects
 {
@@ -9,5 +10,6 @@ namespace backAPI.Repositories.Interface.Projects
         Task<bool> AddUserToProjectAsync(string projectName, string username, string color);
         Task<bool> RemoveUserFromProjectAsync(string projectName, string username);
         Task<IEnumerable<Project>> GetProjectsByUser(string username);
+        Task<(IEnumerable<User> users, int numberOfRecords)> GetPaginationUsersOnProjectAsync(string projectName,Criteria criteria);
     }
 }

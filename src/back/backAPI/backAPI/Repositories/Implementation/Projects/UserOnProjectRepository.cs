@@ -1,6 +1,7 @@
 ﻿using backAPI.Data;
 using backAPI.DTO;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.EntityFrameworkCore;
@@ -108,6 +109,25 @@ namespace backAPI.Repositories.Implementation.Projects
             await dataContext.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<(IEnumerable<User> users,int numberOfRecords)> GetPaginationUsersOnProjectAsync(string projectName,Criteria criteria)
+        {
+            var users = dataContext.Users
+                .Join(dataContext.UsersOnProjects,
+                    u => u.Id,
+                    up => up.UserId,
+                    (u, up) => new { User = u, UserProject = up })
+                .Join(dataContext.Projects,
+                    up => up.UserProject.ProjectId,
+                    p => p.Id,
+                    (up, p) => new { up.User, Project = p })
+                .Where(x => x.Project.Name == projectName)
+                .Select(x => x.User);
+
+            int numberOfRecords = users.Count();
+
+            return (await users.Skip(criteria.First).Take(criteria.Rows).ToListAsync(),numberOfRecords);
         }
     }
 }

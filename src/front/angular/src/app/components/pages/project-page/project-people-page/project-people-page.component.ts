@@ -13,6 +13,7 @@ import { UserProfilePicture } from '../../../../_service/userProfilePicture.serv
 import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserProfileComponent } from '../../../elements/user-profile/user-profile.component';
+import { TableLazyLoadEvent } from 'primeng/table';
 
 @Component({
   selector: 'app-project-people-page',
@@ -45,6 +46,10 @@ export class ProjectPeoplePageComponent implements OnInit{
   usersPhotos: PhotoForUser[] = [];
   ref: DynamicDialogRef | undefined;
 
+  first = 0;
+  rows = 10;
+  totalRecords = 0;
+
   @ViewChild('createRoleForm') formRecipe?: NgForm;
 
   constructor(
@@ -68,18 +73,18 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
 
   initialize(): void {
-    this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
-      next: (response) => {
+    // this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
+    //   next: (response) => {
         
-        this.users = response;
-        this.users_backup = response;
-        console.log(this.usersPhotos);
-        this.userRole = this.users_backup.map(user => user.companyRoleName);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+    //     this.users = response;
+    //     this.users_backup = response;
+    //     console.log(this.usersPhotos);
+    //     this.userRole = this.users_backup.map(user => user.companyRoleName);
+    //   },
+    //   error: (error) => {
+    //     console.log(error);
+    //   }
+    // });
 
     this.userService.getAllUsers().subscribe({
       next: (response) => {
@@ -262,5 +267,27 @@ export class ProjectPeoplePageComponent implements OnInit{
         users: this.users
       }
     });
+  }
+
+  pageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+  }
+
+  loadUsers(event: TableLazyLoadEvent){
+    
+    if(this.projectName)
+    {
+      this.userOnProjectService.getPaginationAllUsersOnProject(this.projectName,event).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.users = response.users;
+          this.totalRecords = response.numberOfRecords;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    }
   }
 }

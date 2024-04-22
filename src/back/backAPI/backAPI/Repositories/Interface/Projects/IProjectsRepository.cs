@@ -25,6 +25,6 @@ namespace backAPI.Repositories.Interface.Projects
         Task<IEnumerable<int>> GetTaskGroupIds(int projectId);
 
         Task<IEnumerable<Project>> GetProjectsForUserAsync(string username);
-        Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, int limit, int skip,Criteria criteria);
+        Task<(IEnumerable<Project> projects, int numberOfRecords)> GetPaginationProjectsForUserAsync(string username, Criteria criteria);
     }
 }

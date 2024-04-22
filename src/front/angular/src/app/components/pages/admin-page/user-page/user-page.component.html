@@ -91,11 +91,26 @@
                 <!-- Table header -->
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Account</th>
-                        <th>Email address</th>
-                        <th>Company role</th>
-                        <th>Created</th>
-                        <th>Updated</th>
+                        <th pSortableColumn="username">
+                            Account
+                            <p-sortIcon field="username"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="email">
+                            Email address
+                            <p-sortIcon field="email"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="companyRoleName">
+                            Company role
+                            <p-sortIcon field="companyRoleName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="createdAt">
+                            Created
+                            <p-sortIcon field="createdAt"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="updatedAt">
+                            Updated
+                            <p-sortIcon field="updatedAt"></p-sortIcon>
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
