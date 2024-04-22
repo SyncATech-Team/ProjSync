@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {FormControl} from "@angular/forms";
 import {ProjectQuery} from "../../../state/project/project.query";
@@ -17,10 +17,10 @@ import {UserProfilePicture} from "../../../../_service/userProfilePicture.servic
 })
 @UntilDestroy()
 export class BoardFilterComponent implements OnInit {
+  @Input() usersPhotos!: PhotoForUser[];
   searchControl: FormControl = new FormControl('');
   userIds: string[];
   users!: JUser[];
-  usersPhotos: PhotoForUser[] = [];
 
   constructor(
     public projectQuery: ProjectQuery,
@@ -45,7 +45,6 @@ export class BoardFilterComponent implements OnInit {
     this.projectQuery.users$.pipe(untilDestroyed(this)).subscribe((users) => {
       this.users = users;
     })
-    this.getUserProfilePhotos(this.users);
   }
 
   isUserSelected(user: JUser) {
@@ -71,33 +70,6 @@ export class BoardFilterComponent implements OnInit {
     this.filterService.resetAll();
   }
 
-  getUserProfilePhotos(users: JUser[] | null) {
-    if (!users) return;
-    for(const user of users) {
-      if(user.profilePhoto != null) {
-        this.userPictureService.getUserImage(user.username).subscribe({
-          next: response => {
-            var path = this.userPictureService.decodeBase64Image(response['fileContents']);
-            var ph: PhotoForUser = {
-              username: user.username,
-              photoSource: path
-            };
-            this.usersPhotos.push(ph);
-          },
-          error: error => {
-            console.log(error);
-          }
-        });
-      }
-      else {
-        var ph: PhotoForUser = {
-          username: user.username,
-          photoSource: "SLIKA_JE_NULL"
-        }
-        this.usersPhotos.push(ph);
-      }
-    }
-  }
 
   UserImagePath(username: string | undefined): string {
     if (!this.users) return "";

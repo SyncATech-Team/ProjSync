@@ -32,10 +32,12 @@
         <div class="col-sm-12 col-md-5 col-lg-4 pt-1">
             <issue-status [issue]="issue"></issue-status>
              <issue-reporter [issue]="issue"
-                             [users]="projectQuery.users$ | async">
+                             [users]="projectQuery.users$ | async"
+                             [usersPhotos]="usersPhotos">
             </issue-reporter>
             <issue-assignees [issue]="issue"
-                             [users]="projectQuery.users$ | async">
+                             [users]="projectQuery.users$ | async"
+                             [usersPhotos]="usersPhotos">
             </issue-assignees>
              <issue-priority [issue]="issue"></issue-priority>
 

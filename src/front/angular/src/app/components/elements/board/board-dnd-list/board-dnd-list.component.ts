@@ -7,6 +7,7 @@ import {ProjectService} from "../../../state/project/project.service";
 import {FilterQuery} from "../../../state/filter/filter.query";
 import {FilterState} from "../../../state/filter/filter.store";
 import {IssueUtil} from "../../../utils/issue-util";
+import {PhotoForUser} from "../../../../_models/photo-for-user";
 
 @Component({
   selector: '[board-dnd-list]',
@@ -19,6 +20,7 @@ export class BoardDndListComponent implements OnInit {
   @Input() status!: IssueStatus;
   @Input() currentUserId!: string;
   @Input() issues$!: Observable<JIssue[]>;
+  @Input() usersPhotos!: PhotoForUser[];
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   IssueStatusDisplay = IssueStatusDisplay;

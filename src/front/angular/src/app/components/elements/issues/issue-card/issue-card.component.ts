@@ -18,11 +18,10 @@ import { UserProfilePicture } from "../../../../_service/userProfilePicture.serv
 })
 export class IssueCardComponent implements OnChanges, OnInit {
   @Input() issue!: JIssue;
+  @Input() usersPhotos!: PhotoForUser[];
   assignees!: (JUser | undefined)[];
   issueTypeIcon!: string;
   priorityIcon!: IssuePriorityIcon;
-
-  usersPhotos: PhotoForUser[] = [];
 
   ref: DynamicDialogRef | undefined;
 
@@ -32,14 +31,11 @@ export class IssueCardComponent implements OnChanges, OnInit {
     this._projectQuery.users$.pipe(untilDestroyed(this)).subscribe((users) => {
       this.assignees = this.issue.userIds.map((userId) => users.find((x) => x.id === userId));
     });
-
-    this.getUserProfilePhotos(this.assignees);
   }
-
 
   ngOnChanges(changes: SimpleChanges): void {
     const issueChange = changes['issue'];
-    if (issueChange?.currentValue !== issueChange.previousValue) {
+    if (issueChange?.currentValue !== issueChange?.previousValue) {
       this.issueTypeIcon = IssueUtil.getIssueTypeIcon(this.issue.type);
       this.priorityIcon = IssueUtil.getIssuePriorityIcon(this.issue.priority);
     }
@@ -55,38 +51,10 @@ export class IssueCardComponent implements OnChanges, OnInit {
           '640px': '90vw'
       },
       data: {
-        issue$: this._projectQuery.issueById$(issueId)
+        issue$: this._projectQuery.issueById$(issueId),
+        usersPhotos: this.usersPhotos
       }
     });
-  }
-
-  getUserProfilePhotos(users: (JUser | undefined)[]) {
-    if (!users) return;
-    for(const user of users) {
-      if (!user) return;
-      if(user.profilePhoto != null) {
-        this.userPictureService.getUserImage(user.username).subscribe({
-          next: response => {
-            var path = this.userPictureService.decodeBase64Image(response['fileContents']);
-            var ph: PhotoForUser = {
-              username: user.username,
-              photoSource: path
-            };
-            this.usersPhotos.push(ph);
-          },
-          error: error => {
-            console.log(error);
-          }
-        });
-      }
-      else {
-        var ph: PhotoForUser = {
-          username: user.username,
-          photoSource: "SLIKA_JE_NULL"
-        }
-        this.usersPhotos.push(ph);
-      }
-    }
   }
 
   UserImagePath(username: string | undefined): string {

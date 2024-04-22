@@ -21,9 +21,8 @@ import { PhotoForUser } from "../../../../_models/photo-for-user";
 export class IssueReporterComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
   @Input() users!: JUser[] | null;
+  @Input() usersPhotos!: PhotoForUser[];
   reporter: JUser | undefined;
-
-  usersPhotos: PhotoForUser[] = [];
 
   constructor(private _projectService: ProjectService,
               private userPictureService: UserProfilePicture,
@@ -31,7 +30,6 @@ export class IssueReporterComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.cdr.markForCheck();
-    this.getUserProfilePhotos(this.users);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -51,34 +49,6 @@ export class IssueReporterComponent implements OnInit, OnChanges {
       reporterId: user.id
     });
     op.hide();
-  }
-
-  getUserProfilePhotos(users: JUser[] | null) {
-    if (!users) return;
-    for(const user of users) {
-      if(user.profilePhoto != null) {
-        this.userPictureService.getUserImage(user.username).subscribe({
-          next: response => {
-            var path = this.userPictureService.decodeBase64Image(response['fileContents']);
-            var ph: PhotoForUser = {
-              username: user.username,
-              photoSource: path
-            };
-            this.usersPhotos.push(ph);
-          },
-          error: error => {
-            console.log(error);
-          }
-        });
-      }
-      else {
-        var ph: PhotoForUser = {
-          username: user.username,
-          photoSource: "SLIKA_JE_NULL"
-        }
-        this.usersPhotos.push(ph);
-      }
-    }
   }
 
   UserImagePath(username: string | undefined): string {

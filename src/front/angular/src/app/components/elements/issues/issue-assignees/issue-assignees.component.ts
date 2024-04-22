@@ -16,8 +16,8 @@ import {UserProfilePicture} from "../../../../_service/userProfilePicture.servic
 export class IssueAssigneesComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
   @Input() users!: JUser[] | null;
+  @Input() usersPhotos!: PhotoForUser[];
   assignees!: (JUser | undefined)[];
-  usersPhotos: PhotoForUser[] = [];
 
   constructor(private _projectService: ProjectService, private userPictureService: UserProfilePicture,
               private cdr: ChangeDetectorRef) {}
@@ -28,7 +28,6 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
       // @ts-ignore
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
     }
-    this.getUserProfilePhotos(this.users);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -57,34 +56,6 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
 
   isUserSelected(user: JUser): boolean {
     return this.issue.userIds.includes(user.id);
-  }
-
-  getUserProfilePhotos(users: JUser[] | null) {
-    if (!users) return;
-    for(const user of users) {
-      if(user.profilePhoto != null) {
-        this.userPictureService.getUserImage(user.username).subscribe({
-          next: response => {
-            var path = this.userPictureService.decodeBase64Image(response['fileContents']);
-            var ph: PhotoForUser = {
-              username: user.username,
-              photoSource: path
-            };
-            this.usersPhotos.push(ph);
-          },
-          error: error => {
-            console.log(error);
-          }
-        });
-      }
-      else {
-        var ph: PhotoForUser = {
-          username: user.username,
-          photoSource: "SLIKA_JE_NULL"
-        }
-        this.usersPhotos.push(ph);
-      }
-    }
   }
 
   UserImagePath(username: string | undefined): string {
