@@ -30,6 +30,7 @@ namespace backAPI.Repositories.Interface.Issues
         Task<bool> AddIssueDependencies(IEnumerable<Tuple<int, int>> dependencies);
         Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model);
         Task<bool> UpdateIssue(int issueId, JIssueDto model);
+        Task<bool> UpdateUsersOnIssue(int issueId, JIssueDto model);
         Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model);
     }
 }

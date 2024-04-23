@@ -44,6 +44,9 @@ export class ProjectService {
   }
 
   updateIssue(issue: JIssue) {
+    this._http
+      .put(`${this.baseUrl}Issues/kb/${issue.id}`, issue).subscribe();
+
     this._store.update((state) => {
       const issues = arrayUpsert(state.issues, issue.id, issue);
       return {
@@ -51,9 +54,19 @@ export class ProjectService {
         issues
       };
     });
+  }
 
+  updateUsersOnIssue(issue: JIssue) {
     this._http
-      .put(`${this.baseUrl}Issues/kb/${issue.id}`, issue).subscribe();
+      .put(`${this.baseUrl}Issues/kb-uoi/${issue.id}`, issue).subscribe();
+
+    this._store.update((state) => {
+      const issues = arrayUpsert(state.issues, issue.id, issue);
+      return {
+        ...state,
+        issues
+      };
+    });
   }
 
   deleteIssue(issueId: string) {

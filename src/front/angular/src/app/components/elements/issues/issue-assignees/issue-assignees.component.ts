@@ -40,14 +40,14 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
 
   removeUser(userId: string | undefined) {
     const newUserIds = this.issue.userIds.filter((x) => x !== userId);
-    this._projectService.updateIssue({
+    this._projectService.updateUsersOnIssue({
       ...this.issue,
       userIds: newUserIds
     });
   }
 
   addUserToIssue(user: JUser, op: OverlayPanel) {
-    this._projectService.updateIssue({
+    this._projectService.updateUsersOnIssue({
       ...this.issue,
       userIds: [...this.issue.userIds, user.id]
     });
