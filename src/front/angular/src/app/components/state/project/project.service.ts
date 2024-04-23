@@ -7,10 +7,8 @@ import { catchError, tap } from 'rxjs/operators';
 import {JProject} from "../../../_models/project";
 import {JIssue} from "../../../_models/issue";
 import {JComment} from "../../../_models/comment";
-import {DateUtil} from "../../utils/date-util";
 import {ProjectStore} from "./project.store";
 import {environment} from "../../../../environments/environment";
-import {is} from "date-fns/locale";
 
 
 @Injectable({
@@ -43,6 +41,7 @@ export class ProjectService {
       .subscribe();
   }
 
+  // opsti endpoint za azuriranjem zadataka bez podrske za azuriranje user-a na zadatku
   updateIssue(issue: JIssue) {
     this._http
       .put(`${this.baseUrl}Issues/kb/${issue.id}`, issue).subscribe();
@@ -56,6 +55,8 @@ export class ProjectService {
     });
   }
 
+  // radi efikasnosti dodat je poseban endpoint na back-u koji je specijalizovan
+  // za azuriranje user-a na zadatku
   updateUsersOnIssue(issue: JIssue) {
     this._http
       .put(`${this.baseUrl}Issues/kb-uoi/${issue.id}`, issue).subscribe();
