@@ -1,5 +1,6 @@
 ﻿using backAPI.DTO;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
 
 namespace backAPI.Repositories.Interface
 {
@@ -95,5 +96,7 @@ namespace backAPI.Repositories.Interface
         Task UpdateUserProfilePhoto(string username, string photoURL);
 
         Task<IEnumerable<User>> GetUsersFromIDarray(string[] arr);
+
+        Task<(IEnumerable<User> users, int numberOfRecords)> GetPaginationAllUsersAsync(Criteria criteria);
     }
 }
