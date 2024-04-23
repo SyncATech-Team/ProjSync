@@ -34,6 +34,9 @@ export class ProjectDocumentsPageComponent implements OnInit{
     visibilityName: ""
   }
   
+  uploadBarValue: number = 0;
+  showUploadProgressBar: boolean = false;
+
   constructor (
     private ProjectDocService: ProjectDocumentService,
     private route: ActivatedRoute,
@@ -86,8 +89,10 @@ export class ProjectDocumentsPageComponent implements OnInit{
     const files: FileList = event.target.files;
     const filesArray: File[] = Array.from(files); // Convert FileList to array
 
+    this.showUploadProgressBar = true;
     this.ProjectDocService.uploadDocument(this.projectName!, filesArray).subscribe({
       next: response => {
+        this.showUploadProgressBar = false;
         this.msgPopupService.showSuccess("Files successfully uploaded.");
       },
       error: error => {

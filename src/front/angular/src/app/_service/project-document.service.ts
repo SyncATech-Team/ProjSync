@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { catchError, last, map, pipe, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ProjectDocumentService {
     });
 
     // Ensure that the projectName is being sent correctly if needed
-    return this.http.post<any>(this.baseUrl + 'project-documentation/' + projectName, formData);
+    return this.http.post(this.baseUrl + 'project-documentation/' + projectName, formData);
   }
 
 }

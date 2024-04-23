@@ -1,44 +1,27 @@
 <p-toast></p-toast>
 <p-confirmPopup></p-confirmPopup>
+
 <div id="pageWraper">
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
         <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
 
         <div class="content">
-            <div id="left-side" >
-                <h1 id="Name">{{project.name}}</h1>
-                <button data-bs-toggle="modal" data-bs-target="#modalAddDocument" class="btn btn-primary">
-                         Upload File
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalAddDocument" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <!-- Form Header -->
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add new documents to the project</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-            </div>
-
-            <p style="margin: 3%; font-size: 30px;">Document Upload</p>
-            <div class="dropzone" >
-                <button>
-                    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="onFileSelected($event)">
-                    <i class="pi pi-upload"></i>
-                    <h3>Drag your files here or click to upload</h3>
-                </button>
-                
-
-            </div>
-            <!-- End of Form -->
-            <!-- </div> -->
             
-        </div>
-    </div>
+            <!-- Upload container -->
+            <div class="upload-container">
+                <div class="dropzone">
+                    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="onFileSelected($event)">
+                    <span>Drag files or click to upload</span>
+                </div>
+            </div>
+            <!-- End of upload container -->
+            <div id="progress-bar-div">
+                <p-progressBar [hidden]="!showUploadProgressBar" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
+            </div>
 
+
+        </div>
+
+    </div>
 </div>
