@@ -8,74 +8,40 @@ namespace backAPI.Controllers
     [ApiController]
     public class DocumentsController : ControllerBase
     {
-
-        private readonly IProjectDocumentationRepository repository;
-        public DocumentsController(IProjectDocumentationRepository repository) { 
         
-            this.repository = repository;
+        private readonly IProjectDocumentationRepository docsRepository;
+        private readonly IProjectsRepository projectsRepository;
+
+
+        public DocumentsController(
+            IProjectDocumentationRepository docsRepository,
+            IProjectsRepository projectsRepository)
+        { 
+        
+            this.docsRepository = docsRepository;
+            this.projectsRepository = projectsRepository;
 
         }
 
-        [HttpPost("project/{projectId}")]
-        public ActionResult UploadDocument(int projectId, IFormFile documentFile)
-        {
-            if (documentFile == null || documentFile.Length == 0)
-            {
-                return BadRequest("Invalid file");
+        [HttpPost("project-documentation/{projectName}")]
+        public async Task<ActionResult> UploadDocument(string projectName, List<IFormFile> files) {
+            var project = await projectsRepository.GetProjectByName(projectName);
+            if (project == null) {
+                return BadRequest("There is no project with the given name");
             }
 
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "..\\Project-Documentation\\" + projectId);
-
-            if (!Directory.Exists(uploadsFolder))
-            {
-                Directory.CreateDirectory(uploadsFolder);
+            // proveri da li postoji direktorijum u koji zelimo da sacuvamo fajl
+            // kreirati direktorijum za skladistenje dokumenata
+            if(docsRepository.ProjectDocumentationDirectoryExist() == false) {
+                Directory.CreateDirectory("../project-documentation");
             }
 
-            ProjectDocumentation projectDocs = new ProjectDocumentation();
-
-            projectDocs.ProjectId = projectId;
-            projectDocs.Path = uploadsFolder;
-            projectDocs.Title = documentFile.FileName;
-            projectDocs.DateUploaded = DateTime.Now;
-
-
-            repository.saveDocument(projectDocs);
-
-            var path = Path.Combine(projectDocs.Path, projectDocs.Title);
-
-            var stream = new FileStream(path, FileMode.Create);
-            
-            documentFile.CopyTo(stream);
-
-            stream.Close();
-
-            return Ok(new { fileUrl = path });
-        }
-
-
-        [HttpGet("project/{projectId}/documents")]
-        public List<ProjectDocumentation> GetProjectDocuments(int projectId)
-        {
-            return repository.GetAll(projectId);
-        }
-
-        //TO DO DELETE
-
-
-        [HttpGet("project/documents/{documentId}")]
-        public ActionResult GetDocument(int documentId)
-        {
-
-            ProjectDocumentation projectDocs = repository.GetById(documentId);
-
-            if(projectDocs == null)
-            {
-                return NotFound(new {message = "Document not found"});
+            var result = await docsRepository.WriteMultipleFilesAsync(project.Id, files);
+            if(result != "OK") {
+                return BadRequest($"Failed to upload documents: {result}");
             }
 
-            var bytes = System.IO.File.ReadAllBytes(Path.Combine(projectDocs.Path,projectDocs.Title));
-
-            return new FileStreamResult(new MemoryStream(bytes), "application/pdf");
+            return Ok();
         }
 
     }
