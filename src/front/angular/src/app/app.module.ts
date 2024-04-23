@@ -104,6 +104,7 @@ import { UserProfileComponent } from './components/elements/user-profile/user-pr
 import { DatePipe } from '@angular/common';
 
 import { CookieService } from 'ngx-cookie-service';
+import { UploadDocumentComponent } from './components/elements/upload-document/upload-document.component';
 
 @NgModule({
   declarations: [
@@ -157,7 +158,8 @@ import { CookieService } from 'ngx-cookie-service';
     BoardFilterComponent,
     IssueReporterComponent,
     ProjectKanbanPageComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UploadDocumentComponent
   ],
   imports: [
     BrowserModule,

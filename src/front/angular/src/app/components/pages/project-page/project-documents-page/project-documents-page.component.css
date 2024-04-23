@@ -8,22 +8,3 @@
     overflow-y: auto;
     padding: 2%;
 }
-
-.upload-container {
-    border: 2px dashed black;
-    padding: 10px;
-    opacity: 0.5;
-}
-
-.upload-container:hover {
-    opacity: 1;
-}
-
-.dropzone input {
-    width: 100%;
-    height: 100%;
-}
-
-.dropzone input:hover {
-    cursor: pointer;
-}

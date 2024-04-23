@@ -17,7 +17,7 @@ import { ProjectDocumentService } from '../../../../_service/project-document.se
 export class ProjectDocumentsPageComponent implements OnInit{
 
   form : FormGroup;
-  projectName: string | null = '';
+  projectName: string = '';
   fileName: String | null = '';
 
   projectTypes: ProjectType []=[];
@@ -33,9 +33,6 @@ export class ProjectDocumentsPageComponent implements OnInit{
     budget: 0,
     visibilityName: ""
   }
-  
-  uploadBarValue: number = 0;
-  showUploadProgressBar: boolean = false;
 
   constructor (
     private ProjectDocService: ProjectDocumentService,
@@ -47,7 +44,7 @@ export class ProjectDocumentsPageComponent implements OnInit{
     private projectTypeService: ProjectTypeService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService){
-      this.projectName = route.snapshot.paramMap.get('projectName');
+      this.projectName = route.snapshot.paramMap.get('projectName')!;
       this.form = this.formBuilder.group({
         name: [''],
         category: [''],
@@ -69,34 +66,13 @@ export class ProjectDocumentsPageComponent implements OnInit{
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response)=>{
         this.project= response;
-
-        //Za ispis u input poljima default-no
-        // this.projectName2 = this.project.name;
-        // this.projectType2 = this.project.typeName;
-        // this.projectDescription2 = this.project.description;
-
+        
         this.form.patchValue({
           category: this.projectTypes.find(type => type.name === this.project.typeName)
         });
       },
       error: (error)=>{
         console.log(error);
-      }
-    });
-  }
-
-  onFileSelected(event: any){
-    const files: FileList = event.target.files;
-    const filesArray: File[] = Array.from(files); // Convert FileList to array
-
-    this.showUploadProgressBar = true;
-    this.ProjectDocService.uploadDocument(this.projectName!, filesArray).subscribe({
-      next: response => {
-        this.showUploadProgressBar = false;
-        this.msgPopupService.showSuccess("Files successfully uploaded.");
-      },
-      error: error => {
-        this.msgPopupService.showError("Files not uploaded. Try again.");
       }
     });
   }

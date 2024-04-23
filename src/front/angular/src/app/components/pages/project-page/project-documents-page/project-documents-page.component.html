@@ -9,17 +9,9 @@
         <div class="content">
             
             <!-- Upload container -->
-            <div class="upload-container">
-                <div class="dropzone">
-                    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="onFileSelected($event)">
-                    <span>Drag files or click to upload</span>
-                </div>
-            </div>
-            <!-- End of upload container -->
-            <div id="progress-bar-div">
-                <p-progressBar [hidden]="!showUploadProgressBar" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
-            </div>
+            <app-upload-document [projectName]="projectName"></app-upload-document>
 
+            Documents - TO DO :)
 
         </div>
 
