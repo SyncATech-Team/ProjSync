@@ -22,6 +22,7 @@ import { SamotestComponent } from './components/pages/samotest/samotest.componen
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 import { loginGuard } from './_guards/login.guard';
+import { AdminEditProfileComponent } from './components/pages/admin-page/admin-edit-profile/admin-edit-profile.component';
 
 
 const routes: Routes = [
@@ -49,7 +50,8 @@ const routes: Routes = [
       { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
       { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
       { path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard] },
-      { path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard] }
+      { path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard] },
+      { path: 'admin/editProfile', component: AdminEditProfileComponent, canActivate: [adminGuard] }
     ]
   },
   { path: 'pageNotFound', component: NotFoundPageComponent },
