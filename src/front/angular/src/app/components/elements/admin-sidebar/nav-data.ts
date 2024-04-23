@@ -30,6 +30,12 @@ export const navbarData = [
         position: "bottom"
     },
     {
+        routeLink : '/admin/editProfile',
+        icon: 'fa-regular fa-user',
+        label: "Admin profile",
+        position: "bottom"
+    },
+    {
         routeLink : '',
         icon: 'fa-solid fa-arrow-right-from-bracket',
         label: 'Log out',
