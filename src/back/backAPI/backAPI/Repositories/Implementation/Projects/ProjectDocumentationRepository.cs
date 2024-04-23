@@ -13,7 +13,7 @@ namespace backAPI.Repositories.Implementation.Projects {
             ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", // documents
         };
 
-        private readonly int MAX_FILESIZE = 5000;
+        private readonly int MAX_FILESIZE = 10_485_760;
 
         public ProjectDocumentationRepository(DataContext dataContext) {
             _dataContext = dataContext;
@@ -30,8 +30,14 @@ namespace backAPI.Repositories.Implementation.Projects {
             var filesOK = allFilesOK(files);
             if (!filesOK) return "Files are not valid for upload";
 
+            Console.WriteLine("All files OK");
+
+            Console.WriteLine("Duzina niza: " +  files.Count);
+
             var arr = new List<ProjectDocumentation>();
             foreach (IFormFile fileItem in files) {
+
+                Console.WriteLine(fileItem.Name);
 
                 var extension = Path.GetExtension(fileItem.FileName).ToLower();
 
@@ -72,6 +78,10 @@ namespace backAPI.Repositories.Implementation.Projects {
 
             foreach (IFormFile fileItem in files) {
                 if (fileItem.Length <= 0) { // skip empty files
+                    return false;
+                }
+
+                if (fileItem.Length > MAX_FILESIZE) {
                     return false;
                 }
 

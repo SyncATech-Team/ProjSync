@@ -30,6 +30,8 @@ namespace backAPI.Controllers
                 return BadRequest("There is no project with the given name");
             }
 
+            Console.WriteLine("Postoji projekat");
+
             // proveri da li postoji direktorijum u koji zelimo da sacuvamo fajl
             // kreirati direktorijum za skladistenje dokumenata
             if(docsRepository.ProjectDocumentationDirectoryExist() == false) {
@@ -40,6 +42,8 @@ namespace backAPI.Controllers
             if(result != "OK") {
                 return BadRequest($"Failed to upload documents: {result}");
             }
+
+            Console.WriteLine("Upload??? : " + result);
 
             return Ok();
         }

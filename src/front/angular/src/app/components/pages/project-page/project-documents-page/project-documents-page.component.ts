@@ -83,14 +83,17 @@ export class ProjectDocumentsPageComponent implements OnInit{
   }
 
   onFileSelected(event: any){
-    const file:File = event.target.files[0];
+    const files: FileList = event.target.files;
+    const filesArray: File[] = Array.from(files); // Convert FileList to array
 
-    if(file){
-      this.ProjectDocService.uploadDocument(file).subscribe({
-
-      })
-
-    }
+    this.ProjectDocService.uploadDocument(this.projectName!, filesArray).subscribe({
+      next: response => {
+        this.msgPopupService.showSuccess("Files successfully uploaded.");
+      },
+      error: error => {
+        this.msgPopupService.showError("Files not uploaded. Try again.");
+      }
+    });
   }
 
 }

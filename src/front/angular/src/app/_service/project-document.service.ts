@@ -11,15 +11,16 @@ export class ProjectDocumentService {
 
   constructor(private http:HttpClient) { }
 
-  uploadDocument(docFile: File){
-    const formData= new FormData();
-    formData.append('document', docFile, docFile.name);
-    console.log(docFile);
-    return this.http.post<any>(this.baseUrl + 'Documents/project/' + docFile.name, formData, {
-      reportProgress: true,
-      observe: 'events'
+  uploadDocument(projectName: string, docFiles: File[]) {
+    const formData = new FormData();
+
+    // Append each file to the FormData object
+    docFiles.forEach((file, index) => {
+        formData.append('files', file); // Use 'files' as the field name
     });
 
+    // Ensure that the projectName is being sent correctly if needed
+    return this.http.post<any>(this.baseUrl + 'project-documentation/' + projectName, formData);
   }
 
 }
