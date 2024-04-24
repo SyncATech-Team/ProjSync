@@ -24,7 +24,7 @@
             </div>
             <div class="container">
                 <p id="descriptionLabel">Description: </p>
-                <div id="description" [innerHTML]="project.description"></div>
+                <div id="description" [innerHTML]="safeDescription"></div>
             </div>
             <div class="container">
                 <p>Owner: {{project.ownerUsername}}</p>
