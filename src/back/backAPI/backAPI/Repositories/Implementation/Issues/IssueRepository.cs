@@ -87,6 +87,36 @@ namespace backAPI.Repositories.Implementation.Issues
             return res;
         }
 
+        public async Task<IEnumerable<UsersOnIssueDto>> GetAssigneeCompletionLevel(int issueId)
+        {
+            List<UsersOnIssueDto> res = new List<UsersOnIssueDto>();
+            var elements = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false).ToListAsync();
+
+            foreach (var elem in elements)
+            {
+                UsersOnIssueDto uoidto = new UsersOnIssueDto();
+                uoidto.Id = elem.UserId.ToString();
+                uoidto.UserId = elem.UserId.ToString();
+                uoidto.CompletionLevel = elem.CompletionLevel;
+                res.Add(uoidto);
+            }
+
+            return res;
+        }
+
+        public async Task<bool> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto)
+        {
+            int userId = Int32.Parse(usersOnIssueDto.UserId);
+            var element = await _dataContext.UsersOnIssues.SingleOrDefaultAsync(elem => elem.IssueId == issueId && elem.UserId == userId && elem.Reporting == false);
+            
+            element.CompletionLevel = usersOnIssueDto.CompletionLevel;
+
+            _dataContext.UsersOnIssues.Update(element);
+
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<int> GetReporterId(int issueId) {
             var e = await _dataContext.UsersOnIssues.SingleOrDefaultAsync(elem => elem.IssueId == issueId && elem.Reporting == true);
             if(e == null) {
@@ -190,13 +220,13 @@ namespace backAPI.Repositories.Implementation.Issues
             List<UsersOnIssue> usersToInsert =
             [
                 new UsersOnIssue
-                        {
-                            UserId = exists.OwnerId,
-                            IssueId = issueId,
-                            Reporting = true,
-                            CompletionLevel = 0.0
-                        },
-                    ];
+                {
+                    UserId = exists.OwnerId,
+                    IssueId = issueId,
+                    Reporting = true,
+                    CompletionLevel = 0.0
+                },
+            ];
 
             foreach (var assigneeId in model.UserIds)
             {
