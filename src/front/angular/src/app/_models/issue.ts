@@ -1,4 +1,5 @@
 import { JComment } from './comment';
+import {UsersWithCompletion} from "./user-completion-level";
 
 export enum IssueType {
   STORY = 'Story',
@@ -49,6 +50,7 @@ export interface JIssue {
   updatedAt: string;
   reporterId: string;
   userIds: string[];
+  usersWithCompletion: UsersWithCompletion[];
   comments: JComment[];
   projectId: string;
 }

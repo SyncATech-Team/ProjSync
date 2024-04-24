@@ -20,6 +20,7 @@ namespace backAPI.DTO.Issues
         public string DueDate { get; set; }
         public string ReporterId { get; set; }
         public List<string> UserIds { get; set; }
+        public List<UsersOnIssueDto> UsersWithCompletion { get; set; }
         // public List<JComment> Comments { get; set; }
         public string ProjectId { get; set; }
     }

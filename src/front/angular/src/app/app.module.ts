@@ -105,6 +105,9 @@ import { DatePipe } from '@angular/common';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AdminEditProfileComponent } from './components/pages/admin-page/admin-edit-profile/admin-edit-profile.component';
+import { KnobModule } from "primeng/knob";
+import { ProgressBarModule } from 'primeng/progressbar';
+import {DividerModule} from "primeng/divider";
 import { UploadDocumentComponent } from './components/elements/upload-document/upload-document.component';
 
 @NgModule({
@@ -201,7 +204,10 @@ import { UploadDocumentComponent } from './components/elements/upload-document/u
     AvatarModule,
     AvatarGroupModule,
     CdkTextareaAutosize,
-    InputSwitchModule
+    InputSwitchModule,
+    KnobModule,
+    ProgressBarModule,
+    DividerModule
   ],
   providers: [
     CookieService,
