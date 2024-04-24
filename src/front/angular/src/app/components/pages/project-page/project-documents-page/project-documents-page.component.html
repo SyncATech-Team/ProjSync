@@ -11,7 +11,52 @@
             <!-- Upload container -->
             <app-upload-document [projectName]="projectName"></app-upload-document>
 
-            Documents - TO DO :)
+            <div id="document-space">
+                
+              <div class="card-container">
+                <div *ngFor="let element of documentTitles" class="card">
+                  <div class="card-content">
+                    
+                    <img src="{{getIcon(element.title)}}" alt="Document Icon" class="document-icon">
+                    <div>
+                      <div class="title">{{ element.title }}</div>
+                      <div class="date">{{ element.dateUploaded | date:'medium' }}</div>
+                    </div>
+                    
+                    <div class="options">
+                      <button class="preview-btn">Preview</button>
+                      <button class="download-btn">Download</button>
+                      <button class="delete-btn">Delete</button>
+                    </div>
+                    
+                    <div *ngIf="element.olderVersions.length > 0">
+                      <span class="show-older-span" (click)="toggleOlderVersions(element)">Show Older Versions</span>
+                    </div>
+
+                    <div *ngIf="element.showOlderVersions" class="older-versions">
+                      <div *ngFor="let older of element.olderVersions" class="older-version">
+                        
+                        <div>
+                          <div class="older-title"> {{ older.title }} </div>
+                          <span> {{ older.dateUploaded | date:'medium' }} </span>
+                        </div>
+
+                        <div>
+                          <button>Delete</button>
+                        </div>
+                      
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              
+                  
+                  
+                  
+
+            </div>
 
         </div>
 

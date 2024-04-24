@@ -8,6 +8,7 @@ import { ProjectTypeService } from '../../../../_service/project-type.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProjectType } from '../../../../_models/project-type';
 import { ProjectDocumentService } from '../../../../_service/project-document.service'
+import { DocumentTitle } from '../../../../_models/document-title.model';
 
 @Component({
   selector: 'app-project-documents-page',
@@ -16,23 +17,8 @@ import { ProjectDocumentService } from '../../../../_service/project-document.se
 })
 export class ProjectDocumentsPageComponent implements OnInit{
 
-  form : FormGroup;
   projectName: string = '';
-  fileName: String | null = '';
-
-  projectTypes: ProjectType []=[];
-  
-  project: Project = {
-    name: "",
-    key: "",
-    typeName: "",
-    description: "",
-    ownerUsername: "",
-    creationDate: new Date(), 
-    dueDate: new Date(),
-    budget: 0,
-    visibilityName: ""
-  }
+  documentTitles: DocumentTitle[] = [];
 
   constructor (
     private ProjectDocService: ProjectDocumentService,
@@ -44,37 +30,33 @@ export class ProjectDocumentsPageComponent implements OnInit{
     private projectTypeService: ProjectTypeService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService){
+
       this.projectName = route.snapshot.paramMap.get('projectName')!;
-      this.form = this.formBuilder.group({
-        name: [''],
-        category: [''],
-        description: ['']
-      });
-  
-      this.projectTypeService.getAllProjectTypes().subscribe({
-        next: (response)=>{
-          this.projectTypes = response;
-        },
-        error: (error)=>{
-          console.log(error);
-        }
-      });};
-
-
+    
+    };
 
   ngOnInit(): void {
-    this.projectService.getProjectByName(this.projectName).subscribe({
-      next: (response)=>{
-        this.project= response;
-        
-        this.form.patchValue({
-          category: this.projectTypes.find(type => type.name === this.project.typeName)
-        });
+    this.ProjectDocService.getDocumentTitles(this.projectName).subscribe({
+      next: response => {
+        this.documentTitles = response.reverse();
       },
-      error: (error)=>{
-        console.log(error);
+      error: error => {
+        console.log(error.error);
       }
-    });
+    })
+  }
+
+  toggleOlderVersions(element: any) {
+    element.showOlderVersions = !element.showOlderVersions;
+  }
+  
+  getIcon(fileName: string): string {
+    let extension = fileName.split(".")[fileName.split(".").length-1];
+
+    console.log(extension);
+
+    return "assets/document-type-icons/icon_" + extension + ".png";
+
   }
 
 }

@@ -1,7 +1,9 @@
 ﻿using backAPI.Data;
+using backAPI.DTO.Documentation;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Projects;
 using Google.Protobuf;
+using Microsoft.EntityFrameworkCore;
 using System.Security.AccessControl;
 
 namespace backAPI.Repositories.Implementation.Projects {
@@ -73,6 +75,12 @@ namespace backAPI.Repositories.Implementation.Projects {
             return "OK";
         }
 
+        public async Task<IEnumerable<ProjectDocumentation>> GetDocumentationForProject(int projectId) {
+
+            var result = await _dataContext.ProjectDocumentation.Where(doc => doc.ProjectId == projectId).ToListAsync();
+            return result;
+
+        }
 
         private bool allFilesOK(List<IFormFile> files) {
 
@@ -93,6 +101,12 @@ namespace backAPI.Repositories.Implementation.Projects {
 
             // ALL OK :)
             return true;
+        }
+
+        public IEnumerable<DocumentTitles> GetOlderVersionsSorted(ProjectDocumentation newest, IEnumerable<ProjectDocumentation> all) {
+            List<DocumentTitles> documentTitles = new List<DocumentTitles>();
+
+            return documentTitles;
         }
 
     }
