@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup} from '@angular/forms';
 import { ProjectType } from '../../../../_models/project-type';
 import { ProjectTypeService } from '../../../../_service/project-type.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ProjectSidebarComponent } from '../../../elements/project-sidebar/project-sidebar.component';
+import { error } from 'console';
 
 @Component({
   selector: 'app-project-settings-page',
@@ -18,6 +20,7 @@ export class ProjectSettingsPageComponent implements OnInit {
   visible: boolean = false;
   iconIndexes: number[] = Array.from({length: 25}, (_, i) => i + 1); //NIZ SLIKA ZA PROJEKTE
   projectImageSource : string = "";
+  defaultImagePath : string = "../../../../../assets/project-icon/default_project_image.png";
 
   form : FormGroup;
   projectName: string | null = '';
@@ -50,7 +53,8 @@ export class ProjectSettingsPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private projectTypeService: ProjectTypeService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService){
+    private messageService: MessageService,
+    private sideBarComponent: ProjectSidebarComponent){
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.form = this.formBuilder.group({
       name: [''],
@@ -140,13 +144,18 @@ export class ProjectSettingsPageComponent implements OnInit {
     const relativeImageUrl = imageUrl.substring(imageUrl.indexOf('/assets'));
     this.projectImageSource = relativeImageUrl;
     this.project.icon = this.projectImageSource;
-    // console.log(this.project);  
+    console.log(this.project);  
 
     if(this.projectName)
     this.projectService.updateProject(this.projectName, this.project).subscribe({
-      
+      next: (response) => {
+        this.sideBarComponent.ngOnInit();
+        console.log("PROSO");
+      },
+      error: (error) => {
+        console.log(error);
+      } 
     });
-
     //Zatvori modal
     this.visible = false; 
   }

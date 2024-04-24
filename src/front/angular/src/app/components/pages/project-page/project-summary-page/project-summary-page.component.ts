@@ -13,6 +13,9 @@ export class ProjectSummaryPageComponent implements OnInit{
   projectType: string = '';
   projectKey: string = '';
   isLoading: boolean = true;
+  projectImageSource : string = "";
+  defaultImagePath : string = "../../../../../assets/project-icon/default_project_image.png";
+
   project: Project = {
     name: "",
     key: "",
@@ -34,6 +37,7 @@ export class ProjectSummaryPageComponent implements OnInit{
         this.project= response;
         this.projectType = this.project.typeName;
         this.projectKey = this.project.key;
+        this.projectImageSource = this.project.icon!;
         this.isLoading = false; 
       },
       error: (error)=>{

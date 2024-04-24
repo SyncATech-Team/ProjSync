@@ -14,7 +14,8 @@ import { CompanyroleService } from '../../../_service/companyrole.service';
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent implements OnInit {
-
+  projectImageSource : string = "";
+  defaultImagePath : string = "../../../../assets/project-icon/default_project_image.png";
   projectCompletionMap: Map<string, number> = new Map<string, number>();
   sortOrder: 'asc' | 'desc' = 'asc';
 
@@ -66,6 +67,8 @@ export class HomePageComponent implements OnInit {
             project.isFavorite = false;
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
+            this.projectImageSource = project.icon!;
+            console.log(project);
 
             const completion = this.calculateProjectCompletion(project.creationDate, project.dueDate);
             this.projectCompletionMap.set(project.key, completion);
