@@ -146,16 +146,16 @@ export class ProjectSettingsPageComponent implements OnInit {
     this.project.icon = this.projectImageSource;
     console.log(this.project);  
 
-    if(this.projectName)
-    this.projectService.updateProject(this.projectName, this.project).subscribe({
-      next: (response) => {
-        this.sideBarComponent.ngOnInit();
-        console.log("PROSO");
-      },
-      error: (error) => {
-        console.log(error);
-      } 
-    });
+    if(this.projectName){
+      this.projectService.updateProject(this.projectName, this.project).subscribe({
+        next: (response) => {
+          this.sideBarComponent.setProjectPicture(this.projectImageSource);
+        },
+        error: (error) => {
+          console.log(error);
+        } 
+      });
+    }
     //Zatvori modal
     this.visible = false; 
   }

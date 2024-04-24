@@ -12,7 +12,7 @@
                 <div class="container upload">
                     <div class="icon-image">
                         <img 
-                        [src]="projectImageSource !== '' ? projectImageSource : defaultImagePath"
+                        [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
                         alt="project-default-image">
                     </div>
                     <div class="upoloadBtn">
@@ -20,7 +20,7 @@
                         <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [closable]="true" [dismissableMask]="true" [closeOnEscape]="true">
                             <ng-template pTemplate="header">
                                 <div class="inline-flex align-items-center justify-content-center gap-2">
-                                    <span class="font-bold white-space-nowrap">Chose project icon</span>
+                                    <span class="font-bold white-space-nowrap">Choose project icon</span>
                                 </div>
                             </ng-template>
                             <div class="wrapper-icons">
@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                             <ng-template pTemplate="footer">
-                                <p-button icon="pi pi-check" (click)="visible = false" label="Ok" pAutoFocus [autofocus]="true"></p-button>
+                                <p-button (click)="visible = false" label="Close" pAutoFocus [autofocus]="true"></p-button>
                             </ng-template>
                         </p-dialog>
                     </div>

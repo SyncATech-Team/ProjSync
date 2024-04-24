@@ -73,7 +73,6 @@ export class ProjectSidebarComponent implements OnInit {
         this.projectType = this.project.typeName;
         this.projectKey = this.project.key;
         this.projectImageSource = this.project.icon!;
-        console.log(this.projectImageSource);
       },
       error: (error) => {
         console.log(error);
@@ -151,5 +150,17 @@ export class ProjectSidebarComponent implements OnInit {
             summary_and_detail = buttonType ? { summary: 'No Product Selected', detail: `Pressed '${buttonType}' button` } : { summary: 'Product Selected', detail: data?.name };
         }
       });
+  }
+
+  setProjectPicture(src : string){
+    let element = document.getElementById("projectImage");
+    let image = element as HTMLImageElement;
+
+    if(src === "SLIKA_JE_NULL") {
+      image.src = this.defaultImagePath;
+    }
+    else {
+      image.src = src;
+    }
   }
 }

@@ -6,8 +6,6 @@ import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectType } from '../../../_models/project-type';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 
-
-
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -17,7 +15,6 @@ export class HomePageComponent implements OnInit {
   projectImageSource : string = "";
   defaultImagePath : string = "../../../../assets/project-icon/default_project_image.png";
   projectCompletionMap: Map<string, number> = new Map<string, number>();
-  sortOrder: 'asc' | 'desc' = 'asc';
 
   projects: Project[]=[];
   Types: any[]=[];
@@ -67,8 +64,6 @@ export class HomePageComponent implements OnInit {
             project.isFavorite = false;
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
-            this.projectImageSource = project.icon!;
-            console.log(project);
 
             const completion = this.calculateProjectCompletion(project.creationDate, project.dueDate);
             this.projectCompletionMap.set(project.key, completion);
@@ -147,14 +142,14 @@ export class HomePageComponent implements OnInit {
         || project.ownerUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) 
     );
   }
-  getDefaultImagePath(): string {
-    // let x: number = this.getRandomInteger(1, 10);
-    let x: number = 1;
-    let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
-    
-    // console.log(path);
+  getProjectImagePath(projectName : string): string {
+    // let x: number = 1;
+    // let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
+    let path = this.defaultImagePath;
+    let projekat = this.projects.filter((project) => project.name == projectName)[0]
 
-    return path;
+    if(projekat.icon == null) return this.defaultImagePath;
+    return projekat.icon;
   }
 
   pageChange(event: any) {

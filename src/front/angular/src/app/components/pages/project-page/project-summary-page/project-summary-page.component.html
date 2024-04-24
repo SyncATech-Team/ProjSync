@@ -9,7 +9,7 @@
             <div class="container" id="projectHeader">
                 <h1>{{project.name}}</h1>
                 <img
-                [src]="projectImageSource !== '' ? projectImageSource : defaultImagePath"
+                [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
                 alt="project-default-image">
             </div>
             <hr class="mt-2 mb-3" />
