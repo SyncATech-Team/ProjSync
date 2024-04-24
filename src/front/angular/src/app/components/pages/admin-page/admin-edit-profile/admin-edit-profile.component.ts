@@ -1,26 +1,18 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UserGetter } from '../../../_models/user-getter';
-import { UserService } from '../../../_service/user.service';
+import { UserGetter } from '../../../../_models/user-getter';
+import { UserService } from '../../../../_service/user.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FileUploadEvent } from 'primeng/fileupload';
-import { MessagePopupService } from '../../../_service/message-popup.service';
-import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
-import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
-import { AuthUserChangePassword } from '../../../_models/change-passowrd-auth-user';
-import { AccountService } from '../../../_service/account.service';
-
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
-
+import { MessagePopupService } from '../../../../_service/message-popup.service';
+import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
+import { AuthUserChangePassword } from '../../../../_models/change-passowrd-auth-user';
+import { AccountService } from '../../../../_service/account.service';
 @Component({
-  selector: 'app-edit-profile-page',
-  templateUrl: './edit-profile-page.component.html',
-  styleUrl: './edit-profile-page.component.css',
-  providers: [MessageService]
+  selector: 'app-admin-edit-profile',
+  templateUrl: './admin-edit-profile.component.html',
+  styleUrl: './admin-edit-profile.component.css'
 })
-export class EditProfilePageComponent implements OnInit {
+export class AdminEditProfileComponent implements OnInit {
   @ViewChild('fileInputRef') fileInputRef: ElementRef | undefined;
 
   imageLoading: boolean = false;
@@ -57,7 +49,6 @@ export class EditProfilePageComponent implements OnInit {
     private messageService: MessageService,
     private msgPopupService: MessagePopupService,
     private userProfilePhoto: UserProfilePicture,
-    private navBarComponent: NavBarComponent,
     private confirmationService: ConfirmationService,
     private accountService: AccountService) {}
 
@@ -84,7 +75,6 @@ export class EditProfilePageComponent implements OnInit {
         else {
           this.setUserPicture("SLIKA_JE_NULL");
         }
-        this.navBarComponent.ngOnInit();
       },
       error: error => {
         console.log(error.error);
@@ -168,6 +158,7 @@ export class EditProfilePageComponent implements OnInit {
 
       this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
         next: response => {
+          this.msgPopupService.showSuccess("Successfully uploaded image");
           this.ngOnInit();
 
           if(this.fileInputRef){
@@ -268,5 +259,4 @@ export class EditProfilePageComponent implements OnInit {
 
     return check && this.changePasswordFields.currentPassword != "";
   }
-
 }

@@ -298,6 +298,17 @@ namespace backAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("kb-uoi/{issueId}")]
+        public async Task<IActionResult> UpdateUsersOnIssue(int issueId, JIssueDto bodyRequest)
+        {
+            var updated = await _issueRepository.UpdateUsersOnIssue(issueId, bodyRequest);
+            if (updated == false)
+            {
+                return BadRequest("Not valid call");
+            }
+            return Ok();
+        }
+
         [HttpPut]
         public async Task<IActionResult> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
             var changed = await _issueRepository.CreateOrDeleteDependency(model);
