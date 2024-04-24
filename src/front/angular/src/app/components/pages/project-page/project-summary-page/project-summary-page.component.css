@@ -29,15 +29,47 @@
     color: #5E5BF4;
 }
 
-#description{
-    background-color: rgb(241, 241, 241);
-    border-radius: 10px;
-    padding: 1% 1% 1% 1%;
-}
+
 #descriptionLabel{
     margin-bottom: 0;
 }
 
 .container p{
     font-size: 18px;
+}
+
+/* NEW CSS */
+.cards{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+}
+
+.wrapper-box{
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid rgb(177, 177, 177);
+    width: 30%;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.wrapper-box .content-box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wrapper-box .content-box img{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+#description{
+    background-color: rgb(241, 241, 241);
+    border-radius: 10px;
+    padding: 1% 1% 1% 1%;
+    overflow-y: scroll;
+    height: 120px;
 }

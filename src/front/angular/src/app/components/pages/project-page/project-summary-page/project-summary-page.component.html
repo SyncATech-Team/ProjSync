@@ -6,7 +6,7 @@
             [projectName]="projectName"></app-project-sidebar>
 
         <div id="content">
-            <div class="container" id="projectHeader">
+            <!-- <div class="container" id="projectHeader">
                 <h1>{{project.name}}</h1>
                 <img
                 [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
@@ -37,9 +37,35 @@
             </div>
             <div class="container">
                 <p>Bugdet: {{project.budget}}</p>
+            </div> -->
+
+            <div class="cards">
+                <div class="wrapper-box">
+                    <div class="content-box">
+                        <h3>{{project.name}}</h3>
+                        <img
+                        [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
+                        alt="project-default-image">
+                    </div>
+                    <span>Project key: {{project.key}}</span>
+                </div>
+                <div class="wrapper-box">
+                    <div class="content-box">
+                        <h3>Description</h3>
+                    </div>
+                    <div id="description" [innerHTML]="safeDescription"></div>
+                </div>
+                <div class="wrapper-box">
+                    <div class="content-box">
+                        <h2>{{project.name}}</h2>
+                        <img
+                        [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
+                        alt="project-default-image">
+                    </div>
+                </div>
+                
             </div>
         </div>
-        
     </div>
 </div>
 
