@@ -165,3 +165,22 @@
         border-left: none;  
     }
 }
+
+/* Ikonice za projekat */
+
+.wrapper-icons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1.5rem;
+}
+
+.wrapper-icons .icon{
+    margin: 6px;
+}
+
+.wrapper-icons .icon img{
+    height: 40px;
+    width: 40px;
+    border-radius: 6px;
+}

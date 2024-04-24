@@ -14,7 +14,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   styleUrl: './project-settings-page.component.css'
 })
 export class ProjectSettingsPageComponent implements OnInit {
-  
+  index : number = 1;
+  visible: boolean = false;
+  iconIndexes: number[] = Array.from({length: 25}, (_, i) => i + 1); //NIZ SLIKA ZA PROJEKTE
+  projectImageSource : string = "";
+
   form : FormGroup;
   projectName: string | null = '';
 
@@ -31,6 +35,7 @@ export class ProjectSettingsPageComponent implements OnInit {
     typeName: "",
     description: "",
     ownerUsername: "",
+    icon: "",
     creationDate: new Date(), 
     dueDate: new Date(),
     budget: 0,
@@ -120,5 +125,27 @@ export class ProjectSettingsPageComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
       }
   });
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+
+  getAllIconsForProject(index: number){
+    return `../../../../../assets/project-icon/image${index}.png`;
+  }
+
+  setProjectImage(event : any){
+    this.projectImageSource = event.target.src;
+    this.project.icon = this.projectImageSource;
+    console.log(this.project);  
+
+    if(this.projectName)
+    this.projectService.updateProject(this.projectName, this.project).subscribe({
+      
+    });
+
+    //Zatvori modal
+    this.visible = false; 
   }
 }
