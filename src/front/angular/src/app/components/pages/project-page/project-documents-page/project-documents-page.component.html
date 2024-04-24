@@ -1,68 +1,71 @@
+<app-spinner></app-spinner>
+<p-confirmDialog></p-confirmDialog>
 <p-toast></p-toast>
-<p-confirmPopup></p-confirmPopup>
+
 <div id="pageWraper">
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
         <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
-
         <div class="content">
-            <div id="left-side" >
-                <h1 id="Name">{{project.name}}</h1>
-                <button data-bs-toggle="modal" data-bs-target="#modalAddDocument" class="btn btn-primary">
-                         Upload File
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalAddDocument" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <!-- Form Header -->
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add new documents to the project</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-            </div>
-            <!-- End of Form Header -->
             
-            <!-- From Body -->
-            <!-- <div class="modal-body"> -->
-            <!-- File upload From HTML (Hidden) -->
+            <!-- Upload container -->
+            <app-upload-document [projectName]="projectName"></app-upload-document>
 
-                <!-- <input type="file" class="file-input"
-                (change)="onFileSelected($event)" #fileUpload> -->
+            <div class="search">
+              <span class="p-input-icon-right">
+                  <i class="pi pi-search"></i>
+                  <input type="text" (input)="searchDocuments()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+              </span>
+            </div>
 
-                <!-- End of Hidden element -->
+            <div id="document-space">
                 
-                <!-- Custom File Upload Button -->
-                <!-- <div class="file-upload">
-                    {{this.fileName || "No file uploaded yet."}}
+              <div class="card-container">
+                <div *ngFor="let element of documentTitles" class="card">
+                  <div class="card-content">
+                    
+                    <img src="{{getIcon(element.title)}}" alt="Document Icon" class="document-icon">
+                    <div>
+                      <div class="title">{{ element.title }}</div>
+                      <div class="date">{{ element.dateUploaded | date:'medium' }}</div>
+                    </div>
+                    
+                    <div class="options">
+                      <button class="preview-btn">Preview</button>
+                      <button class="download-btn">Download</button>
+                      <button class="delete-btn" (click)="deleteDocument(element.documentId, element.title)">Delete</button>
+                    </div>
+                    
+                    <div *ngIf="element.olderVersions.length > 0">
+                      <span class="show-older-span" (click)="toggleOlderVersions(element)">Show Older Versions</span>
+                    </div>
 
-                    <button  class="btn btn-outline-primary"
-                    (click)="fileUpload.click()">
+                    <div *ngIf="element.showOlderVersions" class="older-versions">
+                      <div *ngFor="let older of element.olderVersions" class="older-version">
+                        
+                        <div>
+                          <div class="older-title"> {{ older.title }} </div>
+                          <span> {{ older.dateUploaded | date:'medium' }} </span>
+                        </div>
 
-                        <i class="pi pi-paperclip"></i>
+                        <div>
+                          <button class="delete-btn" (click)="deleteDocument(older.documentId, element.title)">Delete</button>
+                        </div>
+                      
+                      </div>
+                    </div>
 
-                    </button>
-                
-                </div> -->
-            <!-- End of Custom Button -->
-
-            <p style="margin: 3%; font-size: 30px;">Document Upload</p>
-            <div class="dropzone" >
-                <button>
-                    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="onFileSelected($event)">
-                    <i class="pi pi-upload"></i>
-                    <h3>Drag your files here or click to upload</h3>
-                </button>
-                
+                  </div>
+                </div>
+              </div>    
 
             </div>
-            <!-- End of Form -->
-            <!-- </div> -->
-            
-        </div>
-    </div>
 
+            <div style="user-select: none;">
+              <br><br><br><br>
+            </div>
+
+        </div>
+
+    </div>
 </div>
