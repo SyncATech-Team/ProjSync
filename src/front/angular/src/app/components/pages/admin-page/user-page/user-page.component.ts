@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
 import { UserService } from '../../../../_service/user.service';
-import { Table } from 'primeng/table';
+import { Table, TableLazyLoadEvent } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
@@ -43,7 +43,7 @@ export class UserPageComponent implements OnInit {
   users_backup: UserGetter[] = [];
   usersShow: UserGetter[] = [];
 
-  roles$: Observable<CompanyRole[]> | undefined;
+  roles$: any[] | undefined;
 
   initialUsername: string = '';
   editUser: UserGetter = {
@@ -68,13 +68,16 @@ export class UserPageComponent implements OnInit {
 
   first = 0;
   rows = 10;
+  totalRecords = 0;
   loading: boolean = true;
   activityValues: number[] = [0, 100];
   @ViewChild(Table) table!:Table;
 
-  visibilityFilter: boolean = true;
+  visibilityFilter: boolean = false;
 
   usersPhotos: PhotoForUser[] = [];
+
+  lastLazyLoadEvent!: TableLazyLoadEvent;
 
   //#endregion
 
@@ -100,18 +103,18 @@ export class UserPageComponent implements OnInit {
    */
   ngOnInit(): void {
       // Dovuci registrovane korisnike iz baze putem servisa
-      this.userService.getAllUsers().subscribe({
-        next: response => {
-          this.users = response;
-          this.users_backup = response;
-          this.getUserProfilePhotos();
-          this.showDeactivated(false);
-          // console.log(this.users);
-        },
-        error: error => {
-          console.log("ERROR: " + error.error);
-        }
-      });
+      // this.userService.getAllUsers().subscribe({
+      //   next: response => {
+      //     this.users = response;
+      //     this.users_backup = response;
+      //     this.getUserProfilePhotos();
+      //     this.showDeactivated(false);
+      //     // console.log(this.users);
+      //   },
+      //   error: error => {
+      //     console.log("ERROR: " + error.error);
+      //   }
+      // });
 
       // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
       this.cols = [
@@ -121,7 +124,14 @@ export class UserPageComponent implements OnInit {
       ];
 
       // Dovuci kreirane uloge u kompaniji
-      this.roles$ = this.companyRoleService.getAllCompanyRoles();
+      this.companyRoleService.getAllCompanyRoles().subscribe({
+        next: (response) => {
+          this.roles$ = response.map(role => role.name);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
 
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
   }
@@ -453,12 +463,10 @@ export class UserPageComponent implements OnInit {
 
   // Koriste se pri filtriranju usera
   // checkbox filter || checker se koristi kako bi znali da li zelimo da menjamo stanje tabele ili ne
-  showDeactivated(checker : boolean){
-    if(checker){
+  showDeactivated(condition: boolean){
+    if(condition)
       this.visibilityFilter = !this.visibilityFilter;
-    }
-
-    this.filterUsers(this.visibilityFilter);
+    this.loadUsers(this.lastLazyLoadEvent);
   }
 
 
@@ -473,6 +481,21 @@ export class UserPageComponent implements OnInit {
     {
       this.usersShow=this.users.filter((users)=> users.isActive==false);
     }
+  }
+
+  loadUsers(event: TableLazyLoadEvent){
+    this.lastLazyLoadEvent = event;
+    this.userService.getPaginationAllUsers(!this.visibilityFilter,event).subscribe({
+      next:(response) => {
+        this.users = response.users;
+        this.totalRecords = response.numberOfRecords;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+
+    });
+    this.getUserProfilePhotos();
   }
 
 }

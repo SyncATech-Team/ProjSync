@@ -94,7 +94,11 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Name</th>
+                        <th pSortableColumn="name">
+                            Name
+                            <p-sortIcon field="name"></p-sortIcon>
+                            <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
