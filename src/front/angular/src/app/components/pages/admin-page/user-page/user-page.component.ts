@@ -230,7 +230,14 @@ export class UserPageComponent implements OnInit {
 
             this.users[userIndex].isActive = !this.users[userIndex].isActive;
 
-            this.userService.updateUserInfo(this.users[userIndex].username, this.users[userIndex]).subscribe({});
+            this.userService.updateUserInfo(this.users[userIndex].username, this.users[userIndex]).subscribe({
+              next: (response) => {
+                this.showDeactivated(false);
+              },
+              error: (err) => {
+                console.log(err);
+              }
+            });
 
             if(this.users[userIndex].isActive == true){
               this.msgPopupService.showSuccess("User activated");
@@ -238,8 +245,7 @@ export class UserPageComponent implements OnInit {
             else{
               this.msgPopupService.showSuccess("User deactivated");
             }
-            this.table.reset();
-            this.showDeactivated(false);
+            
           },
           error: error => {
             this.msgPopupService.showError("Unable to deactive user");
@@ -428,7 +434,7 @@ export class UserPageComponent implements OnInit {
     this.userService.updateUserInfo(this.initialUsername, this.editUser).subscribe({
       next: response => {
         this.msgPopupService.showSuccess("Successfully edited user info");
-        this.ngOnInit();
+        this.showDeactivated(false);
       },
       error: error => {
         this.msgPopupService.showError("Unable to edit user");
