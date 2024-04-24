@@ -14,6 +14,10 @@ import {ProjectService} from "../../../state/project/project.service";
 import {untilDestroyed} from "@ngneat/until-destroy";
 import {JUser} from "../../../../_models/user-issues";
 import {JIssue} from "../../../../_models/issue";
+import {PhotoForUser} from "../../../../_models/photo-for-user";
+import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
+import {UserOnProjectService} from "../../../../_service/userOnProject.service";
+import {UserGetter} from "../../../../_models/user-getter";
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -37,7 +41,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   tasks_backup: IssueModel[]=[];
   searchTerm: string = '';
   tasksByGroup: any[] = [];
-
+  usersPhotos!: PhotoForUser[];
+  users: UserGetter[] = [];
   groupsInProject : GroupInProject[] = [];
   issuesInGroup : IssueModel[] = [];
 
@@ -59,6 +64,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     private _projectQuery: ProjectQuery,
     private _modalService: DialogService,
     private _projectService: ProjectService,
+    public userPictureService: UserProfilePicture,
+    private userOnProject : UserOnProjectService,
   ) {
     this.projectName = route.snapshot.paramMap.get('projectName');
     this._projectService.getProject(this.projectName!);
@@ -69,7 +76,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.selectedColumns = ['Type','Priority','Due Date','Reporter','Completed'];
     this.showColumns = ['Name',...this.selectedColumns];
     // this.tasksByGroup = this.getTasksByGroup();
-    if(this.projectName)
+    if(this.projectName) {
       this.groupService.getAllGroups(this.projectName).subscribe({
         next: (response) => {
           this.groupsInProject = response;
@@ -82,6 +89,18 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
           console.log(error);
         }
       });
+
+      this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
+        next: (response) => {
+          this.users = response.filter(user => user.username !== 'admin');
+          this.usersPhotos = this.userPictureService.getUserProfilePhotos(this.users);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
+
   }
 
   getTasksByGroup(): any{
@@ -197,7 +216,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
           '640px': '90vw'
       },
       data: {
-        issue$: this._projectQuery.issueById$(issueId.toString())
+        issue$: this._projectQuery.issueById$(issueId.toString()),
+        usersPhotos: this.usersPhotos
       }
     });
   }
