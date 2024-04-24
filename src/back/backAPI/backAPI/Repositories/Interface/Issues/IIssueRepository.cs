@@ -22,6 +22,8 @@ namespace backAPI.Repositories.Interface.Issues
         Task<IEnumerable<IssueGroup>> GetAllGroupsForGivenProject(int projectId);
 
         Task<IEnumerable<int>> GetAssigneeIds(int issueId);
+        Task<IEnumerable<UsersOnIssueDto>> GetAssigneeCompletionLevel(int issueId);
+        Task<bool> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto);
 
         Task<int> GetReporterId(int issueId);
 

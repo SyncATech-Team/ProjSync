@@ -309,6 +309,17 @@ namespace backAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("update-cl/{issueId}")]
+        public async Task<IActionResult> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto)
+        {
+            var updated = await _issueRepository.UpdateAssigneeCompletionLevel(issueId, usersOnIssueDto);
+            if (updated == false)
+            {
+                return BadRequest("Not valid call");
+            }
+            return Ok();
+        }
+
         [HttpPut]
         public async Task<IActionResult> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
             var changed = await _issueRepository.CreateOrDeleteDependency(model);

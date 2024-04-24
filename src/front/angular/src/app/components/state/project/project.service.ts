@@ -9,6 +9,7 @@ import {JIssue} from "../../../_models/issue";
 import {JComment} from "../../../_models/comment";
 import {ProjectStore} from "./project.store";
 import {environment} from "../../../../environments/environment";
+import {UsersWithCompletion} from "../../../_models/user-completion-level";
 
 
 @Injectable({
@@ -78,6 +79,27 @@ export class ProjectService {
         issues
       };
     });
+  }
+
+  updateUsersOnIssueCompleteLevel(issueId: string, uwc: UsersWithCompletion) {
+    const allIssues = this._store.getValue().issues;
+    let issue = allIssues.find((x) => x.id === issueId);
+    if (!issue) {
+      return;
+    }
+
+    const usersWithCompletion = arrayUpsert(issue.usersWithCompletion ?? [], uwc.id, uwc);
+    issue = {...issue, usersWithCompletion};
+    this._store.update((state) => {
+      const issues = arrayUpsert(state.issues, issue!.id, issue!);
+      return {
+        ...state,
+        issues
+      };
+    });
+
+    this._http
+      .put(`${this.baseUrl}Issues/update-cl/${issueId}`, uwc).subscribe();
   }
 
   updateIssueComment(issueId: string, comment: JComment) {

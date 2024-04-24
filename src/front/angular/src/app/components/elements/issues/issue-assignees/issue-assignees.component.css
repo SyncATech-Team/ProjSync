@@ -16,3 +16,7 @@
   background-color: lightblue;
   cursor: pointer;
 }
+
+:host .progress-bar-wrapper{
+  width: 20vh;
+}
