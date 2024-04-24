@@ -9,6 +9,11 @@
     padding: 2%;
 }
 
+#document-space {
+  margin-top: 1%;
+  text-align: center;
+}
+
 .card-container {
   display: flex;
   flex-wrap: wrap;
@@ -121,4 +126,8 @@
 
 .show-older-span:hover {
   color: red;
+}
+
+.search {
+  margin-top: 1%;
 }

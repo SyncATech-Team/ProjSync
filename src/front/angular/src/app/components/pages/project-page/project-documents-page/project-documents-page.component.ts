@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,9 @@ import { ProjectType } from '../../../../_models/project-type';
 import { ProjectDocumentService } from '../../../../_service/project-document.service'
 import { DocumentTitle } from '../../../../_models/document-title.model';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-project-documents-page',
   templateUrl: './project-documents-page.component.html',
@@ -19,6 +22,10 @@ export class ProjectDocumentsPageComponent implements OnInit{
 
   projectName: string = '';
   documentTitles: DocumentTitle[] = [];
+  documentTitlesBackup: DocumentTitle[] = [];
+  loading: boolean = false;
+
+  searchTerm: string = "";
 
   constructor (
     private ProjectDocService: ProjectDocumentService,
@@ -39,6 +46,7 @@ export class ProjectDocumentsPageComponent implements OnInit{
     this.ProjectDocService.getDocumentTitles(this.projectName).subscribe({
       next: response => {
         this.documentTitles = response.reverse();
+        this.documentTitlesBackup = response.reverse();
       },
       error: error => {
         console.log(error.error);
@@ -81,6 +89,15 @@ export class ProjectDocumentsPageComponent implements OnInit{
   getIcon(fileName: string): string {
     let extension = fileName.split(".")[fileName.split(".").length-1];
     return "assets/document-type-icons/icon_" + extension + ".png";
+
+  }
+
+  searchDocuments() {
+
+    let searchTerm = this.searchTerm.toLowerCase().trim();
+    let filteredTitles = [...this.documentTitlesBackup];
+    filteredTitles = filteredTitles.filter(title => title.title.toLowerCase().includes(searchTerm));
+    this.documentTitles = filteredTitles;
 
   }
 

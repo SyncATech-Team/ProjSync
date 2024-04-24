@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ProjectDocumentService } from '../../../_service/project-document.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { ProjectDocumentsPageComponent } from '../../pages/project-page/project-documents-page/project-documents-page.component';
 
 @Component({
   selector: 'app-upload-document',
@@ -15,7 +16,8 @@ export class UploadDocumentComponent {
 
   constructor(
     private projectDocService: ProjectDocumentService,
-    private msgPopupService: MessagePopupService
+    private msgPopupService: MessagePopupService,
+    private docsPage: ProjectDocumentsPageComponent
   ) {
 
   }
@@ -29,6 +31,7 @@ export class UploadDocumentComponent {
       next: response => {
         this.showUploadProgressBar = false;
         this.msgPopupService.showSuccess("Files successfully uploaded.");
+        this.docsPage.ngOnInit();
       },
       error: error => {
         this.showUploadProgressBar = false;

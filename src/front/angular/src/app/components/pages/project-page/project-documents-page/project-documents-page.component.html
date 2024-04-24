@@ -1,3 +1,4 @@
+<app-spinner></app-spinner>
 <p-confirmDialog></p-confirmDialog>
 <p-toast></p-toast>
 
@@ -9,6 +10,13 @@
             
             <!-- Upload container -->
             <app-upload-document [projectName]="projectName"></app-upload-document>
+
+            <div class="search">
+              <span class="p-input-icon-right">
+                  <i class="pi pi-search"></i>
+                  <input type="text" (input)="searchDocuments()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+              </span>
+            </div>
 
             <div id="document-space">
                 
@@ -49,12 +57,12 @@
 
                   </div>
                 </div>
-              </div>
-              
-                  
-                  
-                  
+              </div>    
 
+            </div>
+
+            <div style="user-select: none;">
+              <br><br><br><br>
             </div>
 
         </div>
