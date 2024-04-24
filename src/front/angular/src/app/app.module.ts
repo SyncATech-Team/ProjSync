@@ -108,6 +108,7 @@ import { AdminEditProfileComponent } from './components/pages/admin-page/admin-e
 import { KnobModule } from "primeng/knob";
 import { ProgressBarModule } from 'primeng/progressbar';
 import {DividerModule} from "primeng/divider";
+import { UploadDocumentComponent } from './components/elements/upload-document/upload-document.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +163,8 @@ import {DividerModule} from "primeng/divider";
     IssueReporterComponent,
     ProjectKanbanPageComponent,
     UserProfileComponent,
-    AdminEditProfileComponent
+    AdminEditProfileComponent,
+    UploadDocumentComponent
   ],
   imports: [
     BrowserModule,
