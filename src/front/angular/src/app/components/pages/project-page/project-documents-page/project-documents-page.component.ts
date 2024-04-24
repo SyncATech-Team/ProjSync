@@ -46,15 +46,40 @@ export class ProjectDocumentsPageComponent implements OnInit{
     })
   }
 
+  deleteDocument(id: number, docName: string) {
+    
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this document?',
+      header: 'Delete: ' + docName + "?",
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      acceptIcon:"none",
+      rejectIcon:"none",
+
+      accept: () => {
+        this.ProjectDocService.deleteDocument(id).subscribe({
+          next: _ => {
+            this.msgPopupService.showSuccess("Selected document deleted successfully");
+            this.ngOnInit();
+          },
+          error: error => {
+            this.msgPopupService.showError("Unable to delete choosen document");
+          }
+        });
+      },
+      reject: () => {
+
+      }
+    })
+  }
+
   toggleOlderVersions(element: any) {
     element.showOlderVersions = !element.showOlderVersions;
   }
   
   getIcon(fileName: string): string {
     let extension = fileName.split(".")[fileName.split(".").length-1];
-
-    console.log(extension);
-
     return "assets/document-type-icons/icon_" + extension + ".png";
 
   }

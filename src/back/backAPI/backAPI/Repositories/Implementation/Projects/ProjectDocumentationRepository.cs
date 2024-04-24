@@ -109,5 +109,14 @@ namespace backAPI.Repositories.Implementation.Projects {
             return documentTitles;
         }
 
+        public async Task<bool> DeleteDocument(int documentId) {
+            var itemToDelete = await _dataContext.ProjectDocumentation.FirstOrDefaultAsync(doc => doc.Id == documentId);
+            if (itemToDelete == null) return false;
+
+            _dataContext.ProjectDocumentation.Remove(itemToDelete);
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

@@ -111,5 +111,12 @@ namespace backAPI.Controllers
             return documentTitles;
         }
 
+        [HttpDelete("project-documentation")]
+        public async Task<ActionResult> DeleteRecord(int id) {
+            var deleted = await docsRepository.DeleteDocument(id);
+            if (deleted == false) { return BadRequest("Unable to delete record"); }
+            return Ok(deleted);
+        }
+
     }
 }

@@ -29,4 +29,8 @@ export class ProjectDocumentService {
     return this.http.get<DocumentTitle[]>(this.baseUrl + 'project-documentation/get-titles/' + projectName);
   }
 
+  deleteDocument(documentId: number) {
+    return this.http.delete<void>(`${this.baseUrl}project-documentation?id=${documentId}`);
+  }
+
 }

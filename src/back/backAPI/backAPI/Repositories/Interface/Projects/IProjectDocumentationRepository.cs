@@ -9,5 +9,7 @@ namespace backAPI.Repositories.Interface.Projects {
         Task<IEnumerable<ProjectDocumentation>> GetDocumentationForProject(int projectId);
 
         IEnumerable<DocumentTitles> GetOlderVersionsSorted(ProjectDocumentation newest, IEnumerable<ProjectDocumentation> all);
+
+        Task<bool> DeleteDocument(int documentId);
     }
 }

@@ -1,11 +1,10 @@
+<p-confirmDialog></p-confirmDialog>
 <p-toast></p-toast>
-<p-confirmPopup></p-confirmPopup>
 
 <div id="pageWraper">
     <app-nav-bar></app-nav-bar>
     <div id="contentPages">
         <app-project-sidebar [projectName]="projectName"></app-project-sidebar>
-
         <div class="content">
             
             <!-- Upload container -->
@@ -26,7 +25,7 @@
                     <div class="options">
                       <button class="preview-btn">Preview</button>
                       <button class="download-btn">Download</button>
-                      <button class="delete-btn">Delete</button>
+                      <button class="delete-btn" (click)="deleteDocument(element.documentId, element.title)">Delete</button>
                     </div>
                     
                     <div *ngIf="element.olderVersions.length > 0">
@@ -42,7 +41,7 @@
                         </div>
 
                         <div>
-                          <button>Delete</button>
+                          <button class="delete-btn" (click)="deleteDocument(older.documentId, element.title)">Delete</button>
                         </div>
                       
                       </div>
