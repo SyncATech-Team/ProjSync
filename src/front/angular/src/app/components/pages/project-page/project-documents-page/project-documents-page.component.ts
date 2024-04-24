@@ -45,13 +45,19 @@ export class ProjectDocumentsPageComponent implements OnInit{
   ngOnInit(): void {
     this.ProjectDocService.getDocumentTitles(this.projectName).subscribe({
       next: response => {
-        this.documentTitles = response.reverse();
-        this.documentTitlesBackup = response.reverse();
+        this.documentTitles = response.sort(this.sortFunc);
+        this.documentTitlesBackup = response.sort(this.sortFunc);
       },
       error: error => {
         console.log(error.error);
       }
     })
+  }
+
+  private sortFunc(a: DocumentTitle, b: DocumentTitle): number {
+    if(a.dateUploaded < b.dateUploaded) return 1;
+    if(a.dateUploaded == b.dateUploaded) return 0;
+    return -1;
   }
 
   deleteDocument(id: number, docName: string) {
