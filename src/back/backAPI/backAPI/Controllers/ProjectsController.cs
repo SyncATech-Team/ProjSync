@@ -200,6 +200,7 @@ namespace backAPI.Controllers
                     var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.StatusId);
                     var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
+                    var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                     var project = projectByName;
 
                     List<string> assigneeIdsList = new List<string>();
@@ -225,7 +226,8 @@ namespace backAPI.Controllers
                         DueDate = issue.DueDate.ToString(),
                         ReporterId = issue.OwnerId.ToString(),
                         ProjectId = project.Id.ToString(),
-                        UserIds = assigneeIdsList
+                        UserIds = assigneeIdsList,
+                        UsersWithCompletion = assigneeeCompletionLevel.ToList()
                     };
 
                     issues.Add(issueDto);

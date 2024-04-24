@@ -495,13 +495,14 @@ export class UserPageComponent implements OnInit {
       next:(response) => {
         this.users = response.users;
         this.totalRecords = response.numberOfRecords;
+        this.getUserProfilePhotos();
       },
       error: (err) => {
         console.log(err);
       }
 
     });
-    this.getUserProfilePhotos();
+    
   }
 
 }
