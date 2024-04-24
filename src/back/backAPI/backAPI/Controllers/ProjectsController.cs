@@ -101,6 +101,7 @@ namespace backAPI.Controllers
                 Description = project.Result.Description,
                 TypeName = type.Name,
                 OwnerUsername = owner,
+                Icon = project.Result.IconPath,
                 CreationDate = project.Result.CreationDate,
                 DueDate = project.Result.DueDate,
                 Budget = project.Result.Budget,

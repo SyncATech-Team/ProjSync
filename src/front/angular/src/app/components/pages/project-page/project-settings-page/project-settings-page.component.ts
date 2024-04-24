@@ -72,7 +72,7 @@ export class ProjectSettingsPageComponent implements OnInit {
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response)=>{
         this.project= response;
-
+        this.projectImageSource = this.project.icon!;
         //Za ispis u input poljima default-no
         this.projectName2 = this.project.name;
         this.projectType2 = this.project.typeName;
@@ -136,9 +136,11 @@ export class ProjectSettingsPageComponent implements OnInit {
   }
 
   setProjectImage(event : any){
-    this.projectImageSource = event.target.src;
+    const imageUrl = event.target.src;
+    const relativeImageUrl = imageUrl.substring(imageUrl.indexOf('/assets'));
+    this.projectImageSource = relativeImageUrl;
     this.project.icon = this.projectImageSource;
-    console.log(this.project);  
+    // console.log(this.project);  
 
     if(this.projectName)
     this.projectService.updateProject(this.projectName, this.project).subscribe({
