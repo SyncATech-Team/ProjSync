@@ -17,4 +17,5 @@ export interface JUser {
   updatedAt?: Date;
   isActive?: boolean;
   issueIds: string[];
+  level: number;
 }

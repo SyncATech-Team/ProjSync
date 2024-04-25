@@ -201,6 +201,9 @@ namespace backAPI.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ListPosition")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");

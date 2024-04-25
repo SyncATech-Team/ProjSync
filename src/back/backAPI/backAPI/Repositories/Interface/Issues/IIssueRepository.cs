@@ -22,6 +22,8 @@ namespace backAPI.Repositories.Interface.Issues
         Task<IEnumerable<IssueGroup>> GetAllGroupsForGivenProject(int projectId);
 
         Task<IEnumerable<int>> GetAssigneeIds(int issueId);
+        Task<IEnumerable<UsersOnIssueDto>> GetAssigneeCompletionLevel(int issueId);
+        Task<bool> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto);
 
         Task<int> GetReporterId(int issueId);
 
@@ -29,6 +31,8 @@ namespace backAPI.Repositories.Interface.Issues
 
         Task<bool> AddIssueDependencies(IEnumerable<Tuple<int, int>> dependencies);
         Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model);
+        Task<bool> UpdateIssue(int issueId, JIssueDto model);
+        Task<bool> UpdateUsersOnIssue(int issueId, JIssueDto model);
         Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model);
     }
 }

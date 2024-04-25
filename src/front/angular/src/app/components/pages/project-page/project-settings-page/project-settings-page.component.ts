@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup} from '@angular/forms';
 import { ProjectType } from '../../../../_models/project-type';
 import { ProjectTypeService } from '../../../../_service/project-type.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ProjectSidebarComponent } from '../../../elements/project-sidebar/project-sidebar.component';
+import { error } from 'console';
 
 @Component({
   selector: 'app-project-settings-page',
@@ -14,7 +16,12 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   styleUrl: './project-settings-page.component.css'
 })
 export class ProjectSettingsPageComponent implements OnInit {
-  
+  index : number = 1;
+  visible: boolean = false;
+  iconIndexes: number[] = Array.from({length: 25}, (_, i) => i + 1); //NIZ SLIKA ZA PROJEKTE
+  projectImageSource : string = "";
+  defaultImagePath : string = "../../../../../assets/project-icon/default_project_image.png";
+
   form : FormGroup;
   projectName: string | null = '';
 
@@ -31,6 +38,7 @@ export class ProjectSettingsPageComponent implements OnInit {
     typeName: "",
     description: "",
     ownerUsername: "",
+    icon: "",
     creationDate: new Date(), 
     dueDate: new Date(),
     budget: 0,
@@ -45,7 +53,8 @@ export class ProjectSettingsPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private projectTypeService: ProjectTypeService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService){
+    private messageService: MessageService,
+    private sideBarComponent: ProjectSidebarComponent){
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.form = this.formBuilder.group({
       name: [''],
@@ -67,7 +76,7 @@ export class ProjectSettingsPageComponent implements OnInit {
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response)=>{
         this.project= response;
-
+        this.projectImageSource = this.project.icon!;
         //Za ispis u input poljima default-no
         this.projectName2 = this.project.name;
         this.projectType2 = this.project.typeName;
@@ -85,23 +94,25 @@ export class ProjectSettingsPageComponent implements OnInit {
 
   onSubmit() {
     this.project.name = this.form.value.name;
-    this.project.description = this.form.value.description;
-    this.project.typeName = this.form.value.category.name;
+    // this.project.typeName = this.form.value.category.name;
     
-    if(this.projectName){
-      if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName){
-        this.projectService.updateProject(this.projectName,this.project).subscribe({
-          next:(response)=>{
-              this.router.navigate(["home/projects/settings/"+this.project.name]);
-              this.projectName=this.project.name;
-              this.msgPopupService.showSuccess("Project name updated");
-            },
-            error: (error)=>{
-              console.log(error);
-              this.msgPopupService.showError("Project name failed to update");
-            }
-          });
-      }
+    console.log(this.form.value.category.name);
+    console.log(this.project.typeName);
+    if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName){
+      this.project.description = this.form.value.description;
+      this.project.typeName = this.form.value.category.name;
+
+      this.projectService.updateProject(this.projectName!,this.project).subscribe({
+        next:(response)=>{
+            this.router.navigate(["home/projects/settings/"+this.project.name]);
+            this.projectName=this.project.name;
+            this.msgPopupService.showSuccess("Project edited");
+          },
+          error: (error)=>{
+            console.log(error);
+            this.msgPopupService.showError("Project name failed to update");
+          }
+        });
     }
   }
 
@@ -118,5 +129,34 @@ export class ProjectSettingsPageComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
       }
   });
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+
+  getAllIconsForProject(index: number){
+    return `../../../../../assets/project-icon/image${index}.png`;
+  }
+
+  setProjectImage(event : any){
+    const imageUrl = event.target.src;
+    const relativeImageUrl = imageUrl.substring(imageUrl.indexOf('/assets'));
+    this.projectImageSource = relativeImageUrl;
+    this.project.icon = this.projectImageSource;
+    console.log(this.project);  
+
+    if(this.projectName){
+      this.projectService.updateProject(this.projectName, this.project).subscribe({
+        next: (response) => {
+          this.sideBarComponent.setProjectPicture(this.projectImageSource);
+        },
+        error: (error) => {
+          console.log(error);
+        } 
+      });
+    }
+    //Zatvori modal
+    this.visible = false; 
   }
 }

@@ -6,14 +6,15 @@ import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectType } from '../../../_models/project-type';
 import { CompanyroleService } from '../../../_service/companyrole.service';
 
-
-
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent implements OnInit {
+  projectImageSource : string = "";
+  defaultImagePath : string = "../../../../assets/project-icon/default_project_image.png";
+  projectCompletionMap: Map<string, number> = new Map<string, number>();
 
   projects: Project[]=[];
   Types: any[]=[];
@@ -35,7 +36,7 @@ export class HomePageComponent implements OnInit {
   constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService,private companyroleService: CompanyroleService) { }
 
   ngOnInit(): void {
-    this.columns = ['Key','Type','Description','Owner','Creation Date','Due Date','Budget','Progress'];
+    this.columns = ['Key','Type','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
     this.initializeProjects();
@@ -63,6 +64,9 @@ export class HomePageComponent implements OnInit {
             project.isFavorite = false;
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
+
+            const completion = this.calculateProjectCompletion(project.creationDate, project.dueDate);
+            this.projectCompletionMap.set(project.key, completion);
           });
           this.filterProjects(this.visibilityFilter);
         },
@@ -71,6 +75,41 @@ export class HomePageComponent implements OnInit {
         }
       });
     }
+  }
+
+  calculateProjectCompletion(startDate: Date, endDate: Date): number {
+    const currentDate = new Date();
+
+    if(currentDate >= endDate){
+      return 100;
+    }
+
+    const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)); // Ukupan broj dana planiran za trajanje projekta
+    // console.log(totalDays);
+    const remainingDays = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24)); // Broj preostalih dana do kraja projekta
+    // console.log("Preostalo " + remainingDays);
+    const completedDays = totalDays - remainingDays; // Broj dana koji su već prošli
+    
+
+    if (totalDays <= 0) {
+        return 0;
+    }
+
+    const completionPercentage = (completedDays / totalDays) * 100;
+    return parseFloat(completionPercentage.toFixed(1));
+  }
+
+  getProgressBarClass(percentage: number | undefined): string {
+    if(percentage != undefined){
+      if (percentage <= 30) {
+        return 'progress-green'; 
+      } else if (percentage <= 70) {
+        return 'progress-yellow';
+      } else {
+        return 'progress-red';
+      }
+    }
+    else return "";
   }
   
   filterProjects(filter :string ):void {
@@ -103,14 +142,14 @@ export class HomePageComponent implements OnInit {
         || project.ownerUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) 
     );
   }
-  getDefaultImagePath(): string {
-    // let x: number = this.getRandomInteger(1, 10);
-    let x: number = 1;
-    let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
-    
-    // console.log(path);
+  getProjectImagePath(projectName : string): string {
+    // let x: number = 1;
+    // let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
+    let path = this.defaultImagePath;
+    let projekat = this.projects.filter((project) => project.name == projectName)[0]
 
-    return path;
+    if(projekat.icon == null) return this.defaultImagePath;
+    return projekat.icon;
   }
 
   pageChange(event: any) {

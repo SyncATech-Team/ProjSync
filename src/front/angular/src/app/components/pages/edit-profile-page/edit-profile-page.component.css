@@ -143,3 +143,12 @@
       transform: translate(-50%,-50%) rotate(360deg);
     }
   }
+
+.problem {
+    border: 2px solid red;
+}
+
+#error-display-span {
+    margin-left: 10px;
+    color: red;
+}

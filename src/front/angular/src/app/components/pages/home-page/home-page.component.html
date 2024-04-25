@@ -167,7 +167,10 @@
                                 <p-sortIcon field="budget"></p-sortIcon>
                                 <p-columnFilter type="numeric" field="budget" display="menu"></p-columnFilter>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')" >Progress</th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')" pSortableColumn="progress">
+                                Progress
+                                <p-sortIcon field="progress"></p-sortIcon>
+                            </th>                            
                         </ng-container>
                     </tr>
                 </ng-template>
@@ -177,11 +180,9 @@
                         <ng-container *ngFor="let column of columns">
                             <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                 <div class="profilecontent">
-                                    <img *ngIf="1==1; else secondImageSource"
-                                    src={{getDefaultImagePath()}} alt="user-default-image">
-                                    <ng-template #secondImageSource>
-                                        <img src="{{getDefaultImagePath()}}" alt="user-image">
-                                    </ng-template>
+                                    <img 
+                                    src={{getProjectImagePath(project.name)}}
+                                    alt="user-default-image">
                                 </div>
                                 <div>
                                     <a style="text-decoration: none;" 
@@ -218,9 +219,21 @@
                             </td>
                             <td *ngIf="column=='Progress' && selectedColumns.includes('Progress')" style="width: 20vh;">
                                 <div class="progress-bar-wrapper">
-                                    <div style="border: 1px solid black; width: 90%; height:1.3vh; margin-bottom: 2vh;"></div>
+                                    <p-progressBar 
+                                    [value]="projectCompletionMap.get(project.key)"
+                                    [pTooltip]="tooltipContent"
+                                    tooltipPosition="top" 
+                                    [style]="{'margin-bottom': '5px'}"
+                                    class="time-progress"
+                                    [ngClass]="getProgressBarClass(projectCompletionMap.get(project.key))"></p-progressBar>
+                                    <ng-template #tooltipContent>
+                                        <div class="flex align-items-center">
+                                            <i class="fa-regular fa-clock"></i>
+                                            <span> <b> {{ projectCompletionMap.get(project.key) }}%</b> </span>
+                                        </div>
+                                    </ng-template>
                                     
-                                    <div style="border: 1px solid black; width: 90%; height: 1.3vh;"></div>
+                                    <p-progressBar></p-progressBar>
                                 </div>
                             </td>
                         </ng-container>

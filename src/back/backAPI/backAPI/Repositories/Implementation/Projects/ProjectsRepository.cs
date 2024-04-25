@@ -126,6 +126,7 @@ namespace backAPI.Repositories.Implementation.Projects
             project.Key = request.Key;
             project.TypeId = projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName).Result.Id;
             project.OwnerId = usersRepository.GetUserByUsername(request.OwnerUsername).Result.Id;
+            project.IconPath = request.Icon;
             project.ParentId = request.ParentProjectName == null ? null : GetProjectByName(request.ParentProjectName).Result.Id;
             project.CreationDate = request.CreationDate;
             project.DueDate = request.DueDate;

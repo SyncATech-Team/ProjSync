@@ -2,19 +2,23 @@
   Assignees
 </div>
 
-<p-button *ngFor="let assignee of assignees"
-  [text]="true"
-  [raised]="true">
+<div *ngFor="let assignee of assignees; let i = index">
 
   <div class="d-flex align-items-center items-center">
     <p-avatar
-      [image]="assignee?.avatarUrl"
+      [image]="UserImagePath(assignee?.username)"
       shape="circle"
       size="normal">
     </p-avatar>
     <span class="m-2">
       {{ assignee?.name }}
     </span>
+    <div class="card flex justify-content-center" *ngIf="!isDisabled(assignee?.id)">
+      <p-knob (click)="updateStatus()" [(ngModel)]="loggedInUserIdCompletionLevel" valueTemplate="{value}%"></p-knob>
+    </div>
+    <div class="card flex justify-content-center progress-bar-wrapper" *ngIf="isDisabled(assignee?.id)">
+      <p-progressBar [value]="valueList[i].completionLevel"></p-progressBar>
+    </div>
     <svg-icon (click)="removeUser(assignee?.id)"
               title="Remove user"
               [size]="20"
@@ -22,7 +26,8 @@
               class="text-textLight">
     </svg-icon>
   </div>
-</p-button>
+
+</div>
 
 <a class="add-more" (click)="op.toggle($event)"
    style="font-size: 12.5px; cursor: pointer; display: flex; align-items: center; color: #0052cc;">
@@ -38,7 +43,7 @@
            (click)="addUserToIssue(option, op)">
         <div class="d-flex align-items-center items-center">
           <p-avatar
-            [image]="option?.avatarUrl"
+            [image]="UserImagePath(option?.username)"
             shape="circle"
             size="normal"
             [pTooltip]="option?.name">

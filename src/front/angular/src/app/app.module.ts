@@ -103,6 +103,13 @@ import { IssueAssigneesComponent } from './components/elements/issues/issue-assi
 import { UserProfileComponent } from './components/elements/user-profile/user-profile.component';
 import { DatePipe } from '@angular/common';
 
+import { CookieService } from 'ngx-cookie-service';
+import { AdminEditProfileComponent } from './components/pages/admin-page/admin-edit-profile/admin-edit-profile.component';
+import { KnobModule } from "primeng/knob";
+import { ProgressBarModule } from 'primeng/progressbar';
+import {DividerModule} from "primeng/divider";
+import { UploadDocumentComponent } from './components/elements/upload-document/upload-document.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -155,7 +162,9 @@ import { DatePipe } from '@angular/common';
     BoardFilterComponent,
     IssueReporterComponent,
     ProjectKanbanPageComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    AdminEditProfileComponent,
+    UploadDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -195,9 +204,13 @@ import { DatePipe } from '@angular/common';
     AvatarModule,
     AvatarGroupModule,
     CdkTextareaAutosize,
-    InputSwitchModule
+    InputSwitchModule,
+    KnobModule,
+    ProgressBarModule,
+    DividerModule
   ],
   providers: [
+    CookieService,
     provideClientHydration(),
     provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

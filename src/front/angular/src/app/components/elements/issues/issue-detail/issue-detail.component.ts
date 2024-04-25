@@ -3,6 +3,7 @@ import {JIssue} from '../../../../_models/issue';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ProjectService} from "../../../state/project/project.service";
 import {ProjectQuery} from "../../../state/project/project.query";
+import {PhotoForUser} from "../../../../_models/photo-for-user";
 
 @Component({
   selector: 'issue-detail',
@@ -15,6 +16,7 @@ export class IssueDetailComponent {
   @Input() isShowCloseButton!: boolean;
   @Output() onClosed = new EventEmitter();
   @Output() onOpenIssue = new EventEmitter<string>();
+  @Input() usersPhotos!: PhotoForUser[];
 
   constructor(
     private confirmationService: ConfirmationService,

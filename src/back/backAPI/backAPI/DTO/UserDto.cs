@@ -5,6 +5,9 @@
     /// </summary>
     public class UserDto
     {
+        public string Id { get; set; }
+        public string AvatarUrl { get; set; }
+        public string Name { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
@@ -20,5 +23,6 @@
         public DateTime UpdatedAt { get; set; }
 
         public Boolean isActive { get; set; }
+        public string[] IssueIds { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 import { JComment } from './comment';
+import {UsersWithCompletion} from "./user-completion-level";
 
 export enum IssueType {
   STORY = 'Story',
@@ -7,15 +8,13 @@ export enum IssueType {
 }
 
 export enum IssueStatus {
-  BACKLOG = 'Backlog',
-  SELECTED = 'Selected',
-  IN_PROGRESS = 'InProgress',
+  PLANNING = 'Planning',
+  IN_PROGRESS = 'In progress',
   DONE = 'Done'
 }
 
 export const IssueStatusDisplay = {
-  [IssueStatus.BACKLOG]: 'Backlog',
-  [IssueStatus.SELECTED]: 'Selected for Development',
+  [IssueStatus.PLANNING]: 'Planning',
   [IssueStatus.IN_PROGRESS]: 'In progress',
   [IssueStatus.DONE]: 'Done'
 };
@@ -51,6 +50,7 @@ export interface JIssue {
   updatedAt: string;
   reporterId: string;
   userIds: string[];
+  usersWithCompletion: UsersWithCompletion[];
   comments: JComment[];
   projectId: string;
 }

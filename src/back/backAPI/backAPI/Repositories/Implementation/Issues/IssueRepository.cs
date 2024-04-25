@@ -4,6 +4,7 @@ using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation.Issues
 {
@@ -11,14 +12,17 @@ namespace backAPI.Repositories.Implementation.Issues
     {
 
         private readonly DataContext _dataContext;
+        private readonly IUserOnIssueRepository _userOnIssueRepository;
 
         /* *****************************************************************************************
          * Konstruktor
          * ***************************************************************************************** */
-        public IssueRepository(DataContext dataContext)
+        public IssueRepository(DataContext dataContext, IUserOnIssueRepository userOnIssueRepository)
         {
             _dataContext = dataContext;
+            _userOnIssueRepository = userOnIssueRepository;
         }
+
         /* *****************************************************************************************
         * Dohvati sve zadatke za odredjenu grupu
         * ***************************************************************************************** */
@@ -74,13 +78,43 @@ namespace backAPI.Repositories.Implementation.Issues
         }
 
         public async Task<IEnumerable<int>> GetAssigneeIds(int issueId) {
-            IEnumerable<int> res = new List<int>();
-            var elements = _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false);
+            List<int> res = new List<int>();
+            var elements = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false).ToListAsync();
             foreach(var elem in elements) {
-                res.Append(elem.UserId);
+                res.Add(elem.UserId);
             }
 
             return res;
+        }
+
+        public async Task<IEnumerable<UsersOnIssueDto>> GetAssigneeCompletionLevel(int issueId)
+        {
+            List<UsersOnIssueDto> res = new List<UsersOnIssueDto>();
+            var elements = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.Reporting == false).ToListAsync();
+
+            foreach (var elem in elements)
+            {
+                UsersOnIssueDto uoidto = new UsersOnIssueDto();
+                uoidto.Id = elem.UserId.ToString();
+                uoidto.UserId = elem.UserId.ToString();
+                uoidto.CompletionLevel = elem.CompletionLevel;
+                res.Add(uoidto);
+            }
+
+            return res;
+        }
+
+        public async Task<bool> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto)
+        {
+            int userId = Int32.Parse(usersOnIssueDto.UserId);
+            var element = await _dataContext.UsersOnIssues.SingleOrDefaultAsync(elem => elem.IssueId == issueId && elem.UserId == userId && elem.Reporting == false);
+            
+            element.CompletionLevel = usersOnIssueDto.CompletionLevel;
+
+            _dataContext.UsersOnIssues.Update(element);
+
+            await _dataContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<int> GetReporterId(int issueId) {
@@ -108,6 +142,105 @@ namespace backAPI.Repositories.Implementation.Issues
             exists.CreatedDate = model.StartDate.AddDays(1);        // dodatak +1 zbog front-a???
             exists.UpdatedDate = DateTime.Now;
             exists.DueDate = model.EndDate;
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateIssue(int issueId, JIssueDto model)
+        {
+            var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+            if (exists == null)
+            {
+                return false;
+            }
+
+            exists.UpdatedDate = DateTime.Now;
+            exists.Description = model.Description;
+            exists.Name = model.Title;
+            exists.ListPosition = model.ListPosition;
+            exists.OwnerId = Int32.Parse(model.ReporterId);
+            IssueStatus issueStatus = await _dataContext.IssueStatuses.Where(type => type.Name == model.Status).FirstAsync();
+            IssuePriority issuePriority = await _dataContext.IssuePriority.Where(type => type.Name == model.Priority).FirstAsync();
+            IssueType issueType = await _dataContext.IssueTypes.Where(type => type.Name == model.Type).FirstAsync();
+
+            exists.StatusId = issueStatus.Id;
+            exists.PriorityId = issuePriority.Id;
+            exists.TypeId = issueType.Id;
+
+            List<UsersOnIssue> usersToInsert =
+            [
+                new UsersOnIssue
+                        {
+                            UserId = exists.OwnerId,
+                            IssueId = issueId,
+                            Reporting = true,
+                            CompletionLevel = 0.0
+                        },
+                    ];
+
+            foreach (var assigneeId in model.UserIds)
+            {
+
+                usersToInsert.Add(new UsersOnIssue
+                {
+                    UserId = Int32.Parse(assigneeId),
+                    IssueId = issueId,
+                    Reporting = false,
+                });
+            }
+
+            var result = await _dataContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateUsersOnIssue(int issueId, JIssueDto model)
+        {
+            var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+            if (exists == null)
+            {
+                return false;
+            }
+
+            exists.UpdatedDate = DateTime.Now;
+            exists.Description = model.Description;
+            exists.Name = model.Title;
+            exists.ListPosition = model.ListPosition;
+            exists.OwnerId = Int32.Parse(model.ReporterId);
+            IssueStatus issueStatus = await _dataContext.IssueStatuses.Where(type => type.Name == model.Status).FirstAsync();
+            IssuePriority issuePriority = await _dataContext.IssuePriority.Where(type => type.Name == model.Priority).FirstAsync();
+            IssueType issueType = await _dataContext.IssueTypes.Where(type => type.Name == model.Type).FirstAsync();
+
+            exists.StatusId = issueStatus.Id;
+            exists.PriorityId = issuePriority.Id;
+            exists.TypeId = issueType.Id;
+
+            var toRemove = await _dataContext.UsersOnIssues.Where(uoi => uoi.IssueId == issueId).ToListAsync();
+            _dataContext.UsersOnIssues.RemoveRange(toRemove);
+
+            List<UsersOnIssue> usersToInsert =
+            [
+                new UsersOnIssue
+                {
+                    UserId = exists.OwnerId,
+                    IssueId = issueId,
+                    Reporting = true,
+                    CompletionLevel = 0.0
+                },
+            ];
+
+            foreach (var assigneeId in model.UserIds)
+            {
+
+                usersToInsert.Add(new UsersOnIssue
+                {
+                    UserId = Int32.Parse(assigneeId),
+                    IssueId = issueId,
+                    Reporting = false,
+                });
+            }
+
+            await _dataContext.UsersOnIssues.AddRangeAsync(usersToInsert);
+
             await _dataContext.SaveChangesAsync();
             return true;
         }

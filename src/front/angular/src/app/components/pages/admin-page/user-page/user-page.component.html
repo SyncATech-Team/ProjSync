@@ -41,19 +41,24 @@
             <!-- Table start -->
             <p-table
                 #dt2
-                [value]="usersShow"
+                [value]="users"
                 dataKey="username"
                 [globalFilterFields]="['username']"
                 [paginator]="true"
                 [rows]="5"
                 [first]="first"
+                [totalRecords]="totalRecords"
                 [rowsPerPageOptions]="[5, 10, 25, 50]"
                 [showCurrentPageReport]="true"
                 (onPage)="pageChange($event)"
-                currentPageReportTemplate="Showing {first} to {last} of {{usersShow.length}} entries"
+                currentPageReportTemplate="Showing {first} to {last} of {{totalRecords}} entries"
                 [tableStyle]="{'width': '100%'}"
                 responsiveLayout="stack" [breakpoint]="'960px'"
-                styleClass="p-datatable-striped">
+                styleClass="p-datatable-striped"
+                [lazy]="true"
+                (onLazyLoad)="loadUsers($event)" 
+                sortMode="multiple"
+                >
                 
                 <!-- 
                     Opcije za export dokumenata
@@ -91,11 +96,54 @@
                 <!-- Table header -->
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Account</th>
-                        <th>Email address</th>
-                        <th>Company role</th>
-                        <th>Created</th>
-                        <th>Updated</th>
+                        <th pSortableColumn="username">
+                            Account
+                            <p-sortIcon field="username"></p-sortIcon>
+                            <p-columnFilter type="text" field="username" display="menu"></p-columnFilter>
+                        </th>
+                        <th pSortableColumn="email">
+                            Email address
+                            <p-sortIcon field="email"></p-sortIcon>
+                            <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
+                        </th>
+                        <th pSortableColumn="companyRoleName">
+                            Company role
+                            <p-sortIcon field="companyRoleName"></p-sortIcon>
+                            <p-columnFilter field="companyRoleName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                <ng-template pTemplate="header">
+                                    <div class="px-3 pt-3 pb-0">
+                                        <span class="font-bold">Company role</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="filter" let-user let-value let-filter="filterCallback" >
+                                    <p-multiSelect [ngModel]="value" [options]="roles$" placeholder="Any" (onChange)="filter($event.value)">
+                                        <ng-template let-user let-option pTemplate="item" >
+                                            <div class="inline-block vertical-align-middle">
+                                                <span class="ml-1 mt-1">{{ option }}</span>
+                                            </div>
+                                        </ng-template>
+                                    </p-multiSelect>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th pSortableColumn="createdAt">
+                            Created
+                            <p-sortIcon field="createdAt"></p-sortIcon>
+                            <p-columnFilter type="date" field="createdAt" display="menu">
+                                <ng-template pTemplate="filter" let-filter="filterCallback">
+                                    <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th pSortableColumn="updatedAt">
+                            Updated
+                            <p-sortIcon field="updatedAt"></p-sortIcon>
+                            <p-columnFilter type="date" field="updatedAt" display="menu">
+                                <ng-template pTemplate="filter" let-filter="filterCallback">
+                                    <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
@@ -262,7 +310,7 @@
                         <div class="col-12"> <!-- field za companyRole-->
                             <div class="form-floating mb-3">
                                 <select id="companyRoleName" class="companyRoles form-select" [(ngModel)]="editUser.companyRoleName" aria-label="companyRoleId" name="companyRoleName">
-                                    <option *ngFor="let role of roles$ | async" value="{{role.name}}">{{role.name}}</option>
+                                    <option *ngFor="let role of roles$" value="{{role}}">{{role}}</option>
                                 </select>
                                 <label for="companyRoleId" class="form-label">Company Role</label>
                             </div>

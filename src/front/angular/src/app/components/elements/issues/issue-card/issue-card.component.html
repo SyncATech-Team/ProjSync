@@ -6,7 +6,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <p-avatarGroup styleClass="mb-3">
         <p-avatar *ngFor="let user of assignees"
-                  [image]="user?.avatarUrl"
+                  [image]="UserImagePath(user?.username)"
                   shape="circle"
                   size="normal"
                   [pTooltip]="user?.name">

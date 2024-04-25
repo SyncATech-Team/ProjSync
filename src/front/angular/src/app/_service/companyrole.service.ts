@@ -13,17 +13,10 @@ export class CompanyroleService {
 
   constructor(private http: HttpClient) { }
 
-  public getAllCompanyRoles(): Observable<CompanyRole[]> {
+  public getAllCompanyRoles(){
     // if (this.roles.length > 0) return of(this.roles); // kada se updateuje rola onda ce vratiti stare vrednosti koje su sacuvane
 
-    return this.http.get<CompanyRole[]>(this.baseUrl + 'Companyroles').pipe(
-
-      map(roles => {
-
-        this.roles = roles;
-        return roles;
-      })
-    );
+    return this.http.get<CompanyRole[]>(this.baseUrl + 'Companyroles');
   }
 
   getCompanyRoleByName(companyRoleName: string){

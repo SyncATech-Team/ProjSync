@@ -1,7 +1,9 @@
 ﻿using backAPI.DTO;
+using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace backAPI.Controllers
 {
@@ -48,6 +50,44 @@ namespace backAPI.Controllers
             }
 
             return dTOUsers;
+        }
+
+        [HttpGet("pagination")]
+        public async Task<IActionResult> GetPaginationAllUsers(string criteria)
+        {
+            List<UserDto> dTOUsers = new List<UserDto>();
+            UsersOnProjectLazyLoadDto lazyLoadDto = new UsersOnProjectLazyLoadDto();
+
+            Criteria criteriaObj = JsonConvert.DeserializeObject<Criteria>(criteria);
+
+            var result = await _usersRepository.GetPaginationAllUsersAsync(criteriaObj);
+
+            foreach (var user in result.users)
+            {
+                // Enkapsuliraj podatke o korisniku u DTO objekat
+                dTOUsers.Add(new UserDto
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name,
+                    ProfilePhoto = user.ProfilePhoto,
+                    Address = user.Address,
+                    ContactPhone = user.ContactPhone,
+                    Status = user.Status,
+                    IsVerified = user.IsVerified,
+                    PreferedLanguage = user.PreferedLanguage,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt,
+                    isActive = user.IsActive
+                });
+            }
+
+            lazyLoadDto.Users = dTOUsers;
+            lazyLoadDto.NumberOfRecords = result.numberOfRecords;
+
+            return Ok(lazyLoadDto);
         }
 
         /* *****************************************************************************

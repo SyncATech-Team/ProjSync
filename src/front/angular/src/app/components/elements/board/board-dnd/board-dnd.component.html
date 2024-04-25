@@ -3,6 +3,7 @@
         board-dnd-list
         *ngFor="let status of issueStatuses"
         [status]="status"
-        [issues$]="projectQuery.issueByStatusSorted$(status)">
+        [issues$]="projectQuery.issueByStatusSorted$(status)"
+        [usersPhotos] = "usersPhotos">
     </div>
 </div>

@@ -8,13 +8,14 @@ import { UserGetter } from '../_models/user-getter';
 import { ResetPassword } from '../_models/reset-password';
 import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-response';
 import { CompanyroleService } from './companyrole.service';
+import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  
+
   constructor(private http: HttpClient,private companyroleService: CompanyroleService) { }
 
   login(model: any) {
@@ -34,7 +35,7 @@ export class AccountService {
   }
 
   getCurrentUser(): User | null {
-    
+
     /**
      * This modification ensures that the function gracefully handles
      * scenarios where localStorage is not available, returning null in such cases.
@@ -44,13 +45,14 @@ export class AccountService {
     if (typeof localStorage === 'undefined') {
       return null; // localStorage is not available, return null
     }
-    
+
     var storage = localStorage.getItem("user");
     if(!storage) return null;
 
     var user = JSON.parse(storage);
     return {
       username: user['username'],
+      id: user['id'],
       token: user['token'],
       roles: user['roles'],
       permitions: user['permitions']
@@ -95,6 +97,10 @@ export class AccountService {
         }
       })
     );
+  }
+
+  changePasswordForAuthorizedUser(model: AuthUserChangePassword) {
+    return this.http.post<string>(this.baseUrl + "Account/change-password-auth-user", model);
   }
 
   logout() {
