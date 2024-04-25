@@ -214,6 +214,10 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         modal: true,
         dismissableMask: true,
         closeOnEscape: true,
+        breakpoints: {
+          '960px': '75vw',
+          '640px': '94vw'
+        },
         data: {
           projectName: this.projectName
         }

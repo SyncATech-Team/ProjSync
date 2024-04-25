@@ -198,6 +198,10 @@ export class CreateTaskComponent implements OnInit {
       modal: true,
       dismissableMask: true,
       closeOnEscape: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      },
       data: {
         projectName: this.projectName,
       }
