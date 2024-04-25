@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, HostListener, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener, Input, OnInit, Injectable } from '@angular/core';
 import { navbarData } from './nav-data';
 import { AccountService } from '../../../_service/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +19,9 @@ interface SideNavToggle{
   templateUrl: './project-sidebar.component.html',
   styleUrl: './project-sidebar.component.css'
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class ProjectSidebarComponent implements OnInit {
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
   ref: DynamicDialogRef | undefined;
@@ -36,6 +39,9 @@ export class ProjectSidebarComponent implements OnInit {
 
   MAX_PROJECT_NAME: number = 12;
   permitions: any;
+
+  projectImageSource : string = "";
+  defaultImagePath : string = "../../../../../assets/project-icon/default_project_image.png";
 
   constructor(
     public accoutService: AccountService,
@@ -61,18 +67,17 @@ export class ProjectSidebarComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response) => {
         this.project = response;
         this.projectType = this.project.typeName;
         this.projectKey = this.project.key;
+        this.projectImageSource = this.project.icon!;
       },
       error: (error) => {
         console.log(error);
       }
     });
-
   }
 
   @HostListener('window:resize', ['$event'])
@@ -145,5 +150,17 @@ export class ProjectSidebarComponent implements OnInit {
             summary_and_detail = buttonType ? { summary: 'No Product Selected', detail: `Pressed '${buttonType}' button` } : { summary: 'Product Selected', detail: data?.name };
         }
       });
+  }
+
+  setProjectPicture(src : string){
+    let element = document.getElementById("projectImage");
+    let image = element as HTMLImageElement;
+
+    if(src === "SLIKA_JE_NULL") {
+      image.src = this.defaultImagePath;
+    }
+    else {
+      image.src = src;
+    }
   }
 }

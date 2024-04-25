@@ -31,6 +31,12 @@
     padding: 0 0 8px;
 }
 
+.titleUploadUploadIcon{
+    font-size: 20px;
+    font-weight: 600;
+    color: #5e6c84;
+}
+
 .upload{
     display: flex;
     flex-direction: column;
@@ -164,4 +170,31 @@
     #right-side{
         border-left: none;  
     }
+}
+
+/* Ikonice za projekat */
+
+.wrapper-icons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
+.wrapper-icons .icon{
+    margin: 6px;
+}
+
+.wrapper-icons .icon img{
+    height: 40px;
+    width: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.wrapper-icons .icon img:hover{
+    transition: 0.2s ease;
+    border: 3px solid lightblue;
+    border-radius: 6px;
+    padding: 1px;
 }
