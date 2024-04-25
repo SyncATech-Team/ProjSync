@@ -40,7 +40,7 @@ export class RegisterUserComponent implements OnInit {
   @Output() userCreated = new EventEmitter<UserGetter>();
 
   register() {
-    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.registrationModel.contactPhone))//testira format broja telefona
+    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.registrationModel.contactPhone) || this.registrationModel.contactPhone == '')//testira format broja telefona
       {this.accoutService.register(this.registrationModel).subscribe({
         next: (response) => {
           this.msgPopupService.showSuccess("Successfully registered new user!");
