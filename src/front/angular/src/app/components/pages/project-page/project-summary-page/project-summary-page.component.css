@@ -1,36 +1,33 @@
 #contentPages {
     display: flex;
+    height: 100vh;
 }
 
 #content {
     margin-top: 2%;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 3%;
     height: 100vh;
     width: 100%;
 }
 
-.header-cards{
-    margin-bottom: 1.5rem;
-}
-
-.cards{
-    display: flex;
-    justify-content: space-between;
+h4{
+    margin: 0;
 }
 
 .wrapper-box{
     border-radius: 10px;
     padding: 1.5rem;
     border: 1px solid rgb(177, 177, 177);
-    flex-grow: 1;
-    width: 30%;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.info{
-    margin-right: 2rem;
+.custom-margin-right {
+    margin-right: 1.5rem;
+}
+
+.custom-margin-top{
+    margin-top: 1.5rem;
 }
 
 .wrapper-box .content-box{
@@ -53,23 +50,10 @@
     display: flex;
 }
 
-.cards2{
-    display: flex;
-    flex-direction: row;
-}
-
-.description-wrapper{
-    margin-right: 2rem;
-}
-
-.description-wrapper,
-.logs-wrapper{
-    width: 50%;
-}
-
 #description{
     background-color: rgb(241, 241, 241);
     border-radius: 10px;
     padding: 1% 1% 1% 1%;
     overflow-y: scroll;
+    height: 300px;
 }
