@@ -39,34 +39,43 @@
                 <p>Bugdet: {{project.budget}}</p>
             </div> -->
 
-            <div class="cards">
-                <div class="wrapper-box">
+            <div class="cards container header-cards">
+                <div class="wrapper-box info">
                     <div class="content-box">
                         <h3>{{project.name}}</h3>
                         <img
                         [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
                         alt="project-default-image">
                     </div>
-                    <span>Project key: {{project.key}}</span>
-                </div>
-                <div class="wrapper-box">
-                    <div class="content-box">
-                        <h3>Description</h3>
+                    <div class="container">
+                        <span>Project key: {{project.key}}</span>
                     </div>
+                    <div class="container">
+                        <span>Project visibility: {{project.visibilityName}}</span>
+                    </div>
+                    <div class="container">
+                        <span>Project type: {{project.typeName}}</span>
+                    </div>
+                    <div class="container">
+                        <span>Owner: {{project.ownerUsername}}</span>
+                    </div>
+                </div>
+                <div class="wrapper-box charts-box">
+                    <div class="content-box">
+                        <h3>Charts</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards2 container">
+                <div class="wrapper-box description-wrapper">
+                    <h3>Description</h3>
                     <div id="description" [innerHTML]="safeDescription"></div>
                 </div>
-                <div class="wrapper-box">
-                    <div class="content-box">
-                        <h2>{{project.name}}</h2>
-                        <img
-                        [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
-                        alt="project-default-image">
-                    </div>
+                <div class="wrapper-box logs-wrapper">
+                    <h3>Logs</h3>
                 </div>
-                
             </div>
         </div>
     </div>
 </div>
-
-

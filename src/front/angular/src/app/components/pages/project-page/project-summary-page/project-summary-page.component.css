@@ -8,50 +8,29 @@
     margin-right: 2%;
     height: 100vh;
     width: 100%;
-    overflow-y: auto;
 }
 
-#projectHeader{
-    display: flex;
-    align-items: center;
+.header-cards{
+    margin-bottom: 1.5rem;
 }
 
-#projectHeader img {
-    width: 100px;
-    height: 100px;
-    margin-left: auto;
-    border-radius: 20px;
-    float: right;
-}
-
-#projectHeader h1{
-    display: inline-block;
-    color: #5E5BF4;
-}
-
-
-#descriptionLabel{
-    margin-bottom: 0;
-}
-
-.container p{
-    font-size: 18px;
-}
-
-/* NEW CSS */
 .cards{
     display: flex;
     justify-content: space-between;
-    flex-flow: row wrap;
 }
 
 .wrapper-box{
     border-radius: 10px;
     padding: 1.5rem;
     border: 1px solid rgb(177, 177, 177);
+    flex-grow: 1;
     width: 30%;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.info{
+    margin-right: 2rem;
 }
 
 .wrapper-box .content-box{
@@ -66,10 +45,31 @@
     border-radius: 10px;
 }
 
+.charts-box{
+    width: 67%;
+}
+
+.wrapper{
+    display: flex;
+}
+
+.cards2{
+    display: flex;
+    flex-direction: row;
+}
+
+.description-wrapper{
+    margin-right: 2rem;
+}
+
+.description-wrapper,
+.logs-wrapper{
+    width: 50%;
+}
+
 #description{
     background-color: rgb(241, 241, 241);
     border-radius: 10px;
     padding: 1% 1% 1% 1%;
     overflow-y: scroll;
-    height: 120px;
 }
