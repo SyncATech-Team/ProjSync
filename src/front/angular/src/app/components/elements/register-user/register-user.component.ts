@@ -40,18 +40,22 @@ export class RegisterUserComponent implements OnInit {
   @Output() userCreated = new EventEmitter<UserGetter>();
 
   register() {
-    this.accoutService.register(this.registrationModel).subscribe({
-      next: (response) => {
-        this.msgPopupService.showSuccess("Successfully registered new user!");
-        this.userCreated.emit(response);
-        this.onSuccessfulRegistration();
-      },
+    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.registrationModel.contactPhone) || this.registrationModel.contactPhone == '')//testira format broja telefona
+      {this.accoutService.register(this.registrationModel).subscribe({
+        next: (response) => {
+          this.msgPopupService.showSuccess("Successfully registered new user!");
+          this.userCreated.emit(response);
+          this.onSuccessfulRegistration();
+        },
 
-      error: (error) => {
-        // prikazi poruku greske
-        this.msgPopupService.showError("Unable to register new user. Check input fields!");
-      }
-    });
+        error: (error) => {
+          // prikazi poruku greske
+          this.msgPopupService.showError("Unable to register new user. Check input fields!");
+        }
+      });}
+    else{
+      this.msgPopupService.showError("Not a valid phone number format");
+    }
   }
   
   onSuccessfulRegistration(){

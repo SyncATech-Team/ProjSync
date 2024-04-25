@@ -153,6 +153,7 @@ export class CreateTaskComponent implements OnInit {
 
         this.issueCreator.description = this.form.controls['issue-description'].value;
         this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
+        this.issueCreator.createdDate = new Date(Date.UTC(this.issueCreator.createdDate.getFullYear(), this.issueCreator.createdDate.getMonth(), this.issueCreator.createdDate.getDate()));
         this.issueCreator.updatedDate = new Date();
         this.issueCreator.dueDate = this.form.controls['issue-due-date'].value;
         this.issueCreator.ownerUsername = this.currentUser!;
