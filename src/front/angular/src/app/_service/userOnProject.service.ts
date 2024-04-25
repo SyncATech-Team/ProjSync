@@ -22,6 +22,10 @@ export class UserOnProjectService {
         return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject?projectName=${projectName}`);
     }
 
+    getAllUsersOnProjectThatCanManageProject(projectName: string) {
+        return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject/canManageProjects?projectName=${projectName}`);
+    }
+
     getAllProjectsByUser(username: string){
         return this.http.get<Project[]>(`${this.baseUrl}UserOnProject/user/${username}`);
     }

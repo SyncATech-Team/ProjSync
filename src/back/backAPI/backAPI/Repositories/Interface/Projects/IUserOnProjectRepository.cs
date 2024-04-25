@@ -9,5 +9,6 @@ namespace backAPI.Repositories.Interface.Projects
         Task<bool> AddUserToProjectAsync(string projectName, string username, string color);
         Task<bool> RemoveUserFromProjectAsync(string projectName, string username);
         Task<IEnumerable<Project>> GetProjectsByUser(string username);
+        Task<IEnumerable<User>> GetUsersOnProjectThatCanManageProjectAsync(string projectName);
     }
 }

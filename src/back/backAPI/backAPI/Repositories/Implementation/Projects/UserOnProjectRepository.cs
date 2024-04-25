@@ -109,5 +109,25 @@ namespace backAPI.Repositories.Implementation.Projects
 
             return true;
         }
+
+        public async Task<IEnumerable<User>> GetUsersOnProjectThatCanManageProjectAsync(string projectName)
+        {
+            return await dataContext.Users
+                .Join(dataContext.UsersOnProjects,
+                    u => u.Id,
+                    up => up.UserId,
+                    (u, up) => new { User = u, UserProject = up })
+                .Join(dataContext.Projects,
+                    up => up.UserProject.ProjectId,
+                    p => p.Id,
+                    (up, p) => new { up.User, Project = p })
+                .Join(dataContext.CRoles,
+                    u => u.User.CompanyRoleId,
+                    cr => cr.Id,
+                    (u, cr) => new { u.User, u.Project, CompanyRole = cr })
+                .Where(x => x.CompanyRole.CanManageProjects && x.Project.Name == projectName)
+                .Select(x => x.User)
+                .ToListAsync();
+        }
     }
 }
