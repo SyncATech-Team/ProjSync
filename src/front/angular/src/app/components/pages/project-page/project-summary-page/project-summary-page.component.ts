@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-project-summary-page',
@@ -13,6 +14,9 @@ export class ProjectSummaryPageComponent implements OnInit{
   projectType: string = '';
   projectKey: string = '';
   isLoading: boolean = true;
+  projectImageSource : string = "";
+  defaultImagePath : string = "../../../../../assets/project-icon/default_project_image.png";
+
   project: Project = {
     name: "",
     key: "",
@@ -25,7 +29,12 @@ export class ProjectSummaryPageComponent implements OnInit{
     visibilityName: ""
   }
 
-  constructor (private route: ActivatedRoute,private projectService: ProjectService){
+  safeDescription: SafeHtml | undefined;
+
+  constructor (
+    private route: ActivatedRoute,
+    private projectService: ProjectService,
+    private sanitizer: DomSanitizer){
     this.projectName = route.snapshot.paramMap.get('projectName');
   }
   ngOnInit(): void {
@@ -34,7 +43,9 @@ export class ProjectSummaryPageComponent implements OnInit{
         this.project= response;
         this.projectType = this.project.typeName;
         this.projectKey = this.project.key;
-        this.isLoading = false; 
+        this.projectImageSource = this.project.icon!;
+        this.isLoading = false;
+        this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.project.description);
       },
       error: (error)=>{
         console.log(error);

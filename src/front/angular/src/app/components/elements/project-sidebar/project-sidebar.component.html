@@ -3,7 +3,8 @@
     <!-- Header od sidenav -->
     <div class="logo-container">
         <div id="image-title">
-            <img class="logo" (click)="toggleCollapse()" src="../../../../assets/Icons/ProjectImg.png">
+            <img id="projectImage" class="logo" (click)="toggleCollapse()"
+            [src]="projectImageSource != null ? projectImageSource : defaultImagePath">
             <div class="logo-header" *ngIf="collapsed">
                 <span class="logo-text">{{ getProjectName() }}</span><br>
                 <span>Key: {{ projectKey }}</span>

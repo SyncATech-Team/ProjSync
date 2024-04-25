@@ -180,11 +180,9 @@
                         <ng-container *ngFor="let column of columns">
                             <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                 <div class="profilecontent">
-                                    <img *ngIf="1==1; else secondImageSource"
-                                    src={{getDefaultImagePath()}} alt="user-default-image">
-                                    <ng-template #secondImageSource>
-                                        <img src="{{getDefaultImagePath()}}" alt="user-image">
-                                    </ng-template>
+                                    <img 
+                                    src={{getProjectImagePath(project.name)}}
+                                    alt="user-default-image">
                                 </div>
                                 <div>
                                     <a style="text-decoration: none;" 

@@ -71,6 +71,7 @@ namespace backAPI.Controllers
                     TypeName = type.Name,
                     Description = project.Description,
                     CreationDate = project.CreationDate,
+                    Icon = project.IconPath,
                     DueDate = project.DueDate,
                     OwnerUsername = owner,
                     ParentProjectName = parentName,
@@ -101,6 +102,7 @@ namespace backAPI.Controllers
                 Description = project.Result.Description,
                 TypeName = type.Name,
                 OwnerUsername = owner,
+                Icon = project.Result.IconPath,
                 CreationDate = project.Result.CreationDate,
                 DueDate = project.Result.DueDate,
                 Budget = project.Result.Budget,
@@ -131,6 +133,7 @@ namespace backAPI.Controllers
                     Description = project.Description,
                     TypeName = _projectTypesRepository.GetProjectTypeById(project.TypeId).Result.Name,
                     CreationDate = project.CreationDate,
+                    Icon = project.IconPath,
                     DueDate = project.DueDate,
                     OwnerUsername = await _usersRepository.IdToUsername(project.OwnerId),
                     Budget = project.Budget,
@@ -200,6 +203,7 @@ namespace backAPI.Controllers
                     var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.StatusId);
                     var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
+                    var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                     var project = projectByName;
 
                     List<string> assigneeIdsList = new List<string>();
@@ -225,7 +229,8 @@ namespace backAPI.Controllers
                         DueDate = issue.DueDate.ToString(),
                         ReporterId = issue.OwnerId.ToString(),
                         ProjectId = project.Id.ToString(),
-                        UserIds = assigneeIdsList
+                        UserIds = assigneeIdsList,
+                        UsersWithCompletion = assigneeeCompletionLevel.ToList()
                     };
 
                     issues.Add(issueDto);
