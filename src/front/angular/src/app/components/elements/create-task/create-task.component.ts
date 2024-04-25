@@ -159,7 +159,7 @@ export class CreateTaskComponent implements OnInit {
         this.issueCreator.ownerUsername = this.currentUser!;
         this.issueCreator.reporterUsername = this.form.controls['issue-reporter'].value.username;
         this.issueCreator.assigneeUsernames =
-          this.form.controls['issue-assigner'].value.map((user: UserGetter) => user.username);
+        this.form.controls['issue-assigner'].value.map((user: UserGetter) => user.username);
         this.issueCreator.dependentOnIssues = [];  // ZA SADA PRAZAN STRING TREBA OMOGUCITI I BIRANJE ZAVISNOSTI
         this.issueCreator.projectName = this.projectName;
         this.issueCreator.groupName = this.form.controls['issue-group'].value.name;
