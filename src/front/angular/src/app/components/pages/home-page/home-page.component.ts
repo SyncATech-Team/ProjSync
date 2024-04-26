@@ -5,6 +5,10 @@ import { ProjectService } from '../../../_service/project.service';
 import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectType } from '../../../_models/project-type';
 import { CompanyroleService } from '../../../_service/companyrole.service';
+import { UserService } from '../../../_service/user.service';
+import { UserGetter } from '../../../_models/user-getter';
+import { PhotoForUser } from '../../../_models/photo-for-user';
+import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 
 @Component({
   selector: 'app-home-page',
@@ -33,7 +37,17 @@ export class HomePageComponent implements OnInit {
   columns!: string[];
   showColumns!: string[];
 
-  constructor(public accoutService: AccountService,private projectService:ProjectService ,private projectTypes:ProjectTypeService,private companyroleService: CompanyroleService) { }
+  users : UserGetter[] = [];
+  usersPhotos : PhotoForUser[] = [];
+
+  constructor(
+    public accoutService: AccountService,
+    private projectService:ProjectService,
+    private projectTypes:ProjectTypeService,
+    private companyroleService: CompanyroleService,
+    private userService: UserService,
+    private userPictureService: UserProfilePicture
+  ) { }
 
   ngOnInit(): void {
     this.columns = ['Key','Type','Owner','Creation Date','Due Date','Budget','Progress'];
@@ -50,6 +64,14 @@ export class HomePageComponent implements OnInit {
     if(user?.permitions)
       this.permitions = user.permitions;
     this.filterProjects('public');
+
+    this.userService.getAllUsers().subscribe({
+      next: (response) => {
+        this.users = response.filter(user => user.username !== 'admin' && user.isActive == true);
+        console.log(this.users);
+        this.getUserProfilePhotos(this.users);
+      }
+    });
   }
 
   initializeProjects(): void {
@@ -75,6 +97,48 @@ export class HomePageComponent implements OnInit {
         }
       });
     }
+  }
+
+  getUserProfilePhotos(users: UserGetter[]) {
+    console.log("1");
+    for(const user of users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            let path = response['fileContents'];
+            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username, 
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+            console.log(this.usersPhotos);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
+
+  getUserImagePath(username: string,users: UserGetter[]) {
+    let index = users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersPhotos[ind].photoSource;
   }
 
   calculateProjectCompletion(startDate: Date, endDate: Date): number {

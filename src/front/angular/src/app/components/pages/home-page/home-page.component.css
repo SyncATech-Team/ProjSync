@@ -48,6 +48,11 @@ th{
 .profilecontent img {
     width: 20px;
     height: 20px;
+    border-radius: 6px;
+}
+
+.fullName{
+    margin-left: 4px;
 }
 
 .input-search input{

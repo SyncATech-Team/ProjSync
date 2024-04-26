@@ -203,7 +203,10 @@
                             </td>
                             <td *ngIf="column=='Owner' && selectedColumns.includes('Owner')" style="width: 20vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Owner</span>
-                                {{ project.ownerUsername }}
+                                <div class="profilecontent">
+                                    <img id="image_{{project.ownerUsername}}" draggable="false" src={{getUserImagePath(project.ownerUsername,users)}} alt="user-default-image">
+                                    <span class="fullName">{{ project.ownerUsername }}</span>
+                                </div>
                             </td>
                             <td *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" style="width: 25vh; ">
                                 <span class="p-column-title" style="font-weight: bold">Creation Date</span>
