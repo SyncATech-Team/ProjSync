@@ -32,14 +32,8 @@ namespace backAPI.Repositories.Implementation.Projects {
             var filesOK = allFilesOK(files);
             if (!filesOK) return "Files are not valid for upload";
 
-            Console.WriteLine("All files OK");
-
-            Console.WriteLine("Duzina niza: " +  files.Count);
-
             var arr = new List<ProjectDocumentation>();
             foreach (IFormFile fileItem in files) {
-
-                Console.WriteLine(fileItem.Name);
 
                 var extension = Path.GetExtension(fileItem.FileName).ToLower();
 
@@ -66,6 +60,9 @@ namespace backAPI.Repositories.Implementation.Projects {
                 using (var stream = new FileStream(filePath, FileMode.Create)) {
                     await fileItem.CopyToAsync(stream);
                 }
+
+                // Set file attributes to disable execution
+                File.SetAttributes(filePath, FileAttributes.ReadOnly | FileAttributes.NotContentIndexed);
 
             }
 
