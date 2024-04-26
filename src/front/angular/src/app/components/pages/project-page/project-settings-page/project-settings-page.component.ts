@@ -18,7 +18,7 @@ import { error } from 'console';
 export class ProjectSettingsPageComponent implements OnInit {
   index : number = 1;
   visible: boolean = false;
-  iconIndexes: number[] = Array.from({length: 25}, (_, i) => i + 1); //NIZ SLIKA ZA PROJEKTE
+  iconIndexes: number[] = Array.from({length: 26}, (_, i) => i + 1); //NIZ SLIKA ZA PROJEKTE
   projectImageSource : string = "";
   defaultImagePath : string = "../../../../../assets/project-icon/default_project_image.png";
 

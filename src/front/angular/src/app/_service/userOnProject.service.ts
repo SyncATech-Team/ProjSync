@@ -30,6 +30,10 @@ export class UserOnProjectService {
         return this.http.delete<void>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}`);
     }
 
+    checkUserPresenceOnProject(projectName : string, username: string){
+        return this.http.get<string>(`${this.baseUrl}UserOnProject/check?projectname=${projectName}&username=${username}`);
+    }
+
     addUserOnProject(projectName : string, username : string, color : string){
         //# -> %23 zbog heksadecimalnog zapisa
         color = color.replace('#', '%23');
