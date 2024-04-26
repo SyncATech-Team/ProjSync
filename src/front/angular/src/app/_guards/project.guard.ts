@@ -4,7 +4,7 @@ import { AccountService } from '../_service/account.service';
 import { UserOnProjectService } from '../_service/userOnProject.service';
 
 export const ProjectGuard: CanActivateFn = async (route, state) => {
-    console.log("GARDDDDD");
+    // console.log("GARDDDDD");
     const router = inject(Router);
 
     if (typeof localStorage === 'undefined') {
@@ -20,14 +20,14 @@ export const ProjectGuard: CanActivateFn = async (route, state) => {
         router.navigate(['pageNotFound']);
         return false;
     }
-    console.log(projectName);
+    // console.log(projectName);
 
     try {
         await userOnProjectService.checkUserPresenceOnProject(projectName, user!.username).toPromise();
-        console.log("TEST1")
+        // console.log("TEST1")
         return true;
     } catch (error) {
-        console.log("TEST2")
+        // console.log("TEST2")
         router.navigate(['pageNotFound']);
         return false;
     }

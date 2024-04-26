@@ -70,7 +70,7 @@ export class HomePageComponent implements OnInit {
       next: (response) => {
         this.users = response.filter(user => user.username !== 'admin' && user.isActive == true);
         this.Users = this.users.map(item => item.username);
-        console.log(this.users);
+        // console.log(this.users);
         this.getUserProfilePhotos(this.users);
       }
     });
@@ -102,7 +102,7 @@ export class HomePageComponent implements OnInit {
   }
 
   getUserProfilePhotos(users: UserGetter[]) {
-    console.log("1");
+    // console.log("1");
     for(const user of users) {
       if(user.profilePhoto != null) {
         this.userPictureService.getUserImage(user.username).subscribe({
@@ -114,7 +114,7 @@ export class HomePageComponent implements OnInit {
               photoSource: path
             };
             this.usersPhotos.push(ph);
-            console.log(this.usersPhotos);
+            // console.log(this.usersPhotos);
           },
           error: error => {
             console.log(error);
