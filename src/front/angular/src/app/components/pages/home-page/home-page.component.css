@@ -46,15 +46,21 @@ th{
 }
 
 .profilecontent img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
 }
 
+#name-cont {
+    display: flex;
+    align-items: center;
+}
+
 #name-cont img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 6px;
+    margin-right: 5px;
 }
 
 .fullName{
