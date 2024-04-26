@@ -118,6 +118,7 @@ namespace backAPI.Repositories.Implementation.Projects {
             try {
                 // Validate and delete the file
                 if (!string.IsNullOrEmpty(documentPath) && File.Exists(documentPath)) {
+                    File.SetAttributes(documentPath, File.GetAttributes(documentPath) & ~FileAttributes.ReadOnly);
                     File.Delete(documentPath);
                 }
             }
