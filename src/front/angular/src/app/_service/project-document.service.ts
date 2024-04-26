@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { catchError, last, map, pipe, tap } from 'rxjs';
+import { Observable, catchError, last, map, pipe, tap } from 'rxjs';
 import { DocumentTitle } from '../_models/document-title.model';
 
 @Injectable({
@@ -31,6 +31,10 @@ export class ProjectDocumentService {
 
   deleteDocument(documentId: number) {
     return this.http.delete<void>(`${this.baseUrl}project-documentation?id=${documentId}`);
+  }
+
+  getDocumentContents(documentId: number): Observable<ArrayBuffer> {
+    return this.http.get(`${this.baseUrl}project-documentation/${documentId}/download`, { responseType: 'arraybuffer' });
   }
 
 }

@@ -11,5 +11,7 @@ namespace backAPI.Repositories.Interface.Projects {
         IEnumerable<DocumentTitles> GetOlderVersionsSorted(ProjectDocumentation newest, IEnumerable<ProjectDocumentation> all);
 
         Task<bool> DeleteDocument(int documentId);
+
+        Task<ProjectDocumentation> GetDocumentById(int documentId);
     }
 }

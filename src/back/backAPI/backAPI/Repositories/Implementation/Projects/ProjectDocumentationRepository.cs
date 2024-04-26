@@ -118,5 +118,8 @@ namespace backAPI.Repositories.Implementation.Projects {
             return true;
         }
 
+        public async Task<ProjectDocumentation> GetDocumentById(int documentId) {
+            return await _dataContext.ProjectDocumentation.FirstOrDefaultAsync(d => d.Id == documentId);
+        }
     }
 }
