@@ -118,5 +118,21 @@ namespace backAPI.Controllers
             return Ok(deleted);
         }
 
+        [HttpGet("project-documentation/{id}/download")]
+        public async Task<IActionResult> GetDocumentContent(int id) {
+            var document = await docsRepository.GetDocumentById(id);
+            if (document == null) {
+                return NotFound();
+            }
+
+            var filePath = document.Path;
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(fileBytes, "application/octet-stream", document.Title);
+        }
+
     }
 }
