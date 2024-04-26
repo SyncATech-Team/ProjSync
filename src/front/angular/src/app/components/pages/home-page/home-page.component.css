@@ -45,9 +45,10 @@ th{
     cursor: pointer;
 }
 
-.profilecontent img {
+#name-cont img {
     width: 20px;
     height: 20px;
+    margin-right: 10px;
 }
 
 .input-search input{

@@ -179,12 +179,10 @@
                     <tr>
                         <ng-container *ngFor="let column of columns">
                             <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
-                                <div class="profilecontent">
+                                <div id="name-cont">
                                     <img 
                                     src={{getProjectImagePath(project.name)}}
                                     alt="user-default-image">
-                                </div>
-                                <div>
                                     <a style="text-decoration: none;" 
                                         routerLink="projects/tasks/{{project.name}}"
                                         title="{{project.name}}">{{ getProjectName(project.name) }}</a>
