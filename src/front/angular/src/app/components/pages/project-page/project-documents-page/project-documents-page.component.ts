@@ -139,9 +139,27 @@ export class ProjectDocumentsPageComponent implements OnInit{
 
   previewDocument(documentId: number, title: string) {
     this.ProjectDocService.getDocumentContents(documentId).subscribe(data => {
-      const url = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' })); // Adjust the type as per your document type
-      window.open(url, '_blank'); // Open the URL in a new tab for preview
-      window.URL.revokeObjectURL(url);
+      
+      const blob = new Blob([data]);
+      
+      const fileType = this.getFileType(title);
+
+      if(fileType === "pdf") {
+        const url = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' })); // Adjust the type as per your document type
+        window.open(url, '_blank'); // Open the URL in a new tab for preview
+        window.URL.revokeObjectURL(url);
+      }
+      else if(fileType === "image") {
+        const imageUrl = URL.createObjectURL(blob);
+        const img = new Image();
+        img.src = imageUrl;
+        const w = window.open("_blank");
+        w!.document.write(img.outerHTML);
+      }
+      else {
+        this.downloadDocument(documentId, title);
+      }
+      
     }, error => {
       // Handle error
       console.error('Error previewing document:', error);
@@ -149,8 +167,20 @@ export class ProjectDocumentsPageComponent implements OnInit{
     });
   }
 
-  isPdfExtension(title: string): boolean {
-    return title.toLowerCase().endsWith(".pdf");
+  private getFileType(title: string): string {
+    const extension = title.split('.').pop()?.toLowerCase();
+    if (extension === 'pdf') {
+      return 'pdf';
+    } else if ( extension != undefined && ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'].includes(extension)) {
+      return 'image';
+    } else {
+      return 'other';
+    }
+  }
+
+  isPdfOrImageExtension(title: string): boolean {
+    let fType = this.getFileType(title.toLowerCase());
+    return fType === "pdf" || fType === "image";
   }
 
 }
