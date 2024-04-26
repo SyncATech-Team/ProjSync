@@ -366,6 +366,8 @@ selectView(type: GanttViewType) {
 
 viewChange(event: GanttView) {
     this.selectedViewType = event.viewType;
+    this.expanded = true;
+    this.ganttComponent!.expandAll();
 }
 
 refresh() {
