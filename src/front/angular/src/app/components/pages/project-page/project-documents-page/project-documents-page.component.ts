@@ -107,4 +107,80 @@ export class ProjectDocumentsPageComponent implements OnInit{
 
   }
 
+  /**
+   * Funkcija koja za prosledjeni naslov vraca isti naslov ukoliko je duzina odgovarajuca
+   * U slucaju da je naslov predug naziv ce biti skracen sa dodatim ... na kraju
+   */
+  getTitle(current: string) {
+
+    const LIMIT = 20;
+    if (current.length < LIMIT ) return current;
+    return current.substring(0, LIMIT) + "...";
+
+  }
+
+  downloadDocument(documentId: number, title: string) {
+    this.ProjectDocService.getDocumentContents(documentId).subscribe(data => {
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = title; // Filename for the downloaded file
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a); // Remove the <a> element after downloading
+    }, error => {
+      // Handle error
+      console.error('Error downloading document:', error);
+      this.msgPopupService.showError('Error downloading document');
+    });
+  }
+
+  previewDocument(documentId: number, title: string) {
+    this.ProjectDocService.getDocumentContents(documentId).subscribe(data => {
+      
+      const blob = new Blob([data]);
+      
+      const fileType = this.getFileType(title);
+
+      if(fileType === "pdf") {
+        const url = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' })); // Adjust the type as per your document type
+        window.open(url, '_blank'); // Open the URL in a new tab for preview
+        window.URL.revokeObjectURL(url);
+      }
+      else if(fileType === "image") {
+        const imageUrl = URL.createObjectURL(blob);
+        const img = new Image();
+        img.src = imageUrl;
+        const w = window.open("_blank");
+        w!.document.write(img.outerHTML);
+      }
+      else {
+        this.downloadDocument(documentId, title);
+      }
+      
+    }, error => {
+      // Handle error
+      console.error('Error previewing document:', error);
+      this.msgPopupService.showError('Error previewing document');
+    });
+  }
+
+  private getFileType(title: string): string {
+    const extension = title.split('.').pop()?.toLowerCase();
+    if (extension === 'pdf') {
+      return 'pdf';
+    } else if ( extension != undefined && ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'].includes(extension)) {
+      return 'image';
+    } else {
+      return 'other';
+    }
+  }
+
+  isPdfOrImageExtension(title: string): boolean {
+    let fType = this.getFileType(title.toLowerCase());
+    return fType === "pdf" || fType === "image";
+  }
+
 }

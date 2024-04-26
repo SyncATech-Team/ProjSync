@@ -209,6 +209,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
       width: '65%',
       modal:true,
       closable: true,
+      maximizable: true,
       dismissableMask: true,
       closeOnEscape: true,
       breakpoints: {

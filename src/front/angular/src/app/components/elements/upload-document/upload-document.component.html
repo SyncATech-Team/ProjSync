@@ -2,7 +2,9 @@
 
 <div class="upload-container">
     <div class="dropzone">
-        <input type="file" #fileDropRef id="fileDropRef" multiple (change)="onFileSelected($event)">
+        <input type="file" #fileDropRef id="fileDropRef" multiple 
+            (change)="onFileSelected($event)"
+            accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .jpg, .jpeg, .png, .giff, .bmp, .svg">
         <span>Drag files or click to upload</span>
     </div>
 </div>

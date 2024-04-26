@@ -32,14 +32,8 @@ namespace backAPI.Repositories.Implementation.Projects {
             var filesOK = allFilesOK(files);
             if (!filesOK) return "Files are not valid for upload";
 
-            Console.WriteLine("All files OK");
-
-            Console.WriteLine("Duzina niza: " +  files.Count);
-
             var arr = new List<ProjectDocumentation>();
             foreach (IFormFile fileItem in files) {
-
-                Console.WriteLine(fileItem.Name);
 
                 var extension = Path.GetExtension(fileItem.FileName).ToLower();
 
@@ -66,6 +60,9 @@ namespace backAPI.Repositories.Implementation.Projects {
                 using (var stream = new FileStream(filePath, FileMode.Create)) {
                     await fileItem.CopyToAsync(stream);
                 }
+
+                // Set file attributes to disable execution
+                File.SetAttributes(filePath, FileAttributes.ReadOnly | FileAttributes.NotContentIndexed);
 
             }
 
@@ -113,10 +110,28 @@ namespace backAPI.Repositories.Implementation.Projects {
             var itemToDelete = await _dataContext.ProjectDocumentation.FirstOrDefaultAsync(doc => doc.Id == documentId);
             if (itemToDelete == null) return false;
 
+            var documentPath = itemToDelete.Path;
+
             _dataContext.ProjectDocumentation.Remove(itemToDelete);
             await _dataContext.SaveChangesAsync();
+
+            try {
+                // Validate and delete the file
+                if (!string.IsNullOrEmpty(documentPath) && File.Exists(documentPath)) {
+                    File.SetAttributes(documentPath, File.GetAttributes(documentPath) & ~FileAttributes.ReadOnly);
+                    File.Delete(documentPath);
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error deleting file: {ex.Message}");
+                return false;
+            }
+
             return true;
         }
 
+        public async Task<ProjectDocumentation> GetDocumentById(int documentId) {
+            return await _dataContext.ProjectDocumentation.FirstOrDefaultAsync(d => d.Id == documentId);
+        }
     }
 }
