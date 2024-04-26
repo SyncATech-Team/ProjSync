@@ -26,13 +26,15 @@
                     
                     <img src="{{getIcon(element.title)}}" alt="Document Icon" class="document-icon">
                     <div>
-                      <div class="title">{{ element.title }}</div>
+                      <div class="title" pTooltip="{{element.title}}">
+                        {{ getTitle(element.title) }}
+                      </div>
                       <div class="date">{{ element.dateUploaded | date:'medium' }}</div>
                     </div>
                     
                     <div class="options">
-                      <button class="preview-btn">Preview</button>
-                      <button class="download-btn">Download</button>
+                      <button *ngIf="isPdfExtension(element.title)" class="preview-btn" (click)="previewDocument(element.documentId, element.title)">Preview</button>
+                      <button class="download-btn" (click)="downloadDocument(element.documentId, element.title)">Download</button>
                       <button class="delete-btn" (click)="deleteDocument(element.documentId, element.title)">Delete</button>
                     </div>
                     
@@ -49,6 +51,8 @@
                         </div>
 
                         <div>
+                          <button *ngIf="isPdfExtension(element.title)" class="preview-btn" (click)="previewDocument(element.documentId, element.title)">Preview</button>
+                          <button class="download-btn" (click)="downloadDocument(element.documentId, element.title)">Download</button>
                           <button class="delete-btn" (click)="deleteDocument(older.documentId, element.title)">Delete</button>
                         </div>
                       

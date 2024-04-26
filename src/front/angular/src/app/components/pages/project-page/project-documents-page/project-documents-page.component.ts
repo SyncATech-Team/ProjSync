@@ -107,4 +107,50 @@ export class ProjectDocumentsPageComponent implements OnInit{
 
   }
 
+  /**
+   * Funkcija koja za prosledjeni naslov vraca isti naslov ukoliko je duzina odgovarajuca
+   * U slucaju da je naslov predug naziv ce biti skracen sa dodatim ... na kraju
+   */
+  getTitle(current: string) {
+
+    const LIMIT = 20;
+    if (current.length < LIMIT ) return current;
+    return current.substring(0, LIMIT) + "...";
+
+  }
+
+  downloadDocument(documentId: number, title: string) {
+    this.ProjectDocService.getDocumentContents(documentId).subscribe(data => {
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = title; // Filename for the downloaded file
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a); // Remove the <a> element after downloading
+    }, error => {
+      // Handle error
+      console.error('Error downloading document:', error);
+      this.msgPopupService.showError('Error downloading document');
+    });
+  }
+
+  previewDocument(documentId: number, title: string) {
+    this.ProjectDocService.getDocumentContents(documentId).subscribe(data => {
+      const url = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' })); // Adjust the type as per your document type
+      window.open(url, '_blank'); // Open the URL in a new tab for preview
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      // Handle error
+      console.error('Error previewing document:', error);
+      this.msgPopupService.showError('Error previewing document');
+    });
+  }
+
+  isPdfExtension(title: string): boolean {
+    return title.toLowerCase().endsWith(".pdf");
+  }
+
 }
