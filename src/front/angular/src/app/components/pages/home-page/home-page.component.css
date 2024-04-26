@@ -45,6 +45,12 @@ th{
     cursor: pointer;
 }
 
+.profilecontent img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
 #name-cont img {
     width: 20px;
     height: 20px;
