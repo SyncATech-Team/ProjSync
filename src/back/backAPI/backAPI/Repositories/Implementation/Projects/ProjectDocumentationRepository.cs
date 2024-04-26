@@ -113,8 +113,22 @@ namespace backAPI.Repositories.Implementation.Projects {
             var itemToDelete = await _dataContext.ProjectDocumentation.FirstOrDefaultAsync(doc => doc.Id == documentId);
             if (itemToDelete == null) return false;
 
+            var documentPath = itemToDelete.Path;
+
             _dataContext.ProjectDocumentation.Remove(itemToDelete);
             await _dataContext.SaveChangesAsync();
+
+            try {
+                // Validate and delete the file
+                if (!string.IsNullOrEmpty(documentPath) && File.Exists(documentPath)) {
+                    File.Delete(documentPath);
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error deleting file: {ex.Message}");
+                return false;
+            }
+
             return true;
         }
 
