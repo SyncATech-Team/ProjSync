@@ -30,6 +30,12 @@ import { ConfirmationService } from 'primeng/api';
 import { GroupService } from '../../../../_service/group.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
+import { IssueModalComponent } from '../../../elements/issues/issue-modal/issue-modal.component';
+import { ProjectQuery } from '../../../state/project/project.query';
+import { PhotoForUser } from '../../../../_models/photo-for-user';
+import { UserOnProjectService } from '../../../../_service/userOnProject.service';
+import { UserGetter } from '../../../../_models/user-getter';
+import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -99,6 +105,10 @@ expanded = false;
 
 ref: DynamicDialogRef | undefined;
 
+ref1: DynamicDialogRef | undefined;
+users: UserGetter[] = [];
+usersPhotos!: PhotoForUser[];
+
 /**
  * Koje opcije se prikazuju u toolbar-u
  */
@@ -126,7 +136,10 @@ constructor(
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
     private groupService: GroupService, 
-    private _modalService: DialogService
+    private _modalService: DialogService,
+    private _projectQuery: ProjectQuery,
+    private userOnProject : UserOnProjectService,
+    public userPictureService: UserProfilePicture
 ) {}
 
 ngOnInit(): void {
@@ -191,6 +204,16 @@ ngOnInit(): void {
             console.log("Error fetching tasks: " + error.error);
         }
     });
+
+    this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
+        next: (response) => {
+          this.users = response.filter(user => user.username !== 'admin');
+          this.usersPhotos = this.userPictureService.getUserProfilePhotos(this.users);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
 }
 
 // ngAfterViewInit(): void {
@@ -203,7 +226,32 @@ ngAfterViewInit() {
 
 barClick(event: GanttBarClickEvent) {
     // this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
+
+    this.openIssueModal(event.item.id);
+
 }
+
+openIssueModal(issueId : string){
+    console.log(issueId);
+    console.log(this.usersPhotos);
+    this.ref1 = this._modalService.open(IssueModalComponent, {
+      header: 'Issue - update',
+      width: '65%',
+      modal:true,
+      closable: true,
+      maximizable: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+      },
+      data: {
+        issue$: this._projectQuery.issueById$(issueId.toString()),
+        usersPhotos: this.usersPhotos
+      }
+    });
+  }
 
 lineClick(event: GanttLineClickEvent) {
 
