@@ -66,6 +66,22 @@ namespace backAPI.Repositories.Implementation.Projects
                 .ToListAsync();
         }
 
+        public async Task<User> GetUserOnProjectAsync(string projectname, string username)
+        {
+            return await dataContext.Users
+                .Join(dataContext.UsersOnProjects,
+                u => u.Id,
+                up => up.UserId,
+                (u, up) => new { User = u, UserProject = up })
+                .Join(dataContext.Projects,
+                up => up.UserProject.ProjectId,
+                p => p.Id,
+                (up, p) => new { up.User, Project = p })
+                .Where(x => x.User.UserName == username && x.Project.Name == projectname)
+                .Select(x => x.User)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Project>> GetProjectsByUser(string username)
         {
             var user = await usersRepository.GetUserByUsername(username);

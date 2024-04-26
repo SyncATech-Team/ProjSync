@@ -121,5 +121,23 @@ namespace backAPI.Controllers
                 return BadRequest(new { message = "Failed to remove user from project" });
             }
         }
+
+        [HttpGet("check")]
+        public async Task<IActionResult> CheckUserPresenceOnProject(string projectname, string username)
+        {
+            var project = await _projectRepository.GetProjectByName(projectname);
+            if(project == null)
+            {
+                return BadRequest("Project not found");
+            }
+
+            var userOnProject = await _userOnProjectRepository.GetUserOnProjectAsync(projectname, username);
+            if(userOnProject == null)
+            {
+                return BadRequest("User is not associated with this project");
+            }
+
+            return Ok(new {message = "User is associated with this project"});
+        }
     }
 }
