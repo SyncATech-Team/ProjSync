@@ -137,7 +137,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                        <p-multiSelect [ngModel]="value" [options]="Users" placeholder="Select project owners" (onChange)="filter($event.value)">
+                                        <p-multiSelect [ngModel]="value" [options]="getUsersThatAreProjectOwners()" placeholder="Select project owners" (onChange)="filter($event.value)">
                                             <ng-template let-project let-option pTemplate="item" >
                                                 <div class="inline-block vertical-align-middle">
                                                     <div class="profilecontent">

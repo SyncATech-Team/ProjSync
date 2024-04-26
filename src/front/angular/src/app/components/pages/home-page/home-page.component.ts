@@ -251,4 +251,18 @@ export class HomePageComponent implements OnInit {
       }
     })
   }
+
+  getUsersThatAreProjectOwners() {
+    let res: any[] = [];
+
+    this.Users.forEach(username => {
+      let x = this.projects.filter(p => p.ownerUsername == username);
+      if(x.length > 0) {
+        res.push(username);
+      }
+    })
+
+    return res;
+  }
+
 }
