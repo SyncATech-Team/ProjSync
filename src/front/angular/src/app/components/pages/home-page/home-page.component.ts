@@ -38,6 +38,7 @@ export class HomePageComponent implements OnInit {
   showColumns!: string[];
 
   users : UserGetter[] = [];
+  Users : any[] = []; // -> niz korisnika za filter 
   usersPhotos : PhotoForUser[] = [];
 
   constructor(
@@ -68,6 +69,7 @@ export class HomePageComponent implements OnInit {
     this.userService.getAllUsers().subscribe({
       next: (response) => {
         this.users = response.filter(user => user.username !== 'admin' && user.isActive == true);
+        this.Users = this.users.map(item => item.username);
         console.log(this.users);
         this.getUserProfilePhotos(this.users);
       }
