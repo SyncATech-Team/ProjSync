@@ -109,6 +109,8 @@ import { KnobModule } from "primeng/knob";
 import { ProgressBarModule } from 'primeng/progressbar';
 import {DividerModule} from "primeng/divider";
 import { UploadDocumentComponent } from './components/elements/upload-document/upload-document.component';
+import {SliderModule} from "primeng/slider";
+import { IssueChangeProgressComponent } from './components/elements/issues/issue-change-progress/issue-change-progress.component';
 
 @NgModule({
   declarations: [
@@ -164,7 +166,8 @@ import { UploadDocumentComponent } from './components/elements/upload-document/u
     ProjectKanbanPageComponent,
     UserProfileComponent,
     AdminEditProfileComponent,
-    UploadDocumentComponent
+    UploadDocumentComponent,
+    IssueChangeProgressComponent
   ],
   imports: [
     BrowserModule,
@@ -207,7 +210,8 @@ import { UploadDocumentComponent } from './components/elements/upload-document/u
     InputSwitchModule,
     KnobModule,
     ProgressBarModule,
-    DividerModule
+    DividerModule,
+    SliderModule
   ],
   providers: [
     CookieService,
