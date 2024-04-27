@@ -47,15 +47,15 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
     }
   }
 
-  removeUser(userId: string | undefined) {
-    const newUserIds = this.issue.userIds.filter((x) => x !== userId);
-    const newCLIds = this.issue.usersWithCompletion.filter((x) => x.id !== userId);
-    this._projectService.deleteUserOnIssue({
-      ...this.issue,
-      userIds: newUserIds,
-      usersWithCompletion: newCLIds
-    });
-  }
+  // removeUser(userId: string | undefined) {
+  //   const newUserIds = this.issue.userIds.filter((x) => x !== userId);
+  //   const newCLIds = this.issue.usersWithCompletion.filter((x) => x.id !== userId);
+  //   this._projectService.deleteUserOnIssue({
+  //     ...this.issue,
+  //     userIds: newUserIds,
+  //     usersWithCompletion: newCLIds
+  //   });
+  // }
 
   show(userId: string | undefined, userName: string | undefined, completionLevel: number) {
     this.ref = this.dialogService.open(IssueChangeProgressComponent, {
