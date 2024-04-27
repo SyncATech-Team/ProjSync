@@ -86,3 +86,7 @@
 :host ::ng-deep .group-title {
     font-weight: bold;
 }
+
+:host ::ng-deep .gantt-table-scrollbar {
+    opacity: 0;
+}
