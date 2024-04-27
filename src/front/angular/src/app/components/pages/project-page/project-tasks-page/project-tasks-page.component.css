@@ -78,17 +78,40 @@ td{
 }
 
 #tasks-header thy-button {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 0px;
+    margin: 5px 0;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: #4682B4;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Added border-color transition */
+    border: 2px solid transparent;
 }
 
-#change-view thy-button:hover {
-    background-color: cadetblue;
-    border: 1px solid black;
+#tasks-header thy-button:hover {
+    background-color: #6495ED;
 }
 
-.selected-button {
-    background-color: cadetblue;
-    border: 1px solid black;
+:host ::ng-deep .selected-button {
+    background-color: rgb(16, 16, 94) !important;
+}
+
+#create-task-button {
+    padding: 10px 20px;
+    background-color: #32CD32;
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Added border-color transition */
+}
+
+#create-task-button:hover {
+    background-color: #2cb52c; /* Slightly adjusted darker green on hover */
 }
