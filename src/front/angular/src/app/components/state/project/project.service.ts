@@ -20,7 +20,6 @@ export class ProjectService {
 
   constructor(private _http: HttpClient, private _store: ProjectStore) {
     this.baseUrl = environment.apiUrl;
-    // this.baseUrl = '/assets/data';
   }
 
   getProject(projectName: string) {

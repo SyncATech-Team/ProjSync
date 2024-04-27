@@ -172,6 +172,12 @@ namespace backAPI.Repositories.Implementation.Issues
                 return false;
             }
 
+            var reporter = await _dataContext.UsersOnIssues.FirstOrDefaultAsync(uoi => uoi.IssueId == issueId && uoi.Reporting == true);
+            if (reporter == null)
+            {
+                return false;
+            }
+
             exists.UpdatedDate = DateTime.Now;
             exists.Description = model.Description;
             exists.Name = model.Title;
@@ -185,26 +191,10 @@ namespace backAPI.Repositories.Implementation.Issues
             exists.PriorityId = issuePriority.Id;
             exists.TypeId = issueType.Id;
 
-            List<UsersOnIssue> usersToInsert =
-            [
-                new UsersOnIssue
-                        {
-                            UserId = exists.OwnerId,
-                            IssueId = issueId,
-                            Reporting = true,
-                            CompletionLevel = 0.0
-                        },
-                    ];
-
-            foreach (var assigneeId in model.UserIds)
+            if (reporter.UserId.ToString() != model.ReporterId)
             {
-
-                usersToInsert.Add(new UsersOnIssue
-                {
-                    UserId = Int32.Parse(assigneeId),
-                    IssueId = issueId,
-                    Reporting = false,
-                });
+                reporter.UserId = Int32.Parse(model.ReporterId);
+                _dataContext.UsersOnIssues.Update(reporter);
             }
 
             var result = await _dataContext.SaveChangesAsync();
