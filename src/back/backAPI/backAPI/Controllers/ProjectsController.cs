@@ -272,8 +272,25 @@ namespace backAPI.Controllers
         /* ***************************************************************************************
          * Update project with the given name
          * *************************************************************************************** */
+        [HttpPut("transfer/{name}")]
+        public async Task<ActionResult<string>> UpdateProject(string name,UserDto transferToUser)
+        {
+            var project = await _projectsRepository.GetProjectByName(name);
+
+            await _userOnProjectRepository.RemoveUserFromProjectAsync(name, _usersRepository.IdToUsername(project.OwnerId).Result);
+
+            var updated = await _projectsRepository.TransferProject(name, transferToUser.Username);
+
+            if(updated == false)
+            {
+                return NotFound("There is no project whit specified name");
+            }
+
+            return Ok();
+        }
+
         [HttpPut("{name}")]
-        public async Task<ActionResult<string>> UpdateProject(string name,ProjectDto request)
+        public async Task<ActionResult<string>> UpdateProject(string name, ProjectDto request)
         {
             /*
             if (await _projectsRepository.ProjectExistsByName(request.Name))
@@ -284,13 +301,14 @@ namespace backAPI.Controllers
 
             var updated = await _projectsRepository.UpdateProject(name, request);
 
-            if(updated == false)
+            if (updated == false)
             {
                 return NotFound("There is no project whit specified name");
             }
 
             return Ok();
         }
+
         /* ***************************************************************************************
          * Delete project with the given name
          * *************************************************************************************** */
