@@ -20,7 +20,6 @@ export class ProjectService {
 
   constructor(private _http: HttpClient, private _store: ProjectStore) {
     this.baseUrl = environment.apiUrl;
-    // this.baseUrl = '/assets/data';
   }
 
   getProject(projectName: string) {
@@ -57,19 +56,35 @@ export class ProjectService {
   }
 
   // radi efikasnosti dodat je poseban endpoint na back-u koji je specijalizovan
-  // za azuriranje user-a na zadatku
-  updateUsersOnIssue(issue: JIssue) {
-    this._http
-      .put(`${this.baseUrl}Issues/kb-uoi/${issue.id}`, issue).subscribe();
+  // za dodavanje novog user-a na issue
+  updateUserOnIssue(issue: JIssue, userOnIssue: UsersWithCompletion) {
+    this._http.post<number>(`${this.baseUrl}Issues/update-uoi/${issue.id}`, userOnIssue).subscribe({
 
-    this._store.update((state) => {
-      const issues = arrayUpsert(state.issues, issue.id, issue);
-      return {
-        ...state,
-        issues
-      };
+      next: (newTaskCompletion: number) => {
+        issue.completed = newTaskCompletion;
+        this._store.update((state) => {
+          const issues = arrayUpsert(state.issues, issue.id, issue);
+          return {
+            ...state,
+            issues
+          };
+        });
+      }
     });
   }
+
+  // deleteUserOnIssue(issue: JIssue) {
+  //   this._http
+  //     .put(`${this.baseUrl}Issues/kb-uoi/${issue.id}`, issue).subscribe();
+  //
+  //   this._store.update((state) => {
+  //     const issues = arrayUpsert(state.issues, issue.id, issue);
+  //     return {
+  //       ...state,
+  //       issues
+  //     };
+  //   });
+  // }
 
   deleteIssue(issueId: string) {
     this._store.update((state) => {
@@ -81,25 +96,29 @@ export class ProjectService {
     });
   }
 
-  updateUsersOnIssueCompleteLevel(issueId: string, uwc: UsersWithCompletion) {
+  updateUsersOnIssueCompleteLevel(issueId: string, userOnIssue: UsersWithCompletion) {
     const allIssues = this._store.getValue().issues;
     let issue = allIssues.find((x) => x.id === issueId);
     if (!issue) {
       return;
     }
 
-    const usersWithCompletion = arrayUpsert(issue.usersWithCompletion ?? [], uwc.id, uwc);
+    const usersWithCompletion = arrayUpsert(issue.usersWithCompletion ?? [], userOnIssue.id, userOnIssue);
     issue = {...issue, usersWithCompletion};
-    this._store.update((state) => {
-      const issues = arrayUpsert(state.issues, issue!.id, issue!);
-      return {
-        ...state,
-        issues
-      };
-    });
 
-    this._http
-      .put(`${this.baseUrl}Issues/update-cl/${issueId}`, uwc).subscribe();
+    this._http.put<number>(`${this.baseUrl}Issues/update-cl/${issue.id}`, userOnIssue).subscribe({
+
+      next: (newTaskCompletion: number) => {
+        issue!.completed = newTaskCompletion;
+        this._store.update((state) => {
+          const issues = arrayUpsert(state.issues, issue!.id, issue!);
+          return {
+            ...state,
+            issues
+          };
+        });
+      }
+    });
   }
 
   updateIssueComment(issueId: string, comment: JComment) {

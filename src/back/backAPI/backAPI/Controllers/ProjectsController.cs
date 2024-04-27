@@ -9,6 +9,7 @@ using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
+using SQLitePCL;
 
 namespace backAPI.Controllers
 {
@@ -230,7 +231,8 @@ namespace backAPI.Controllers
                         ReporterId = issue.OwnerId.ToString(),
                         ProjectId = project.Id.ToString(),
                         UserIds = assigneeIdsList,
-                        UsersWithCompletion = assigneeeCompletionLevel.ToList()
+                        UsersWithCompletion = assigneeeCompletionLevel.ToList(),
+                        Completed = issue.Completed
                     };
 
                     issues.Add(issueDto);
