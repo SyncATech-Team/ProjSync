@@ -7,6 +7,10 @@ import { FormBuilder, FormGroup} from '@angular/forms';
 import { ProjectType } from '../../../../_models/project-type';
 import { ProjectTypeService } from '../../../../_service/project-type.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { UserGetter } from '../../../../_models/user-getter';
+import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
+import { PhotoForUser } from '../../../../_models/photo-for-user';
+import { UserOnProjectService } from '../../../../_service/userOnProject.service';
 import { ProjectSidebarComponent } from '../../../elements/project-sidebar/project-sidebar.component';
 import { error } from 'console';
 
@@ -24,7 +28,7 @@ export class ProjectSettingsPageComponent implements OnInit {
 
   form : FormGroup;
   projectName: string | null = '';
-
+  projectOwnerUsername: string | null = '';
   //Za ispis u input poljima default-no
   projectName2: string | null = '';
   projectType2: string | null = '';
@@ -45,6 +49,10 @@ export class ProjectSettingsPageComponent implements OnInit {
     visibilityName: ""
   }
 
+  users: UserGetter[] = [];
+  usersPhotos: PhotoForUser[] = [];
+  transferToUser: string='';
+
   constructor (
     private route: ActivatedRoute,
     private projectService: ProjectService,
@@ -54,7 +62,9 @@ export class ProjectSettingsPageComponent implements OnInit {
     private projectTypeService: ProjectTypeService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private sideBarComponent: ProjectSidebarComponent){
+    private sideBarComponent: ProjectSidebarComponent,
+    private userPictureService: UserProfilePicture,
+    private usersOnProject: UserOnProjectService){
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.form = this.formBuilder.group({
       name: [''],
@@ -81,6 +91,14 @@ export class ProjectSettingsPageComponent implements OnInit {
         this.projectName2 = this.project.name;
         this.projectType2 = this.project.typeName;
         this.projectDescription2 = this.project.description;
+        this.projectOwnerUsername = this.project.ownerUsername;
+
+        this.usersOnProject.getAllUsersOnProjectThatCanManageProject(this.projectName!).subscribe({
+          next: (response) => {
+            this.users = response.filter(user => user.username != this.projectOwnerUsername);
+            this.getUserProfilePhotos(this.users);
+          }
+        });
 
         this.form.patchValue({
           category: this.projectTypes.find(type => type.name === this.project.typeName)
@@ -90,6 +108,7 @@ export class ProjectSettingsPageComponent implements OnInit {
         console.log(error);
       }
     });
+    
   }
 
   onSubmit() {
@@ -128,7 +147,58 @@ export class ProjectSettingsPageComponent implements OnInit {
       reject: () => {
           this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
       }
-  });
+    });
+  }
+
+  getUserProfilePhotos(users: UserGetter[]) {
+    for(const user of users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            let path = response['fileContents'];
+            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username, 
+              photoSource: path
+            };
+            this.usersPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersPhotos.push(ph);
+      }
+    }
+  }
+
+  getUserImagePath(username: string,users: UserGetter[]) {
+    let index = users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersPhotos[ind].photoSource;
+  }
+
+  transfer(){
+    this.projectService.transferProject(this.project.name,this.transferToUser).subscribe({
+      next: (response) => {
+        this.router.navigate(["home"]);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
   showDialog() {

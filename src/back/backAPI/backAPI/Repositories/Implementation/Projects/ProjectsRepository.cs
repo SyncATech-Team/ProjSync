@@ -164,5 +164,21 @@ namespace backAPI.Repositories.Implementation.Projects
                 .Select(x => x.Project)
                 .ToListAsync();
         }
+
+        public async Task<bool> TransferProject(string name, string transferToUser)
+        {
+            var project = await GetProjectByName(name);
+
+            if (project == null)
+            {
+                return false;
+            }
+
+            project.OwnerId = usersRepository.GetUserByUsername(transferToUser).Result.Id;
+
+            await dataContext.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

@@ -59,11 +59,11 @@
             <div id="right-side" class="container">
                 <div class="wrapper">
                     <div class="info">
-                        <span class="title">Transfer owenership</span>
-                        <p>Transfer this project to another user.</p>
+                        <span class="title">Transfer owenership and leave</span>
+                        <p>Transfer this project to another user and leave this project.</p>
                     </div>
                     <div class="btn-wrap">
-                        <button pButton pRipple label="Transfer" class="button-setting"></button>
+                        <button pButton pRipple label="Transfer & leave" data-bs-toggle="modal" data-bs-target="#modalTransfer" class="button-setting"></button>
                     </div>
                 </div>
 
@@ -76,6 +76,50 @@
                         <button pButton pDanger (click)="openPopUp($event)" label="Deactivate" class="button-setting del p-button-danger"></button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTransfer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Transfer ownership</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
+            <div class="modal-body">
+                <!-- Form -->
+                <form #transferForm="ngForm" id="transferForm" class="row" autocomplete="off" style="margin-bottom: 5%;">
+                    <p-dropdown 
+                        [options]="users"
+                        optionLabel="username" 
+                        [(ngModel)]="transferToUser"
+                        [filter]="true" 
+                        filterBy="username" 
+                        [showClear]="true" 
+                        [style]="{minWidth: '100%'}" 
+                        name="userForAdd"
+                        placeholder="Transfer to"
+                        #dropdown1>
+                        <ng-template let-user pTemplate="item">
+                            <div class="profilecontent">
+                                <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                                <span>{{ user.username }}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" 
+                class="btn btn-primary" 
+                (click)="transfer()" 
+                [disabled]="!transferForm.valid" 
+                data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>

@@ -24,5 +24,6 @@ namespace backAPI.Repositories.Interface.Projects
         Task<IEnumerable<int>> GetTaskGroupIds(int projectId);
 
         Task<IEnumerable<Project>> GetProjectsForUserAsync(string username);
+        Task<bool> TransferProject(string name, string transferToUser);
     }
 }
