@@ -135,6 +135,33 @@ namespace backAPI.Repositories.Implementation.Issues
             return cl;
         }
 
+        public async Task<double> DeleteUserOnIssue(int issueId, string userId)
+        {
+            int userIdToDelete = Int32.Parse(userId);
+            var elementToDelete = await _dataContext.UsersOnIssues.SingleOrDefaultAsync(elem => elem.IssueId == issueId && elem.UserId == userIdToDelete && elem.Reporting == false);
+            var usersOnIssueExceptElemenForDelete = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.UserId != userIdToDelete && elem.Reporting == false).ToListAsync();
+            var issue = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+
+            var cl = 0.0;
+            if (usersOnIssueExceptElemenForDelete != null)
+            {
+                for (int i = 0; i < usersOnIssueExceptElemenForDelete.Count; i++)
+                    cl += usersOnIssueExceptElemenForDelete[i].CompletionLevel;
+                cl /= (usersOnIssueExceptElemenForDelete.Count);
+                issue.Completed = cl;
+            }
+            else
+            {
+                issue.Completed = 0.0;
+            }
+
+            _dataContext.UsersOnIssues.Remove(elementToDelete);
+            _dataContext.Issues.Update(issue);
+
+            await _dataContext.SaveChangesAsync();
+            return cl;
+        }
+
         public async Task<int> GetReporterId(int issueId) {
             var e = await _dataContext.UsersOnIssues.SingleOrDefaultAsync(elem => elem.IssueId == issueId && elem.Reporting == true);
             if(e == null) {

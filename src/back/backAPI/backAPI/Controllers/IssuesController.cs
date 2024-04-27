@@ -327,6 +327,17 @@ namespace backAPI.Controllers
             return Ok(updated);
         }
 
+        [HttpDelete("delete-uoi/{issueId}/{userId}")]
+        public async Task<IActionResult> UpdateUsersOnIssue(int issueId, string userId)
+        {
+            var updated = await _issueRepository.DeleteUserOnIssue(issueId, userId);
+            if (updated < 0)
+            {
+                return BadRequest("Not valid call");
+            }
+            return Ok(updated);
+        }
+
         [HttpPut]
         public async Task<IActionResult> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
             var changed = await _issueRepository.CreateOrDeleteDependency(model);

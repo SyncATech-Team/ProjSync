@@ -24,7 +24,7 @@ namespace backAPI.Repositories.Interface.Issues
         Task<IEnumerable<int>> GetAssigneeIds(int issueId);
         Task<IEnumerable<UsersOnIssueDto>> GetAssigneeCompletionLevel(int issueId);
         Task<double> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto);
-
+        Task<double> DeleteUserOnIssue(int issueId, string userId);
         Task<int> GetReporterId(int issueId);
 
         Task<IEnumerable<int>> GetDependentIssues(int issueId);

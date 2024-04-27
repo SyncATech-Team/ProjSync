@@ -73,18 +73,22 @@ export class ProjectService {
     });
   }
 
-  // deleteUserOnIssue(issue: JIssue) {
-  //   this._http
-  //     .put(`${this.baseUrl}Issues/kb-uoi/${issue.id}`, issue).subscribe();
-  //
-  //   this._store.update((state) => {
-  //     const issues = arrayUpsert(state.issues, issue.id, issue);
-  //     return {
-  //       ...state,
-  //       issues
-  //     };
-  //   });
-  // }
+  deleteUserOnIssue(issue: JIssue, userId: string | undefined) {
+    this._http.delete<number>(`${this.baseUrl}Issues/delete-uoi/${issue.id}/${userId}`).subscribe({
+
+      next: (newTaskCompletion: number) => {
+        issue.completed = newTaskCompletion;
+        this._store.update((state) => {
+          const issues = arrayUpsert(state.issues, issue.id, issue);
+          return {
+            ...state,
+            issues
+          };
+        });
+      }
+
+    });
+  }
 
   deleteIssue(issueId: string) {
     this._store.update((state) => {
