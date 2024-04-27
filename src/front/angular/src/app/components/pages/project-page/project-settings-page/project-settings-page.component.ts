@@ -21,7 +21,7 @@ export class ProjectSettingsPageComponent implements OnInit {
   
   form : FormGroup;
   projectName: string | null = '';
-
+  projectOwnerUsername: string | null = '';
   //Za ispis u input poljima default-no
   projectName2: string | null = '';
   projectType2: string | null = '';
@@ -82,6 +82,14 @@ export class ProjectSettingsPageComponent implements OnInit {
         this.projectName2 = this.project.name;
         this.projectType2 = this.project.typeName;
         this.projectDescription2 = this.project.description;
+        this.projectOwnerUsername = this.project.ownerUsername;
+
+        this.usersOnProject.getAllUsersOnProjectThatCanManageProject(this.projectName!).subscribe({
+          next: (response) => {
+            this.users = response.filter(user => user.username != this.projectOwnerUsername);
+            this.getUserProfilePhotos(this.users);
+          }
+        });
 
         this.form.patchValue({
           category: this.projectTypes.find(type => type.name === this.project.typeName)
@@ -91,15 +99,6 @@ export class ProjectSettingsPageComponent implements OnInit {
         console.log(error);
       }
     });
-    if(this.projectName)
-    {
-      this.usersOnProject.getAllUsersOnProjectThatCanManageProject(this.projectName).subscribe({
-        next: (response) => {
-          this.users = response.filter(user => user.username != this.project.ownerUsername);
-          this.getUserProfilePhotos(this.users);
-        }
-      });
-    }
     
   }
 
@@ -185,7 +184,7 @@ export class ProjectSettingsPageComponent implements OnInit {
   transfer(){
     this.projectService.transferProject(this.project.name,this.transferToUser).subscribe({
       next: (response) => {
-        
+        this.router.navigate(["home"]);
       },
       error: (err) => {
         console.log(err);
