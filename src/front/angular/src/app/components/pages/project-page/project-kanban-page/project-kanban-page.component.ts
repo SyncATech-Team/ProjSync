@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
 import {ProjectQuery} from "../../../state/project/project.query";
-import {JUser} from "../../../../_models/user-issues";
 import {UserOnProjectService} from "../../../../_service/userOnProject.service";
 import {UserGetter} from "../../../../_models/user-getter";
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
 
 @Component({
   selector: 'app-project-kanban-page',
@@ -18,12 +19,15 @@ export class ProjectKanbanPageComponent implements OnInit {
   usersPhotos: PhotoForUser[] = [];
   users: UserGetter[] = [];
 
+  ref: DynamicDialogRef | undefined;
+
   constructor(
     private _projectService: ProjectService,
     public userPictureService: UserProfilePicture,
     private userOnProject : UserOnProjectService,
     public projectQuery: ProjectQuery,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _modalService: DialogService
   ){
   }
 
@@ -41,4 +45,30 @@ export class ProjectKanbanPageComponent implements OnInit {
       }
     });
   }
+
+  showCreateTaskPopupTaskKanban() {
+    this.ref = this._modalService.open(CreateTaskComponent, {
+      header: 'Create task',
+        width: '50%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        data: {
+          projectName: this.projectName
+        }
+    });
+
+    this.ref.onClose.subscribe((data: any) => {
+      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+
+      console.log("Response: " + data + " . Refreshing tasks...");
+      this.ngOnInit();
+    });
+
+  }
+
 }
