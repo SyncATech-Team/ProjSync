@@ -95,9 +95,8 @@ td{
     background-color: #6495ED;
 }
 
-.selected-button {
-    background-color: #3a5f9e; /* Adjusted darkblue color */
-    border-color: #4682B4;
+:host ::ng-deep .selected-button {
+    background-color: rgb(16, 16, 94) !important;
 }
 
 #create-task-button {

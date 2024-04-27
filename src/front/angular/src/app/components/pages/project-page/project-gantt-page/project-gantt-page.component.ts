@@ -36,6 +36,7 @@ import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { UserOnProjectService } from '../../../../_service/userOnProject.service';
 import { UserGetter } from '../../../../_models/user-getter';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
+import { ProjectService } from '../../../state/project/project.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -139,11 +140,13 @@ constructor(
     private _modalService: DialogService,
     private _projectQuery: ProjectQuery,
     private userOnProject : UserOnProjectService,
-    public userPictureService: UserProfilePicture
+    public userPictureService: UserProfilePicture,
+    private _projectService: ProjectService
 ) {}
 
 ngOnInit(): void {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
+    this._projectService.getProject(this.projectName);
 
     this.loading = true;
 
