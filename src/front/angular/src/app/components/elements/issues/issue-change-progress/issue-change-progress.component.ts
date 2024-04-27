@@ -30,6 +30,8 @@ export class IssueChangeProgressComponent implements OnInit {
   }
 
   changeProgress() {
+    if (this.sliderValue < 0) this.sliderValue = 0;
+    if (this.sliderValue > 100) this.sliderValue = 100;
     let userOnIssue: UsersWithCompletion = {
       id: this.userId,
       userId: this.userId,
