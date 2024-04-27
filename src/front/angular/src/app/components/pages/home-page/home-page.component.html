@@ -11,24 +11,6 @@
         
         <h1 style="color:#5E5BF4 ;"> Projects </h1>
         
-        <!-- Search & Filter & Create Project -->
-        <div class="row" style="margin-bottom: 20px;">
-            
-            <!-- Search -->
-            <div class="p-input-icon-left ml-auto col-md-2 col-3 input-search">
-                <input id="home-projects-search" name="projects-serach" class="form-control"
-                type="search" placeholder="Search" aria-label="Search" 
-                [(ngModel)]="searchTerm" (input)="filterProjectsByName()" icon="pi pi-search">
-                <i class="pi pi-search"></i>
-            </div>
-            
-            <!-- Create project option -->
-            <div *ngIf="permitions && permitions.canManageProjects === 'True'" class="col d-flex justify-content-end">
-                <app-create-project></app-create-project>
-            </div>
-        </div>
-        <!-- End -->
-        
         <!-- Vrste projekata -->
         <ul class="nav nav-tabs">
             <!-- Explore projects -->
@@ -76,14 +58,43 @@
                 </ng-template> -->
                 <ng-template pTemplate="caption">
                     <div class="table-header">
-                        <p-multiSelect 
-                        [options]="columns" 
-                        [(ngModel)]="selectedColumns" 
-                        selectedItemsLabel="{0} columns selected" 
-                        [style]="{'width': '30vh'}" 
-                        placeholder="Choose Columns"
-                        (onChange)="onSelectedChange()" >
-                    </p-multiSelect>
+                        <div class="left-side">
+                            <p-multiSelect 
+                            [options]="columns" 
+                            [(ngModel)]="selectedColumns" 
+                            selectedItemsLabel="{0} columns selected" 
+                            [style]="{'width': '30vh'}" 
+                            placeholder="Choose Columns"
+                            (onChange)="onSelectedChange()" >
+                            </p-multiSelect>
+    
+                            <!-- Search -->
+                            <!-- <div class="p-input-icon-left ml-auto col-md-2 col-3 input-search">
+                                <input id="home-projects-search" name="projects-serach" class="form-control"
+                                type="search" placeholder="Search" aria-label="Search" 
+                                [(ngModel)]="searchTerm" (input)="filterProjectsByName()" icon="pi pi-search">
+                                <i class="pi pi-search"></i>
+                            </div> -->
+
+                            <div class="p-input-icon-right input-search">
+                                <input id="home-projects-search" name="projects-serach" class="form-control project-search"
+                                type="search" placeholder="Search" aria-label="Search" 
+                                [(ngModel)]="searchTerm" (input)="filterProjectsByName()" icon="pi pi-search">
+                                <i class="pi pi-search"></i>
+                            </div>
+                        </div>
+
+                        <div class="right-side">
+                            <!-- Create Project -->
+                            <div class="row">
+                                
+                                <!-- Create project option -->
+                                <div *ngIf="permitions && permitions.canManageProjects === 'True'" class="col d-flex justify-content-end">
+                                    <app-create-project></app-create-project>
+                                </div>
+                            </div>
+                            <!-- End -->
+                        </div>
                     </div>
                 </ng-template>
 
@@ -178,9 +189,8 @@
                                 <p-sortIcon field="budget"></p-sortIcon>
                                 <p-columnFilter type="numeric" field="budget" display="menu"></p-columnFilter>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')" pSortableColumn="progress">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')">
                                 Progress
-                                <p-sortIcon field="progress"></p-sortIcon>
                             </th>                            
                         </ng-container>
                     </tr>

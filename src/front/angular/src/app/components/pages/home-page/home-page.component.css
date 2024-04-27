@@ -33,6 +33,31 @@ input[type="checkbox"]:checked:before {
     color: #5E5BF4;
 }
 
+.table-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table-header .left-side{
+    display: flex;
+    flex-direction: row;
+}
+
+:host ::ng-deep .table-header .left-side .project-search{
+    width: 30vh;
+    margin-left: 10px;
+}
+
+.table-header .input-search input{
+    min-width: 14rem;
+    padding: 12px;
+}
+.table-header .input-search i{
+    margin-right: 20px;
+}
+
 th{
     position: sticky;
     top: 0;
@@ -66,13 +91,6 @@ th{
 .fullName{
     margin-left: 4px;
     margin-right: 10px;
-}
-
-.input-search input{
-    padding-left: 30px;
-}
-.input-search i{
-    padding-left: 10px;
 }
 
 :host ::ng-deep .progress-bar-wrapper{
