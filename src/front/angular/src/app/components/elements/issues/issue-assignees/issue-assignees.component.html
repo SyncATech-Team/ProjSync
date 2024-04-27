@@ -24,13 +24,21 @@
     <p-divider layout="vertical"></p-divider>
 
     <div class="progress-info">
-      <p-progressBar
+      <p-progressBar class="progress-bar"
         (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
-        [value]="valueList[i].completionLevel"></p-progressBar>
+        [value]="valueList[i].completionLevel"
+        [pTooltip]="tooltipContent">
+      </p-progressBar>
     </div>
   </div>
 
 </div>
+
+<ng-template #tooltipContent>
+  <div class="flex align-items-center">
+    <span> Click on progress bar to change percent level of task completion. </span>
+  </div>
+</ng-template>
 
 <a class="add-more" (click)="op.toggle($event)"
    style="font-size: 12.5px; cursor: pointer; display: flex; align-items: center; color: #0052cc;">
