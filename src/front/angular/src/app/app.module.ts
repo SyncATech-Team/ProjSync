@@ -84,6 +84,8 @@ import { BoardFilterComponent } from './components/elements/board/board-filter/b
 import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 // GANTT CHART MODULES
 import { NgxGanttModule } from '@worktile/gantt';
@@ -207,7 +209,9 @@ import { UploadDocumentComponent } from './components/elements/upload-document/u
     InputSwitchModule,
     KnobModule,
     ProgressBarModule,
-    DividerModule
+    DividerModule,
+    InputGroupModule,
+    InputGroupAddonModule
   ],
   providers: [
     CookieService,
