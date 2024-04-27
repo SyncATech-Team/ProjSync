@@ -17,6 +17,10 @@
   cursor: pointer;
 }
 
-:host .progress-bar-wrapper{
-  width: 20vh;
+.info-section {
+  width: 60%;
+}
+
+.progress-info {
+  width: 40%;
 }
