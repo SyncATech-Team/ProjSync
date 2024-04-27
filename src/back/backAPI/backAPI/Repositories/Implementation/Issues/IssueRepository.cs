@@ -2,8 +2,10 @@
 using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Issues;
+using Google.Protobuf.Collections;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.Serialization.Formatters;
 using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation.Issues
@@ -104,17 +106,33 @@ namespace backAPI.Repositories.Implementation.Issues
             return res;
         }
 
-        public async Task<bool> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto)
+        public async Task<double> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto)
         {
             int userId = Int32.Parse(usersOnIssueDto.UserId);
             var element = await _dataContext.UsersOnIssues.SingleOrDefaultAsync(elem => elem.IssueId == issueId && elem.UserId == userId && elem.Reporting == false);
-            
+            var usersOnIssueExceptElemenForChanging = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.UserId != userId && elem.Reporting == false).ToListAsync();
+            var issue = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+
             element.CompletionLevel = usersOnIssueDto.CompletionLevel;
+            var cl = 0.0;
+            if (usersOnIssueExceptElemenForChanging != null)
+            {
+                cl = usersOnIssueDto.CompletionLevel;
+                for (int i = 0; i < usersOnIssueExceptElemenForChanging.Count; i++)
+                    cl += usersOnIssueExceptElemenForChanging[i].CompletionLevel;
+                cl /= (usersOnIssueExceptElemenForChanging.Count + 1);
+                issue.Completed = cl;
+            }
+            else
+            {
+                issue.Completed = usersOnIssueDto.CompletionLevel;
+            }
 
             _dataContext.UsersOnIssues.Update(element);
+            _dataContext.Issues.Update(issue);
 
             await _dataContext.SaveChangesAsync();
-            return true;
+            return cl;
         }
 
         public async Task<int> GetReporterId(int issueId) {
@@ -193,56 +211,42 @@ namespace backAPI.Repositories.Implementation.Issues
             return true;
         }
 
-        public async Task<bool> UpdateUsersOnIssue(int issueId, JIssueDto model)
+        public async Task<double> UpdateUsersOnIssue(int issueId, UsersOnIssueDto model)
         {
-            var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
-            if (exists == null)
+            var issue = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
+            var existingUsersOnIssue = await _dataContext.UsersOnIssues.Where(uoi => uoi.IssueId == issueId && uoi.Reporting == false).ToListAsync();
+            if (issue == null)
             {
-                return false;
+                return -1;
             }
 
-            exists.UpdatedDate = DateTime.Now;
-            exists.Description = model.Description;
-            exists.Name = model.Title;
-            exists.ListPosition = model.ListPosition;
-            exists.OwnerId = Int32.Parse(model.ReporterId);
-            IssueStatus issueStatus = await _dataContext.IssueStatuses.Where(type => type.Name == model.Status).FirstAsync();
-            IssuePriority issuePriority = await _dataContext.IssuePriority.Where(type => type.Name == model.Priority).FirstAsync();
-            IssueType issueType = await _dataContext.IssueTypes.Where(type => type.Name == model.Type).FirstAsync();
-
-            exists.StatusId = issueStatus.Id;
-            exists.PriorityId = issuePriority.Id;
-            exists.TypeId = issueType.Id;
-
-            var toRemove = await _dataContext.UsersOnIssues.Where(uoi => uoi.IssueId == issueId).ToListAsync();
-            _dataContext.UsersOnIssues.RemoveRange(toRemove);
-
-            List<UsersOnIssue> usersToInsert =
-            [
-                new UsersOnIssue
-                {
-                    UserId = exists.OwnerId,
-                    IssueId = issueId,
-                    Reporting = true,
-                    CompletionLevel = 0.0
-                },
-            ];
-
-            foreach (var assigneeId in model.UserIds)
+            UsersOnIssue newUserOnIssue = new UsersOnIssue
             {
+                UserId = Int32.Parse(model.UserId),
+                IssueId = issueId,
+                Reporting = false,
+                CompletionLevel = 0.0
+            };
 
-                usersToInsert.Add(new UsersOnIssue
-                {
-                    UserId = Int32.Parse(assigneeId),
-                    IssueId = issueId,
-                    Reporting = false,
-                });
+            await _dataContext.UsersOnIssues.AddAsync(newUserOnIssue);
+            
+            var newCl = 0.0;
+            if (existingUsersOnIssue != null)
+            {
+                for (int i = 0; i < existingUsersOnIssue.Count; i++)
+                    newCl += existingUsersOnIssue[i].CompletionLevel;
+                newCl /= (existingUsersOnIssue.Count + 1);
+
+                issue.Completed = newCl;
             }
-
-            await _dataContext.UsersOnIssues.AddRangeAsync(usersToInsert);
+            // nema user-a tako da je zavrsenost 0%
+            else
+            {
+                issue.Completed = 0.0;
+            }
 
             await _dataContext.SaveChangesAsync();
-            return true;
+            return newCl;
         }
 
         public async Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {

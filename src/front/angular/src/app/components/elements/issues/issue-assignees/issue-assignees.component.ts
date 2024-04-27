@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {UntilDestroy} from "@ngneat/until-destroy";
 import {JIssue} from "../../../../_models/issue";
 import {JUser} from "../../../../_models/user-issues";
@@ -7,7 +7,6 @@ import {OverlayPanel} from "primeng/overlaypanel";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
 import {UsersWithCompletion} from "../../../../_models/user-completion-level";
-import {AccountService} from "../../../../_service/account.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {IssueChangeProgressComponent} from "../issue-change-progress/issue-change-progress.component";
 
@@ -27,7 +26,6 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   ref: DynamicDialogRef | undefined;
 
   constructor(private _projectService: ProjectService, private userPictureService: UserProfilePicture,
-              private _accountService: AccountService,
               private cdr: ChangeDetectorRef,
               public dialogService: DialogService) {}
 
@@ -51,9 +49,11 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
 
   removeUser(userId: string | undefined) {
     const newUserIds = this.issue.userIds.filter((x) => x !== userId);
-    this._projectService.updateUsersOnIssue({
+    const newCLIds = this.issue.usersWithCompletion.filter((x) => x.id !== userId);
+    this._projectService.deleteUserOnIssue({
       ...this.issue,
-      userIds: newUserIds
+      userIds: newUserIds,
+      usersWithCompletion: newCLIds
     });
   }
 
@@ -70,10 +70,17 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   }
 
   addUserToIssue(user: JUser, op: OverlayPanel) {
-    this._projectService.updateUsersOnIssue({
+
+    let userOnIssue: UsersWithCompletion = {
+      id: user.id,
+      userId: user.id,
+      completionLevel: 0.0
+    }
+    this._projectService.updateUserOnIssue({
       ...this.issue,
-      userIds: [...this.issue.userIds, user.id]
-    });
+      userIds: [...this.issue.userIds, user.id],
+      usersWithCompletion: [...this.issue.usersWithCompletion, userOnIssue]
+    }, userOnIssue);
     op.hide();
   }
 

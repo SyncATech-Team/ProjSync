@@ -3,7 +3,11 @@
     <p class="pb-3">
       {{ issue.type }}: {{ issue.id }} - {{ issue.title }}
     </p>
+
+    <p-meterGroup [value]="value"></p-meterGroup>
+
     <div class="d-flex align-items-center justify-content-between">
+
       <p-avatarGroup styleClass="mb-3">
         <p-avatar *ngFor="let user of assignees"
                   [image]="UserImagePath(user?.username)"
@@ -30,5 +34,7 @@
         </svg-icon>
       </div>
     </div>
+
+
   </div>
 </div>

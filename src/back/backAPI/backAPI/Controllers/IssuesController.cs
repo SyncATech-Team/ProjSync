@@ -298,26 +298,33 @@ namespace backAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("kb-uoi/{issueId}")]
-        public async Task<IActionResult> UpdateUsersOnIssue(int issueId, JIssueDto bodyRequest)
+
+        /// <summary>
+        /// Endpoint koji upisuje novog korisnika na issue
+        /// </summary>
+        /// <param name="issueId"></param>
+        /// <param name="bodyRequest"></param>
+        /// <returns> novi completed nivo na celom zadatku </returns>
+        [HttpPost("update-uoi/{issueId}")]
+        public async Task<IActionResult> UpdateUsersOnIssue(int issueId, UsersOnIssueDto bodyRequest)
         {
             var updated = await _issueRepository.UpdateUsersOnIssue(issueId, bodyRequest);
-            if (updated == false)
+            if (updated < 0)
             {
                 return BadRequest("Not valid call");
             }
-            return Ok();
+            return Ok(updated);
         }
 
         [HttpPut("update-cl/{issueId}")]
         public async Task<IActionResult> UpdateAssigneeCompletionLevel(int issueId, UsersOnIssueDto usersOnIssueDto)
         {
             var updated = await _issueRepository.UpdateAssigneeCompletionLevel(issueId, usersOnIssueDto);
-            if (updated == false)
+            if (updated < 0)
             {
                 return BadRequest("Not valid call");
             }
-            return Ok();
+            return Ok(updated);
         }
 
         [HttpPut]
