@@ -23,7 +23,7 @@ namespace backAPI.Controllers
         public async Task<ActionResult<IEnumerable<IssueGroupResponseDto>>> GetGroupsForProject(string projectName) {
             var project = _projectsRepository.GetProjectByName(projectName).Result;
             if(project  == null) {
-                return BadRequest("No project with the given name");
+                return BadRequest(new { message = "No project with the given name" });
             }
             var groups = await _taskGroupRepository.GetGroupsAsync(project.Id);
 
@@ -46,12 +46,12 @@ namespace backAPI.Controllers
 
             var project = _projectsRepository.GetProjectByName(group.ProjectName).Result;
             if(project == null) {
-                return BadRequest("No project with the given name");
+                return BadRequest( new { message = "No project with the given name" });
             }
 
             var nameExists = await _taskGroupRepository.GroupNameExistsWithinTheSameProject(project.Id, group.GroupName);
             if(nameExists == true) {
-                return BadRequest("There is already a group with the same name in this project");
+                return BadRequest(new { message = "There is already a group with the same name in this project" });
             }
 
             await _taskGroupRepository.CreateGroupAsync(new IssueGroup {

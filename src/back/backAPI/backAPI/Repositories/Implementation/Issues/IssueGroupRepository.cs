@@ -56,6 +56,11 @@ namespace backAPI.Repositories.Implementation.Issues
         public async Task<IssueGroupResponseDto> GetGroupForNameInProject(int projectId, int groupId) 
         {
             var result = await dataContext.IssueGroups.FirstOrDefaultAsync(group => group.ProjectId == projectId && group.Id == groupId);
+            
+            if(result == null) { 
+                return null;
+            }
+
             return new IssueGroupResponseDto 
             {
                 Id = result.Id,

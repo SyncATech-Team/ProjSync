@@ -213,6 +213,10 @@ namespace backAPI.Controllers
             var issueOwner = await _usersRepository.GetUserByUsername(creationModel.OwnerUsername);
             var project = await _projectsRepository.GetProjectByName(creationModel.ProjectName);
             var issueGroup = await _issueGroupRepository.GetGroupByNameAsync(project.Id, creationModel.GroupName);
+            if(issueGroup == null)
+            {
+                return BadRequest(new { message = "Group not found" });
+            }
             var completed = 0.0;
 
             var issueReporter = await _usersRepository.GetUserByUsername(creationModel.ReporterUsername);
@@ -243,7 +247,7 @@ namespace backAPI.Controllers
 
             if (created == null) 
             {
-                return BadRequest("There is already a task with the same name in this group");
+                return BadRequest(new { message = "There is already a task with the same name in this group" });
             }
 
             List<UsersOnIssue> usersToInsert = new List<UsersOnIssue>();
