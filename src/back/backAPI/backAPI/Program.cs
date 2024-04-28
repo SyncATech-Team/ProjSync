@@ -56,6 +56,7 @@ builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
 builder.Services.AddSignalR();
 // uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
 builder.Services.AddSingleton<PresenceTracker>();
+builder.Services.AddSingleton<IssueNotificationService>();
 
 var app = builder.Build();
 
@@ -89,6 +90,7 @@ Console.ForegroundColor = ConsoleColor.White;
 app.UseAuthorization();
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<NotificationHub>("hubs/notification");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

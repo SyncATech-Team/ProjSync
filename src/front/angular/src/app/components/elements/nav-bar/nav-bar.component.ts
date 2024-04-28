@@ -25,8 +25,9 @@ export class NavBarComponent implements OnInit {
       private router: Router,
       private userService: UserService,
       private userProfilePictureService: UserProfilePicture
-    ) { }
-  
+    ) {
+  }
+
   ngOnInit(): void {
     this.userService.getUser(this.getUsername()).subscribe({
       next: response => {
@@ -108,5 +109,4 @@ export class NavBarComponent implements OnInit {
     image.src = vecaSlika.src;
      
   }
-
 }

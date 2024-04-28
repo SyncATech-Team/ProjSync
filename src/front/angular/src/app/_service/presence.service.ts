@@ -11,7 +11,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 })
 export class PresenceService {
   hubUrl = environment.hubUrl;
-  private hubConnection?: HubConnection;
+  public hubConnection?: HubConnection;
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
 
@@ -25,7 +25,10 @@ export class PresenceService {
       .withAutomaticReconnect()
       .build();
 
-    this.hubConnection.start().catch((error: Error) => {
+    this.hubConnection
+    .start()
+    .then(() => console.log("Connection to PresenceHub started..."))
+    .catch((error: Error) => {
       console.log(error);
     });
 

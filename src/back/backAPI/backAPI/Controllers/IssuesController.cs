@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using backAPI.SignalR;
 
 namespace backAPI.Controllers
 {
@@ -21,6 +22,7 @@ namespace backAPI.Controllers
         private readonly IIssuePriorityRepository _issuePriorityRepository;
         private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
+        private readonly IssueNotificationService _issueNotificationService;
 
         /* ***************************************************************************************************
          * Konstruktor
@@ -33,7 +35,8 @@ namespace backAPI.Controllers
             IUsersRepository usersRepository,
             IIssuePriorityRepository issuePriorityRepository,
             IIssueGroupRepository issueGroupRepository,
-            IUserOnIssueRepository userOnIssueRepository
+            IUserOnIssueRepository userOnIssueRepository,
+            IssueNotificationService issueNotificationService
             ) {
                 _issueRepository = issueRepository;
                 _projectsRepository = projectsRepository;
@@ -43,6 +46,7 @@ namespace backAPI.Controllers
                 _issuePriorityRepository = issuePriorityRepository;
                 _issueGroupRepository = issueGroupRepository;
                 _userOnIssueRepository = userOnIssueRepository;
+                _issueNotificationService = issueNotificationService;
         }
 
         [HttpGet("issueId")]
@@ -247,6 +251,7 @@ namespace backAPI.Controllers
             }
 
             List<UsersOnIssue> usersToInsert = new List<UsersOnIssue>();
+            List<string> usernames = new List<string>();
 
             usersToInsert.Add(new UsersOnIssue
             {
@@ -255,6 +260,7 @@ namespace backAPI.Controllers
                 Reporting = true,
                 CompletionLevel = 0.0
             });
+            usernames.Add(issueReporter.UserName);
 
             foreach (var assigneeId in assignedToIds)
             {
@@ -266,9 +272,13 @@ namespace backAPI.Controllers
                     Reporting = false,
                     CompletionLevel = 0.0
                 });
+                usernames.Add(assigneeId.UserName);
             }
 
             await _userOnIssueRepository.AddUserOnIssue(usersToInsert);
+
+            // posalji norifikaciju da je kreiran zadatak
+            await _issueNotificationService.NotifyUsersOnIssue(usernames.ToArray(), created.Name);
 
             List<Tuple<int, int>> dependenciesToInsert = new List<Tuple<int, int>>();
             if(creationModel.DependentOnIssues != null) {
