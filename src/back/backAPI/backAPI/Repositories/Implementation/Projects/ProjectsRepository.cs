@@ -29,7 +29,6 @@ namespace backAPI.Repositories.Implementation.Projects
 
         public async Task<Project> CreateProject(ProjectDto request)
         {
-            Console.WriteLine(request.Name + " " + request.OwnerUsername + " " + request.VisibilityName);
             if (request.VisibilityName == "" || request.Name == "" || request.Key == "" || request.TypeName == "" || request.OwnerUsername == "")
             {
                 Console.WriteLine("USOOO U NULLL");
