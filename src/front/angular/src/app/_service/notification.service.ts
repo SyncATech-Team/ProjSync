@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import * as signalR from "@microsoft/signalr";
 import { environment } from "../../environments/environment";
 import { User } from "../_models/user";
+import { MessagePopupService } from "./message-popup.service";
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,9 @@ export class NotificationService {
     hubUrl = environment.hubUrl;
     hubConnection?: signalR.HubConnection;
 
-    constructor() { }
+    constructor(
+        private msgPopupService: MessagePopupService
+    ) { }
 
     /**
      * createHubConnection
@@ -32,8 +35,7 @@ export class NotificationService {
         });
 
         this.hubConnection.on('ReceiveTaskNotification', (data: string) => {
-            console.log("Event triggered");
-            console.log('Received task notification:', data);
+            this.msgPopupService.showInfo(data);
         });
     }
 }
