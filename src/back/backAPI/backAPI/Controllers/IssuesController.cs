@@ -219,6 +219,11 @@ namespace backAPI.Controllers
 
             // Prevodjenje username - ova iz niza assignees u njihove id-jeve
             var assignedToIds = await _usersRepository.GetUsersFromIDarray(creationModel.AssigneeUsernames);
+            
+            if(issueCreatedDate < project.CreationDate)
+            {
+                return BadRequest(new { message = "A task cannot be created because its creation date is before the project creation date" });
+            }
 
             var created = await _issueRepository.CreateIssueAsync(
                 new Issue {

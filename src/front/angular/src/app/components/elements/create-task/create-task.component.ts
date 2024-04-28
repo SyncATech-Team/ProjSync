@@ -149,7 +149,6 @@ export class CreateTaskComponent implements OnInit {
         // this.issueCreator.priorityName = this.selectedPriorityModel.value;
         this.selectedPriorityModel = this.form.controls['issue-priority'].value;
         this.issueCreator.priorityName = this.selectedPriorityModel.value;
-        console.log(this.selectedPriorityModel);
 
         this.issueCreator.description = this.form.controls['issue-description'].value;
         this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
@@ -174,7 +173,9 @@ export class CreateTaskComponent implements OnInit {
               this.closeModal("created-task");
             },
             error : (error) => {
-              console.log(error);
+              if(error.error.message == "A task cannot be created because its creation date is before the project creation date"){
+                this.msgPopUpService.showError("A task cannot be created because its creation date is before the project creation date");
+              }
             }
           })
         }
