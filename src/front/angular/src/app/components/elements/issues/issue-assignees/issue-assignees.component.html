@@ -5,29 +5,40 @@
 <div *ngFor="let assignee of assignees; let i = index">
 
   <div class="d-flex align-items-center items-center">
-    <p-avatar
-      [image]="UserImagePath(assignee?.username)"
-      shape="circle"
-      size="normal">
-    </p-avatar>
-    <span class="m-2">
+    <div class="info-section">
+      <p-avatar
+        [image]="UserImagePath(assignee?.username)"
+        shape="circle"
+        size="normal">
+      </p-avatar>
+      <span class="m-2">
       {{ assignee?.name }}
     </span>
-    <div class="card flex justify-content-center" *ngIf="!isDisabled(assignee?.id)">
-      <p-knob (click)="updateStatus()" [(ngModel)]="loggedInUserIdCompletionLevel" valueTemplate="{value}%"></p-knob>
+      <svg-icon (click)="removeUser(assignee?.id)"
+        title="Remove user"
+        [size]="20"
+        [name]="'times'"
+        class="text-textLight">
+      </svg-icon>
     </div>
-    <div class="card flex justify-content-center progress-bar-wrapper" *ngIf="isDisabled(assignee?.id)">
-      <p-progressBar [value]="valueList[i].completionLevel"></p-progressBar>
+    <p-divider layout="vertical"></p-divider>
+
+    <div class="progress-info">
+      <p-progressBar class="progress-bar"
+                     (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
+                     [value]="valueList[i].completionLevel"
+                     [pTooltip]="tooltipContent">
+      </p-progressBar>
     </div>
-    <svg-icon (click)="removeUser(assignee?.id)"
-              title="Remove user"
-              [size]="20"
-              [name]="'times'"
-              class="text-textLight">
-    </svg-icon>
   </div>
 
 </div>
+
+<ng-template #tooltipContent>
+  <div class="flex align-items-center">
+    <span> Click on progress bar to change percent level of task completion. </span>
+  </div>
+</ng-template>
 
 <a class="add-more" (click)="op.toggle($event)"
    style="font-size: 12.5px; cursor: pointer; display: flex; align-items: center; color: #0052cc;">

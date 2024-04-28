@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {UntilDestroy} from "@ngneat/until-destroy";
 import {JIssue} from "../../../../_models/issue";
 import {JUser} from "../../../../_models/user-issues";
@@ -7,7 +7,8 @@ import {OverlayPanel} from "primeng/overlaypanel";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
 import {UsersWithCompletion} from "../../../../_models/user-completion-level";
-import {AccountService} from "../../../../_service/account.service";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {IssueChangeProgressComponent} from "../issue-change-progress/issue-change-progress.component";
 
 @Component({
   selector: 'issue-assignees',
@@ -20,14 +21,13 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   @Input() users!: JUser[] | null;
   @Input() usersPhotos!: PhotoForUser[];
   assignees!: (JUser | undefined)[];
-  loggedInUserId: number | undefined;
-  loggedInUserIdCompletionLevel: number = 0;
-  loggedInUserIdCompletionLevelInit: number = 0;
   valueList!: UsersWithCompletion[];
 
+  ref: DynamicDialogRef | undefined;
+
   constructor(private _projectService: ProjectService, private userPictureService: UserProfilePicture,
-              private _accountService: AccountService,
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef,
+              public dialogService: DialogService) {}
 
   ngOnInit(): void {
     this.cdr.markForCheck();
@@ -35,13 +35,6 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
       // @ts-ignore
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
       this.valueList = this.issue.usersWithCompletion;
-      this.loggedInUserId = this._accountService.getCurrentUser()?.id;
-      for (let vl of this.valueList) {
-        if (vl.userId === this.loggedInUserId?.toString()) {
-          this.loggedInUserIdCompletionLevel = vl.completionLevel;
-          this.loggedInUserIdCompletionLevelInit = vl.completionLevel;
-        }
-      }
     }
   }
 
@@ -50,44 +43,49 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
     if (this.users && issueChange.currentValue !== issueChange.previousValue) {
       // @ts-ignore
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
+      this.valueList = this.issue.usersWithCompletion;
     }
   }
 
   removeUser(userId: string | undefined) {
     const newUserIds = this.issue.userIds.filter((x) => x !== userId);
-    this._projectService.updateUsersOnIssue({
+    const newCLIds = this.issue.usersWithCompletion.filter((x) => x.id !== userId);
+    this._projectService.deleteUserOnIssue({
       ...this.issue,
-      userIds: newUserIds
-    });
+      userIds: newUserIds,
+      usersWithCompletion: newCLIds
+    }, userId);
   }
 
-  updateStatus(){
-    if (this.loggedInUserIdCompletionLevel !== this.loggedInUserIdCompletionLevelInit) {
-      if (!this.issue) return;
-      let userOnIssue: UsersWithCompletion = {
-        id: this.loggedInUserId!.toString(),
-        userId: this.loggedInUserId?.toString(),
-        completionLevel: this.loggedInUserIdCompletionLevel,
-      }
-
-      this._projectService.updateUsersOnIssueCompleteLevel(this.issue.id, userOnIssue);
-    }
+  show(userId: string | undefined, userName: string | undefined, completionLevel: number) {
+    this.ref = this.dialogService.open(IssueChangeProgressComponent, {
+      data: {
+        issueId: this.issue.id,
+        userId: userId,
+        userName: userName,
+        currentCompletionLevel: completionLevel
+      },
+      header: 'Change Progress'
+    });
   }
 
   addUserToIssue(user: JUser, op: OverlayPanel) {
-    this._projectService.updateUsersOnIssue({
+
+    let userOnIssue: UsersWithCompletion = {
+      id: user.id,
+      userId: user.id,
+      completionLevel: 0.0
+    }
+    this._projectService.updateUserOnIssue({
       ...this.issue,
-      userIds: [...this.issue.userIds, user.id]
-    });
+      userIds: [...this.issue.userIds, user.id],
+      usersWithCompletion: [...this.issue.usersWithCompletion, userOnIssue]
+    }, userOnIssue);
     op.hide();
   }
 
   isUserSelected(user: JUser): boolean {
     return this.issue.userIds.includes(user.id);
-  }
-
-  isDisabled(id: string | undefined): boolean {
-    return this.loggedInUserId?.toString() !== id;
   }
 
   UserImagePath(username: string | undefined): string {

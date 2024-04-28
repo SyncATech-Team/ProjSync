@@ -45,6 +45,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   users: UserGetter[] = [];
   groupsInProject : GroupInProject[] = [];
   issuesInGroup : IssueModel[] = [];
+  groupNames : any[] | undefined;
 
   issueType: string [] = ['Task','Bug','Story'];
   issuePriority: string [] = ['Lowest','Low','Medium','High','Highest'];
@@ -73,17 +74,26 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.columns = ['Type','Status','Priority','Created Date','Updated Date','Due Date','Reporter','Group','Completed'];
-    this.selectedColumns = ['Type','Priority','Due Date','Reporter','Completed'];
+    this.selectedColumns = ['Type','Priority','Due Date','Reporter','Completed','Group'];
     this.showColumns = ['Name',...this.selectedColumns];
     // this.tasksByGroup = this.getTasksByGroup();
     if(this.projectName) {
+      this.issueService.getAllIssuesForProject(this.projectName).subscribe({
+        next: (response) =>{
+          this.tasks = response;
+          this.tasks_backup = this.tasks;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+      
       this.groupService.getAllGroups(this.projectName).subscribe({
         next: (response) => {
           this.groupsInProject = response;
-
-          this.tasksByGroup = this.getTasksByGroup();
+          this.groupNames = this.groupsInProject.map(group => group.name);
+          //this.tasksByGroup = this.getTasksByGroup();
           // console.log(this.tasks);
-          this.tasks_backup = this.tasks;
         },
         error: (error) => {
           console.log(error);
@@ -103,29 +113,29 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   }
 
-  getTasksByGroup(): any{
-    // var groups = new Set(this.tasks.map(item => item.groupName));
-    var result: any[] = [];
-    this.groupsInProject.forEach(group => {
-      this.issueService.getAllIssuesInGroup(group.id).subscribe({
-        next: (response) =>{
-          for(let element of response){
-            this.tasks.push(element);
-          }
-          this.issuesInGroup = response;
-          this.tasks_backup = this.issuesInGroup;
-          result.push({
-            group: group.name,
-            tasks: this.issuesInGroup
-          });
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
-    });
-    return result;
-  }
+  // getTasksByGroup(): any{
+  //   // var groups = new Set(this.tasks.map(item => item.groupName));
+  //   var result: any[] = [];
+  //   this.groupsInProject.forEach(group => {
+  //     this.issueService.getAllIssuesInGroup(group.id).subscribe({
+  //       next: (response) =>{
+  //         for(let element of response){
+  //           this.tasks.push(element);
+  //         }
+  //         this.issuesInGroup = response;
+  //         this.tasks_backup = this.issuesInGroup;
+  //         result.push({
+  //           group: group.name,
+  //           tasks: this.issuesInGroup
+  //         });
+  //       },
+  //       error: (error) => {
+  //         console.log(error);
+  //       }
+  //     });
+  //   });
+  //   return result;
+  // }
 
   ngOnDestroy(): void {
   }
@@ -135,17 +145,17 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.rows = event.rows;
   }
 
-  changeView():void {
-    if(this.groupView){
-      this.dataKey = 'group';
-    }
-    else{
-      this.dataKey = 'name';
-    }
+  // changeView():void {
+  //   if(this.groupView){
+  //     this.dataKey = 'group';
+  //   }
+  //   else{
+  //     this.dataKey = 'name';
+  //   }
 
-    this.visible = false;
-    setTimeout(() => this.visible = true, 0);
-  }
+  //   this.visible = false;
+  //   setTimeout(() => this.visible = true, 0);
+  // }
 
   getSeverity(status: string) {
     switch (status.toLowerCase()) {

@@ -51,6 +51,7 @@ export interface JIssue {
   reporterId: string;
   userIds: string[];
   usersWithCompletion: UsersWithCompletion[];
+  completed: number;
   comments: JComment[];
   projectId: string;
 }
