@@ -1,9 +1,12 @@
 ﻿using backAPI.Data;
 using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
+using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation.Issues
@@ -13,14 +16,16 @@ namespace backAPI.Repositories.Implementation.Issues
 
         private readonly DataContext _dataContext;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
+        private readonly IUsersRepository _usersRepository;
 
         /* *****************************************************************************************
          * Konstruktor
          * ***************************************************************************************** */
-        public IssueRepository(DataContext dataContext, IUserOnIssueRepository userOnIssueRepository)
+        public IssueRepository(DataContext dataContext, IUserOnIssueRepository userOnIssueRepository,IUsersRepository usersRepository)
         {
             _dataContext = dataContext;
             _userOnIssueRepository = userOnIssueRepository;
+            _usersRepository = usersRepository;
         }
 
         /* *****************************************************************************************
@@ -260,6 +265,548 @@ namespace backAPI.Repositories.Implementation.Issues
 
             await _dataContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<(IEnumerable<Issue> issues, int numberOfRecords)> GetPaginationIssuesForProject(int projectId, Criteria criteria)
+        {
+            var issues = _dataContext.Issues
+                    .Join(_dataContext.IssueGroups,
+                         i => i.GroupId,
+                         ig => ig.Id,
+                         (i, ig) => new { Issue = i, Group = ig })
+                    .Where(i => i.Group.ProjectId == projectId)
+                    .Join(_dataContext.UsersOnIssues,
+                         i => i.Issue.Id,
+                         ui => ui.IssueId,
+                         (i, ui) => new { i.Issue, i.Group, UserOnIssue = ui })
+                    .Where(i => i.UserOnIssue.Reporting == true)
+                    .Join(_dataContext.Users,
+                         ui => ui.UserOnIssue.UserId,
+                         u => u.Id,
+                         (ui, u) => new { ui.Issue, ui.Group, Reporter = u })
+                    .Join(_dataContext.IssueTypes,
+                         i => i.Issue.TypeId,
+                         it => it.Id,
+                         (i, it) => new { i.Issue, i.Group, i.Reporter, IssueType = it })
+                    .Join(_dataContext.IssuePriority,
+                         i => i.Issue.PriorityId,
+                         ip => ip.Id,
+                         (i, ip) => new { i.Issue, i.Group, i.Reporter, i.IssueType, IssuePriority = ip })
+                    .Join(_dataContext.IssueStatuses,
+                         i => i.Issue.StatusId,
+                         iss => iss.Id,
+                         (i, iss) => new { i.Issue, i.Group, i.Reporter, i.IssueType, i.IssuePriority, IssueStatus = iss});
+
+            if (criteria.Filters.Count > 0)
+            {
+                var issues2 = issues;
+                var issues3 = issues;
+                foreach(var filter in criteria.Filters)
+                {
+                    issues2 = issues;
+                    issues3 = issues.Where(i => i.Issue.Name==null);
+                    foreach (var fieldFilter in filter.Fieldfilters)
+                    {
+                        if (fieldFilter.Value.GetType() == typeof(string))
+                        {
+                            if (fieldFilter.MatchMode == "startsWith")
+                            {
+                                if (filter.Field == "name")
+                                {
+                                    issues2 = issues.Where(i => i.Issue.Name.StartsWith((string)fieldFilter.Value));
+                                }
+                                else
+                                {
+                                    issues2 = issues.Where(i => i.Reporter.UserName.StartsWith((string)fieldFilter.Value));
+                                }
+                            }
+                            else
+                            {
+                                if (fieldFilter.MatchMode == "contains")
+                                {
+                                    if (filter.Field == "name")
+                                    {
+                                        issues2 = issues.Where(i => i.Issue.Name.Contains((string)fieldFilter.Value));
+                                    }
+                                    else
+                                    {
+                                        issues2 = issues.Where(i => i.Reporter.UserName.Contains((string)fieldFilter.Value));
+                                    }
+                                }
+                                else
+                                {
+                                    if (fieldFilter.MatchMode == "notContains")
+                                    {
+                                        if (filter.Field == "name")
+                                        {
+                                            issues2 = issues.Where(i => !i.Issue.Name.Contains((string)fieldFilter.Value));
+                                        }
+                                        else
+                                        {
+                                            issues2 = issues.Where(i => !i.Reporter.UserName.Contains((string)fieldFilter.Value));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (fieldFilter.MatchMode == "endsWith")
+                                        {
+                                            if (filter.Field == "name")
+                                            {
+                                                issues2 = issues.Where(i => i.Issue.Name.EndsWith((string)fieldFilter.Value));
+                                            }
+                                            else
+                                            {
+                                                issues2 = issues.Where(i => i.Reporter.UserName.EndsWith((string)fieldFilter.Value));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (fieldFilter.MatchMode == "equals")
+                                            {
+                                                if (filter.Field == "name")
+                                                {
+                                                    issues2 = issues.Where(i => i.Issue.Name.Equals((string)fieldFilter.Value));
+                                                }
+                                                else
+                                                {
+                                                    issues2 = issues.Where(i => i.Reporter.UserName.Equals((string)fieldFilter.Value));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (fieldFilter.MatchMode == "notEquals")
+                                                {
+                                                    if (filter.Field == "name")
+                                                    {
+                                                        issues2 = issues.Where(i => !i.Issue.Name.Equals((string)fieldFilter.Value));
+                                                    }
+                                                    else
+                                                    {
+                                                        issues2 = issues.Where(i => !i.Reporter.UserName.Equals((string)fieldFilter.Value));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (fieldFilter.Value.GetType() == typeof(DateTime))
+                            {
+                                if (fieldFilter.MatchMode == "dateIs")
+                                {
+                                    if (filter.Field == "createdDate")
+                                    {
+                                        issues2 = issues.Where(i => i.Issue.CreatedDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date)); 
+                                    }
+                                    else
+                                    {
+                                        if (filter.Field == "dueDate")
+                                        {
+                                            issues2 = issues.Where(i => i.Issue.DueDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        }
+                                        else
+                                        {
+                                            issues2 = issues.Where(i => i.Issue.UpdatedDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (fieldFilter.MatchMode == "dateIsNot")
+                                    {
+                                        if (filter.Field == "createdDate")
+                                        {
+                                            issues2 = issues.Where(i => !i.Issue.CreatedDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        }
+                                        else
+                                        {
+                                            if (filter.Field == "dueDate")
+                                            {
+                                                issues2 = issues.Where(i => !i.Issue.DueDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            }
+                                            else
+                                            {
+                                                issues2 = issues.Where(i => !i.Issue.UpdatedDate.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (fieldFilter.MatchMode == "dateAfter")
+                                        {
+                                            if (filter.Field == "createdDate")
+                                            {
+                                                issues2 = issues.Where(i => i.Issue.CreatedDate.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            }
+                                            else
+                                            {
+                                                if (filter.Field == "dueDate")
+                                                {
+                                                    issues2 = issues.Where(i => i.Issue.DueDate.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                }
+                                                else
+                                                {
+                                                    issues2 = issues.Where(i => i.Issue.UpdatedDate.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (fieldFilter.MatchMode == "dateBefore")
+                                            {
+                                                if (filter.Field == "createdDate")
+                                                {
+                                                    issues2 = issues.Where(i => i.Issue.CreatedDate.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                }
+                                                else
+                                                {
+                                                    if (filter.Field == "dueDate")
+                                                    {
+                                                        issues2 = issues.Where(i => i.Issue.DueDate.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                    }
+                                                    else
+                                                    {
+                                                        issues2 = issues.Where(i => i.Issue.UpdatedDate.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (fieldFilter.Value.GetType() == typeof(JArray))
+                                {
+                                    if(filter.Field == "typeName")
+                                    {
+                                        issues2 = issues.Where(i => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(i.IssueType.Name));
+                                    }
+                                    else
+                                    {
+                                        if (filter.Field == "statusName")
+                                        {
+                                            issues2 = issues.Where(i => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(i.IssueStatus.Name));
+                                        }
+                                        else
+                                        {
+                                            if (filter.Field == "priorityName")
+                                            {
+                                                issues2 = issues.Where(i => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(i.IssuePriority.Name));
+                                            }
+                                            else
+                                            {
+                                                issues2 = issues.Where(i => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(i.Group.Name));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // TODO filriranje po Complited
+                                }
+                            }
+                        }
+                        if (fieldFilter.Operator == "or")
+                        {
+                            issues3 = issues3.Union(issues2);
+                        }
+                        else
+                        {
+                            issues = issues2;
+                            issues3 = issues;
+                        }
+                    }
+                    issues = issues3;
+                }
+            }
+
+            int numberOfRecords = issues.Count();
+
+            if(criteria.MultiSortMeta.Count > 0)
+            {
+                MultiSortMeta firstOrder = criteria.MultiSortMeta[0];
+                criteria.MultiSortMeta.RemoveAt(0);
+                var orderdIssues = issues.OrderBy(i => i.Issue.Name);
+
+                if(firstOrder.Order == 1)
+                {
+                    if(firstOrder.Field == "name")
+                    {
+                        orderdIssues = issues.OrderBy(i => i.Issue.Name);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "createdDate")
+                        {
+                            orderdIssues = issues.OrderBy(i => i.Issue.CreatedDate);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "dueDate")
+                            {
+                                orderdIssues = issues.OrderBy(i => i.Issue.DueDate);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "updatedDate")
+                                {
+                                    orderdIssues = issues.OrderBy(i => i.Issue.UpdatedDate);
+                                }
+                                else
+                                {
+                                    if (firstOrder.Field == "typeName")
+                                    {
+                                        orderdIssues = issues.OrderBy(i => i.IssueType.Name);
+                                    }
+                                    else
+                                    {
+                                        if (firstOrder.Field == "statusName")
+                                        {
+                                            orderdIssues = issues.OrderBy(i => i.IssueStatus.Name);
+                                        }
+                                        else
+                                        {
+                                            if (firstOrder.Field == "priorityName")
+                                            {
+                                                orderdIssues = issues.OrderBy(i => i.IssuePriority.Name);
+                                            }
+                                            else
+                                            {
+                                                if (firstOrder.Field == "groupName")
+                                                {
+                                                    orderdIssues = issues.OrderBy(i => i.Group.Name);
+                                                }
+                                                else
+                                                {
+                                                    if (firstOrder.Field == "completed")
+                                                    {
+                                                        orderdIssues = issues.OrderBy(i => i.Issue.Completed);
+                                                    }
+                                                    else
+                                                    {
+                                                        orderdIssues = issues.OrderBy(i => i.Reporter.UserName);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (firstOrder.Field == "name")
+                    {
+                        orderdIssues = issues.OrderByDescending(i => i.Issue.Name);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "createdDate")
+                        {
+                            orderdIssues = issues.OrderByDescending(i => i.Issue.CreatedDate);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "dueDate")
+                            {
+                                orderdIssues = issues.OrderByDescending(i => i.Issue.DueDate);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "updatedDate")
+                                {
+                                    orderdIssues = issues.OrderByDescending(i => i.Issue.UpdatedDate);
+                                }
+                                else
+                                {
+                                    if (firstOrder.Field == "typeName")
+                                    {
+                                        orderdIssues = issues.OrderByDescending(i => i.IssueType.Name);
+                                    }
+                                    else
+                                    {
+                                        if (firstOrder.Field == "statusName")
+                                        {
+                                            orderdIssues = issues.OrderByDescending(i => i.IssueStatus.Name);
+                                        }
+                                        else
+                                        {
+                                            if (firstOrder.Field == "priorityName")
+                                            {
+                                                orderdIssues = issues.OrderByDescending(i => i.IssuePriority.Name);
+                                            }
+                                            else
+                                            {
+                                                if (firstOrder.Field == "groupName")
+                                                {
+                                                    orderdIssues = issues.OrderByDescending(i => i.Group.Name);
+                                                }
+                                                else
+                                                {
+                                                    if (firstOrder.Field == "completed")
+                                                    {
+                                                        orderdIssues = issues.OrderByDescending(i => i.Issue.Completed);
+                                                    }
+                                                    else
+                                                    {
+                                                        orderdIssues = issues.OrderByDescending(i => i.Reporter.UserName);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                foreach(var order in criteria.MultiSortMeta)
+                {
+                    if (order.Order == 1)
+                    {
+                        if (order.Field == "name")
+                        {
+                            orderdIssues = orderdIssues.ThenBy(i => i.Issue.Name);
+                        }
+                        else
+                        {
+                            if (order.Field == "createdDate")
+                            {
+                                orderdIssues = orderdIssues.ThenBy(i => i.Issue.CreatedDate);
+                            }
+                            else
+                            {
+                                if (order.Field == "dueDate")
+                                {
+                                    orderdIssues = orderdIssues.ThenBy(i => i.Issue.DueDate);
+                                }
+                                else
+                                {
+                                    if (order.Field == "updatedDate")
+                                    {
+                                        orderdIssues = orderdIssues.ThenBy(i => i.Issue.UpdatedDate);
+                                    }
+                                    else
+                                    {
+                                        if (order.Field == "typeName")
+                                        {
+                                            orderdIssues = orderdIssues.ThenBy(i => i.IssueType.Name);
+                                        }
+                                        else
+                                        {
+                                            if (order.Field == "statusName")
+                                            {
+                                                orderdIssues = orderdIssues.ThenBy(i => i.IssueStatus.Name);
+                                            }
+                                            else
+                                            {
+                                                if (order.Field == "priorityName")
+                                                {
+                                                    orderdIssues = orderdIssues.ThenBy(i => i.IssuePriority.Name);
+                                                }
+                                                else
+                                                {
+                                                    if (order.Field == "groupName")
+                                                    {
+                                                        orderdIssues = orderdIssues.ThenBy(i => i.Group.Name);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (order.Field == "completed")
+                                                        {
+                                                            orderdIssues = orderdIssues.ThenBy(i => i.Issue.Completed);
+                                                        }
+                                                        else
+                                                        {
+                                                            orderdIssues = orderdIssues.ThenBy(i => i.Reporter.UserName);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (order.Field == "name")
+                        {
+                            orderdIssues = orderdIssues.ThenByDescending(i => i.Issue.Name);
+                        }
+                        else
+                        {
+                            if (order.Field == "createdDate")
+                            {
+                                orderdIssues = orderdIssues.ThenByDescending(i => i.Issue.CreatedDate);
+                            }
+                            else
+                            {
+                                if (order.Field == "dueDate")
+                                {
+                                    orderdIssues = orderdIssues.ThenByDescending(i => i.Issue.DueDate);
+                                }
+                                else
+                                {
+                                    if (order.Field == "updatedDate")
+                                    {
+                                        orderdIssues = orderdIssues.ThenByDescending(i => i.Issue.UpdatedDate);
+                                    }
+                                    else
+                                    {
+                                        if (order.Field == "typeName")
+                                        {
+                                            orderdIssues = orderdIssues.ThenByDescending(i => i.IssueType.Name);
+                                        }
+                                        else
+                                        {
+                                            if (order.Field == "statusName")
+                                            {
+                                                orderdIssues = orderdIssues.ThenByDescending(i => i.IssueStatus.Name);
+                                            }
+                                            else
+                                            {
+                                                if (order.Field == "priorityName")
+                                                {
+                                                    orderdIssues = orderdIssues.ThenByDescending(i => i.IssuePriority.Name);
+                                                }
+                                                else
+                                                {
+                                                    if (order.Field == "groupName")
+                                                    {
+                                                        orderdIssues = orderdIssues.ThenByDescending(i => i.Group.Name);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (order.Field == "completed")
+                                                        {
+                                                            orderdIssues = orderdIssues.ThenByDescending(i => i.Issue.Completed);
+                                                        }
+                                                        else
+                                                        {
+                                                            orderdIssues = orderdIssues.ThenByDescending(i => i.Reporter.UserName);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return (await orderdIssues.Select(i => i.Issue).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
+            }
+
+            return ( await issues.Select(i => i.Issue).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
         }
     }
 }

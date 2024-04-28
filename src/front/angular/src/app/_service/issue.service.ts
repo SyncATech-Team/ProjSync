@@ -9,6 +9,8 @@ import { CreateIssueModel } from '../_models/create-issue.model';
 import { IssueModel } from '../_models/model-issue.model';
 import { IssueDateUpdate } from '../_models/issue-date-update.model';
 import { IssueDependencyUpdater } from '../_models/issue-dependency-create-delete';
+import { TableLazyLoadEvent } from 'primeng/table';
+import { IssueModelLazyLoad } from '../_models/model-issue-lazy-load';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +37,27 @@ export class IssueService {
 
   getAllIssuesForProject(projectName: string) {
     return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/projectName?projectName=${projectName}`);
+  }
+
+  getPaginationAllIssuesForProject(projectName: string, event: TableLazyLoadEvent) {
+    let empty: any[] = [];
+    var criteriaObj = {
+      first: event.first,
+      rows: event.rows,
+      filters: empty,
+      multiSortMeta: event.multiSortMeta ? event.multiSortMeta : []
+    }
+    
+    for(var field in event.filters){
+        criteriaObj.filters.push({...{fieldfilters: event.filters[field]},field}); 
+    }
+    criteriaObj.filters = criteriaObj.filters.filter(item => item.fieldfilters[0].value!=null);
+
+    var criteria = encodeURIComponent( JSON.stringify(criteriaObj));
+    console.log(criteriaObj);
+   
+    return this.http.get<IssueModelLazyLoad>(`${this.baseUrl}Issues/pagination/projectName?projectName=${projectName}&criteria=${criteria}`);
+    
   }
 
   createIssue(model: CreateIssueModel){

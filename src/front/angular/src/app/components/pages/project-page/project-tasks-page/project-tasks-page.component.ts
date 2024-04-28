@@ -18,6 +18,7 @@ import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
 import {UserOnProjectService} from "../../../../_service/userOnProject.service";
 import {UserGetter} from "../../../../_models/user-getter";
+import { TableLazyLoadEvent } from 'primeng/table';
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -53,10 +54,13 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   first = 0;
   rows = 10;
+  totalRecords = 0;
 
   ref: DynamicDialogRef | undefined;
 
   clickedModalForCreatingTask: boolean = false;
+
+  lastLazyLoadEvent!: TableLazyLoadEvent;
 
   constructor (
     private route: ActivatedRoute,
@@ -78,15 +82,15 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.showColumns = ['Name',...this.selectedColumns];
     // this.tasksByGroup = this.getTasksByGroup();
     if(this.projectName) {
-      this.issueService.getAllIssuesForProject(this.projectName).subscribe({
-        next: (response) =>{
-          this.tasks = response;
-          this.tasks_backup = this.tasks;
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      })
+      // this.issueService.getAllIssuesForProject(this.projectName).subscribe({
+      //   next: (response) =>{
+      //     this.tasks = response;
+      //     this.tasks_backup = this.tasks;
+      //   },
+      //   error: (err) => {
+      //     console.log(err);
+      //   }
+      // })
       
       this.groupService.getAllGroups(this.projectName).subscribe({
         next: (response) => {
@@ -264,8 +268,25 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
       this.tasksByGroup = [];
       this.tasks_backup = [];
       this.ngOnInit();
+      this.loadIssues(this.lastLazyLoadEvent);
     });
 
+  }
+
+  loadIssues(event: TableLazyLoadEvent){
+    this.lastLazyLoadEvent = event;
+    if(this.projectName)
+    {
+      this.issueService.getPaginationAllIssuesForProject(this.projectName,event).subscribe({
+        next: (response) => {
+          this.tasks = response.issues;
+          this.totalRecords = response.numberOfRecords;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    }
   }
 
 }

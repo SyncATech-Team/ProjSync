@@ -213,8 +213,12 @@ namespace backAPI.Repositories.Implementation
 
             if (criteria.Filters.Count > 0)
             {
+                var users2 = users;
+                var users3 = users;
                 foreach (var filter in criteria.Filters)
                 {
+                    users2 = users;
+                    users3 = users.Where(u => u.User.UserName==null);
                     foreach (var fieldFilter in filter.Fieldfilters)
                     {
                         if (fieldFilter.Value.GetType() == typeof(string))
@@ -223,11 +227,11 @@ namespace backAPI.Repositories.Implementation
                             {
                                 if (filter.Field == "username")
                                 {
-                                    users = users.Where(u => u.User.UserName.StartsWith((string)fieldFilter.Value));
+                                    users2 = users.Where(u => u.User.UserName.StartsWith((string)fieldFilter.Value));
                                 }
                                 else
                                 {
-                                    users = users.Where(u => u.User.Email.StartsWith((string)fieldFilter.Value));
+                                    users2 = users.Where(u => u.User.Email.StartsWith((string)fieldFilter.Value));
                                 }
                             }
                             else
@@ -236,11 +240,11 @@ namespace backAPI.Repositories.Implementation
                                 {
                                     if (filter.Field == "username")
                                     {
-                                        users = users.Where(u => u.User.UserName.Contains((string)fieldFilter.Value));
+                                        users2 = users.Where(u => u.User.UserName.Contains((string)fieldFilter.Value));
                                     }
                                     else
                                     {
-                                        users = users.Where(u => u.User.Email.Contains((string)fieldFilter.Value));
+                                        users2 = users.Where(u => u.User.Email.Contains((string)fieldFilter.Value));
                                     }
                                 }
                                 else
@@ -249,11 +253,11 @@ namespace backAPI.Repositories.Implementation
                                     {
                                         if (filter.Field == "username")
                                         {
-                                            users = users.Where(u => !u.User.UserName.Contains((string)fieldFilter.Value));
+                                            users2 = users.Where(u => !u.User.UserName.Contains((string)fieldFilter.Value));
                                         }
                                         else
                                         {
-                                            users = users.Where(u => !u.User.Email.Contains((string)fieldFilter.Value));
+                                            users2 = users.Where(u => !u.User.Email.Contains((string)fieldFilter.Value));
                                         }
                                     }
                                     else
@@ -262,11 +266,11 @@ namespace backAPI.Repositories.Implementation
                                         {
                                             if (filter.Field == "username")
                                             {
-                                                users = users.Where(u => u.User.UserName.EndsWith((string)fieldFilter.Value));
+                                                users2 = users.Where(u => u.User.UserName.EndsWith((string)fieldFilter.Value));
                                             }
                                             else
                                             {
-                                                users = users.Where(u => u.User.Email.EndsWith((string)fieldFilter.Value));
+                                                users2 = users.Where(u => u.User.Email.EndsWith((string)fieldFilter.Value));
                                             }
                                         }
                                         else
@@ -275,11 +279,11 @@ namespace backAPI.Repositories.Implementation
                                             {
                                                 if (filter.Field == "username")
                                                 {
-                                                    users = users.Where(u => u.User.UserName.Equals((string)fieldFilter.Value));
+                                                    users2 = users.Where(u => u.User.UserName.Equals((string)fieldFilter.Value));
                                                 }
                                                 else
                                                 {
-                                                    users = users.Where(u => u.User.Email.Equals((string)fieldFilter.Value));
+                                                    users2 = users.Where(u => u.User.Email.Equals((string)fieldFilter.Value));
                                                 }
                                             }
                                             else
@@ -288,11 +292,11 @@ namespace backAPI.Repositories.Implementation
                                                 {
                                                     if (filter.Field == "username")
                                                     {
-                                                        users = users.Where(u => !u.User.UserName.Equals((string)fieldFilter.Value));
+                                                        users2 = users.Where(u => !u.User.UserName.Equals((string)fieldFilter.Value));
                                                     }
                                                     else
                                                     {
-                                                        users = users.Where(u => !u.User.Email.Equals((string)fieldFilter.Value));
+                                                        users2 = users.Where(u => !u.User.Email.Equals((string)fieldFilter.Value));
                                                     }
                                                 }
                                             }
@@ -309,11 +313,11 @@ namespace backAPI.Repositories.Implementation
                                 {
                                     if (filter.Field == "createdAt")
                                     {
-                                        users = users.Where(u => u.User.CreatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        users2 = users.Where(u => u.User.CreatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
                                     }
                                     else
                                     {
-                                        users = users.Where(u => u.User.UpdatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        users2 = users.Where(u => u.User.UpdatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
                                     }
                                 }
                                 else
@@ -322,11 +326,11 @@ namespace backAPI.Repositories.Implementation
                                     {
                                         if (filter.Field == "createdAt")
                                         {
-                                            users = users.Where(u => !u.User.CreatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            users2 = users.Where(u => !u.User.CreatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
                                         }
                                         else
                                         {
-                                            users = users.Where(u => !u.User.UpdatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            users2 = users.Where(u => !u.User.UpdatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
                                         }
                                     }
                                     else
@@ -335,11 +339,11 @@ namespace backAPI.Repositories.Implementation
                                         {
                                             if (filter.Field == "createdAt")
                                             {
-                                                users = users.Where(u => u.User.CreatedAt.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                users2 = users.Where(u => u.User.CreatedAt.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
                                             }
                                             else
                                             {
-                                                users = users.Where(u => u.User.UpdatedAt.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                users2 = users.Where(u => u.User.UpdatedAt.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
                                             }
                                         }
                                         else
@@ -348,11 +352,11 @@ namespace backAPI.Repositories.Implementation
                                             {
                                                 if (filter.Field == "createdAt")
                                                 {
-                                                    users = users.Where(u => u.User.CreatedAt.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                    users2 = users.Where(u => u.User.CreatedAt.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
                                                 }
                                                 else
                                                 {
-                                                    users = users.Where(u => u.User.UpdatedAt.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                    users2 = users.Where(u => u.User.UpdatedAt.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
                                                 }
                                             }
                                         }
@@ -363,15 +367,25 @@ namespace backAPI.Repositories.Implementation
                             {
                                 if(fieldFilter.Value.GetType() == typeof(JArray))
                                 {
-                                    users = users.Where(u => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(u.CompanyRole.Name));
+                                    users2 = users.Where(u => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(u.CompanyRole.Name));
                                 }
                                 else
                                 {
-                                    users = users.Where(u => u.User.IsActive == (bool)fieldFilter.Value);  
+                                    users2 = users.Where(u => u.User.IsActive == (bool)fieldFilter.Value);  
                                 }  
                             }
                         }
+                        if(fieldFilter.Operator == "or")
+                        {
+                            users3 = users3.Union(users2);
+                        }
+                        else
+                        {
+                            users = users2;
+                            users3 = users;
+                        } 
                     }
+                    users = users3;
                 }
             }
             int numberOfRecords = users.Count();

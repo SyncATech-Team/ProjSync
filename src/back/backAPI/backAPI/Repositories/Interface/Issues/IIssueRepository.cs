@@ -1,5 +1,6 @@
 ﻿using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
 
 namespace backAPI.Repositories.Interface.Issues
 {
@@ -34,5 +35,6 @@ namespace backAPI.Repositories.Interface.Issues
         Task<bool> UpdateIssue(int issueId, JIssueDto model);
         Task<bool> UpdateUsersOnIssue(int issueId, JIssueDto model);
         Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model);
+        Task<(IEnumerable<Issue> issues, int numberOfRecords)> GetPaginationIssuesForProject(int projectId,Criteria criteria);
     }
 }
