@@ -11,6 +11,7 @@ using backAPI.Services.Implementation;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using backAPI.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,9 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IProjectDocumentationRepository, ProjectDocumentationRepository>();
 builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
+builder.Services.AddSignalR();
+// uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
+builder.Services.AddSingleton<PresenceTracker>();
 
 var app = builder.Build();
 
@@ -75,7 +79,7 @@ for (int i = 0; i < numOfOrigins; i++) {
 
     origins[i] = address;
 }
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(origins));
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(origins));
 
 Console.WriteLine("");
 Console.WriteLine("CORS policy specified...");
@@ -84,6 +88,7 @@ Console.ForegroundColor = ConsoleColor.White;
 
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
