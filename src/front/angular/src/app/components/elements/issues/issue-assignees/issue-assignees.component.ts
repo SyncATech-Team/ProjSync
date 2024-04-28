@@ -9,6 +9,7 @@ import {UserProfilePicture} from "../../../../_service/userProfilePicture.servic
 import {UsersWithCompletion} from "../../../../_models/user-completion-level";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {IssueChangeProgressComponent} from "../issue-change-progress/issue-change-progress.component";
+import {PresenceService} from "../../../../_service/presence.service";
 
 @Component({
   selector: 'issue-assignees',
@@ -25,9 +26,11 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
 
   ref: DynamicDialogRef | undefined;
 
-  constructor(private _projectService: ProjectService, private userPictureService: UserProfilePicture,
+  constructor(private _projectService: ProjectService,
+              private userPictureService: UserProfilePicture,
               private cdr: ChangeDetectorRef,
-              public dialogService: DialogService) {}
+              public dialogService: DialogService,
+              public presenceService: PresenceService) {}
 
   ngOnInit(): void {
     this.cdr.markForCheck();

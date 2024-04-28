@@ -12,6 +12,10 @@
             <span class="title">&#64;{{ user.username }} &bull;  Member since {{ user.createdAt | date:'MMMM dd, yyyy' }}</span>
         </div>
 
+        <div class="username-online" *ngIf="(presenceService.onlineUsers$ | async)?.includes(user.username)">
+          <i class="pi pi-user" style="color: green"></i> Online now
+        </div>
+
         <div class="userInfo container">
             <div class="address" *ngIf="user.address != null">
                 <i class="fa-solid fa-house"></i><span> {{user.address}}</span>

@@ -9,6 +9,7 @@ import { Project } from '../../../_models/project.model';
 import { UserOnProjectService } from '../../../_service/userOnProject.service';
 import { error } from 'console';
 import { getTime } from 'date-fns';
+import {PresenceService} from "../../../_service/presence.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -44,7 +45,8 @@ export class UserProfileComponent implements OnInit{
     private _dialogConfig : DynamicDialogConfig,
     private userService: UserService,
     private userPictureService: UserProfilePicture,
-    private userOnProjectService: UserOnProjectService
+    private userOnProjectService: UserOnProjectService,
+    public presenceService: PresenceService
   ){
 
   }
@@ -54,7 +56,7 @@ export class UserProfileComponent implements OnInit{
     this.firstName = this._dialogConfig.data.firstName;
     this.usersPhotos = this._dialogConfig.data.usersPhotos;
     this.users = this._dialogConfig.data.users;
-    
+
     const filteredUsers = this.users.filter(u => u.username === this.username);
     this.user = filteredUsers[0];
     console.log(this.user);

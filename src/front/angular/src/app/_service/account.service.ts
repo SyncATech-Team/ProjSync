@@ -7,8 +7,8 @@ import { environment } from '../../environments/environment';
 import { UserGetter } from '../_models/user-getter';
 import { ResetPassword } from '../_models/reset-password';
 import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-response';
-import { CompanyroleService } from './companyrole.service';
 import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
+import { PresenceService } from "./presence.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
 export class AccountService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient,private companyroleService: CompanyroleService) { }
+  constructor(private http: HttpClient,private presenceService: PresenceService) { }
 
   login(model: any) {
     // POST: http://localhost:5000/api/Account/login, model se salje preko body-ja
@@ -67,7 +67,7 @@ export class AccountService {
     // korisnik moze da ima jednu ili vise uloga, zato pravimo niz
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     user.permitions = permitions;
-
+    this.presenceService.createHubConnection(user);
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -106,6 +106,7 @@ export class AccountService {
   logout() {
     // izbrisati iz lokalne memorije
     localStorage.removeItem('user');
+    this.presenceService.stopHubConnection();
   }
 
   getDecodedToken(token: string) {

@@ -112,6 +112,7 @@ import { UploadDocumentComponent } from './components/elements/upload-document/u
 import {SliderModule} from "primeng/slider";
 import { IssueChangeProgressComponent } from './components/elements/issues/issue-change-progress/issue-change-progress.component';
 import {MeterGroupModule} from "primeng/metergroup";
+import {BadgeModule} from "primeng/badge";
 
 @NgModule({
   declarations: [
@@ -213,7 +214,8 @@ import {MeterGroupModule} from "primeng/metergroup";
         ProgressBarModule,
         DividerModule,
         SliderModule,
-        MeterGroupModule
+        MeterGroupModule,
+        BadgeModule
     ],
   providers: [
     CookieService,
