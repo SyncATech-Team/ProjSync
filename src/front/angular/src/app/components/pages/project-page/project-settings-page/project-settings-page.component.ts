@@ -13,6 +13,8 @@ import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { UserOnProjectService } from '../../../../_service/userOnProject.service';
 import { ProjectSidebarComponent } from '../../../elements/project-sidebar/project-sidebar.component';
 import { error } from 'console';
+import { AccountService } from '../../../../_service/account.service';
+import { User } from '../../../../_models/user';
 
 @Component({
   selector: 'app-project-settings-page',
@@ -49,6 +51,7 @@ export class ProjectSettingsPageComponent implements OnInit {
     visibilityName: ""
   }
 
+  loggedUser: User | null= null;
   users: UserGetter[] = [];
   usersPhotos: PhotoForUser[] = [];
   transferToUser: string='';
@@ -64,7 +67,8 @@ export class ProjectSettingsPageComponent implements OnInit {
     private messageService: MessageService,
     private sideBarComponent: ProjectSidebarComponent,
     private userPictureService: UserProfilePicture,
-    private usersOnProject: UserOnProjectService){
+    private usersOnProject: UserOnProjectService,
+    private accountService: AccountService){
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.form = this.formBuilder.group({
       name: [''],
@@ -92,6 +96,8 @@ export class ProjectSettingsPageComponent implements OnInit {
         this.projectType2 = this.project.typeName;
         this.projectDescription2 = this.project.description;
         this.projectOwnerUsername = this.project.ownerUsername;
+        
+        this.loggedUser = this.accountService.getCurrentUser();
 
         this.usersOnProject.getAllUsersOnProjectThatCanManageProject(this.projectName!).subscribe({
           next: (response) => {

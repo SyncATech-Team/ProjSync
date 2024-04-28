@@ -57,7 +57,7 @@
                 </form>
             </div>
             <div id="right-side" class="container">
-                <div class="wrapper">
+                <div *ngIf="loggedUser!=null && loggedUser.username == projectOwnerUsername" class="wrapper">
                     <div class="info">
                         <span class="title">Transfer owenership and leave</span>
                         <p>Transfer this project to another user and leave this project.</p>
