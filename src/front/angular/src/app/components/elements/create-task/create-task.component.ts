@@ -44,9 +44,9 @@ export class CreateTaskComponent implements OnInit {
     statusName: "",
     priorityName: "",
     description: "",
-    createdDate: new Date(),
+    createdDate: null!,
     updatedDate: new Date(),
-    dueDate: new Date(),
+    dueDate: null!,
     ownerUsername: "",
     reporterUsername: "",
     assigneeUsernames: [],
@@ -141,24 +141,58 @@ export class CreateTaskComponent implements OnInit {
 
       try {
         this.issueCreator.name = this.form.controls['issue-name'].value;
+        // PROVERA NAZIVA
+        if(this.issueCreator.name == null || this.issueCreator.name == ""){
+          this.msgPopUpService.showError("Unable to create task, task name is empty");
+          return;
+        }
 
         this.selectedIssueType = this.form.controls['issue-type'].value;
+        // PROVERA TIPA
+        if(this.selectedIssueType == null){
+          this.msgPopUpService.showError("Unable to create task, task type is empty");
+          return;
+        }
         this.issueCreator.typeName = this.selectedIssueType.value;
-
-        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
-        // this.issueCreator.priorityName = this.selectedPriorityModel.value;
+        
         this.selectedPriorityModel = this.form.controls['issue-priority'].value;
+        // PROVERA PRIORITETA
+        if(this.selectedPriorityModel == null){
+          this.msgPopUpService.showError("Unable to create task, task priority is empty");
+          return;
+        }
         this.issueCreator.priorityName = this.selectedPriorityModel.value;
 
+        //PROVERA STATUSA
+        if(this.form.controls['issue-status'].value == null){
+          this.msgPopUpService.showError("Unable to create task, task status is empty");
+          return;
+        }  
+        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;      
         this.issueCreator.description = this.form.controls['issue-description'].value;
+        if(this.form.controls['issue-create-date'].value == null){
+          this.msgPopUpService.showError("Unable to create task, start date is empty");
+          return;
+        }
         this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
         this.issueCreator.createdDate = new Date(Date.UTC(this.issueCreator.createdDate.getFullYear(), this.issueCreator.createdDate.getMonth(), this.issueCreator.createdDate.getDate()));
         this.issueCreator.updatedDate = new Date();
+        if(this.form.controls['issue-due-date'].value == null){
+          this.msgPopUpService.showError("Unable to create task, due date is empty");
+          return;
+        }
         this.issueCreator.dueDate = this.form.controls['issue-due-date'].value;
         this.issueCreator.ownerUsername = this.currentUser!;
+        if(this.form.controls['issue-reporter'].value == null){
+          this.msgPopUpService.showError("Unable to create task, reporter is not selected");
+          return;
+        }
         this.issueCreator.reporterUsername = this.form.controls['issue-reporter'].value.username;
-        this.issueCreator.assigneeUsernames =
-        this.form.controls['issue-assigner'].value.map((user: UserGetter) => user.username);
+        if(this.form.controls['issue-assigner'].value == null){
+          this.msgPopUpService.showError("Unable to create task, assignee is not selected");
+          return;
+        }
+        this.issueCreator.assigneeUsernames = this.form.controls['issue-assigner'].value.map((user: UserGetter) => user.username);
         this.issueCreator.dependentOnIssues = [];  // ZA SADA PRAZAN STRING TREBA OMOGUCITI I BIRANJE ZAVISNOSTI
         this.issueCreator.projectName = this.projectName;
         this.issueCreator.groupName = this.form.controls['issue-group'].value.name;
