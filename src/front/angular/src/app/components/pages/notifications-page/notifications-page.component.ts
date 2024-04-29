@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationControllerService } from '../../../_service/notification-controller.service';
 import { Notification } from '../../../_models/notification.model';
 import { NotificationComponent } from '../../elements/notification/notification.component';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-notifications-page',
@@ -14,7 +15,8 @@ export class NotificationsPageComponent implements OnInit {
   private static staticNotificationControllerService: NotificationControllerService;
 
   constructor(
-    private notificationControllerService: NotificationControllerService
+    private notificationControllerService: NotificationControllerService,
+    private sanitizer: DomSanitizer
   ) {
     NotificationsPageComponent.staticNotificationControllerService = notificationControllerService;
   }
@@ -27,12 +29,18 @@ export class NotificationsPageComponent implements OnInit {
     this.staticNotificationControllerService.getUserNotifications().subscribe({
       next: response => {
         console.log(response);
-        this.notifications = response;
+        this.notifications = response.sort(this.sortFunction);
       },
       error: error => {
         console.log(error.error);
       }
     })
+  }
+
+  private static sortFunction(a: Notification, b: Notification): number {
+    if(a.dateCreated < b.dateCreated) return 1;
+    if(a.dateCreated > b.dateCreated) return -1;
+    return 0;
   }
 
   makeAllNotificationsAsRead() {
@@ -70,6 +78,11 @@ export class NotificationsPageComponent implements OnInit {
 
   public static NewNotificationAdded() {
     this.GetNotificationsFromDatabase();
+  }
+
+  getSafeHTML(message: string) {
+    let safe =  this.sanitizer.bypassSecurityTrustHtml(message);
+    return safe;
   }
 
 }

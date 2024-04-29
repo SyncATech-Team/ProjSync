@@ -23,10 +23,10 @@
             <div class="notifications">
                 <div class="notification" *ngFor="let notification of getNotifications">
                     <div class="notification-header">
-                        <p class="date">{{ notification.dateCreated }}</p>
+                        <p class="date">{{ notification.dateCreated | date:'medium' }}</p>
                         <button class="mark-read" (click)="markNotificationAsRead(notification.id)">Mark as Read</button>
                     </div>
-                    <p class="content">{{ notification.message }}</p>
+                    <div class="content" [innerHTML]="getSafeHTML(notification.message)"></div>
                 </div>
             </div>
             

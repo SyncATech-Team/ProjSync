@@ -287,11 +287,28 @@ namespace backAPI.Controllers
             // [Id] [UserId] [Message] [DateCreated]
             List<Notification> notifications = new List<Notification>();
             foreach(var user in usersToInsert) {
+
+                string messageContent = "" +
+                    "<h4>🆕 You have been assigned a new task</h4>" +
+                    "<span style='background: red;'><strong>Due Date: </strong>" + created.DueDate.ToLongDateString() + "</span>" + 
+                    "<br>" +
+                    "<strong>Project: </strong>" + project.Name +
+                    "<br>" +
+                    "<strong>Group: </strong>" + issueGroup.Name +
+                    "<br>" + 
+                    "<strong>Task Name: </strong>" + created.Name +
+                    "<br>" +
+                    "<strong>Assignee/Reporter: </strong>";
+                if(user.Reporting) {
+                    messageContent += "Reporter";
+                }
+                else {
+                    messageContent += "Assignee";
+                }
+                
                 notifications.Add(new Notification {
                     UserId = user.UserId,
-                    Message = user.Reporting ?
-                        "You have been assigned as a reporter on task: " + created.Name :
-                        "You have been assigned a new task: " + created.Name,
+                    Message = messageContent,
                     DateCreated = created.UpdatedDate
                 });
             }
