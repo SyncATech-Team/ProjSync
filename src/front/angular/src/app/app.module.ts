@@ -109,6 +109,7 @@ import { KnobModule } from "primeng/knob";
 import { ProgressBarModule } from 'primeng/progressbar';
 import {DividerModule} from "primeng/divider";
 import { UploadDocumentComponent } from './components/elements/upload-document/upload-document.component';
+import {SliderModule} from 'primeng/slider';
 
 @NgModule({
   declarations: [
@@ -207,7 +208,8 @@ import { UploadDocumentComponent } from './components/elements/upload-document/u
     InputSwitchModule,
     KnobModule,
     ProgressBarModule,
-    DividerModule
+    DividerModule,
+    SliderModule
   ],
   providers: [
     CookieService,

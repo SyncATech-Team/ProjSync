@@ -192,7 +192,15 @@
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedColumns.includes('Completed')" pSortableColumn="completed">
                                     Completed
                                     <p-sortIcon field="completed"></p-sortIcon>
-                                    <p-columnFilter type="numeric" field="completed" display="menu"></p-columnFilter>
+                                    <p-columnFilter field="completed" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                            <p-slider [ngModel]="completedValues" [range]="true" (onSlideEnd)="filter($event.values)" styleClass="m-3"></p-slider>
+                                            <div class="flex align-items-center px-2">
+                                                <span>{{ completedValues[0] }} - </span>
+                                                <span>{{ completedValues[1] }}</span>
+                                            </div>
+                                        </ng-template>
+                                    </p-columnFilter>
                                 </th>
                         </ng-container>
                         </tr>

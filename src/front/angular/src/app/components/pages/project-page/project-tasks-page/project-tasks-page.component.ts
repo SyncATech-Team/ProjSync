@@ -55,6 +55,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   first = 0;
   rows = 10;
   totalRecords = 0;
+  completedValues: number[] = [0,100]; 
 
   ref: DynamicDialogRef | undefined;
 

@@ -499,14 +499,17 @@ namespace backAPI.Repositories.Implementation.Issues
                                             }
                                             else
                                             {
-                                                issues2 = issues.Where(i => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(i.Group.Name));
+                                                if (filter.Field == "groupName")
+                                                {
+                                                    issues2 = issues.Where(i => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(i.Group.Name));
+                                                }
+                                                else
+                                                {
+                                                    issues2 = issues.Where(i => (((JArray)fieldFilter.Value).ToObject<List<double>>()[0]) <= i.Issue.Completed && (((JArray)fieldFilter.Value).ToObject<List<double>>()[1]) >= i.Issue.Completed);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    // TODO filriranje po Complited
                                 }
                             }
                         }
