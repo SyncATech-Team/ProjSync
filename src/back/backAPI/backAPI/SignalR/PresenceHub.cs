@@ -7,6 +7,7 @@ namespace backAPI.SignalR
     /// <summary>
     /// Obavestava kad je user zakacen na hub i kada je diskonektovan sa hub-a
     /// </summary>
+    [Authorize]
     public class PresenceHub : Hub
     {
         private readonly PresenceTracker _tracker;
