@@ -116,6 +116,10 @@
         display: flex;
         flex-direction: column;
     }
+    
+    .calendar-wrapper .created-date{
+        margin-right: 0;
+    }
 }
 
 /* SLICICE NA DROPDOWN */
@@ -138,4 +142,15 @@
 :host ::ng-deep .content-editor .ql-video,
 :host ::ng-deep .content-editor .ql-image {
     display: none;
+}
+
+:host ::ng-deep #pn_id_44_panel table td,
+:host ::ng-deep #pn_id_45_panel table td{
+    padding: 6px;
+}
+
+:host ::ng-deep #pn_id_44_panel table span,
+:host ::ng-deep #pn_id_45_panel table span{
+    width: 28px;
+    height: 28px;
 }

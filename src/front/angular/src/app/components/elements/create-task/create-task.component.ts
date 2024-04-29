@@ -175,8 +175,7 @@ export class CreateTaskComponent implements OnInit {
           return;
         }
         this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
-        console.log(this.issueCreator.createdDate);
-        // this.issueCreator.createdDate = new Date(Date.UTC(this.issueCreator.createdDate.getFullYear(), this.issueCreator.createdDate.getMonth(), this.issueCreator.createdDate.getDate()));
+        this.issueCreator.createdDate = new Date(Date.UTC(this.issueCreator.createdDate.getFullYear(), this.issueCreator.createdDate.getMonth(), this.issueCreator.createdDate.getDate()));
         this.issueCreator.updatedDate = new Date();
         if(this.form.controls['issue-due-date'].value == null){
           this.msgPopUpService.showError("Unable to create task, due date is empty");
@@ -204,7 +203,6 @@ export class CreateTaskComponent implements OnInit {
         else{
           this._issueService.createIssue(this.issueCreator).subscribe({
             next : (response) => {
-              console.log(this.issueCreator.createdDate);
               this.msgPopUpService.showSuccess("Task successfully created");
               this.closeModal("created-task");
             },
