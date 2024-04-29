@@ -23,6 +23,7 @@ namespace backAPI.Controllers
         private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
         private readonly IssueNotificationService _issueNotificationService;
+        private readonly INotificationsRepository _notificationsRepository;
 
         /* ***************************************************************************************************
          * Konstruktor
@@ -36,7 +37,8 @@ namespace backAPI.Controllers
             IIssuePriorityRepository issuePriorityRepository,
             IIssueGroupRepository issueGroupRepository,
             IUserOnIssueRepository userOnIssueRepository,
-            IssueNotificationService issueNotificationService
+            IssueNotificationService issueNotificationService,
+            INotificationsRepository notificationsRepository
             ) {
                 _issueRepository = issueRepository;
                 _projectsRepository = projectsRepository;
@@ -47,6 +49,7 @@ namespace backAPI.Controllers
                 _issueGroupRepository = issueGroupRepository;
                 _userOnIssueRepository = userOnIssueRepository;
                 _issueNotificationService = issueNotificationService;
+                _notificationsRepository = notificationsRepository;
         }
 
         [HttpGet("issueId")]
@@ -279,6 +282,20 @@ namespace backAPI.Controllers
 
             // posalji norifikaciju da je kreiran zadatak
             await _issueNotificationService.NotifyUsersOnIssue(usernames.ToArray(), created.Name);
+
+            // dodaj notifikacije u tabelu Notifications
+            // [Id] [UserId] [Message] [DateCreated]
+            List<Notification> notifications = new List<Notification>();
+            foreach(var user in usersToInsert) {
+                notifications.Add(new Notification {
+                    UserId = user.UserId,
+                    Message = user.Reporting ?
+                        "You have been assigned as a reporter on task: " + created.Name :
+                        "You have been assigned a new task: " + created.Name,
+                    DateCreated = created.UpdatedDate
+                });
+            }
+            await _notificationsRepository.AddNotificationRangeAsync(notifications);
 
             List<Tuple<int, int>> dependenciesToInsert = new List<Tuple<int, int>>();
             if(creationModel.DependentOnIssues != null) {

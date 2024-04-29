@@ -3,6 +3,7 @@ import * as signalR from "@microsoft/signalr";
 import { environment } from "../../environments/environment";
 import { User } from "../_models/user";
 import { MessagePopupService } from "./message-popup.service";
+import { NotificationComponent } from "../components/elements/notification/notification.component";
 
 @Injectable({
     providedIn: 'root'
@@ -40,7 +41,8 @@ export class NotificationService {
             });
         
         this.hubConnection.on('ReceiveTaskNotification', (data: string) => {
-            this.msgPopupService.showInfo(data);
+            this.msgPopupService.showInfo("You have a new task assigned to you. Check it out.");
+            NotificationComponent.increaseNumberOfUnreadMessages();
         });
 
         this.hubConnection.onclose(() => {

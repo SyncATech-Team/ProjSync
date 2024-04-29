@@ -13,8 +13,10 @@ namespace backAPI.Repositories.Interface
         //DOVLACENJE NOTIFIKACIJE PO ID KORISNIKA
         Task<Notification> GetNotificationByUserIdAsync(int userId);
 
+        Task<int> GetNumberOfNotificationsForUserAsync(int userId);
+
         //DODAVANJE NOVE NOTIFIKACIJE
-        Task<Notification> AddNotificationAsync(Notification notification);
+        Task<IEnumerable<Notification>> AddNotificationRangeAsync(IEnumerable<Notification> notifications);
 
         //BRISANJE NOTIFIKACIJE PO ID
         Task<Boolean> DeleteNotificationAsync(int id);

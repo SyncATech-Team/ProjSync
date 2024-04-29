@@ -52,7 +52,7 @@ namespace backAPI.SignalR {
                 // If the online user is not in the list of usernames, skip
                 if (!usernames.Contains(onlineUserUsername)) continue;
 
-                await _hubContext.Clients.Clients(onlineUserConnectionIds).SendAsync("ReceiveTaskNotification", $"New task assigned: {taskName}");
+                await _hubContext.Clients.Clients(onlineUserConnectionIds).SendAsync("ReceiveTaskNotification", taskName);
                 Console.WriteLine(onlineUserUsername);
             }
         }
