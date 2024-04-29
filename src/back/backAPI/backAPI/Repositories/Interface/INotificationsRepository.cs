@@ -1,4 +1,5 @@
-﻿using backAPI.Entities.Domain;
+﻿using backAPI.DTO;
+using backAPI.Entities.Domain;
 
 namespace backAPI.Repositories.Interface
 {
@@ -11,12 +12,17 @@ namespace backAPI.Repositories.Interface
         Task<Notification> GetNotificationByIdAsync(int id);
 
         //DOVLACENJE NOTIFIKACIJE PO ID KORISNIKA
-        Task<Notification> GetNotificationByUserIdAsync(int userId);
+        Task<List<NotificationDto>> GetUserNotifications(int userId);
+
+        Task<int> GetNumberOfNotificationsForUserAsync(int userId);
 
         //DODAVANJE NOVE NOTIFIKACIJE
-        Task<Notification> AddNotificationAsync(Notification notification);
+        Task<IEnumerable<Notification>> AddNotificationRangeAsync(IEnumerable<Notification> notifications);
 
         //BRISANJE NOTIFIKACIJE PO ID
-        Task<Boolean> DeleteNotificationAsync(int id);
+        Task<bool> DeleteNotificationAsync(int id);
+
+        // BRISANJE SVIH NOTIFIKACIJA KOJE IMA KORISNIK
+        Task<bool> DeleteUsersNotificationsAsync(int userId);
     }
 }

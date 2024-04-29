@@ -84,6 +84,7 @@ import { BoardFilterComponent } from './components/elements/board/board-filter/b
 import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
+import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
 
 // GANTT CHART MODULES
 import { NgxGanttModule } from '@worktile/gantt';
@@ -113,6 +114,7 @@ import {SliderModule} from "primeng/slider";
 import { IssueChangeProgressComponent } from './components/elements/issues/issue-change-progress/issue-change-progress.component';
 import {MeterGroupModule} from "primeng/metergroup";
 import {BadgeModule} from "primeng/badge";
+import { HubConnectionInterceptor } from './_interceptors/hub-connection.interceptor';
 
 @NgModule({
   declarations: [
@@ -169,7 +171,8 @@ import {BadgeModule} from "primeng/badge";
     UserProfileComponent,
     AdminEditProfileComponent,
     UploadDocumentComponent,
-    IssueChangeProgressComponent
+    IssueChangeProgressComponent,
+    NotificationsPageComponent
   ],
     imports: [
         BrowserModule,
@@ -219,10 +222,9 @@ import {BadgeModule} from "primeng/badge";
     ],
   providers: [
     CookieService,
-    provideClientHydration(),
-    provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HubConnectionInterceptor, multi: true},
     MessageService,
     ConfirmationService,
     DialogService,

@@ -21,12 +21,13 @@ export class NavBarComponent implements OnInit {
   profilePicturePath: string = '';
 
   constructor(
-      public accoutService: AccountService,
+      private accountService: AccountService,
       private router: Router,
       private userService: UserService,
       private userProfilePictureService: UserProfilePicture
-    ) { }
-  
+    ) {
+  }
+
   ngOnInit(): void {
     this.userService.getUser(this.getUsername()).subscribe({
       next: response => {
@@ -54,7 +55,7 @@ export class NavBarComponent implements OnInit {
   }
   
   logout() {
-    this.accoutService.logout();
+    this.accountService.logout();
     this.router.navigateByUrl('/');
   }
 
@@ -63,6 +64,9 @@ export class NavBarComponent implements OnInit {
   }
 
   getUsername() {
+    if(typeof localStorage === "undefined") {
+      return null;
+    }
     let x = localStorage.getItem("user");
     if(x == null) return "";
 
@@ -108,5 +112,4 @@ export class NavBarComponent implements OnInit {
     image.src = vecaSlika.src;
      
   }
-
 }

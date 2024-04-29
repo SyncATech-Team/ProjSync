@@ -11,13 +11,13 @@ import {BehaviorSubject, Subject} from "rxjs";
 })
 export class PresenceService {
   hubUrl = environment.hubUrl;
-  private hubConnection?: HubConnection;
+  public hubConnection?: HubConnection;
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
 
   constructor(private msgPopupService: MessagePopupService) { }
 
-  createHubConnection(user: User) {
+  private createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'presence', {
         accessTokenFactory: () => user.token
@@ -25,7 +25,10 @@ export class PresenceService {
       .withAutomaticReconnect()
       .build();
 
-    this.hubConnection.start().catch((error: Error) => {
+    this.hubConnection
+    .start()
+    .then(() => {})
+    .catch((error: Error) => {
       console.log(error);
     });
 
@@ -45,4 +48,14 @@ export class PresenceService {
   stopHubConnection() {
     this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
   }
+
+  public createConnection(user: User) {
+    if(this.hubConnection == undefined || this.hubConnection.state == "Disconnected") {
+      this.createHubConnection(user);
+    }
+    else {
+      console.log("PresenceHub Connection State: " + this.hubConnection.state);
+    }
+  }
+
 }

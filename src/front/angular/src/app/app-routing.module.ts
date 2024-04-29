@@ -24,6 +24,7 @@ import { ProjectKanbanPageComponent } from './components/pages/project-page/proj
 import { loginGuard } from './_guards/login.guard';
 import { AdminEditProfileComponent } from './components/pages/admin-page/admin-edit-profile/admin-edit-profile.component';
 import { ProjectGuard } from './_guards/project.guard';
+import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,7 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'home', component: HomePageComponent, canActivate: [HomeGuard] },
+      { path: 'home/notifications', component: NotificationsPageComponent, canActivate: [HomeGuard] },
       { path: 'home/edit-profile', component: EditProfilePageComponent, canActivate: [HomeGuard] },
       { path: 'home/projects', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
       { path: 'home/projects/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },

@@ -54,9 +54,11 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IProjectDocumentationRepository, ProjectDocumentationRepository>();
 builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
 builder.Services.AddScoped<IIssueCommentRepository, IssueCommentRepository>();
+builder.Services.AddScoped<INotificationsRepository, NotificationRepository>();
 builder.Services.AddSignalR();
 // uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
 builder.Services.AddSingleton<PresenceTracker>();
+builder.Services.AddSingleton<IssueNotificationService>();
 
 var app = builder.Build();
 
@@ -91,6 +93,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<CommentsHub>("hubs/comment");
+app.MapHub<NotificationHub>("hubs/notification");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
