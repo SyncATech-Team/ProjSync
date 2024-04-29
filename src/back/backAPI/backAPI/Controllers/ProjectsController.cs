@@ -290,20 +290,7 @@ namespace backAPI.Controllers
             }
 
             var temp = await _projectsRepository.CreateProject(projectDto);
-
-            try
-            {
-                var createdProject = await _projectsRepository.CreateProject(projectDto);
-                return Ok();
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception)
-            {
-                return BadRequest(new { message = "Failed to create project" });
-            }
+            return Ok();
         }
         /* ***************************************************************************************
          * Update project with the given name
