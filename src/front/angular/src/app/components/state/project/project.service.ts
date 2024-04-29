@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { arrayRemove, arrayUpsert, setLoading } from '@datorama/akita';
 
-import { of } from 'rxjs';
+import {BehaviorSubject, of, take} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import {JProject} from "../../../_models/project";
 import {JIssue} from "../../../_models/issue";
@@ -11,6 +11,8 @@ import {ProjectStore} from "./project.store";
 import {environment} from "../../../../environments/environment";
 import {UsersWithCompletion} from "../../../_models/user-completion-level";
 import {JCommentDto} from "../../../_models/jcomment-dto";
+import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
+import {User} from "../../../_models/user";
 
 
 @Injectable({
@@ -18,9 +20,52 @@ import {JCommentDto} from "../../../_models/jcomment-dto";
 })
 export class ProjectService {
   baseUrl: string;
+  hubUrl = environment.hubUrl;
+  private hubConnection?: HubConnection;
+
+  private commentsSource = new BehaviorSubject<JComment[]>([]);
+  comments$ = this.commentsSource.asObservable();
 
   constructor(private _http: HttpClient, private _store: ProjectStore) {
     this.baseUrl = environment.apiUrl;
+  }
+
+  createHubConnection(user: User, issueId: string) {
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(this.hubUrl + 'comment?issueId=' + issueId, {
+        accessTokenFactory: () => user.token
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    this.hubConnection.start().catch(error => console.log(error));
+    this.hubConnection.on('ReceiveComments', comments => {
+      this.commentsSource.next(comments);
+    });
+
+    this.hubConnection.on('CreateComment', comment => {
+      const allIssues = this._store.getValue().issues;
+      let issue = allIssues.find((x) => x.id === issueId);
+      if (!issue) {
+        return;
+      }
+
+      const comments = arrayUpsert(issue.comments ?? [], comment.id, comment);
+      issue = {...issue, comments};
+      this._store.update((state) => {
+        const issues = arrayUpsert(state.issues, issue!.id, issue!);
+        return {
+          ...state,
+          issues
+        };
+      });
+    });
+  }
+
+  stopHubConnection() {
+    if (this.hubConnection) {
+      this.hubConnection.stop();
+    }
   }
 
   getProject(projectName: string) {
@@ -126,23 +171,7 @@ export class ProjectService {
     });
   }
 
-  updateIssueComment(issueId: string, comment: JComment) {
-    const allIssues = this._store.getValue().issues;
-    let issue = allIssues.find((x) => x.id === issueId);
-    if (!issue) {
-      return;
-    }
-
-    const comments = arrayUpsert(issue.comments ?? [], comment.id, comment);
-    issue = {...issue, comments};
-    this._store.update((state) => {
-      const issues = arrayUpsert(state.issues, issue!.id, issue!);
-      return {
-        ...state,
-        issues
-      };
-    });
-
+  async updateIssueComment(comment: JComment) {
     const commentDto: JCommentDto = {
       id: Number(comment.id),
       userId: comment.userId.toString(),
@@ -152,7 +181,8 @@ export class ProjectService {
       updatedAt: comment.updatedAt
     }
 
-    this._http.post<boolean>(`${this.baseUrl}IssuesComment`, commentDto).subscribe();
+    return this.hubConnection?.invoke('CreateCommentOnIssue', commentDto)
+      .catch(error => console.log(error));
   }
 
 }
