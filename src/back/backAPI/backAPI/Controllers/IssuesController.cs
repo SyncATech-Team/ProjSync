@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using backAPI.Other.Helpers;
 using Newtonsoft.Json;
+using backAPI.SignalR;
 
 namespace backAPI.Controllers
 {
@@ -23,6 +24,8 @@ namespace backAPI.Controllers
         private readonly IIssuePriorityRepository _issuePriorityRepository;
         private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
+        private readonly IssueNotificationService _issueNotificationService;
+        private readonly INotificationsRepository _notificationsRepository;
 
         /* ***************************************************************************************************
          * Konstruktor
@@ -35,7 +38,9 @@ namespace backAPI.Controllers
             IUsersRepository usersRepository,
             IIssuePriorityRepository issuePriorityRepository,
             IIssueGroupRepository issueGroupRepository,
-            IUserOnIssueRepository userOnIssueRepository
+            IUserOnIssueRepository userOnIssueRepository,
+            IssueNotificationService issueNotificationService,
+            INotificationsRepository notificationsRepository
             ) {
                 _issueRepository = issueRepository;
                 _projectsRepository = projectsRepository;
@@ -45,6 +50,8 @@ namespace backAPI.Controllers
                 _issuePriorityRepository = issuePriorityRepository;
                 _issueGroupRepository = issueGroupRepository;
                 _userOnIssueRepository = userOnIssueRepository;
+                _issueNotificationService = issueNotificationService;
+                _notificationsRepository = notificationsRepository;
         }
 
         [HttpGet("issueId")]
@@ -315,6 +322,7 @@ namespace backAPI.Controllers
             }
 
             List<UsersOnIssue> usersToInsert = new List<UsersOnIssue>();
+            List<string> usernames = new List<string>();
 
             usersToInsert.Add(new UsersOnIssue
             {
@@ -323,6 +331,7 @@ namespace backAPI.Controllers
                 Reporting = true,
                 CompletionLevel = 0.0
             });
+            usernames.Add(issueReporter.UserName);
 
             foreach (var assigneeId in assignedToIds)
             {
@@ -334,9 +343,44 @@ namespace backAPI.Controllers
                     Reporting = false,
                     CompletionLevel = 0.0
                 });
+                usernames.Add(assigneeId.UserName);
             }
 
             await _userOnIssueRepository.AddUserOnIssue(usersToInsert);
+
+            // posalji norifikaciju da je kreiran zadatak
+            await _issueNotificationService.NotifyUsersOnIssue(usernames.ToArray(), created.Name);
+
+            // dodaj notifikacije u tabelu Notifications
+            // [Id] [UserId] [Message] [DateCreated]
+            List<Notification> notifications = new List<Notification>();
+            foreach(var user in usersToInsert) {
+
+                string messageContent = "" +
+                    "<h4>🆕 You have been assigned a new task</h4>" +
+                    "<span style='background: red;'><strong>Due Date: </strong>" + created.DueDate.ToLongDateString() + "</span>" + 
+                    "<br>" +
+                    "<strong>Project: </strong>" + project.Name +
+                    "<br>" +
+                    "<strong>Group: </strong>" + issueGroup.Name +
+                    "<br>" + 
+                    "<strong>Task Name: </strong>" + created.Name +
+                    "<br>" +
+                    "<strong>Assignee/Reporter: </strong>";
+                if(user.Reporting) {
+                    messageContent += "Reporter";
+                }
+                else {
+                    messageContent += "Assignee";
+                }
+                
+                notifications.Add(new Notification {
+                    UserId = user.UserId,
+                    Message = messageContent,
+                    DateCreated = created.UpdatedDate
+                });
+            }
+            await _notificationsRepository.AddNotificationRangeAsync(notifications);
 
             List<Tuple<int, int>> dependenciesToInsert = new List<Tuple<int, int>>();
             if(creationModel.DependentOnIssues != null) {

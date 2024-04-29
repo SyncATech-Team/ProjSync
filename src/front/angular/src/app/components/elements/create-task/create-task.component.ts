@@ -246,6 +246,7 @@ export class CreateTaskComponent implements OnInit {
     this.ref.onClose.subscribe((data: any) => {
       if(data != "created-group") return;     // NE REFRESHUJ MODAL ZA KREIRANJE ZADATKA UKOLIKO NIJE DODATA GRUPA
 
+      console.log("Refresh modal");
       this.ngOnInit();
     });
   }

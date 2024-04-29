@@ -1,0 +1,37 @@
+<app-spinner></app-spinner>
+<p-toast></p-toast>
+
+<div id="page-wrapper">
+    
+    <app-nav-bar></app-nav-bar>
+
+    <div class="container">
+        
+        <div class="notification-center">
+            
+            <div class="header">
+                <h1>Notification Center</h1>
+                <button id="mark-all-read" (click)="makeAllNotificationsAsRead()">Mark All as Read</button>
+            </div>
+
+            <div class="unread-count">
+                <span id="unread-count">
+                    {{getNotifications.length}}
+                </span> Unread Notifications
+            </div>
+            
+            <div class="notifications">
+                <div class="notification" *ngFor="let notification of getNotifications">
+                    <div class="notification-header">
+                        <p class="date">{{ notification.dateCreated | date:'medium' }}</p>
+                        <button class="mark-read" (click)="markNotificationAsRead(notification.id)">Mark as Read</button>
+                    </div>
+                    <div class="content" [innerHTML]="getSafeHTML(notification.message)"></div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+</div>
