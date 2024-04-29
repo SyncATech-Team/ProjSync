@@ -22,7 +22,7 @@ namespace backAPI.DTO.Issues
         public List<string> UserIds { get; set; }
         public List<UsersOnIssueDto> UsersWithCompletion { get; set; }
         public double Completed { get; set; }
-        // public List<JComment> Comments { get; set; }
+        public List<JCommentDto> Comments { get; set; }
         public string ProjectId { get; set; }
     }
 }

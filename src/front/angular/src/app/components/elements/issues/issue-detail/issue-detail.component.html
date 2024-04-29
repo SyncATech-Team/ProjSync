@@ -27,7 +27,9 @@
             <issue-description [issue]="issue"></issue-description>
 
             <div class="pt-4 pb-2 fs-5 fw-bold">Comments</div>
-            <issue-comments [issue]="issue"></issue-comments>
+            <issue-comments [issue]="issue"
+                            [users]="projectQuery.users$ | async"
+                            [usersPhotos]="usersPhotos"></issue-comments>
         </div>
         <div class="col-sm-12 col-md-5 col-lg-4 pt-1">
             <issue-status [issue]="issue"></issue-status>

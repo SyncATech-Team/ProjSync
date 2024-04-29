@@ -10,6 +10,7 @@ import {JComment} from "../../../_models/comment";
 import {ProjectStore} from "./project.store";
 import {environment} from "../../../../environments/environment";
 import {UsersWithCompletion} from "../../../_models/user-completion-level";
+import {JCommentDto} from "../../../_models/jcomment-dto";
 
 
 @Injectable({
@@ -127,15 +128,31 @@ export class ProjectService {
 
   updateIssueComment(issueId: string, comment: JComment) {
     const allIssues = this._store.getValue().issues;
-    const issue = allIssues.find((x) => x.id === issueId);
+    let issue = allIssues.find((x) => x.id === issueId);
     if (!issue) {
       return;
     }
 
     const comments = arrayUpsert(issue.comments ?? [], comment.id, comment);
-    this.updateIssue({
-      ...issue,
-      comments
+    issue = {...issue, comments};
+    this._store.update((state) => {
+      const issues = arrayUpsert(state.issues, issue!.id, issue!);
+      return {
+        ...state,
+        issues
+      };
     });
+
+    const commentDto: JCommentDto = {
+      id: Number(comment.id),
+      userId: comment.userId.toString(),
+      body: comment.body,
+      issueId: comment.issueId,
+      createdAt: comment.createdAt,
+      updatedAt: comment.updatedAt
+    }
+
+    this._http.post<boolean>(`${this.baseUrl}IssuesComment`, commentDto).subscribe();
   }
+
 }

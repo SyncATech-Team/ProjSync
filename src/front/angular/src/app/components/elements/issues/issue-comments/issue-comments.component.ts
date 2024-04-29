@@ -1,5 +1,7 @@
 import { Component, Input  } from '@angular/core';
 import { JIssue } from '../../../../_models/issue';
+import {JUser} from "../../../../_models/user-issues";
+import {PhotoForUser} from "../../../../_models/photo-for-user";
 
 @Component({
   selector: 'issue-comments',
@@ -8,6 +10,8 @@ import { JIssue } from '../../../../_models/issue';
 })
 export class IssueCommentsComponent {
   @Input() issue!: JIssue;
+  @Input() users!: JUser[] | null;
+  @Input() usersPhotos!: PhotoForUser[];
 
   constructor() {}
 }
