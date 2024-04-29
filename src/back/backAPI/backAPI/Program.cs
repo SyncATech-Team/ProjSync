@@ -53,6 +53,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IProjectDocumentationRepository, ProjectDocumentationRepository>();
 builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
+builder.Services.AddScoped<IIssueCommentRepository, IssueCommentRepository>();
 builder.Services.AddScoped<INotificationsRepository, NotificationRepository>();
 builder.Services.AddSignalR();
 // uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
@@ -91,6 +92,7 @@ Console.ForegroundColor = ConsoleColor.White;
 app.UseAuthorization();
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<CommentsHub>("hubs/comment");
 app.MapHub<NotificationHub>("hubs/notification");
 
 using var scope = app.Services.CreateScope();

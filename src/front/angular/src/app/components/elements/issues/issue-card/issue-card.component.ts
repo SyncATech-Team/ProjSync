@@ -22,7 +22,6 @@ export class IssueCardComponent implements OnChanges, OnInit {
   assignees!: (JUser | undefined)[];
   issueTypeIcon!: string;
   priorityIcon!: IssuePriorityIcon;
-  value!: any;
 
   ref: DynamicDialogRef | undefined;
 
@@ -32,8 +31,6 @@ export class IssueCardComponent implements OnChanges, OnInit {
     this._projectQuery.users$.pipe(untilDestroyed(this)).subscribe((users) => {
       this.assignees = this.issue.userIds.map((userId) => users.find((x) => x.id === userId));
     });
-
-    this.value = [{ label: 'Task completion', value: this.issue.completed, color: '#34d399' }];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -42,7 +39,6 @@ export class IssueCardComponent implements OnChanges, OnInit {
       this.issueTypeIcon = IssueUtil.getIssueTypeIcon(this.issue.type);
       this.priorityIcon = IssueUtil.getIssuePriorityIcon(this.issue.priority);
     }
-    this.value = [{ label: 'Task completion', value: this.issue.completed, color: '#34d399' }];
   }
 
   openIssueModal(issueId: string) {
@@ -74,4 +70,5 @@ export class IssueCardComponent implements OnChanges, OnInit {
     return this.usersPhotos[ind].photoSource;
   }
 
+  protected readonly Math = Math;
 }

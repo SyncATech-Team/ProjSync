@@ -26,12 +26,13 @@ namespace backAPI.Controllers
         private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
         private readonly IUserOnProjectRepository _userOnProjectRepository;
+        private readonly IIssueCommentRepository _issueCommentRepository;
 
         public ProjectsController(IProjectsRepository projectsRepository, IUsersRepository usersRepository,
             IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository,
             IIssueRepository issueRepository,IIssueTypeRepository issueTypeRepository, IIssueStatusRepository issueStatusRepository,
             IIssuePriorityRepository issuePriorityRepository, IIssueGroupRepository issueGroupRepository, IUserOnIssueRepository userOnIssueRepository,
-            IUserOnProjectRepository userOnProjectRepository)
+            IUserOnProjectRepository userOnProjectRepository, IIssueCommentRepository issueCommentRepository)
         {
             _projectsRepository = projectsRepository;
             _usersRepository = usersRepository;
@@ -44,6 +45,7 @@ namespace backAPI.Controllers
             _issueGroupRepository = issueGroupRepository;
             _userOnIssueRepository = userOnIssueRepository;
             _userOnProjectRepository = userOnProjectRepository;
+            _issueCommentRepository = issueCommentRepository;
         }
         /* ***************************************************************************************
          * Get all projects
@@ -205,12 +207,36 @@ namespace backAPI.Controllers
                     var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                     var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
+                    var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
+                    
                     var project = projectByName;
 
                     List<string> assigneeIdsList = new List<string>();
                     foreach (var assigneeId in assigneeIds)
                     {
                         assigneeIdsList.Add(assigneeId.ToString());
+                    }
+
+                    List<JCommentDto> commentDtos = new List<JCommentDto>();
+                    foreach (var item in comments)
+                    {
+                        var user = await _usersRepository.GetUserById(item.UserId);
+                        var userDto = new UserDto()
+                        {
+                            Name = user.FirstName + ' ' + user.LastName,
+                            Username = user.UserName
+                        };
+
+                        commentDtos.Add(new JCommentDto
+                        {
+                            Id = item.Id,
+                            IssueId = item.IssueId.ToString(),
+                            UserId = item.UserId.ToString(),
+                            Body = item.Content,
+                            CreatedAt = item.Created.ToString(),
+                            UpdatedAt = item.Created.ToString(),
+                            User = userDto
+                        });
                     }
 
                     JIssueDto issueDto = new JIssueDto
@@ -232,7 +258,8 @@ namespace backAPI.Controllers
                         ProjectId = project.Id.ToString(),
                         UserIds = assigneeIdsList,
                         UsersWithCompletion = assigneeeCompletionLevel.ToList(),
-                        Completed = issue.Completed
+                        Completed = issue.Completed,
+                        Comments = commentDtos
                     };
 
                     issues.Add(issueDto);
@@ -254,21 +281,15 @@ namespace backAPI.Controllers
 
             if(await _projectsRepository.ProjectExistsByName(projectDto.Name))
             {
-                return BadRequest("Project name is taken");
+                return BadRequest(new { message = "Project name is taken" });
             }
 
             if(await _projectsRepository.ProjectExistsByKey(projectDto.Key))
             {
-                return BadRequest("Project key is taken");
+                return BadRequest(new { message = "Project key is taken" });
             }
 
             var temp = await _projectsRepository.CreateProject(projectDto);
-
-            if(temp == null)
-            {
-                return BadRequest("Project name or type or visibility is null");
-            }
-
             return Ok();
         }
         /* ***************************************************************************************
