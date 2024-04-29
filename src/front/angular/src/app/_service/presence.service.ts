@@ -17,7 +17,7 @@ export class PresenceService {
 
   constructor(private msgPopupService: MessagePopupService) { }
 
-  createHubConnection(user: User) {
+  private createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'presence', {
         accessTokenFactory: () => user.token
@@ -27,7 +27,7 @@ export class PresenceService {
 
     this.hubConnection
     .start()
-    .then(() => console.log("Connection to PresenceHub started..."))
+    .then(() => {})
     .catch((error: Error) => {
       console.log(error);
     });
@@ -48,4 +48,14 @@ export class PresenceService {
   stopHubConnection() {
     this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
   }
+
+  public createConnection(user: User) {
+    if(this.hubConnection == undefined || this.hubConnection.state == "Disconnected") {
+      this.createHubConnection(user);
+    }
+    else {
+      console.log("PresenceHub Connection State: " + this.hubConnection.state);
+    }
+  }
+
 }

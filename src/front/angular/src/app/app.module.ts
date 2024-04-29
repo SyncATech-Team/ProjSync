@@ -113,6 +113,7 @@ import {SliderModule} from "primeng/slider";
 import { IssueChangeProgressComponent } from './components/elements/issues/issue-change-progress/issue-change-progress.component';
 import {MeterGroupModule} from "primeng/metergroup";
 import {BadgeModule} from "primeng/badge";
+import { HubConnectionInterceptor } from './_interceptors/hub-connection.interceptor';
 
 @NgModule({
   declarations: [
@@ -219,10 +220,9 @@ import {BadgeModule} from "primeng/badge";
     ],
   providers: [
     CookieService,
-    provideClientHydration(),
-    provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HubConnectionInterceptor, multi: true},
     MessageService,
     ConfirmationService,
     DialogService,

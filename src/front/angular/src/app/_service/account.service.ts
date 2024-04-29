@@ -8,7 +8,8 @@ import { UserGetter } from '../_models/user-getter';
 import { ResetPassword } from '../_models/reset-password';
 import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-response';
 import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
-import { PresenceService } from "./presence.service";
+import { PresenceService } from './presence.service';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,11 @@ import { PresenceService } from "./presence.service";
 export class AccountService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient,private presenceService: PresenceService) { }
+  constructor(
+    private http: HttpClient,
+    private presenceService: PresenceService,
+    private notificationService: NotificationService
+  ) { }
 
   login(model: any) {
     // POST: http://localhost:5000/api/Account/login, model se salje preko body-ja
@@ -35,7 +40,7 @@ export class AccountService {
   }
 
   getCurrentUser(): User | null {
-
+    
     /**
      * This modification ensures that the function gracefully handles
      * scenarios where localStorage is not available, returning null in such cases.
@@ -67,7 +72,6 @@ export class AccountService {
     // korisnik moze da ima jednu ili vise uloga, zato pravimo niz
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     user.permitions = permitions;
-    this.presenceService.createHubConnection(user);
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -107,6 +111,7 @@ export class AccountService {
     // izbrisati iz lokalne memorije
     localStorage.removeItem('user');
     this.presenceService.stopHubConnection();
+    this.notificationService.stopHubConnection();
   }
 
   getDecodedToken(token: string) {

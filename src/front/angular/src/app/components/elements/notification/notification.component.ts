@@ -1,13 +1,18 @@
-import { Component, Input } from '@angular/core';
-import { nData } from './notification-data';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css'
 })
-export class NotificationComponent {
-  @Input() notify_collapsed : boolean = false;
+export class NotificationComponent implements OnInit {
   
-  notificationData = nData;
+  unreadNotifications: number = 0;
+  
+  constructor() { }
+
+  ngOnInit(): void {
+    
+  }
+
 }

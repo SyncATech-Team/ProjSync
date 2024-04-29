@@ -19,23 +19,54 @@ export class NotificationService {
     /**
      * createHubConnection
      */
-    public createHubConnection(user: User) {
-        this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl(this.hubUrl + 'notification', {
+    private createHubConnection(user: User) {
+        
+        let options = {
             accessTokenFactory: () => user.token
-        })
+        };
+        
+        this.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl(this.hubUrl + 'notification', options)
         .withAutomaticReconnect()
+        .configureLogging(signalR.LogLevel.Information)
         .build();
-
+        
+        
         this.hubConnection
-        .start()
-        .then(() => console.log("Connection to NotificationHub started..."))
-        .catch((error: Error) => {
-            console.log(error);
-        });
-
+            .start()
+            .then(() => {})
+            .catch((error: Error) => {
+                console.log(error.message);
+            });
+        
         this.hubConnection.on('ReceiveTaskNotification', (data: string) => {
             this.msgPopupService.showInfo(data);
         });
+
+        this.hubConnection.onclose(() => {
+            console.log("Connection to NotificationHub closed");
+            this.createHubConnection(user);
+        })
+
+        this.hubConnection.onreconnecting(() => {
+            console.log("Reconnecting to the notification hub...");
+        })
+
     }
+
+    stopHubConnection() {
+        this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
+    }
+
+    public createConnection(user: User) {
+        if( this.hubConnection == undefined || 
+            this.hubConnection.state == "Disconnected"
+        ) {
+            this.createHubConnection(user);
+        }
+        else {
+            console.log("NotificationHub Connection State: " + this.hubConnection.state);
+        }
+    }
+
 }
