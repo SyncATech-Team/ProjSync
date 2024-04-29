@@ -4,7 +4,11 @@
       {{ issue.type }}: {{ issue.id }} - {{ issue.title }}
     </p>
 
-    <p-meterGroup [value]="value"></p-meterGroup>
+    <p-progressBar
+      [value]="Math.trunc(issue.completed)"
+      [style]="{'height': '15px', 'margin-top': '20px'}">
+    </p-progressBar>
+    <div style="margin-bottom: 10px">Task completed {{Math.trunc(issue.completed)}} %</div>
 
     <div class="d-flex align-items-center justify-content-between">
 
