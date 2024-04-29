@@ -22,18 +22,9 @@
     font-size: 14px;
     line-height: 18px;
     height: 18px;
-    background: #5E5BF4;
     color: #FFF;
     border-radius: 11px;
     white-space: nowrap;
-  }
-  
-  .notifier.green .badge {
-    background: #06D6A0;
-  }
-  
-  .notifier.green .bell:hover {
-    color: #06D6A0;
   }
   
   .notifier.new .badge {
@@ -62,3 +53,15 @@
       transform: scale3d(1, 1, 1);
     }
   }
+
+.badgecolor-red {
+  background: rgb(210, 42, 42)
+}
+
+.badgecolor-yellow {
+  background: #b7b710;
+}
+
+.badgecolor-blue {
+  background: #5E5BF4;
+}

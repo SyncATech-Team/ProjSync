@@ -38,8 +38,28 @@ export class NotificationComponent implements OnInit {
 
   private static ChangeNumberOfUnreadNotificationsUI(value: number) {
     let element = document.getElementById("number-of-unread-notifications-span");
-    if(element)
-      element.innerHTML = "" + value;
+    let badgeDiv = document.getElementById("badge-div");
+    let valueToInsert = (value <= 99) ? "" + value : "99+";
+
+    if(element) {
+
+      element.innerHTML = "" + valueToInsert;
+
+      if(badgeDiv!.classList.contains("badgecolor-blue")) badgeDiv!.classList.remove("badgecolor-blue");
+      if(badgeDiv!.classList.contains("badgecolor-yellow")) badgeDiv!.classList.remove("badgecolor-yellow");
+      if(badgeDiv!.classList.contains("badgecolor-red")) badgeDiv!.classList.remove("badgecolor-red");
+
+      if(this.unreadNotifications < 5) {
+        badgeDiv!.classList.add("badgecolor-blue");
+      }
+      else if(this.unreadNotifications < 10) {
+        badgeDiv!.classList.add("badgecolor-yellow");
+      }
+      else {
+        badgeDiv!.classList.add("badgecolor-red");
+      }
+
+    }
   }
 
 }
