@@ -281,22 +281,29 @@ namespace backAPI.Controllers
 
             if(await _projectsRepository.ProjectExistsByName(projectDto.Name))
             {
-                return BadRequest("Project name is taken");
+                return BadRequest(new { message = "Project name is taken" });
             }
 
             if(await _projectsRepository.ProjectExistsByKey(projectDto.Key))
             {
-                return BadRequest("Project key is taken");
+                return BadRequest(new { message = "Project key is taken" });
             }
 
             var temp = await _projectsRepository.CreateProject(projectDto);
 
-            if(temp == null)
+            try
             {
-                return BadRequest("Project name or type or visibility is null");
+                var createdProject = await _projectsRepository.CreateProject(projectDto);
+                return Ok();
             }
-
-            return Ok();
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { message = "Failed to create project" });
+            }
         }
         /* ***************************************************************************************
          * Update project with the given name

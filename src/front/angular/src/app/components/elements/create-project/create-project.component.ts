@@ -37,8 +37,8 @@ export class CreateProjectComponent implements OnInit{
     typeName: "",
     description: "",
     ownerUsername: "",
-    creationDate: new Date(), 
-    dueDate: new Date(),
+    creationDate: null!, 
+    dueDate: null!,
     budget: 0,
     visibilityName: "",
   }
@@ -95,7 +95,28 @@ export class CreateProjectComponent implements OnInit{
   create():void{
     var DueDateFormated = new Date(this.creationModel.dueDate);
     this.creationModel.ownerUsername = this.currentUser;
-    
+
+    if(this.creationModel.name == ""){
+      this.msgPopUpService.showError("Unable to create project, project name is empty");
+      return; 
+    }
+    else if(this.creationModel.typeName == ""){
+      this.msgPopUpService.showError("Unable to create project, project type is empty");
+      return;
+    }
+    else if(this.creationModel.visibilityName == ""){
+      this.msgPopUpService.showError("Unable to create project, visibility name is empty");
+      return;
+    }
+    else if(this.creationModel.creationDate == null){
+      this.msgPopUpService.showError("Unable to create project, creation date is not set");
+      return;
+    }
+    else if(this.creationModel.dueDate == null){
+      this.msgPopUpService.showError("Unable to create project, due date is not set");
+      return;
+    }
+
     if(this.creationModel.dueDate < this.creationModel.creationDate){
       this.msgPopUpService.showError("Unable to create project, due date is before creation date");
     }
@@ -114,7 +135,8 @@ export class CreateProjectComponent implements OnInit{
           // this.formCreateProject.reset();
         },
         error: (error)=>{
-          this.msgPopUpService.showError("Unable to create project. Some fields are empty.");
+          this.msgPopUpService.showError(error.error.message);
+          // this.msgPopUpService.showError("Unable to create project. Some fields are empty.");
         }
       });
     }
