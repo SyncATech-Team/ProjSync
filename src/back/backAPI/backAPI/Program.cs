@@ -90,6 +90,7 @@ Console.ForegroundColor = ConsoleColor.White;
 app.UseAuthorization();
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<CommentsHub>("hubs/comment");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

@@ -20,7 +20,7 @@ namespace backAPI.Repositories.Implementation.Issues
         {
             IssueComment ic = new IssueComment
             {
-                Id = (int)model.Id,
+                Id = model.Id,
                 UserId = Int32.Parse(model.UserId),
                 IssueId = Int32.Parse(model.IssueId),
                 Content = model.Body,

@@ -56,12 +56,14 @@ export class IssueCommentComponent implements OnInit {
 
   addComment() {
     const now = new Date();
-    this.projectService.updateIssueComment(this.issueId, {
+    this.projectService.updateIssueComment({
       ...this.comment,
       id: IssueUtil.getRandomId(),
       createdAt: now.toISOString(),
       updatedAt: now.toISOString(),
       body: this.commentControl.value
+    }).then( () => {
+      this.commentBoxRef.nativeElement.reset();
     });
     this.cancelAddComment();
   }
