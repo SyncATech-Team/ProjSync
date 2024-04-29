@@ -4,6 +4,7 @@ import { environment } from "../../environments/environment";
 import { User } from "../_models/user";
 import { MessagePopupService } from "./message-popup.service";
 import { NotificationComponent } from "../components/elements/notification/notification.component";
+import { NotificationsPageComponent } from "../components/pages/notifications-page/notifications-page.component";
 
 @Injectable({
     providedIn: 'root'
@@ -43,6 +44,7 @@ export class NotificationService {
         this.hubConnection.on('ReceiveTaskNotification', (data: string) => {
             this.msgPopupService.showInfo("You have a new task assigned to you. Check it out.");
             NotificationComponent.increaseNumberOfUnreadMessages();
+            NotificationsPageComponent.NewNotificationAdded();
         });
 
         this.hubConnection.onclose(() => {

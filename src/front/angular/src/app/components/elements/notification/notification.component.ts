@@ -36,6 +36,20 @@ export class NotificationComponent implements OnInit {
     this.ChangeNumberOfUnreadNotificationsUI(this.unreadNotifications);
   }
 
+  public static decreaseNumberOfUnreadMessages(): void {
+    this.unreadNotifications = this.unreadNotifications - 1;
+    this.ChangeNumberOfUnreadNotificationsUI(this.unreadNotifications);
+  }
+
+  public static resetoToZero(): void {
+    this.unreadNotifications = 0;
+    this.ChangeNumberOfUnreadNotificationsUI(this.unreadNotifications);
+  }
+
+  public static getNumberOfUnreadNotifications(): number {
+    return this.unreadNotifications;
+  }
+
   private static ChangeNumberOfUnreadNotificationsUI(value: number) {
     let element = document.getElementById("number-of-unread-notifications-span");
     let badgeDiv = document.getElementById("badge-div");

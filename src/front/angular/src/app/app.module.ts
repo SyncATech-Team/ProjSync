@@ -84,6 +84,7 @@ import { BoardFilterComponent } from './components/elements/board/board-filter/b
 import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
+import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
 
 // GANTT CHART MODULES
 import { NgxGanttModule } from '@worktile/gantt';
@@ -170,7 +171,8 @@ import { HubConnectionInterceptor } from './_interceptors/hub-connection.interce
     UserProfileComponent,
     AdminEditProfileComponent,
     UploadDocumentComponent,
-    IssueChangeProgressComponent
+    IssueChangeProgressComponent,
+    NotificationsPageComponent
   ],
     imports: [
         BrowserModule,
