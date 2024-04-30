@@ -213,7 +213,10 @@
                                 <td *ngIf="column=='Name'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                     
                                     <div class="alignt-text-left">
-                                        <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" (click)="openIssueModal(task.id)">{{ task.name }}</a>
+                                        <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
+                                            (click)="openIssueModal(task.id)"
+                                            pTooltip="{{task.name}}"
+                                            >{{ getTrimmedTitle(task.name) }}</a>
                                     </div>
                                 </td>
                                 <td *ngIf="column=='Priority' && selectedColumns.includes('Priority')" style="width: 17vh; " class="fill-td">

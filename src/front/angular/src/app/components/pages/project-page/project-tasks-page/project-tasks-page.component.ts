@@ -290,4 +290,10 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  getTrimmedTitle(current: string) {
+    const MAX_NUMBER_OF_CHARACTERS = 20;
+    if(current.length <= MAX_NUMBER_OF_CHARACTERS) return current;
+    return current.substring(0, MAX_NUMBER_OF_CHARACTERS) + "...";
+  }
+  
 }
