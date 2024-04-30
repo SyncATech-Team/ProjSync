@@ -9,6 +9,8 @@ import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { IssueService } from '../../../_service/issue.service';
+import { IssueModel } from '../../../_models/model-issue.model';
 
 @Component({
   selector: 'app-home-page',
@@ -42,6 +44,9 @@ export class HomePageComponent implements OnInit {
   usersPhotos : PhotoForUser[] = [];
 
   showUserTasks: boolean = false;
+  userIssues : IssueModel[] = [];
+  issueColumns! : string[];
+  selectedIssueColumns!: string[];
 
   constructor(
     public accoutService: AccountService,
@@ -49,13 +54,17 @@ export class HomePageComponent implements OnInit {
     private projectTypes:ProjectTypeService,
     private companyroleService: CompanyroleService,
     private userService: UserService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    private issueService : IssueService
   ) { }
 
   ngOnInit(): void {
     this.columns = ['Key','Type','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
+
+    this.issueColumns = ['Name','Type','Status','Priority','Creation Date', 'Due Date', 'Owner']
+
     this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
@@ -181,8 +190,19 @@ export class HomePageComponent implements OnInit {
   }
 
   filterTasksByUser() {
-    // Implementirajte logiku filtriranja taskova prema trenutnom korisniku ili drugom kriterijumu
-    // Na primer, možete koristiti API poziv da dobijete taskove koji su dodeljeni trenutnom korisniku
+    let user = this.accoutService.getCurrentUser(); //potencijalno dodati kao polje i da se onda samo jednom getuje username
+    if(user){
+      this.issueService.getUserIssues(user?.username).subscribe({
+        next: (response) => {
+          this.userIssues = response;
+          console.log(this.userIssues);
+        },
+        error: (error) => {
+          console.log(error.error);
+        }
+      });
+    }
+
     this.showUserTasks = true;
   }
   
@@ -245,6 +265,17 @@ export class HomePageComponent implements OnInit {
     else
       s = projectName;
 
+    return s;
+  }
+
+  MAX_ISSUE_NAME_LENGTH_DISPLAY = 20;
+  getIssueName(issueName : string) : string{
+    let s = "";
+    if(issueName.length > this.MAX_ISSUE_NAME_LENGTH_DISPLAY)
+      s = issueName.substring(0, this.MAX_ISSUE_NAME_LENGTH_DISPLAY) + "...";
+    else
+      s = issueName;
+    
     return s;
   }
 

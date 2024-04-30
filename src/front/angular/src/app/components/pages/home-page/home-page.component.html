@@ -24,6 +24,95 @@
             </li>
         </ul>
         <!-- End -->
+        <div id="issues" *ngIf="showUserTasks">
+            <p-table
+            [value]="userIssues"
+            dataKey="name"
+            [tableStyle]="{'width':'100%'}"
+            responsiveLayout="stack"
+            breakpoint="960px"
+            styleClass="p-datatable-striped"
+            [resizableColumns]="true"
+            [reorderableColumns]="true"
+            [columns]="issueColumns">
+
+                <ng-template pTemplate="caption">
+                    <div class="table-header">
+                        <div class="left-side">
+                            <div class="p-input-icon-right input-search">
+                                <input id="home-projects-search" name="projects-serach" class="form-control project-search"
+                                type="search" placeholder="Search" aria-label="Search" 
+                                [(ngModel)]="searchTerm" (input)="filterProjectsByName()" icon="pi pi-search">
+                                <i class="pi pi-search"></i>
+                            </div>
+                        </div>
+
+                        <div class="right-side">
+
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-issueColumns>
+                    <tr>
+                        <ng-container *ngFor="let column of issueColumns">
+                            <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="name">
+                                <div class="flex align-items-center">
+                                Name
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedColumns.includes('Key')" pSortableColumn="key">
+                                <div class="flex align-items-center">
+                                Type
+                            </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedColumns.includes('Type')" pSortableColumn="typeName">
+                                <div class="flex align-items-center">
+                                Status
+                            </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedColumns.includes('Owner')" pSortableColumn="ownerUsername">
+                                <div class="flex align-items-center">
+                                Priority
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" pSortableColumn="creationDate">
+                                <div class="flex align-items-center">
+                                Creation Date
+                            </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
+                                <div class="flex align-items-center">
+                                Due Date
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Owner' && selectedColumns.includes('Owner')" pSortableColumn="owners">
+                                <div class="flex align-items-center">
+                                Owner
+                                </div>
+                            </th>                      
+                        </ng-container>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-issue let-columns="columns">
+                    <tr>
+                        <ng-container *ngFor="let column of columns">
+                            <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
+                                <div id="name-cont">
+                                    <a style="text-decoration: none;" 
+                                        routerLink=""
+                                        title="{{issue.name}}">{{ getIssueName(issue.name) }}</a>
+                                </div>
+                            </td>
+                            <td *ngIf="column=='Type' && selectedColumns.includes('Type')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Type</span>
+                                {{ issue.typeName }}
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+                
+            </p-table>
+        </div>
 
         <div id="projects" *ngIf="!showUserTasks">
 
