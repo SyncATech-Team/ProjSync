@@ -54,7 +54,7 @@ export class PresenceService {
       this.createHubConnection(user);
     }
     else {
-      console.log("PresenceHub Connection State: " + this.hubConnection.state);
+      // console.log("PresenceHub Connection State: " + this.hubConnection.state);
     }
   }
 

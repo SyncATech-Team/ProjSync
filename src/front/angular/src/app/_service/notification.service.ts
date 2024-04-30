@@ -69,7 +69,7 @@ export class NotificationService {
             this.createHubConnection(user);
         }
         else {
-            console.log("NotificationHub Connection State: " + this.hubConnection.state);
+            // console.log("NotificationHub Connection State: " + this.hubConnection.state);
         }
     }
 
