@@ -144,13 +144,11 @@
     display: none;
 }
 
-:host ::ng-deep #pn_id_44_panel table td,
-:host ::ng-deep #pn_id_45_panel table td{
+:host ::ng-deep .p-datepicker table td{
     padding: 6px;
 }
 
-:host ::ng-deep #pn_id_44_panel table span,
-:host ::ng-deep #pn_id_45_panel table span{
+:host ::ng-deep .p-datepicker table span{
     width: 28px;
     height: 28px;
 }
