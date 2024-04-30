@@ -1,25 +1,59 @@
-body{margin-top:20px;}
-.error-page {
-    text-align: center;
-	background: #fff;
-	border-top: 1px solid #eee;
+
+.page_404{ 
+	padding:40px 0; 
+	background:#fff; 
+	font-family: 'Arvo', serif;
 }
-.error-page .error-inner {
-	display: inline-block;
+
+.row {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.error-page .error-inner h1 {
-	font-size: 140px;
-	text-shadow: 3px 5px 2px #3333;
-	color: #5E5BF4;
-	font-weight: 700;
+
+.page_404  img{ 
+	width:100%;
 }
-.error-page .error-inner h1 span {
-	display: block;
-	font-size: 25px;
-	color: #333;
-	font-weight: 600;
-	text-shadow: none;
+
+.four_zero_four_bg{
+ 	
+	background-image: url(../../../../assets/Icons/404_caveman_giff.gif);
+	height: 400px;
+	background-position: center;
+	background-repeat: no-repeat;
 }
-.error-page .error-inner p {
-	padding: 20px 15px;
+
+@media screen and (max-width: 768px) {
+	.four_zero_four_bg {
+        background-image: url(../../../../assets/Icons/404_caveman_giff.gif);
+        height: 300px; /* Adjust the height for smaller screens */
+        background-position: center;
+        background-size: cover; /* or contain, depending on how you want the image to fit */
+    }
+}
+ 
+.four_zero_four_bg h1{
+ 	font-size:80px;
+	color: rgb(96, 134, 147);
+}
+ 
+.four_zero_four_bg h3{
+	font-size:80px;
+}
+			 
+.link_404 {			 
+	color: #fff!important;
+    padding: 10px 20px;
+    background: rgb(96, 134, 147);
+    margin: 20px 0;
+    display: inline-block;
+}
+
+.link_404:hover {
+	background: rgb(45, 45, 217);
+	transition: 0.3s ease-in;
+}
+
+.contant_box_404{ 
+	margin-top:-50px;
 }
