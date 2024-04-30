@@ -205,6 +205,37 @@ export class HomePageComponent implements OnInit {
 
     this.showUserTasks = true;
   }
+
+  getSeverity(status: string) {
+    switch (status.toLowerCase()) {
+        case 'highest':
+            return 'danger';
+
+        case 'lowest':
+            return 'success';
+
+        case 'medium':
+            return 'info';
+
+        case 'high':
+            return 'warning';
+
+        case 'bug':
+            return 'danger';
+
+        case 'story':
+            return 'success';
+
+        case 'done':
+            return 'success';
+
+        case 'planning':
+            return 'info';
+
+        default:
+            return 'primary';
+    }
+  }
   
   filterProjects(filter :string ):void {
     this.visibilityFilter = filter;

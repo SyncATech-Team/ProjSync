@@ -104,14 +104,17 @@
                                         title="{{issue.name}}">{{ getIssueName(issue.name) }}</a>
                                 </div>
                             </td>
-                            <td *ngIf="column=='Type'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Type</span>
-                                {{ issue.typeName }}
+                            <td *ngIf="column=='Type'" style="width: 17vh; text-align: center;">
+                                <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                <p-tag class="p-tag-fill" [value]="issue.typeName" [severity]="getSeverity(issue.typeName)"></p-tag>
                             </td>
-                            <td *ngIf="column=='Status'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Status</span>
-                                {{ issue.statusName }}
+                            <td *ngIf="column=='Status'" style="width: 17vh; text-align: center;">
+                                <span class="p-column-title" style="font-weight: bold;">Status</span>
+                                <p-tag class="p-tag-fill" [value]="issue.statusName" [severity]="getSeverity(issue.statusName)"></p-tag>
                             </td>
-                            <td *ngIf="column=='Priority'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Priority</span>
-                                {{ issue.priorityName }}
+                            <td *ngIf="column=='Priority'" style="width: 17vh; text-align: center; ">
+                                <span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                <p-tag class="p-tag-fill" [value]="issue.priorityName" [severity]="getSeverity(issue.priorityName)"></p-tag>
                             </td>
                             <td *ngIf="column=='Due Date'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Due Date</span>
                                 {{ issue.dueDate | date: 'dd/MM/yyyy' }}
