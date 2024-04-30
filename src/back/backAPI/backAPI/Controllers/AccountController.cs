@@ -63,7 +63,12 @@ namespace backAPI.Controllers
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Worker");
+            IdentityResult roleResult;
+            if (companyRole.Name == "Administrator")
+                roleResult = await _userManager.AddToRoleAsync(user, "Admin");
+            else
+                roleResult = await _userManager.AddToRoleAsync(user, "Worker");
+            
             if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
             // kreiranje tokena za verifikaciju email-a
