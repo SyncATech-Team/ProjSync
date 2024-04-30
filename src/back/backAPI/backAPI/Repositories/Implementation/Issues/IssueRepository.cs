@@ -4,12 +4,10 @@ using backAPI.Entities.Domain;
 using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
-using Google.Protobuf.Collections;
+using backAPI.SignalR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization.Formatters;
-using System.Xml.Linq;
 
 namespace backAPI.Repositories.Implementation.Issues
 {
@@ -19,15 +17,25 @@ namespace backAPI.Repositories.Implementation.Issues
         private readonly DataContext _dataContext;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
         private readonly IUsersRepository _usersRepository;
+        private readonly NotificationService _notificationService;
+        private readonly INotificationsRepository _notificationsRepository;
 
         /* *****************************************************************************************
          * Konstruktor
          * ***************************************************************************************** */
-        public IssueRepository(DataContext dataContext, IUserOnIssueRepository userOnIssueRepository,IUsersRepository usersRepository)
+        public IssueRepository(
+            DataContext dataContext, 
+            IUserOnIssueRepository userOnIssueRepository, 
+            IUsersRepository usersRepository,
+            NotificationService notificationService,
+            INotificationsRepository notificationRepository
+        )
         {
             _dataContext = dataContext;
             _userOnIssueRepository = userOnIssueRepository;
             _usersRepository = usersRepository;
+            _notificationService = notificationService;
+            _notificationsRepository = notificationRepository;
         }
 
         /* *****************************************************************************************
@@ -143,6 +151,7 @@ namespace backAPI.Repositories.Implementation.Issues
         public async Task<double> DeleteUserOnIssue(int issueId, string userId)
         {
             int userIdToDelete = Int32.Parse(userId);
+            var user = await _usersRepository.GetUserById(userIdToDelete);
             var elementToDelete = await _dataContext.UsersOnIssues.SingleOrDefaultAsync(elem => elem.IssueId == issueId && elem.UserId == userIdToDelete && elem.Reporting == false);
             var usersOnIssueExceptElemenForDelete = await _dataContext.UsersOnIssues.Where(elem => elem.IssueId == issueId && elem.UserId != userIdToDelete && elem.Reporting == false).ToListAsync();
             var issue = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
@@ -164,6 +173,25 @@ namespace backAPI.Repositories.Implementation.Issues
             _dataContext.Issues.Update(issue);
 
             await _dataContext.SaveChangesAsync();
+
+            // obavesti korisnika da je uklonjen sa zadatka
+            string messageContent = "" +
+                "<h4>⛔ You have been removed from a task</h4>" +
+                "<strong>Task Name: </strong>" + issue.Name;
+
+            string[] usernames = { user.UserName };
+            await _notificationService.NotifyUsers(usernames, messageContent);
+
+            // dodaj notifikaciju u bazu
+            List<Notification> notifications = new List<Notification>();
+            notifications.Add(new Notification {
+                UserId = user.Id,
+                Message = messageContent,
+                DateCreated = DateTime.Now
+            });
+
+            await _notificationsRepository.AddNotificationRangeAsync(notifications);
+
             return cl;
         }
 
@@ -251,7 +279,32 @@ namespace backAPI.Repositories.Implementation.Issues
             };
 
             await _dataContext.UsersOnIssues.AddAsync(newUserOnIssue);
-            
+
+            // posalji korisniku notifikaciju da je dodat na zadatak
+            // obavesti korisnika da je uklonjen sa zadatka
+            string messageContent = "" +
+                "<h4>🆕 You have been assigned a new task</h4>" +
+                "<span style='background: red;'><strong>Due Date: </strong>" + issue.DueDate.ToLongDateString() + "</span>" +
+                "<br>" +
+                "<strong>Task Name: </strong>" + issue.Name +
+                "<br>" +
+                "<strong>Assignee/Reporter: Assignee</strong>";
+
+            var user = await _usersRepository.GetUserById(Int32.Parse(model.UserId));
+
+            string[] usernames = { user.UserName };
+            await _notificationService.NotifyUsers(usernames, messageContent);
+
+            // dodaj notifikaciju u bazu
+            List<Notification> notifications = new List<Notification>();
+            notifications.Add(new Notification {
+                UserId = user.Id,
+                Message = messageContent,
+                DateCreated = DateTime.Now
+            });
+
+            await _notificationsRepository.AddNotificationRangeAsync(notifications);
+
             var newCl = 0.0;
             if (existingUsersOnIssue != null)
             {

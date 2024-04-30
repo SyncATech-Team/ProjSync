@@ -24,7 +24,7 @@ namespace backAPI.Controllers
         private readonly IIssuePriorityRepository _issuePriorityRepository;
         private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly IUserOnIssueRepository _userOnIssueRepository;
-        private readonly IssueNotificationService _issueNotificationService;
+        private readonly NotificationService _issueNotificationService;
         private readonly INotificationsRepository _notificationsRepository;
 
         /* ***************************************************************************************************
@@ -39,7 +39,7 @@ namespace backAPI.Controllers
             IIssuePriorityRepository issuePriorityRepository,
             IIssueGroupRepository issueGroupRepository,
             IUserOnIssueRepository userOnIssueRepository,
-            IssueNotificationService issueNotificationService,
+            NotificationService issueNotificationService,
             INotificationsRepository notificationsRepository
             ) {
                 _issueRepository = issueRepository;
@@ -349,12 +349,15 @@ namespace backAPI.Controllers
             await _userOnIssueRepository.AddUserOnIssue(usersToInsert);
 
             // posalji norifikaciju da je kreiran zadatak
-            await _issueNotificationService.NotifyUsersOnIssue(usernames.ToArray(), created.Name);
+            usernames.RemoveAll(u => u == issueOwner.UserName); // ko kreira zadatak ne mora da dobija notifikaciju
+            await _issueNotificationService.NotifyUsers(usernames.ToArray(), created.Name);
 
             // dodaj notifikacije u tabelu Notifications
             // [Id] [UserId] [Message] [DateCreated]
             List<Notification> notifications = new List<Notification>();
             foreach(var user in usersToInsert) {
+
+                if (user.UserId == issueOwner.Id) continue; // onome ko je kreirao notifikaciju ne saljemo notifikaciju
 
                 string messageContent = "" +
                     "<h4>🆕 You have been assigned a new task</h4>" +
@@ -377,7 +380,7 @@ namespace backAPI.Controllers
                 notifications.Add(new Notification {
                     UserId = user.UserId,
                     Message = messageContent,
-                    DateCreated = created.UpdatedDate
+                    DateCreated = DateTime.Now
                 });
             }
             await _notificationsRepository.AddNotificationRangeAsync(notifications);
