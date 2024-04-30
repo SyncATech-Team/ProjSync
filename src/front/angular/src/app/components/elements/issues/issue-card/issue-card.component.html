@@ -1,12 +1,14 @@
 <div class="issue-wrap">
   <div (click)="openIssueModal(issue.id)" class="issue">
     <p class="pb-2">
-      <span id="span-type" class="type-{{issue.type}}">{{ issue.type }}: {{ issue.id }}</span> - {{ issue.title }}
+      <span id="span-type" class="type-{{issue.type}}">{{ issue.type }}: {{ issue.id }}</span> 
+      - 
+      <span style="font-weight: 500;">{{ issue.title }}</span>
     </p>
 
     <p-progressBar
       [value]="Math.trunc(issue.completed)"
-      [style]="{'height': '15px'}">
+      [style]="{'height': '15px', 'margin-top': '10px'}">
     </p-progressBar>
     <div style="margin-bottom: 10px">Task completed {{Math.trunc(issue.completed)}} %</div>
 

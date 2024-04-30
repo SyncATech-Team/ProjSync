@@ -12,17 +12,17 @@
         size="normal">
       </p-avatar>
       <span class="m-2">
-      {{ assignee?.name }}
-    </span>
+        {{ assignee?.name }}
+      </span>
+      <span [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(assignee!.username)">
+        <i class="pi pi-user"></i>
+      </span>
       <svg-icon (click)="removeUser(assignee?.id)"
         title="Remove user"
         [size]="20"
         [name]="'times'"
         class="text-textLight">
       </svg-icon>
-      <span [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(assignee!.username)">
-        <i class="pi pi-user"></i>
-      </span>
     </div>
     <p-divider layout="vertical"></p-divider>
 

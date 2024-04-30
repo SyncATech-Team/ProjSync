@@ -45,7 +45,7 @@
                       <div *ngFor="let older of element.olderVersions" class="older-version">
                         
                         <div>
-                          <div class="older-title"> {{ older.title }} </div>
+                          <div class="older-title" pTooltip="{{older.title}}"> {{ getTitle(older.title) }} </div>
                           <span> {{ older.dateUploaded | date:'medium' }} </span>
                         </div>
 
