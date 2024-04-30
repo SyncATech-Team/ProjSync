@@ -31,7 +31,7 @@ namespace backAPI.Repositories.Implementation.Issues
         public async Task<IEnumerable<Issue>> UserIssuess(int userId)
         {
             var userIssues = await _dataContext.UsersOnIssues
-                .Where(ui => ui.UserId == userId && ui.Reporting == false && ui.CompletionLevel < 100)
+                .Where(ui => ui.UserId == userId && ui.Reporting == false && ui.Issue.Completed < 100)
                 .Select(ui => ui.Issue)
                 .ToListAsync();
 

@@ -60,36 +60,36 @@
                                 Name
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedColumns.includes('Key')" pSortableColumn="key">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type'" pSortableColumn="key">
                                 <div class="flex align-items-center">
                                 Type
                             </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedColumns.includes('Type')" pSortableColumn="typeName">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status'" pSortableColumn="typeName">
                                 <div class="flex align-items-center">
                                 Status
                             </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedColumns.includes('Owner')" pSortableColumn="ownerUsername">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority'" pSortableColumn="priority">
                                 <div class="flex align-items-center">
                                 Priority
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" pSortableColumn="creationDate">
-                                <div class="flex align-items-center">
-                                Creation Date
-                            </div>
-                            </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date'" pSortableColumn="dueDate">
                                 <div class="flex align-items-center">
                                 Due Date
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Owner' && selectedColumns.includes('Owner')" pSortableColumn="owners">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter'" pSortableColumn="reporter">
                                 <div class="flex align-items-center">
-                                Owner
+                                    Reporter
                                 </div>
-                            </th>                      
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Completed'" pSortableColumn="Completed">
+                                <div class="flex align-items-center">
+                                    Completed
+                                </div>
+                            </th>                       
                         </ng-container>
                     </tr>
                 </ng-template>
@@ -104,8 +104,24 @@
                                         title="{{issue.name}}">{{ getIssueName(issue.name) }}</a>
                                 </div>
                             </td>
-                            <td *ngIf="column=='Type' && selectedColumns.includes('Type')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Type</span>
+                            <td *ngIf="column=='Type'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Type</span>
                                 {{ issue.typeName }}
+                            </td>
+                            <td *ngIf="column=='Status'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Status</span>
+                                {{ issue.statusName }}
+                            </td>
+                            <td *ngIf="column=='Priority'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                {{ issue.priorityName }}
+                            </td>
+                            <td *ngIf="column=='Due Date'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Due Date</span>
+                                {{ issue.dueDate | date: 'dd/MM/yyyy' }}
+                            </td>
+                            <td *ngIf="column=='Reporter'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Reporter</span>
+                                {{ issue.reporterUsername }}
+                            </td>
+                            <td *ngIf="column=='Completed'" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;">Completed</span>
+                                <p-progressBar [value]=issue.completed></p-progressBar>
                             </td>
                         </ng-container>
                     </tr>
