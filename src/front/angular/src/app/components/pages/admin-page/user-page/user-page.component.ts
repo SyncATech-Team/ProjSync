@@ -5,12 +5,11 @@ import { Table, TableLazyLoadEvent } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
-import { Observable } from 'rxjs';
-import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { EmailValidationService } from '../../../../_service/email_validator.service';
 import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
+import { PresenceService } from '../../../../_service/presence.service';
 
 /**
  * Interfejs koji predstavlja jednu kolonu u tabeli koju eksportujemo
@@ -90,7 +89,8 @@ export class UserPageComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private companyRoleService: CompanyroleService,
     private emailValidationService: EmailValidationService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    public presenceService: PresenceService
     ){ }
 
   /**

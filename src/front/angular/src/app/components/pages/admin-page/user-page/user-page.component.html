@@ -144,6 +144,7 @@
                                 </ng-template>
                             </p-columnFilter>
                         </th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
@@ -182,6 +183,16 @@
                         <td>
                             <span class="p-column-title" style="font-weight: bold;">Updated</span>
                             {{ getPrettierDate(user.updatedAt) }}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Updated</span>
+                            <div class="username-online" *ngIf="(presenceService.onlineUsers$ | async)?.includes(user.username)">
+                                <span style="color: green;">Online</span>
+                            </div>
+                            <div class="username-offline" *ngIf="!(presenceService.onlineUsers$ | async)?.includes(user.username)">
+                                <span>Offline</span>
+                            </div>
                         </td>
 
                         <td>

@@ -167,3 +167,26 @@ div.div-image img {
         align-items: start;
     }
 }
+
+.username-online {
+    animation: blink 1s infinite;
+    color: green;
+    font-weight: bold;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.username-offline {
+    color: gray;
+    opacity: 0.5;
+}
