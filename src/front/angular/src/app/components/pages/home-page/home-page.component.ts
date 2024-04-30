@@ -41,6 +41,8 @@ export class HomePageComponent implements OnInit {
   Users : any[] = []; // -> niz korisnika za filter 
   usersPhotos : PhotoForUser[] = [];
 
+  showUserTasks: boolean = false;
+
   constructor(
     public accoutService: AccountService,
     private projectService:ProjectService,
@@ -177,23 +179,30 @@ export class HomePageComponent implements OnInit {
     }
     else return "";
   }
+
+  filterTasksByUser() {
+    // Implementirajte logiku filtriranja taskova prema trenutnom korisniku ili drugom kriterijumu
+    // Na primer, možete koristiti API poziv da dobijete taskove koji su dodeljeni trenutnom korisniku
+    this.showUserTasks = true;
+  }
   
   filterProjects(filter :string ):void {
     this.visibilityFilter = filter;
     if(filter=="stared")
-    {
-      this.projectsShow=this.projects.filter((project)=> project.isFavorite);
-    }
-    else{
-      if(filter=="private")
       {
-        this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Private");
+        this.projectsShow=this.projects.filter((project)=> project.isFavorite);
       }
-      else
-      {
-        this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Public");
-      }
-    }
+      else{
+        if(filter=="private")
+          {
+            this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Private");
+          }
+          else
+          {
+            this.showUserTasks = false;
+            this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Public");
+          }
+        }
   }
 
   //Search po nazivu projekta dodat

@@ -16,13 +16,16 @@
             <!-- Explore projects -->
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterProjects('public')">Explore projects</a>
+                    (click)="filterProjects('public')">My projects</a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab"
+                    (click)="filterTasksByUser()">My tasks</a>
+            </li>
         </ul>
         <!-- End -->
 
-        <div id="projects">
+        <div id="projects" *ngIf="!showUserTasks">
 
             <p-table
                 #dt2

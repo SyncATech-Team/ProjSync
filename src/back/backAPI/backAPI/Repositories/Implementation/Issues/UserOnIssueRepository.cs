@@ -3,6 +3,7 @@ using backAPI.Data;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backAPI.Repositories.Implementation.Issues
 {
@@ -25,6 +26,16 @@ namespace backAPI.Repositories.Implementation.Issues
             await _dataContext.UsersOnIssues.AddRangeAsync(usersOnIssue);
             await _dataContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<Issue>> UserIssuess(int userId)
+        {
+            var userIssues = await _dataContext.UsersOnIssues
+                .Where(ui => ui.UserId == userId && ui.Reporting == false && ui.CompletionLevel < 100)
+                .Select(ui => ui.Issue)
+                .ToListAsync();
+
+            return userIssues;
         }
     }
 }

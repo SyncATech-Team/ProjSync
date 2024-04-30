@@ -208,6 +208,64 @@ namespace backAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("userIssues")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetIssuesForUser(string username)
+        {
+            var user = await _usersRepository.GetUserByUsername(username);
+            if(user == null)
+            {
+                return BadRequest(new { message = "User not found" });
+            }
+
+            var issues = await _userOnIssueRepository.UserIssuess(user.Id);
+            List<IssueDto> result = new List<IssueDto>();
+
+            foreach (var issue in issues)
+            {
+                var issueType = await _issueTypeRepository.GetIssueTypeById(issue.TypeId);
+                var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.PriorityId);
+                var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
+                var issueGroup = await _issueGroupRepository.GetGroupAsync(issue.GroupId);
+                var issueOwner = await _usersRepository.GetUserById(issue.OwnerId);
+                var reporterId = await _issueRepository.GetReporterId(issue.Id);
+                var reporterUsername = await _usersRepository.GetUserById(reporterId);
+                var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
+                var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
+                var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+
+                List<string> assigneeUsernames = new List<string>();
+                foreach (var assignee in assigneeIds)
+                {
+                    var assigneeUser = await _usersRepository.GetUserById(assignee);
+                    assigneeUsernames.Add(assigneeUser.UserName);
+                }
+
+                IssueDto issueDto = new IssueDto
+                {
+                    Id = issue.Id,
+                    Name = issue.Name,
+                    TypeName = issueType.Name,
+                    StatusName = issueStatus.Name,
+                    PriorityName = issuePriority.Name,
+                    Description = issue.Description,
+                    CreatedDate = issue.CreatedDate,
+                    UpdatedDate = issue.UpdatedDate,
+                    DueDate = issue.DueDate,
+                    OwnerUsername = issueOwner.UserName,
+                    ProjectName = project.Name,
+                    GroupName = issueGroup.Name,
+                    ReporterUsername = reporterUsername.UserName,
+                    AssigneeUsernames = assigneeUsernames.ToArray(),
+                    DependentOnIssues = issueDependencies.ToArray(),
+                    Completed = issue.Completed,
+                    GroupId = issueGroup.Id
+                };
+                result.Add(issueDto);
+            }
+
+            return Ok(result);
+        }
+
         [HttpGet("pagination/projectName")]
         public async Task<ActionResult<IEnumerable<IssueDto>>> GetPaginationIssuesForProject(string projectName, string criteria)
         {
