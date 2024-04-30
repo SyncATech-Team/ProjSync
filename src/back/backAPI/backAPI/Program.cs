@@ -58,7 +58,7 @@ builder.Services.AddScoped<INotificationsRepository, NotificationRepository>();
 builder.Services.AddSignalR();
 // uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
 builder.Services.AddSingleton<PresenceTracker>();
-builder.Services.AddSingleton<IssueNotificationService>();
+builder.Services.AddSingleton<NotificationService>();
 
 var app = builder.Build();
 

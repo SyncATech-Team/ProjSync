@@ -55,6 +55,7 @@ export class NotificationComponent implements OnInit {
     let badgeDiv = document.getElementById("badge-div");
     let valueToInsert = (value <= 99) ? "" + value : "99+";
 
+    if(badgeDiv?.classList.contains("badge-pulse")) badgeDiv?.classList.remove("badge-pulse");
     if(value > 0) { badgeDiv?.classList.add("badge-pulse"); }
 
     if(element) {
