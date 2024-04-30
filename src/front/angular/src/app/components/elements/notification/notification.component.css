@@ -27,7 +27,7 @@
     white-space: nowrap;
   }
   
-  .notifier.new .badge {
+  .notifier.new .badge-pulse {
     animation: pulse 2s ease-out;
     animation-iteration-count: infinite;
   }
