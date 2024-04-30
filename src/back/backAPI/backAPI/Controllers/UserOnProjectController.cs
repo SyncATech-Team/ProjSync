@@ -1,7 +1,11 @@
 ﻿using backAPI.DTO;
 using backAPI.DTO.Projects;
+using backAPI.Entities.Domain;
+using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
+using backAPI.SignalR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
@@ -14,8 +18,19 @@ namespace backAPI.Controllers
         private readonly ICompanyRolesRepository _companyRolesRepository;
         private readonly IProjectTypesRepository _projectTypesRepository;
         private readonly IProjectVisibilitiesRepository _projectVisibilitiesRepository;
+        private readonly NotificationService _notificationService;
+        private readonly INotificationsRepository _notificationsRepository;
 
-        public UserOnProjectController(IUserOnProjectRepository userOnProjectRepository, IProjectsRepository projectRepository, ICompanyRolesRepository companyRolesRepository, IProjectTypesRepository projectTypesRepository, IUsersRepository usersRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository)
+        public UserOnProjectController(
+            IUserOnProjectRepository userOnProjectRepository, 
+            IProjectsRepository projectRepository, 
+            ICompanyRolesRepository companyRolesRepository, 
+            IProjectTypesRepository projectTypesRepository, 
+            IUsersRepository usersRepository, 
+            IProjectVisibilitiesRepository projectVisibilitiesRepository,
+            NotificationService notificationService,
+            INotificationsRepository notificationsRepository
+        )
         {
             _userOnProjectRepository = userOnProjectRepository;
             _projectRepository = projectRepository;
@@ -23,6 +38,8 @@ namespace backAPI.Controllers
             _projectTypesRepository = projectTypesRepository;
             _usersRepository = usersRepository; 
             _projectVisibilitiesRepository = projectVisibilitiesRepository;
+            _notificationService = notificationService;
+            _notificationsRepository = notificationsRepository;
         }
 
         [HttpGet]
@@ -138,6 +155,29 @@ namespace backAPI.Controllers
                 return BadRequest( new {message = "Unable to add user to project"});
             }
 
+            var user = await _usersRepository.GetUserByUsername(username);
+            if (user == null) {
+                return NotFound("User not found");
+            }
+
+            // posalji notifikaciju korisniku koji je dodat na projekat
+            string messageContent = "" +
+                "<h4>🚧 You have been added to a project</h4>" +
+                "<strong>Project: </strong>" + projectName;
+
+            string[] usernames = { username };
+            await _notificationService.NotifyUsers(usernames, messageContent);
+
+            // dodaj notifikaciju u bazu
+            List<Notification> notifications = new List<Notification>();
+            notifications.Add(new Notification {
+                UserId = user.Id,
+                Message = messageContent,
+                DateCreated = DateTime.Now
+            });
+
+            await _notificationsRepository.AddNotificationRangeAsync(notifications);
+
             return Ok(new { message = "User added on project"});
         }
 
@@ -147,15 +187,32 @@ namespace backAPI.Controllers
         {
             var removed = await _userOnProjectRepository.RemoveUserFromProjectAsync(projectName, username);
 
-            if (removed)
-            {
-                return Ok(new { message = "User removed from project successfully." });
-                
+            if (removed == false) return BadRequest(new { message = "Failed to remove user from project" });
+
+            var user = await _usersRepository.GetUserByUsername(username);
+            if (user == null) {
+                return NotFound("User not found");
             }
-            else
-            {
-                return BadRequest(new { message = "Failed to remove user from project" });
-            }
+
+            // posalji notifikaciju korisniku koji je uklonjen sa projekta
+            string messageContent = "" +
+                "<h4>⛔ You have been removed from a project</h4>" +
+                "<strong>Project: </strong>" + projectName;
+
+            string[] usernames = { username };
+            await _notificationService.NotifyUsers(usernames, messageContent);
+
+            // dodaj notifikaciju u bazu
+            List<Notification> notifications = new List<Notification>();
+            notifications.Add(new Notification {
+                UserId = user.Id,
+                Message = messageContent,
+                DateCreated = DateTime.Now
+            });
+
+            await _notificationsRepository.AddNotificationRangeAsync(notifications);
+
+            return Ok(new { message = "User removed from project successfully." });
         }
 
         [HttpGet("check")]

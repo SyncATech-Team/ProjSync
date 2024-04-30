@@ -41,8 +41,8 @@ export class NotificationService {
                 console.log(error.message);
             });
         
-        this.hubConnection.on('ReceiveTaskNotification', (data: string) => {
-            this.msgPopupService.showInfo("You have a new task assigned to you. Check it out.");
+        this.hubConnection.on('ReceiveNotification', (data: string) => {
+            this.msgPopupService.showInfo("You have a new notification. Check it out.");
             NotificationComponent.increaseNumberOfUnreadMessages();
             NotificationsPageComponent.NewNotificationAdded();
         });

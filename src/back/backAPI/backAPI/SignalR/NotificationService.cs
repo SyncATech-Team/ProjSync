@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
 namespace backAPI.SignalR {
-    public class IssueNotificationService {
+    public class NotificationService {
 
         private static readonly Dictionary<string, List<string>> ConnectedUsers
             = new Dictionary<string, List<string>>();
 
         private readonly IHubContext<NotificationHub> _hubContext;
 
-        public IssueNotificationService(IHubContext<NotificationHub> hubContext) {
+        public NotificationService(IHubContext<NotificationHub> hubContext) {
             _hubContext = hubContext;
         }
 
@@ -44,7 +44,7 @@ namespace backAPI.SignalR {
             return Task.CompletedTask;
         }
 
-        public async Task NotifyUsersOnIssue(string[] usernames, string taskName) {
+        public async Task NotifyUsers(string[] usernames, string message) {
             foreach (var onlineUser in ConnectedUsers) {
                 var onlineUserUsername = onlineUser.Key;
                 var onlineUserConnectionIds = onlineUser.Value;
@@ -52,7 +52,7 @@ namespace backAPI.SignalR {
                 // If the online user is not in the list of usernames, skip
                 if (!usernames.Contains(onlineUserUsername)) continue;
 
-                await _hubContext.Clients.Clients(onlineUserConnectionIds).SendAsync("ReceiveTaskNotification", taskName);
+                await _hubContext.Clients.Clients(onlineUserConnectionIds).SendAsync("ReceiveNotification", message);
                 Console.WriteLine(onlineUserUsername);
             }
         }

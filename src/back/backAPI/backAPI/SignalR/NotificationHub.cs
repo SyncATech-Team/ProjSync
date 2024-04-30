@@ -3,9 +3,9 @@
 namespace backAPI.SignalR {
     public class NotificationHub : Hub {
 
-        private readonly IssueNotificationService _notificationService;
+        private readonly NotificationService _notificationService;
 
-        public NotificationHub(IssueNotificationService issueNotificationService) { 
+        public NotificationHub(NotificationService issueNotificationService) { 
             _notificationService = issueNotificationService;
         }
 
