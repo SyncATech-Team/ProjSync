@@ -14,6 +14,7 @@ import { IssueModel } from '../../../_models/model-issue.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-modal.component';
 import { ProjectQuery } from '../../state/project/project.query';
+import { ProjectService as ProjectService2 } from '../../state/project/project.service';
 
 @Component({
   selector: 'app-home-page',
@@ -64,6 +65,7 @@ export class HomePageComponent implements OnInit {
     private issueService : IssueService,
     private _modalService: DialogService,
     private _projectQuery: ProjectQuery,
+    private _projectService: ProjectService2
   ) { }
 
   ngOnInit(): void {
@@ -300,9 +302,12 @@ export class HomePageComponent implements OnInit {
     // let x: number = 1;
     // let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
     let path = this.defaultImagePath;
-    let projekat = this.projects.filter((project) => project.name == projectName)[0]
+    let projekat = this.projects.filter((project) => project.name == projectName)[0];
+    if(projekat == undefined){
+      return path;
+    }
 
-    if(projekat.icon == null) return this.defaultImagePath;
+    if(projekat.icon == null) return path;
     return projekat.icon;
   }
 
@@ -379,8 +384,9 @@ export class HomePageComponent implements OnInit {
   }
 
   // Otvaranje modala za edit issue edit
-  openIssueModal(issueId : string){
+  openIssueModal(issueId : string, projectName: string){
     console.log(issueId);
+    this._projectService.getProject(projectName);
     this.ref = this._modalService.open(IssueModalComponent, {
       header: 'Issue - update',
       width: '65%',
