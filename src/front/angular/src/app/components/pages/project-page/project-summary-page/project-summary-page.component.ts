@@ -6,6 +6,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Chart } from 'chart.js/auto';
 import { StatisticsService } from '../../../../_service/statistics.service';
 
+type ValidChartType = 'bar' | 'radar' | 'doughnut' | 'pie' | 'polarArea';
+
 @Component({
   selector: 'app-project-summary-page',
   templateUrl: './project-summary-page.component.html',
@@ -37,16 +39,21 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
 
   // CHARTS
   @ViewChild('issueTypes') private issueTypesRef!: ElementRef;
-  private issueTypesChart: any;
+  private issueTypesChart!: Chart<any>;
 
   @ViewChild('issuePriorities') private issuePrioritiesRef!: ElementRef;
-  private issuePrioritiesChart: any;
+  private issuePrioritiesChart!: Chart<any>;
 
   @ViewChild('issueStatuses') private issueStatusesRef!: ElementRef;
-  private issueStatusesChart: any;
+  private issueStatusesChart!: Chart<any>;
 
   @ViewChild('issueGroups') private issueGroupsRef!: ElementRef;
-  private issueGroupsChart: any;
+  private issueGroupsChart!: Chart<any>;
+
+  chartTypeData!: {[key: string]: string};
+  chartPriorityData!: {[key: string]: string};
+  chartStatusData!: {[key: string]: string};
+  chartGroupsData!: {[key: string]: string};
 
   ////////////////////
 
@@ -63,25 +70,37 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
 
     // Kreiranje grafika o tipu zadataka
     this.statisticsService.getIssueTypesInProject(this.projectName!).subscribe({
-      next: response => { this.createChartTaskType(response); },
+      next: response => { 
+        this.chartTypeData = response;
+        this.createChartTaskType(response, 'pie'); 
+      },
       error: error => { console.log(error.error); }
     })
 
     // Kreiranje grafika o prioritetu zadataka
     this.statisticsService.getIssuePrioritiesInProject(this.projectName!).subscribe({
-      next: response => { this.createChartTaskPriority(response); },
+      next: response => { 
+        this.chartPriorityData = response;
+        this.createChartTaskPriority(response, 'pie'); 
+      },
       error: error => { console.log(error.error); }
     })
 
     // Krairanje grafika o statusu zadataka
     this.statisticsService.getIssueStatusesInProject(this.projectName!).subscribe({
-      next: response => { this.createChartTaskStatus(response); },
+      next: response => { 
+        this.chartStatusData = response;
+        this.createChartTaskStatus(response, 'pie'); 
+      },
       error: error => { console.log(error.error); }
     })
 
     // Kreiranje grafika o groupama zadataka na projektu
     this.statisticsService.getIssueGroupsInProject(this.projectName!).subscribe({
-      next: response => { this.createChartTaskGroups(response); },
+      next: response => { 
+        this.chartGroupsData = response;
+        this.createChartTaskGroups(response, 'pie'); 
+      },
       error: error => { console.log(error.error); }
     })
 
@@ -114,7 +133,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     return path;
   }
 
-  public createChartTaskType(response: {[key: string]: string}) {
+  public createChartTaskType(response: {[key: string]: string}, chartType: ValidChartType) {
     let labels: string[] = [];
     let data: number[] = [];
     
@@ -124,7 +143,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     }
 
     this.issueTypesChart = new Chart(this.issueTypesRef.nativeElement, {
-      type: 'pie',
+      type: chartType,
       data: {
         labels: labels,
         datasets: [{
@@ -140,7 +159,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public createChartTaskPriority(response: {[key: string]: string}) {
+  public createChartTaskPriority(response: {[key: string]: string}, chartType: ValidChartType) {
     let labels: string[] = [];
     let data: number[] = [];
     
@@ -150,7 +169,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     }
 
     this.issuePrioritiesChart = new Chart(this.issuePrioritiesRef.nativeElement, {
-      type: 'pie',
+      type: chartType,
       data: {
         labels: labels,
         datasets: [{
@@ -168,7 +187,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public createChartTaskStatus(response: {[key: string]: string}) {
+  public createChartTaskStatus(response: {[key: string]: string}, chartType: ValidChartType) {
     let labels: string[] = [];
     let data: number[] = [];
     
@@ -178,7 +197,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     }
 
     this.issueStatusesChart = new Chart(this.issueStatusesRef.nativeElement, {
-      type: 'pie',
+      type: chartType,
       data: {
         labels: labels,
         datasets: [{
@@ -188,7 +207,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public createChartTaskGroups(response: {[key: string]: string}) {
+  public createChartTaskGroups(response: {[key: string]: string}, chartType: ValidChartType) {
     let labels: string[] = [];
     let data: number[] = [];
     
@@ -198,7 +217,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     }
 
     this.issueGroupsChart = new Chart(this.issueGroupsRef.nativeElement, {
-      type: 'pie',
+      type: chartType,
       data: {
         labels: labels,
         datasets: [{
@@ -219,5 +238,34 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
       link.click();
     }
   }
+
+  changeChartType(chart: string, element: any) {
+
+    let value = (element as HTMLSelectElement).value as ValidChartType;
+
+    switch(chart) {
+      case "type":
+        this.issueTypesChart.destroy();
+        this.createChartTaskType(this.chartTypeData, value)
+        break;
+      case "status":
+        this.issueStatusesChart.destroy();
+        this.createChartTaskStatus(this.chartStatusData, value)
+        break;
+      
+      case "priority":
+        this.issuePrioritiesChart.destroy();
+        this.createChartTaskPriority(this.chartPriorityData, value)
+        break;
+      
+      case "group":
+        this.issueGroupsChart.destroy();
+        this.createChartTaskGroups(this.chartGroupsData, value)
+        break;
+      default:
+        break;
+    }  
+  }
+
 
 }

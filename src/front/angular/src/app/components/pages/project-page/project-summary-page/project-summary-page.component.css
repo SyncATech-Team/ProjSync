@@ -102,3 +102,30 @@ canvas {
     align-items: center;
     justify-content: center;
 }
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.styled-select {
+    appearance: none;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    width: 150px;
+    max-width: 100%;
+}
+
+.styled-select:focus {
+    outline: none;
+    border-color: #007bff; /* Change color on focus if needed */
+}
+
+.styled-select option {
+    padding: 10px;
+}
