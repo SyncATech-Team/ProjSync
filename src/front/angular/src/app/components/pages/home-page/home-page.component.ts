@@ -47,6 +47,7 @@ export class HomePageComponent implements OnInit {
   userIssues : IssueModel[] = [];
   issueColumns! : string[];
   selectedIssueColumns!: string[];
+  showIssueColumns!: string[];
   issuesShow: any[] = [];
 
   constructor(
@@ -64,7 +65,9 @@ export class HomePageComponent implements OnInit {
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
 
-    this.issueColumns = ['Name','Type','Status','Priority', 'Due Date', 'Reporter', 'Completed'];
+    this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'ProjectName', 'CreatedDate'];
+    this.selectedIssueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed'];
+    this.showIssueColumns = ['Name', ...this.selectedIssueColumns];
 
     this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
@@ -329,6 +332,7 @@ export class HomePageComponent implements OnInit {
     return s;
   }
 
+  // Odabir prikaza kolona za projekte i zadatke
   onSelectedChange(){
     this.selectedColumns.forEach(item => {
       if(!this.showColumns.includes(item)){
@@ -338,6 +342,19 @@ export class HomePageComponent implements OnInit {
     this.showColumns.forEach((item,index) => {
       if(!this.selectedColumns.includes(item) && item!=='Name' && item !==''){
         this.showColumns.splice(index,1);
+      }
+    })
+  }
+
+  onSelectedIssueChange(){
+    this.selectedIssueColumns.forEach(item => {
+      if(!this.showIssueColumns.includes(item)){
+        this.showIssueColumns.push(item);
+      }
+    });
+    this.showIssueColumns.forEach((item,index) => {
+      if(!this.selectedIssueColumns.includes(item) && item!=='Name' && item !==''){
+        this.showIssueColumns.splice(index,1);
       }
     })
   }
