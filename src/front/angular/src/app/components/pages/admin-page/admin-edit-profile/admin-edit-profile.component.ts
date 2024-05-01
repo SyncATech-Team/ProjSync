@@ -120,15 +120,20 @@ export class AdminEditProfileComponent implements OnInit {
 
   applyEditChanges() {
     this.editUser.isActive = this.user?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
-    this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
-      next: response => {
-        this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully edited user info', life: 3000 });
-        this.ngOnInit();
-      },
-      error: error => {
-        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Unable to edit user info', life: 3000 });
-      }
-    });
+    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.editUser.contactPhone) || this.editUser.contactPhone == ''){//testira format broja telefona
+      this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
+        next: response => {
+          this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully edited user info', life: 3000 });
+          this.ngOnInit();
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Unable to edit user info', life: 3000 });
+        }
+      });
+    }
+    else{
+      this.msgPopupService.showError("Not a valid phone format. Valid format 061 1234567");
+    }
   } 
 
   changePassword() {
