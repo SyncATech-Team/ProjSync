@@ -381,21 +381,38 @@
                             </td>
                             <td *ngIf="column=='Progress' && selectedColumns.includes('Progress')" style="width: 20vh;">
                                 <div class="progress-bar-wrapper">
-                                    <p-progressBar 
-                                    [value]="projectCompletionMap.get(project.key)"
-                                    [pTooltip]="tooltipContent"
-                                    tooltipPosition="top" 
-                                    [style]="{'margin-bottom': '5px'}"
-                                    class="time-progress"
-                                    [ngClass]="getProgressBarClass(projectCompletionMap.get(project.key))"></p-progressBar>
-                                    <ng-template #tooltipContent>
-                                        <div class="flex align-items-center">
-                                            <i class="fa-regular fa-clock"></i>
-                                            <span> <b> {{ projectCompletionMap.get(project.key) }}%</b> </span>
+                                    <!-- Time progress -->
+                                    <div style="display: flex;">
+                                        <div style="margin-right: 5px;">
+                                            <i class="pi pi-clock"></i>
                                         </div>
-                                    </ng-template>
+                                        <div class="progress-bar-wrapper">
+                                            <p-progressBar 
+                                            [value]="projectCompletionMap.get(project.key)"
+                                            [pTooltip]="tooltipContent"
+                                            tooltipPosition="top" 
+                                            [style]="{'margin-bottom': '5px'}"
+                                            class="time-progress"
+                                            [ngClass]="getProgressBarClass(projectCompletionMap.get(project.key))"></p-progressBar>
+                                            <ng-template #tooltipContent>
+                                                <div class="flex align-items-center">
+                                                    <i class="fa-regular fa-clock"></i>
+                                                    <span> <b> {{ projectCompletionMap.get(project.key) }}%</b> </span>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
                                     
-                                    <p-progressBar></p-progressBar>
+                                    <!-- Work progress -->
+                                    <div style="display: flex;">
+                                        <div style="margin-right: 5px;">
+                                            <i class="pi pi-pencil"></i>
+                                        </div>
+                                        <div class="progress-bar-wrapper">
+                                            <p-progressBar></p-progressBar>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </td>
                         </ng-container>

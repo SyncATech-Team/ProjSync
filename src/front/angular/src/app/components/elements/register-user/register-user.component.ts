@@ -54,7 +54,7 @@ export class RegisterUserComponent implements OnInit {
         }
       });}
     else{
-      this.msgPopupService.showError("Not a valid phone number format");
+      this.msgPopupService.showError("Not a valid phone format. Valid format 061 1234567");
     }
   }
   
