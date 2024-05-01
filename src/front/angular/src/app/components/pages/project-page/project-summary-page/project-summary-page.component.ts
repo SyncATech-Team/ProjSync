@@ -45,6 +45,9 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
   @ViewChild('issueStatuses') private issueStatusesRef!: ElementRef;
   private issueStatusesChart: any;
 
+  @ViewChild('issueGroups') private issueGroupsRef!: ElementRef;
+  private issueGroupsChart: any;
+
   ////////////////////
 
   constructor (
@@ -73,6 +76,12 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     // Krairanje grafika o statusu zadataka
     this.statisticsService.getIssueStatusesInProject(this.projectName!).subscribe({
       next: response => { this.createChartTaskStatus(response); },
+      error: error => { console.log(error.error); }
+    })
+
+    // Kreiranje grafika o groupama zadataka na projektu
+    this.statisticsService.getIssueGroupsInProject(this.projectName!).subscribe({
+      next: response => { this.createChartTaskGroups(response); },
       error: error => { console.log(error.error); }
     })
 
@@ -121,10 +130,11 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
         datasets: [{
           data: data,
           backgroundColor: [
-            '#8fb1e7',
-            'rgb(230, 59, 59)',
-            'rgb(125, 225, 125)'
-          ]
+            '#3B82F6',
+            '#ef4444',
+            '#22c55e'
+          ],
+          borderColor: "white"
         }]
       }
     });
@@ -144,7 +154,15 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
       data: {
         labels: labels,
         datasets: [{
-          data: data
+          data: data,
+          backgroundColor: [
+            "#22c55e",
+            "#3B82F6",
+            "#0ea5e9",
+            "#f97316",
+            "#ef4444"
+          ],
+          borderColor: "white"
         }]
       }
     });
@@ -160,6 +178,26 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     }
 
     this.issueStatusesChart = new Chart(this.issueStatusesRef.nativeElement, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data
+        }]
+      }
+    });
+  }
+
+  public createChartTaskGroups(response: {[key: string]: string}) {
+    let labels: string[] = [];
+    let data: number[] = [];
+    
+    for(let element in response) {
+      labels.push(element);
+      data.push(Number(response[element]));
+    }
+
+    this.issueGroupsChart = new Chart(this.issueGroupsRef.nativeElement, {
       type: 'pie',
       data: {
         labels: labels,

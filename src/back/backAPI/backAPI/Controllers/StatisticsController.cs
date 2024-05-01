@@ -55,5 +55,17 @@ namespace backAPI.Controllers {
             return result;
         }
 
+        [HttpGet("taskgroups/{projectName}")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetTaskGroupsForProject(string projectName) {
+            var project = await _projectsRepository.GetProjectByName(projectName);
+            if (project == null) {
+                return BadRequest("There is not project with the given name");
+            }
+
+            var result = await _statisticsRepository.GetNumberOfTasksPerGroupInProject(project.Id);
+
+            return result;
+        }
+
     }
 }
