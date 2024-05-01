@@ -18,7 +18,7 @@ h4{
     border-radius: 10px;
     padding: 1.5rem;
     border: 1px solid rgb(177, 177, 177);
-    overflow: hidden;
+    /* overflow: hidden; */
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -33,7 +33,6 @@ h4{
 .wrapper-box .content-box{
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
 .wrapper-box .content-box img{
@@ -46,10 +45,6 @@ h4{
     width: 67%;
 }
 
-.wrapper{
-    display: flex;
-}
-
 #description{
     background-color: rgb(241, 241, 241);
     border-radius: 10px;
@@ -58,7 +53,36 @@ h4{
     height: 300px;
 }
 
+canvas {
+    height: 300px;
+    width: 300px;
+}
+
 .div-caption {
     text-align: center;
     font-weight: bold;
+}
+
+.charts-div {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.content-box {
+    flex: 0 0 auto;
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.content-box:last-child {
+    margin-right: 0;
+}
+
+.content-box > div {
+    display: inline-block;
+}
+
+.div-caption {
+    text-align: center;
+    margin-top: 5px;
 }

@@ -30,5 +30,30 @@ namespace backAPI.Controllers {
             return result;
         }
 
+        [HttpGet("taskpriorities/{projectName}")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetTaskPrioritiesForProject(string projectName) {
+
+            var project = await _projectsRepository.GetProjectByName(projectName);
+            if (project == null) {
+                return BadRequest("There is not project with the given name");
+            }
+
+            var result = await _statisticsRepository.GetNumberOfTasksPerIssuePriorityProject(project.Id);
+
+            return result;
+        }
+
+        [HttpGet("taskstatuses/{projectName}")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetTaskStatusesForProject(string projectName) {
+            var project = await _projectsRepository.GetProjectByName(projectName);
+            if (project == null) {
+                return BadRequest("There is not project with the given name");
+            }
+
+            var result = await _statisticsRepository.GetNumberOfTasksPerIssueStatusInProject(project.Id);
+            
+            return result;
+        }
+
     }
 }

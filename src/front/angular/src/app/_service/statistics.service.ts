@@ -13,4 +13,13 @@ export class StatisticsService {
     getIssueTypesInProject(projectName: string) {
         return this.http.get<{[key: string]: string}>(`${this.baseUrl}Statistics/tasktypes/${projectName}`);
     }
+
+    getIssuePrioritiesInProject(projectName: string) {
+        return this.http.get<{[key: string]: string}>(`${this.baseUrl}Statistics/taskpriorities/${projectName}`);
+    }
+
+    getIssueStatusesInProject(projectName: string) {
+        return this.http.get<{[key: string]: string}>(`${this.baseUrl}Statistics/taskstatuses/${projectName}`);
+    }
+    
 }

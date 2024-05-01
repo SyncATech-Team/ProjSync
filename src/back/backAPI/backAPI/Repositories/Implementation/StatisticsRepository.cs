@@ -31,6 +31,42 @@ namespace backAPI.Repositories.Implementation {
             return result;
         }
 
+        public async Task<Dictionary<string, int>> GetNumberOfTasksPerIssuePriorityProject(int projectId) {
+            var issuesForProject = await (
+                from issue in dataContext.Issues
+                join issueGroup in dataContext.IssueGroups on issue.GroupId equals issueGroup.Id
+                where issueGroup.ProjectId == projectId
+                select issue
+            ).ToListAsync();
 
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            foreach (var priority in dataContext.IssuePriority) {
+                result.Add(
+                    key: priority.Name,
+                    value: issuesForProject.Where(i => i.PriorityId == priority.Id).Count()
+                );
+            }
+
+            return result;
+        }
+
+        public async Task<Dictionary<string, int>> GetNumberOfTasksPerIssueStatusInProject(int projectId) {
+            var issuesForProject = await (
+                from issue in dataContext.Issues
+                join issueGroup in dataContext.IssueGroups on issue.GroupId equals issueGroup.Id
+                where issueGroup.ProjectId == projectId
+                select issue
+            ).ToListAsync();
+
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            foreach (var status in dataContext.IssueStatuses) {
+                result.Add(
+                    key: status.Name,
+                    value: issuesForProject.Where(i => i.StatusId== status.Id).Count()
+                );
+            }
+
+            return result;
+        }
     }
 }

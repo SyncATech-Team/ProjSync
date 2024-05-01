@@ -6,6 +6,7 @@
 
     <div id="content">
         <div class="row">
+            
             <div class="col-sm-3 wrapper-box custom-margin-right">
                 <div class="content-box">
                     <h4>{{project.name}}</h4>
@@ -26,16 +27,33 @@
                     <span>Owner: {{project.ownerUsername}}</span>
                 </div>
             </div>
-            <div class="col-sm-8 wrapper-box">
+
+            <div class="col-sm-8 wrapper-box charts-div">
+                
                 <div class="content-box">
-                    <h4>Charts</h4>
                     <div>
-                        <canvas #issueTypes width="400" height="400"></canvas>
+                        <canvas #issueTypes></canvas>
                         <div class="div-caption">Share of task types</div>
                     </div>
                 </div>
+
+                <div class="content-box">
+                    <div>
+                        <canvas #issuePriorities></canvas>
+                        <div class="div-caption">Share of task priorities</div>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <div>
+                        <canvas #issueStatuses></canvas>
+                        <div class="div-caption">Share of task statuses</div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
         <div class="row custom-margin-top">
             <div class="col-sm-5 wrapper-box custom-margin-right">
                 <h4>Description</h4>
@@ -45,5 +63,6 @@
                 <h4>Logs</h4>
             </div>
         </div>
+
     </div>
 </div>

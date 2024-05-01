@@ -35,8 +35,17 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
 
   safeDescription: SafeHtml | undefined;
 
+  // CHARTS
   @ViewChild('issueTypes') private issueTypesRef!: ElementRef;
   private issueTypesChart: any;
+
+  @ViewChild('issuePriorities') private issuePrioritiesRef!: ElementRef;
+  private issuePrioritiesChart: any;
+
+  @ViewChild('issueStatuses') private issueStatusesRef!: ElementRef;
+  private issueStatusesChart: any;
+
+  ////////////////////
 
   constructor (
     private route: ActivatedRoute,
@@ -49,36 +58,24 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
 
+    // Kreiranje grafika o tipu zadataka
     this.statisticsService.getIssueTypesInProject(this.projectName!).subscribe({
-      next: response => {
-        let labels: string[] = [];
-        let data: number[] = [];
-        
-        for(let element in response) {
-          labels.push(element);
-          data.push(Number(response[element]));
-        }
-
-        this.issueTypesChart = new Chart(this.issueTypesRef.nativeElement, {
-          type: 'pie',
-          data: {
-            labels: labels,
-            datasets: [{
-              data: data,
-              backgroundColor: [
-                '#8fb1e7',
-                'rgb(230, 59, 59)',
-                'rgb(125, 225, 125)'
-              ]
-            }]
-          }
-        });
-
-      },
-      error: error => {
-        console.log(error.error);
-      }
+      next: response => { this.createChartTaskType(response); },
+      error: error => { console.log(error.error); }
     })
+
+    // Kreiranje grafika o prioritetu zadataka
+    this.statisticsService.getIssuePrioritiesInProject(this.projectName!).subscribe({
+      next: response => { this.createChartTaskPriority(response); },
+      error: error => { console.log(error.error); }
+    })
+
+    // Krairanje grafika o statusu zadataka
+    this.statisticsService.getIssueStatusesInProject(this.projectName!).subscribe({
+      next: response => { this.createChartTaskStatus(response); },
+      error: error => { console.log(error.error); }
+    })
+
   }
 
   ngOnInit(): void {
@@ -107,4 +104,70 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
 
     return path;
   }
+
+  public createChartTaskType(response: {[key: string]: string}) {
+    let labels: string[] = [];
+    let data: number[] = [];
+    
+    for(let element in response) {
+      labels.push(element);
+      data.push(Number(response[element]));
+    }
+
+    this.issueTypesChart = new Chart(this.issueTypesRef.nativeElement, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: [
+            '#8fb1e7',
+            'rgb(230, 59, 59)',
+            'rgb(125, 225, 125)'
+          ]
+        }]
+      }
+    });
+  }
+
+  public createChartTaskPriority(response: {[key: string]: string}) {
+    let labels: string[] = [];
+    let data: number[] = [];
+    
+    for(let element in response) {
+      labels.push(element);
+      data.push(Number(response[element]));
+    }
+
+    this.issuePrioritiesChart = new Chart(this.issuePrioritiesRef.nativeElement, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data
+        }]
+      }
+    });
+  }
+
+  public createChartTaskStatus(response: {[key: string]: string}) {
+    let labels: string[] = [];
+    let data: number[] = [];
+    
+    for(let element in response) {
+      labels.push(element);
+      data.push(Number(response[element]));
+    }
+
+    this.issueStatusesChart = new Chart(this.issueStatusesRef.nativeElement, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data
+        }]
+      }
+    });
+  }
+
 }
