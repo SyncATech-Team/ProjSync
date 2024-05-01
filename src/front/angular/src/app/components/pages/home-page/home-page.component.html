@@ -120,7 +120,8 @@
                             <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                 <div id="name-cont">
                                     <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
-                                    >{{ issue.name }}</a>
+                                    pTooltip="{{issue.name}}"
+                                    >{{  getTaskName(issue.name) }}</a>
                                     <!--KOMENTAR: SREDITI SLUCAJ KAD JE USER NIJE NA PROJEKTU A IMA TASK NA ISTOM (click)="openIssueModal(issue.id, issue.projectName)" -->
                                 </div>
                             </td>
@@ -178,7 +179,7 @@
                 [breakpoint]="'960px'"
                 styleClass="p-datatable-striped"
                 [paginator]="true"
-                [rows]="5"
+                [rows]="10"
                 [first]="first"
                 [rowsPerPageOptions]="[5, 10, 25, 50]"
                 [showCurrentPageReport]="true"

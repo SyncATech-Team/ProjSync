@@ -332,6 +332,17 @@ export class HomePageComponent implements OnInit {
     return s;
   }
 
+  MAX_TASK_NAME_LENGTH_DISPLAY = 20;
+  getTaskName(taskName: string): string {
+    let s: string = "";
+    if(taskName.length > this.MAX_TASK_NAME_LENGTH_DISPLAY)
+      s = taskName.substring(0, this.MAX_TASK_NAME_LENGTH_DISPLAY) + "...";
+    else
+      s = taskName;
+
+    return s;
+  }
+
   MAX_ISSUE_NAME_LENGTH_DISPLAY = 20;
   getIssueName(issueName : string) : string{
     let s = "";
