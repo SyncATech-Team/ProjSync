@@ -76,4 +76,7 @@ export class IssueService {
     return this.http.get<JSON>("../../assets/testing-data/tasks.json");
   }
   
+  getUserIssues(username : string) {
+    return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/userIssues?username=${username}`);
+  }
 }

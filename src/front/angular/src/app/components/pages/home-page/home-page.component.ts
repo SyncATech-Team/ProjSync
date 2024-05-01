@@ -9,6 +9,11 @@ import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { IssueService } from '../../../_service/issue.service';
+import { IssueModel } from '../../../_models/model-issue.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-modal.component';
+import { ProjectQuery } from '../../state/project/project.query';
 
 @Component({
   selector: 'app-home-page',
@@ -41,19 +46,35 @@ export class HomePageComponent implements OnInit {
   Users : any[] = []; // -> niz korisnika za filter 
   usersPhotos : PhotoForUser[] = [];
 
+  showUserTasks: boolean = false;
+  userIssues : IssueModel[] = [];
+  issueColumns! : string[];
+  selectedIssueColumns!: string[];
+  showIssueColumns!: string[];
+  issuesShow: any[] = [];
+  ref: DynamicDialogRef | undefined;
+
   constructor(
     public accoutService: AccountService,
     private projectService:ProjectService,
     private projectTypes:ProjectTypeService,
     private companyroleService: CompanyroleService,
     private userService: UserService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    private issueService : IssueService,
+    private _modalService: DialogService,
+    private _projectQuery: ProjectQuery,
   ) { }
 
   ngOnInit(): void {
     this.columns = ['Key','Type','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
+
+    this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'ProjectName', 'CreatedDate'];
+    this.selectedIssueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed'];
+    this.showIssueColumns = ['Name', ...this.selectedIssueColumns];
+
     this.initializeProjects();
     this.projectTypes.getAllProjectTypes().subscribe({
       next: (response: ProjectType[]) =>{
@@ -177,23 +198,73 @@ export class HomePageComponent implements OnInit {
     }
     else return "";
   }
+
+  filterTasksByUser() {
+    let user = this.accoutService.getCurrentUser(); //potencijalno dodati kao polje i da se onda samo jednom getuje username
+    if(user){
+      this.issueService.getUserIssues(user?.username).subscribe({
+        next: (response) => {
+          this.userIssues = response;
+          this.issuesShow = response;
+          console.log(this.userIssues);
+        },
+        error: (error) => {
+          console.log(error.error);
+        }
+      });
+    }
+
+    this.showUserTasks = true;
+  }
+
+  getSeverity(status: string) {
+    switch (status.toLowerCase()) {
+        case 'highest':
+            return 'danger';
+
+        case 'lowest':
+            return 'success';
+
+        case 'medium':
+            return 'info';
+
+        case 'high':
+            return 'warning';
+
+        case 'bug':
+            return 'danger';
+
+        case 'story':
+            return 'success';
+
+        case 'done':
+            return 'success';
+
+        case 'planning':
+            return 'info';
+
+        default:
+            return 'primary';
+    }
+  }
   
   filterProjects(filter :string ):void {
     this.visibilityFilter = filter;
     if(filter=="stared")
-    {
-      this.projectsShow=this.projects.filter((project)=> project.isFavorite);
-    }
-    else{
-      if(filter=="private")
       {
-        this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Private");
+        this.projectsShow=this.projects.filter((project)=> project.isFavorite);
       }
-      else
-      {
-        this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Public");
-      }
-    }
+      else{
+        if(filter=="private")
+          {
+            this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Private");
+          }
+          else
+          {
+            this.showUserTasks = false;
+            this.projectsShow=this.projects.filter((project)=> project.visibilityName==="Public");
+          }
+        }
   }
 
   //Search po nazivu projekta dodat
@@ -208,6 +279,23 @@ export class HomePageComponent implements OnInit {
         || project.ownerUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) 
     );
   }
+
+  // Pretraga zadataka
+  searchIssuesTable() {
+    let x = document.getElementById("home-issues-search");
+    if(x != null){
+      x.innerHTML = "";
+    }
+
+    this.issuesShow = this.userIssues.filter(issue =>
+        issue.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.reporterUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.statusName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
   getProjectImagePath(projectName : string): string {
     // let x: number = 1;
     // let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
@@ -239,6 +327,18 @@ export class HomePageComponent implements OnInit {
     return s;
   }
 
+  MAX_ISSUE_NAME_LENGTH_DISPLAY = 20;
+  getIssueName(issueName : string) : string{
+    let s = "";
+    if(issueName.length > this.MAX_ISSUE_NAME_LENGTH_DISPLAY)
+      s = issueName.substring(0, this.MAX_ISSUE_NAME_LENGTH_DISPLAY) + "...";
+    else
+      s = issueName;
+    
+    return s;
+  }
+
+  // Odabir prikaza kolona za projekte i zadatke
   onSelectedChange(){
     this.selectedColumns.forEach(item => {
       if(!this.showColumns.includes(item)){
@@ -248,6 +348,19 @@ export class HomePageComponent implements OnInit {
     this.showColumns.forEach((item,index) => {
       if(!this.selectedColumns.includes(item) && item!=='Name' && item !==''){
         this.showColumns.splice(index,1);
+      }
+    })
+  }
+
+  onSelectedIssueChange(){
+    this.selectedIssueColumns.forEach(item => {
+      if(!this.showIssueColumns.includes(item)){
+        this.showIssueColumns.push(item);
+      }
+    });
+    this.showIssueColumns.forEach((item,index) => {
+      if(!this.selectedIssueColumns.includes(item) && item!=='Name' && item !==''){
+        this.showIssueColumns.splice(index,1);
       }
     })
   }
@@ -265,4 +378,25 @@ export class HomePageComponent implements OnInit {
     return res;
   }
 
+  // Otvaranje modala za edit issue edit
+  openIssueModal(issueId : string){
+    console.log(issueId);
+    this.ref = this._modalService.open(IssueModalComponent, {
+      header: 'Issue - update',
+      width: '65%',
+      modal:true,
+      closable: true,
+      maximizable: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+      },
+      data: {
+        issue$: this._projectQuery.issueById$(issueId.toString()),
+        usersPhotos: this.usersPhotos
+      }
+    });
+  }
 }
