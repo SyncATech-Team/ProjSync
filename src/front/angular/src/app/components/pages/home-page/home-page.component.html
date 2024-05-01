@@ -61,6 +61,7 @@
                         </div>
                     </div>
                 </ng-template>
+                
                 <ng-template pTemplate="header" let-issueColumns>
                     <tr>
                         <ng-container *ngFor="let column of issueColumns">
@@ -118,9 +119,9 @@
                         <ng-container *ngFor="let column of columns">
                             <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                 <div id="name-cont">
-                                    <a style="text-decoration: none;" 
-                                        routerLink=""
-                                        title="{{issue.name}}">{{ getIssueName(issue.name) }}</a>
+                                    <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
+                                    (click)="openIssueModal(issue.id)">{{ issue.name }}</a>
+                                    <!-- (click)="openIssueModal(issue.id)" -->
                                 </div>
                             </td>
                             <td *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" style="width: 17vh; text-align: center;">
@@ -148,8 +149,16 @@
                                 <span class="p-column-title" style="font-weight: bold;">Completed</span>
                                 <p-progressBar [value]=issue.completed></p-progressBar>
                             </td>
-                            <td *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">ProjectName</span>
-                                {{ issue.projectName }}
+                            <td *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;">Project name</span>
+                                <div id="name-cont">
+                                    <img 
+                                        src={{getProjectImagePath(issue.projectName)}}
+                                        alt="default-image">
+                                        <a style="text-decoration: none;" 
+                                            routerLink="projects/tasks/{{issue.projectName}}"
+                                            title="{{issue.projectName}}">{{ getProjectName(issue.projectName) }}</a>
+                                </div>
                             </td>
                         </ng-container>
                     </tr>
@@ -339,7 +348,7 @@
                                 <div id="name-cont">
                                     <img 
                                     src={{getProjectImagePath(project.name)}}
-                                    alt="user-default-image">
+                                    alt="default-image">
                                     <a style="text-decoration: none;" 
                                         routerLink="projects/tasks/{{project.name}}"
                                         title="{{project.name}}">{{ getProjectName(project.name) }}</a>

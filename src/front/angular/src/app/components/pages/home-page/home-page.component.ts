@@ -11,6 +11,9 @@ import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { IssueService } from '../../../_service/issue.service';
 import { IssueModel } from '../../../_models/model-issue.model';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-modal.component';
+import { ProjectQuery } from '../../state/project/project.query';
 
 @Component({
   selector: 'app-home-page',
@@ -49,6 +52,7 @@ export class HomePageComponent implements OnInit {
   selectedIssueColumns!: string[];
   showIssueColumns!: string[];
   issuesShow: any[] = [];
+  ref: DynamicDialogRef | undefined;
 
   constructor(
     public accoutService: AccountService,
@@ -57,7 +61,9 @@ export class HomePageComponent implements OnInit {
     private companyroleService: CompanyroleService,
     private userService: UserService,
     private userPictureService: UserProfilePicture,
-    private issueService : IssueService
+    private issueService : IssueService,
+    private _modalService: DialogService,
+    private _projectQuery: ProjectQuery,
   ) { }
 
   ngOnInit(): void {
@@ -372,4 +378,25 @@ export class HomePageComponent implements OnInit {
     return res;
   }
 
+  // Otvaranje modala za edit issue edit
+  openIssueModal(issueId : string){
+    console.log(issueId);
+    this.ref = this._modalService.open(IssueModalComponent, {
+      header: 'Issue - update',
+      width: '65%',
+      modal:true,
+      closable: true,
+      maximizable: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+      },
+      data: {
+        issue$: this._projectQuery.issueById$(issueId.toString()),
+        usersPhotos: this.usersPhotos
+      }
+    });
+  }
 }
