@@ -147,6 +147,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
       data: {
         labels: labels,
         datasets: [{
+          label: "Types",
           data: data,
           backgroundColor: [
             '#3B82F6',
@@ -173,6 +174,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
       data: {
         labels: labels,
         datasets: [{
+          label: "Priorities",
           data: data,
           backgroundColor: [
             "#22c55e",
@@ -201,6 +203,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
       data: {
         labels: labels,
         datasets: [{
+          label: "Statuses",
           data: data
         }]
       }
@@ -221,6 +224,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
       data: {
         labels: labels,
         datasets: [{
+          label: "Groups",
           data: data
         }]
       }
