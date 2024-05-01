@@ -15,6 +15,7 @@ import { ProjectSidebarComponent } from '../../../elements/project-sidebar/proje
 import { error } from 'console';
 import { AccountService } from '../../../../_service/account.service';
 import { User } from '../../../../_models/user';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-project-settings-page',
@@ -35,6 +36,8 @@ export class ProjectSettingsPageComponent implements OnInit {
   projectName2: string | null = '';
   projectType2: string | null = '';
   projectDescription2: string | null = '';
+  startDate2: string | null = '';
+  dueDate2: string | null = '';
 
   projectTypes: ProjectType []=[];
 
@@ -68,12 +71,15 @@ export class ProjectSettingsPageComponent implements OnInit {
     private sideBarComponent: ProjectSidebarComponent,
     private userPictureService: UserProfilePicture,
     private usersOnProject: UserOnProjectService,
+    private datePipe: DatePipe,
     private accountService: AccountService){
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.form = this.formBuilder.group({
       name: [''],
       category: [''],
-      description: ['']
+      description: [''],
+      startDate: [''],
+      dueDate: ['']
     });
 
     this.projectTypeService.getAllProjectTypes().subscribe({
@@ -95,6 +101,8 @@ export class ProjectSettingsPageComponent implements OnInit {
         this.projectName2 = this.project.name;
         this.projectType2 = this.project.typeName;
         this.projectDescription2 = this.project.description;
+        this.startDate2 = this.datePipe.transform(this.project.creationDate, "yyyy-MM-dd");
+        this.dueDate2 = this.datePipe.transform(this.project.dueDate, "yyyy-MM-dd");
         this.projectOwnerUsername = this.project.ownerUsername;
         
         this.loggedUser = this.accountService.getCurrentUser();
@@ -123,10 +131,26 @@ export class ProjectSettingsPageComponent implements OnInit {
     
     console.log(this.form.value.category.name);
     console.log(this.project.typeName);
-    if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName){
+    if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName
+       || this.form.value.startDate != this.project.creationDate || this.form.value.dueDate != this.project.dueDate 
+    ){
+
+      if(this.form.value.startDate > this.form.value.dueDate){
+        this.msgPopupService.showError("Due date can\'t be before starting date");
+        return;
+      }
+      var DueDateFormated = new Date(this.form.value.dueDate); //radi provere da li je due date pre danasnjeg dana
+      var currentDate = new Date(); //isto
+      if(DueDateFormated < currentDate){
+        this.msgPopupService.showError("Due date can\'t be before today");
+        return;
+      }
+      
       this.project.description = this.form.value.description;
       this.project.typeName = this.form.value.category.name;
-
+      this.project.creationDate = this.form.value.startDate;
+      this.project.dueDate = this.form.value.dueDate;
+      console.log("uspesno")
       this.projectService.updateProject(this.projectName!,this.project).subscribe({
         next:(response)=>{
             this.router.navigate(["home/projects/settings/"+this.project.name]);
