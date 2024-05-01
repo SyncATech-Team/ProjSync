@@ -26,7 +26,7 @@
         <!-- End -->
         <div id="issues" *ngIf="showUserTasks">
             <p-table
-            [value]="userIssues"
+            [value]="issuesShow"
             dataKey="name"
             [tableStyle]="{'width':'100%'}"
             responsiveLayout="stack"
@@ -39,10 +39,11 @@
                 <ng-template pTemplate="caption">
                     <div class="table-header">
                         <div class="left-side">
+                            
                             <div class="p-input-icon-right input-search">
-                                <input id="home-projects-search" name="projects-serach" class="form-control project-search"
+                                <input id="home-issues-search" name="projects-serach" class="form-control project-search"
                                 type="search" placeholder="Search" aria-label="Search" 
-                                [(ngModel)]="searchTerm" (input)="filterProjectsByName()" icon="pi pi-search">
+                                [(ngModel)]="searchTerm" (input)="searchIssuesTable()" icon="pi pi-search">
                                 <i class="pi pi-search"></i>
                             </div>
                         </div>

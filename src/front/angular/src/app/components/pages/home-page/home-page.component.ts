@@ -47,6 +47,7 @@ export class HomePageComponent implements OnInit {
   userIssues : IssueModel[] = [];
   issueColumns! : string[];
   selectedIssueColumns!: string[];
+  issuesShow: any[] = [];
 
   constructor(
     public accoutService: AccountService,
@@ -195,6 +196,7 @@ export class HomePageComponent implements OnInit {
       this.issueService.getUserIssues(user?.username).subscribe({
         next: (response) => {
           this.userIssues = response;
+          this.issuesShow = response;
           console.log(this.userIssues);
         },
         error: (error) => {
@@ -268,6 +270,23 @@ export class HomePageComponent implements OnInit {
         || project.ownerUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) || project.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) 
     );
   }
+
+  // Pretraga zadataka
+  searchIssuesTable() {
+    let x = document.getElementById("home-issues-search");
+    if(x != null){
+      x.innerHTML = "";
+    }
+
+    this.issuesShow = this.userIssues.filter(issue =>
+        issue.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.reporterUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.statusName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
   getProjectImagePath(projectName : string): string {
     // let x: number = 1;
     // let path: string = ".././../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
