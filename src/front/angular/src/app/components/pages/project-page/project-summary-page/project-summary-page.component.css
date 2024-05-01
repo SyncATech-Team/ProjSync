@@ -57,3 +57,8 @@ h4{
     overflow-y: scroll;
     height: 300px;
 }
+
+.div-caption {
+    text-align: center;
+    font-weight: bold;
+}
