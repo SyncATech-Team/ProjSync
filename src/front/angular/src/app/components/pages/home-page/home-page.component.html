@@ -16,13 +16,158 @@
             <!-- Explore projects -->
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterProjects('public')">Explore projects</a>
+                    (click)="filterProjects('public')">My projects</a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab"
+                    (click)="filterTasksByUser()">My tasks</a>
+            </li>
         </ul>
         <!-- End -->
+        <div id="issues" *ngIf="showUserTasks">
+            <p-table
+            [value]="issuesShow"
+            dataKey="name"
+            [tableStyle]="{'width':'100%'}"
+            responsiveLayout="stack"
+            breakpoint="960px"
+            styleClass="p-datatable-striped"
+            [resizableColumns]="true"
+            [reorderableColumns]="true"
+            [columns]="showIssueColumns">
 
-        <div id="projects">
+                <ng-template pTemplate="caption">
+                    <div class="table-header">
+                        <div class="left-side">
+                            <p-multiSelect 
+                            [options]="issueColumns" 
+                            [(ngModel)]="selectedIssueColumns" 
+                            selectedItemsLabel="{0} columns selected" 
+                            [style]="{'width': '30vh'}" 
+                            placeholder="Choose Columns"
+                            (onChange)="onSelectedIssueChange()" >
+                            </p-multiSelect>
+                            
+                            <div class="p-input-icon-right input-search">
+                                <input id="home-issues-search" name="projects-serach" class="form-control project-search"
+                                type="search" placeholder="Search" aria-label="Search" 
+                                [(ngModel)]="searchTerm" (input)="searchIssuesTable()" icon="pi pi-search">
+                                <i class="pi pi-search"></i>
+                            </div>
+                        </div>
+
+                        <div class="right-side">
+
+                        </div>
+                    </div>
+                </ng-template>
+                
+                <ng-template pTemplate="header" let-issueColumns>
+                    <tr>
+                        <ng-container *ngFor="let column of issueColumns">
+                            <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="name">
+                                <div class="flex align-items-center">
+                                Name
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="key">
+                                <div class="flex align-items-center">
+                                Type
+                            </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="typeName">
+                                <div class="flex align-items-center">
+                                Status
+                            </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priority">
+                                <div class="flex align-items-center">
+                                Priority
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" pSortableColumn="createdDate">
+                                <div class="flex align-items-center">
+                                    Created date
+                                </div>
+                            </th> 
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" pSortableColumn="dueDate">
+                                <div class="flex align-items-center">
+                                Due Date
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" pSortableColumn="reporter">
+                                <div class="flex align-items-center">
+                                    Reporter
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" pSortableColumn="completed">
+                                <div class="flex align-items-center">
+                                    Completed
+                                </div>
+                            </th>
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" pSortableColumn="projectName">
+                                <div class="flex align-items-center">
+                                    Project name
+                                </div>
+                            </th>                          
+                        </ng-container>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-issue let-columns="columns">
+                    <tr>
+                        <ng-container *ngFor="let column of columns">
+                            <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
+                                <div id="name-cont">
+                                    <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
+                                    (click)="openIssueModal(issue.id)">{{ issue.name }}</a>
+                                    <!-- (click)="openIssueModal(issue.id)" -->
+                                </div>
+                            </td>
+                            <td *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" style="width: 17vh; text-align: center;">
+                                <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                <p-tag class="p-tag-fill" [value]="issue.typeName" [severity]="getSeverity(issue.typeName)"></p-tag>
+                            </td>
+                            <td *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" style="width: 17vh; text-align: center;">
+                                <span class="p-column-title" style="font-weight: bold;">Status</span>
+                                <p-tag class="p-tag-fill" [value]="issue.statusName" [severity]="getSeverity(issue.statusName)"></p-tag>
+                            </td>
+                            <td *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" style="width: 17vh; text-align: center; ">
+                                <span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                <p-tag class="p-tag-fill" [value]="issue.priorityName" [severity]="getSeverity(issue.priorityName)"></p-tag>
+                            </td>
+                            <td *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">CreatedDate</span>
+                                {{ issue.createdDate | date: 'dd/MM/yyyy' }}
+                            </td>
+                            <td *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Due Date</span>
+                                {{ issue.dueDate | date: 'dd/MM/yyyy' }}
+                            </td>
+                            <td *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Reporter</span>
+                                {{ issue.reporterUsername }}
+                            </td>
+                            <td *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;">Completed</span>
+                                <p-progressBar [value]=issue.completed></p-progressBar>
+                            </td>
+                            <td *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;">Project name</span>
+                                <div id="name-cont">
+                                    <img 
+                                        src={{getProjectImagePath(issue.projectName)}}
+                                        alt="default-image">
+                                        <a style="text-decoration: none;" 
+                                            routerLink="projects/tasks/{{issue.projectName}}"
+                                            title="{{issue.projectName}}">{{ getProjectName(issue.projectName) }}</a>
+                                </div>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+                
+            </p-table>
+        </div>
+
+        <div id="projects" *ngIf="!showUserTasks">
 
             <p-table
                 #dt2
@@ -203,7 +348,7 @@
                                 <div id="name-cont">
                                     <img 
                                     src={{getProjectImagePath(project.name)}}
-                                    alt="user-default-image">
+                                    alt="default-image">
                                     <a style="text-decoration: none;" 
                                         routerLink="projects/tasks/{{project.name}}"
                                         title="{{project.name}}">{{ getProjectName(project.name) }}</a>

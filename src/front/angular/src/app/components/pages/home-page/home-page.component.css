@@ -119,3 +119,7 @@ th{
 :host ::ng-deep .progress-bar-wrapper .progress-red .p-progressbar-value {
     background-color: #ef4444;
 }
+
+:host ::ng-deep p-tag span {
+    width: 100% !important;
+}
