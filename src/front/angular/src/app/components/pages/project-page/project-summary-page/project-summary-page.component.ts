@@ -208,4 +208,16 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Function to download the chart
+  downloadChart(canvasId: string) {
+    var canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if(canvas) {
+      var image = canvas.toDataURL('image/png'); // Convert canvas to image
+      var link = document.createElement('a');
+      link.download = 'chart.png';
+      link.href = image;
+      link.click();
+    }
+  }
+
 }

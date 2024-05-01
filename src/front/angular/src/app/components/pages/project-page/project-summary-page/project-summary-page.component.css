@@ -86,3 +86,19 @@ canvas {
     text-align: center;
     margin-top: 5px;
 }
+
+.download-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.download-button i {
+    font-size: 20px; /* Adjust the size of the icon as needed */
+    color: #007bff; /* Bright blue color - you can adjust it as needed */
+}
+.chart-options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -32,29 +32,49 @@
                 
                 <div class="content-box">
                     <div>
-                        <canvas #issueTypes></canvas>
+                        <canvas id="task-types-canvas" #issueTypes></canvas>
                         <div class="div-caption">Share of task types</div>
+                        <div class="chart-options">
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-types-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="content-box">
                     <div>
-                        <canvas #issuePriorities></canvas>
+                        <canvas id="task-priorities-canvas" #issuePriorities></canvas>
                         <div class="div-caption">Share of task priorities</div>
+                        <div class="chart-options">
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-priorities-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="content-box">
                     <div>
-                        <canvas #issueStatuses></canvas>
+                        <canvas id="task-statuses-canvas" #issueStatuses></canvas>
                         <div class="div-caption">Share of task statuses</div>
+                        <div class="chart-options">
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-statuses-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="content-box">
                     <div>
-                        <canvas #issueGroups></canvas>
+                        <canvas id="task-groups-canvas" #issueGroups></canvas>
                         <div class="div-caption">Share of task groups</div>
+                        <div class="chart-options">
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-groups-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
                     </div>
                 </div>
 
