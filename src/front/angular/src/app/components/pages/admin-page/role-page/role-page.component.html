@@ -14,30 +14,15 @@
 
         <!-- Header strane -->
         <div id="description">
-            <h2>Create and Manage Roles</h2>
-        </div>
-        <!-- End of Header strane -->
-
-        <!-- Controls -->
-        <div id="controls">
-            <!-- Add filers, controls, etc here -->
+            <h2 style="display: inline-block;">Create and Manage Roles</h2>
             <div class="role-create" style="float: right;">
                 <app-create-role></app-create-role>
             </div>
-            <!-- <button (click)="openRolesModal()" class="btn btn-info">Create Role</button> -->
         </div>
-        <!-- End of controls -->
+        <!-- End of Header strane -->
 
         <!-- Div za tabelu sa ulogama -->
         <div id="roles">
-
-            <!-- Kontrole za pomeranje stranica u tabeli -->
-            <div class="mb-1">
-                <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
-                <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-                <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
-            </div>
-            <!-- End of Kontrole za pomeranje stranica u tabeli -->
 
             <!-- Tabela -->
             <p-table
