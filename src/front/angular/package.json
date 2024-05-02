@@ -22,7 +22,7 @@
     "@angular/router": "^17.2.0",
     "@datorama/akita": "^7.1.1",
     "@datorama/akita-ng-entity-service": "^7.0.0",
-    "@microsoft/signalr": "^8.0.0",
+    "@microsoft/signalr": "7.0.14",
     "@ngneat/content-loader": "^7.0.0",
     "@ngneat/until-destroy": "^10.0.0",
     "@worktile/gantt": "^17.0.0-next.0",
