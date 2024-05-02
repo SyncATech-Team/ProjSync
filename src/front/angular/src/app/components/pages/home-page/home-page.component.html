@@ -42,7 +42,8 @@
             [first]="first"
             [rowsPerPageOptions]="[5, 10, 25, 50]"
             [showCurrentPageReport]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries">
+            currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries"
+            sortField="multiple">
 
                 <ng-template pTemplate="caption">
                     <div class="table-header">
@@ -76,36 +77,43 @@
                             <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="name">
                                 <div class="flex align-items-center">
                                 Name
+                                <p-sortIcon field="name"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="key">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="typeName">
                                 <div class="flex align-items-center">
-                                Type
-                            </div>
+                                    Type
+                                    <p-sortIcon field="typeName"></p-sortIcon>
+                                </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="typeName">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="statusName">
                                 <div class="flex align-items-center">
                                 Status
+                                <p-sortIcon field="statusName"></p-sortIcon>
                             </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priority">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priorityName">
                                 <div class="flex align-items-center">
                                 Priority
+                                <p-sortIcon field="priorityName"></p-sortIcon>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" pSortableColumn="createdDate">
                                 <div class="flex align-items-center">
                                     Created date
+                                    <p-sortIcon field="createdDate"></p-sortIcon>
                                 </div>
                             </th> 
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" pSortableColumn="dueDate">
                                 <div class="flex align-items-center">
                                 Due Date
+                                <p-sortIcon field="dueDate"></p-sortIcon>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" pSortableColumn="reporter">
                                 <div class="flex align-items-center">
                                     Reporter
+                                    <p-sortIcon field="reporter"></p-sortIcon>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" pSortableColumn="completed">
@@ -116,6 +124,7 @@
                             <th pReorderableColumn pResizableColumn *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" pSortableColumn="projectName">
                                 <div class="flex align-items-center">
                                     Project name
+                                    <p-sortIcon field="projectName"></p-sortIcon>
                                 </div>
                             </th>                          
                         </ng-container>
