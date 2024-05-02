@@ -77,22 +77,21 @@ export class ProjectPeoplePageComponent implements OnInit{
         // this.userRole = this.users_backup.map(user => user.companyRoleName);
         const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
         this.userRole = Array.from(uniqueRoles);
+        this.userService.getAllUsers().subscribe({
+          next: (response) => {
+            this.getUserProfilePhotos(this.users);
+            this.allUsers = response.filter(user => user.companyRoleName !== 'Administrator');
+            var userNames = this.users_backup.map(user => user.username);
+            this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username) && user.isActive == true);
+            this.getUserProfilePhotos(this.allUsers);
+          },
+          error: (error) => {
+            console.log(error); 
+          }
+        });
       },
       error: (error) => {
         console.log(error);
-      }
-    });
-
-    this.userService.getAllUsers().subscribe({
-      next: (response) => {
-        this.getUserProfilePhotos(this.users);
-        this.allUsers = response.filter(user => user.companyRoleName !== 'Administrator');
-        var userNames = this.users_backup.map(user => user.username);
-        this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username) && user.isActive == true);
-        this.getUserProfilePhotos(this.allUsers);
-      },
-      error: (error) => {
-        console.log(error); 
       }
     });
 
