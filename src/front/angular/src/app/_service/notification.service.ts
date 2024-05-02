@@ -54,6 +54,7 @@ export class NotificationService {
     }
 
     stopHubConnection() {
+        console.log("Notifications hub: Stopping hub connection...");
         this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
     }
 

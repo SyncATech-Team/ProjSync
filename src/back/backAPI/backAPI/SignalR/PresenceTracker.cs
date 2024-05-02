@@ -1,9 +1,17 @@
-﻿namespace backAPI.SignalR
+﻿using Microsoft.AspNetCore.SignalR;
+
+namespace backAPI.SignalR
 {
     public class PresenceTracker
     {
         private static readonly Dictionary<string, List<string>> OnLineUsers 
             = new Dictionary<string, List<string>>();
+
+        private readonly IHubContext<PresenceHub> _hubContext;
+
+        public PresenceTracker(IHubContext<PresenceHub> hubContext) {
+            _hubContext = hubContext;
+        }
 
         public Task UserConnected(string username, string connectionId)
         {
@@ -55,5 +63,30 @@
 
             return Task.FromResult(onlineUsers);
         }
+
+        public Task<Dictionary<string, List<string>>> GetConnectionIdsOfAnUser(string username) {
+            Dictionary<string, List<string>> returnValue = new Dictionary<string, List<string>>();
+            lock (OnLineUsers) {
+                returnValue = OnLineUsers.Where(ou => ou.Key == username).ToDictionary();
+            }
+
+            return Task.FromResult(returnValue);
+        }
+
+        public async Task OnAccountDeactivation(string username) {
+            var userObject = await GetConnectionIdsOfAnUser(username);
+            if (userObject.ContainsKey(username) != false) { // ako ovaj user nije konektovan nece se pokretati ovaj postupak
+                var connectionIds = userObject[username];
+                await _hubContext.Clients.Clients(connectionIds).SendAsync("AccountDeactivated");
+
+                /*lock (OnLineUsers) {
+                    OnLineUsers.Remove(username);
+                }*/
+            }
+            else {
+                Console.WriteLine("User not connected on any device. No need to force logout");
+            }
+        }
+
     }
 }

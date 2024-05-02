@@ -2,6 +2,7 @@
 using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
+using backAPI.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -11,13 +12,20 @@ namespace backAPI.Controllers
         private readonly IUsersRepository _usersRepository;
         private readonly ICompanyRolesRepository _companyRolesRepository;
         private readonly IEmailService _emailService;
+        private readonly PresenceTracker _presenceTracker;
 
 
         // TODO: Dodati servis za JWT
-        public UsersController(IUsersRepository usersRepository, IEmailService emailService, ICompanyRolesRepository companyRolesRepository) {
+        public UsersController(
+            IUsersRepository usersRepository, 
+            IEmailService emailService, 
+            ICompanyRolesRepository companyRolesRepository,
+            PresenceTracker presenceTracker
+        ) {
             _usersRepository = usersRepository;
             _emailService = emailService;
             _companyRolesRepository = companyRolesRepository;
+            _presenceTracker = presenceTracker;
         }
 
         /* *****************************************************************************
@@ -142,6 +150,9 @@ namespace backAPI.Controllers
             if(deleted == false) {
                 return NotFound("There is no user with specified username");
             }
+
+            // posalji signal ulogovanom nalogu da je potrebno izlogovati ga jer mu je nalog deaktiviran
+            await _presenceTracker.OnAccountDeactivation(username);
 
             return Ok();
         }

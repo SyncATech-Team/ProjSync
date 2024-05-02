@@ -5,6 +5,8 @@ import {HttpClient} from "@angular/common/http";
 import {MessagePopupService} from "./message-popup.service";
 import {User} from "../_models/user";
 import {BehaviorSubject, Subject} from "rxjs";
+import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,11 @@ export class PresenceService {
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
 
-  constructor(private msgPopupService: MessagePopupService) { }
+  constructor(
+    private notificationService: NotificationService,
+    private msgPopupService: MessagePopupService,
+    private router: Router
+  ) { }
 
   private createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
@@ -33,19 +39,28 @@ export class PresenceService {
     });
 
     this.hubConnection.on('UserIsOnline', username => {
-      this.msgPopupService.showInfo(username + ' has connected');
+      // this.msgPopupService.showInfo(username + ' has connected');
     });
 
     this.hubConnection.on('UserIsOffline', username => {
-      this.msgPopupService.showInfo(username + ' has disconnected');
+      // this.msgPopupService.showInfo(username + ' has disconnected');
     });
 
     this.hubConnection.on('GetOnlineUsers', usernames => {
       this.onlineUsersSource.next(usernames);
     });
+
+    this.hubConnection.on('AccountDeactivated', _ => {
+      localStorage.removeItem('user');
+      this.stopHubConnection();
+      this.notificationService.stopHubConnection();
+      this.router.navigateByUrl("/");
+    });
+
   }
 
   stopHubConnection() {
+    console.log("Presence hub: Stopping hub connection...");
     this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
   }
 
