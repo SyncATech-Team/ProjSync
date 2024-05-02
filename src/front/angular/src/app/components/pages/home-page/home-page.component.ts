@@ -55,6 +55,9 @@ export class HomePageComponent implements OnInit {
   showIssueColumns!: string[];
   issuesShow: any[] = [];
   ref: DynamicDialogRef | undefined;
+  IssueTypes : any[] = ["Bug", "Story", "Task"];
+  IssueStatus: any[] = ["Panning", "In progress", "Done"];
+  IssuePrioritys: any[] = ["Medium", "Low", "Lowest", "High", "Highest"];
 
   constructor(
     public accoutService: AccountService,
