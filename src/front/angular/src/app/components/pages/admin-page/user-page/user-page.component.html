@@ -12,32 +12,15 @@
         <p-confirmDialog></p-confirmDialog>
         
         <div id="description">
-            <h2>Create and Manage Accounts</h2>
+            <h2 style="display: inline-block;">Create and Manage Accounts</h2>
+            <div id="controls" style="float: right;">
+                <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
+            </div>
         </div>
 
-        <div id="controls" style="float: right;">
-            <!-- Dodati polja za search, filter etc. -->
-            <!-- <p style="text-decoration:blueviolet;">URADI I OVO OVDE</p> -->
-            <app-register-user id="register-user-button" (userCreated)="onUserCreated($event)"></app-register-user>
-        </div>
+        
 
         <div id="users">
-
-            <!-- Dugmici za prebacivanje stranice i vracanje na prvu -->
-            
-            <div class="mb-1">
-                <p-button 
-                    type="button" icon="pi pi-chevron-left" (click)="prev()" 
-                    [disabled]="isFirstPage()"styleClass="p-button-text"></p-button>
-                
-                <p-button type="button" icon="pi pi-refresh" (click)="reset()" 
-                    styleClass="p-button-text"></p-button>
-                
-                <p-button type="button" icon="pi pi-chevron-right" (click)="next()"
-                    [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
-            </div>
-
-
             <!-- Table start -->
             <p-table
                 #dt2
