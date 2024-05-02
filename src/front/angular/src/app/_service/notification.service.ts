@@ -47,11 +47,6 @@ export class NotificationService {
             NotificationsPageComponent.NewNotificationAdded();
         });
 
-        this.hubConnection.onclose(() => {
-            console.log("Connection to NotificationHub closed");
-            this.createHubConnection(user);
-        })
-
         this.hubConnection.onreconnecting(() => {
             console.log("Reconnecting to the notification hub...");
         })
