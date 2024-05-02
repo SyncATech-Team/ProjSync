@@ -163,7 +163,6 @@ export class AdminEditProfileComponent implements OnInit {
 
       this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
         next: response => {
-          this.msgPopupService.showSuccess("Successfully uploaded image");
           this.ngOnInit();
 
           if(this.fileInputRef){
