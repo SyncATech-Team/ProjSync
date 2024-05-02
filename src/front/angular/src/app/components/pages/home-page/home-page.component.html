@@ -349,7 +349,7 @@
                                     <img 
                                     src={{getProjectImagePath(project.name)}}
                                     alt="default-image">
-                                    <a style="text-decoration: none;" 
+                                    <a style="text-decoration: none; margin-left: 5px;" 
                                         routerLink="projects/tasks/{{project.name}}"
                                         title="{{project.name}}">{{ getProjectName(project.name) }}</a>
                                 </div>
@@ -365,7 +365,7 @@
                                 <span class="p-column-title" style="font-weight: bold">Owner</span>
                                 <div class="profilecontent">
                                     <img id="image_{{project.ownerUsername}}" draggable="false" src={{getUserImagePath(project.ownerUsername,users)}} alt="user-default-image">
-                                    <span class="fullName">{{ project.ownerUsername }}</span>
+                                    <span style="margin-left: 7px;" class="fullName">{{ project.ownerUsername }}</span>
                                 </div>
                             </td>
                             <td *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" style="width: 25vh; ">
