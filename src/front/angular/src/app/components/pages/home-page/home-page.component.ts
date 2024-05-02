@@ -48,6 +48,7 @@ export class HomePageComponent implements OnInit {
   usersPhotos : PhotoForUser[] = [];
 
   showUserTasks: boolean = false;
+  selectedTab : string = "myProjects";
   userIssues : IssueModel[] = [];
   issueColumns! : string[];
   selectedIssueColumns!: string[];
@@ -73,8 +74,8 @@ export class HomePageComponent implements OnInit {
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
 
-    this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'ProjectName', 'CreatedDate'];
-    this.selectedIssueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed'];
+    this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'CreatedDate'];
+    this.selectedIssueColumns = ['Type','Status','Priority', 'Due Date', 'ProjectName', 'Completed'];
     this.showIssueColumns = ['Name', ...this.selectedIssueColumns];
 
     this.initializeProjects();
@@ -202,6 +203,7 @@ export class HomePageComponent implements OnInit {
   }
 
   filterTasksByUser() {
+    this.selectedTab = 'myTasks';
     let user = this.accoutService.getCurrentUser(); //potencijalno dodati kao polje i da se onda samo jednom getuje username
     if(user){
       this.issueService.getUserIssues(user?.username).subscribe({
@@ -251,6 +253,7 @@ export class HomePageComponent implements OnInit {
   }
   
   filterProjects(filter :string ):void {
+    this.selectedTab = 'myProjects';
     this.visibilityFilter = filter;
     if(filter=="stared")
       {

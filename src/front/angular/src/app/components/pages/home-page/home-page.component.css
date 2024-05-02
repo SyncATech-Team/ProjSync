@@ -123,3 +123,7 @@ th{
 :host ::ng-deep p-tag span {
     width: 100% !important;
 }
+
+.active-tab {
+    font-weight: bold;
+}

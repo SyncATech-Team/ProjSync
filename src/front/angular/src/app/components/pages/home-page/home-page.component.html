@@ -16,11 +16,13 @@
             <!-- Explore projects -->
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterProjects('public')">My projects</a>
+                    (click)="filterProjects('public')"
+                    [class.active-tab]="selectedTab === 'myProjects'">My projects</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterTasksByUser()">My tasks</a>
+                    (click)="filterTasksByUser()"
+                    [class.active-tab]="selectedTab === 'myTasks'">My tasks</a>
             </li>
         </ul>
         <!-- End -->
@@ -34,7 +36,13 @@
             styleClass="p-datatable-striped"
             [resizableColumns]="true"
             [reorderableColumns]="true"
-            [columns]="showIssueColumns">
+            [columns]="showIssueColumns"
+            [paginator]="true"
+            [rows]="10"
+            [first]="first"
+            [rowsPerPageOptions]="[5, 10, 25, 50]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries">
 
                 <ng-template pTemplate="caption">
                     <div class="table-header">
