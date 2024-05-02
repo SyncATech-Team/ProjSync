@@ -300,7 +300,8 @@ export class HomePageComponent implements OnInit {
         issue.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.reporterUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.statusName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.projectName.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 

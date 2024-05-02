@@ -68,6 +68,7 @@ th{
 
 .nav .nav-item{
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .profilecontent img {
@@ -124,6 +125,10 @@ th{
     width: 100% !important;
 }
 
-.active-tab {
-    font-weight: bold;
+:host ::ng-deep .nav-tabs .nav-item .active-tab{
+    background-color: #cecef0;
+}
+
+:host ::ng-deep .active-tab {
+    font-weight: 600;
 }
