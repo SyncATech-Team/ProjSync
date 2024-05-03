@@ -1,10 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Chart } from 'chart.js/auto';
 import { StatisticsService } from '../../../../_service/statistics.service';
+import { LogsService } from '../../../../_service/logs.service';
+import { AccountService } from '../../../../_service/account.service';
 
 type ValidChartType = 'bar' | 'radar' | 'doughnut' | 'pie' | 'polarArea';
 
@@ -13,7 +15,7 @@ type ValidChartType = 'bar' | 'radar' | 'doughnut' | 'pie' | 'polarArea';
   templateUrl: './project-summary-page.component.html',
   styleUrl: './project-summary-page.component.css'
 })
-export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
+export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDestroy {
   projectName: string | null = '';
   projectType: string = '';
   projectKey: string = '';
@@ -61,9 +63,16 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private sanitizer: DomSanitizer,
-    private statisticsService: StatisticsService
+    private statisticsService: StatisticsService,
+    private logService: LogsService,
+    private accountService: AccountService
   ){
     this.projectName = route.snapshot.paramMap.get('projectName');
+  }
+
+  // ovde zatvaramo konekciju sa hubom
+  ngOnDestroy(): void {
+    this.logService.stopHubConnection();
   }
 
   ngAfterViewInit(): void {
@@ -107,6 +116,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.logService.createConnection(this.accountService.getCurrentUser()!);
     this.projectService.getProjectByName(this.projectName).subscribe({
       next: (response)=>{
         this.project= response;

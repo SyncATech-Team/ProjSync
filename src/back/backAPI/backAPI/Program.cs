@@ -95,6 +95,7 @@ app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<CommentsHub>("hubs/comment");
 app.MapHub<NotificationHub>("hubs/notification");
+app.MapHub<LogsHub>("hubs/logs");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
