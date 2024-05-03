@@ -16,11 +16,13 @@
             <!-- Explore projects -->
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterProjects('public')">My projects</a>
+                    (click)="filterProjects('public')"
+                    [class.active-tab]="selectedTab === 'myProjects'">My projects</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterTasksByUser()">My tasks</a>
+                    (click)="filterTasksByUser()"
+                    [class.active-tab]="selectedTab === 'myTasks'">My tasks</a>
             </li>
         </ul>
         <!-- End -->
@@ -34,7 +36,14 @@
             styleClass="p-datatable-striped"
             [resizableColumns]="true"
             [reorderableColumns]="true"
-            [columns]="showIssueColumns">
+            [columns]="showIssueColumns"
+            [paginator]="true"
+            [rows]="10"
+            [first]="first"
+            [rowsPerPageOptions]="[5, 10, 25, 50]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {{issuesShow.length}} entries"
+            sortField="multiple">
 
                 <ng-template pTemplate="caption">
                     <div class="table-header">
@@ -68,36 +77,103 @@
                             <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="name">
                                 <div class="flex align-items-center">
                                 Name
+                                <p-sortIcon field="name"></p-sortIcon>
+                                <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="key">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="typeName">
                                 <div class="flex align-items-center">
-                                Type
-                            </div>
+                                    Type
+                                    <p-sortIcon field="typeName"></p-sortIcon>
+                                    <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                        <ng-template pTemplate="header">
+                                            <div class="px-3 pt-3 pb-0">
+                                                <span class="font-bold">Type</span>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
+                                            <p-multiSelect [ngModel]="value" [options]="IssueTypes" placeholder="Any" (onChange)="filter($event.value)">
+                                                <ng-template let-project let-option pTemplate="item" >
+                                                    <div class="inline-block vertical-align-middle">
+                                                        <span class="ml-1 mt-1">{{ option }}</span>
+                                                    </div>
+                                                </ng-template>
+                                            </p-multiSelect>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="typeName">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="statusName">
                                 <div class="flex align-items-center">
                                 Status
+                                <p-sortIcon field="statusName"></p-sortIcon>
+                                <p-columnFilter field="statusName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template pTemplate="header">
+                                        <div class="px-3 pt-3 pb-0">
+                                            <span class="font-bold">Status</span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
+                                        <p-multiSelect [ngModel]="value" [options]="IssueStatus" placeholder="Any" (onChange)="filter($event.value)">
+                                            <ng-template let-project let-option pTemplate="item" >
+                                                <div class="inline-block vertical-align-middle">
+                                                    <span class="ml-1 mt-1">{{ option }}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </ng-template>
+                                </p-columnFilter>
                             </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priority">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priorityName">
                                 <div class="flex align-items-center">
                                 Priority
+                                <p-sortIcon field="priorityName"></p-sortIcon>
+                                <p-columnFilter field="priorityName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template pTemplate="header">
+                                        <div class="px-3 pt-3 pb-0">
+                                            <span class="font-bold">Priority</span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
+                                        <p-multiSelect [ngModel]="value" [options]="IssuePrioritys" placeholder="Any" (onChange)="filter($event.value)">
+                                            <ng-template let-project let-option pTemplate="item" >
+                                                <div class="inline-block vertical-align-middle">
+                                                    <span class="ml-1 mt-1">{{ option }}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </ng-template>
+                                </p-columnFilter>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" pSortableColumn="createdDate">
                                 <div class="flex align-items-center">
                                     Created date
+                                    <p-sortIcon field="createdDate"></p-sortIcon>
+                                    <p-columnFilter type="date" field="createdDate" display="menu">
+                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                            <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
+                                        </ng-template>
+                                    </p-columnFilter>
                                 </div>
                             </th> 
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" pSortableColumn="dueDate">
                                 <div class="flex align-items-center">
                                 Due Date
+                                <p-sortIcon field="dueDate"></p-sortIcon>
+                                <p-columnFilter type="date" field="dueDate" display="menu">
+                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                        <p-calendar dateFormat="dd/MM/yy" (onSelect)="filter($event)"></p-calendar>
+                                    </ng-template>
+                                </p-columnFilter>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" pSortableColumn="reporter">
                                 <div class="flex align-items-center">
                                     Reporter
+                                    <p-sortIcon field="reporter"></p-sortIcon>
+                                    <p-columnFilter type="text" field="reporter" display="menu"></p-columnFilter>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" pSortableColumn="completed">
@@ -108,6 +184,8 @@
                             <th pReorderableColumn pResizableColumn *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" pSortableColumn="projectName">
                                 <div class="flex align-items-center">
                                     Project name
+                                    <p-sortIcon field="projectName"></p-sortIcon>
+                                    <p-columnFilter type="text" field="projectName" display="menu"></p-columnFilter>
                                 </div>
                             </th>                          
                         </ng-container>
