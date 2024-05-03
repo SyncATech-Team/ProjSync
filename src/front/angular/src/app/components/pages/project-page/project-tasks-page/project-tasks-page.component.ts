@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, debounce, debounceTime, distinctUntilChanged } from 'rxjs';
 import { IssueService } from '../../../../_service/issue.service';
 import { GroupInProject } from '../../../../_models/group-in-project';
 import { GroupService } from '../../../../_service/group.service';
@@ -41,6 +41,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   tasks : IssueModel[] = [];
   tasks_backup: IssueModel[]=[];
   searchTerm: string = '';
+  searchTermChanged: Subject<string> = new Subject<string>();
   tasksByGroup: any[] = [];
   usersPhotos!: PhotoForUser[];
   users: UserGetter[] = [];
@@ -75,6 +76,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   ) {
     this.projectName = route.snapshot.paramMap.get('projectName');
     this._projectService.getProject(this.projectName!);
+    this.searchTermChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe(_ => this.loadIssues(this.lastLazyLoadEvent));
   }
 
   ngOnInit(): void {
@@ -194,15 +196,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   }
 
   search() {
-    alert("Ne koristiti - Potrebno napisati optimalnije ili ukloniti.");
-    // let searchTerm = this.searchTerm.toLowerCase().trim();
-    // let filteredTasks = [...this.tasks_backup];
-
-    // if (searchTerm) {
-    //   filteredTasks = filteredTasks.filter(task => task.name.toLowerCase().includes(searchTerm));
-    // }
-    // this.tasks = filteredTasks;
-    // this.tasksByGroup = this.getTasksByGroup();
+    this.searchTermChanged.next(this.searchTerm);
   }
 
   onSelectedChange(){
@@ -278,7 +272,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.lastLazyLoadEvent = event;
     if(this.projectName)
     {
-      this.issueService.getPaginationAllIssuesForProject(this.projectName,event).subscribe({
+      this.issueService.getPaginationAllIssuesForProject(this.projectName,event,this.searchTerm.toLowerCase().trim()).subscribe({
         next: (response) => {
           this.tasks = response.issues;
           this.totalRecords = response.numberOfRecords;
