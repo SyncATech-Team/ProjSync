@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { LogsService } from '../../../_service/logs.service';
 import { Log } from '../../../_models/log.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface LazyEvent {
   first: number;
@@ -15,13 +16,14 @@ interface LazyEvent {
 export class LogsContainerComponent implements OnInit {
 
   logs: Log[] = [];
-  lazyLoading: boolean = true;
+  lazyLoading: boolean = false;
   loadLazyTimeout: any;
 
   @Input() projectName: string = "";
 
   constructor(
-    private logService: LogsService
+    private logService: LogsService,
+    private sanitizer: DomSanitizer
   ) { }
 
 
@@ -42,15 +44,17 @@ export class LogsContainerComponent implements OnInit {
     let first = event.first;
     let last = event.last;
 
-    this.logService.getLogsRange(this.projectName, event.first, event.last).subscribe({
+
+    this.logService.getLogsRange(this.projectName, first, last).subscribe({
       next: response => {
+        this.lazyLoading = false;
         const lazyItems = [...this.logs];
 
-        for (let i = first; i < last; i++) {
-          lazyItems[i] = response[i];
+        for(let i = 0; i < response.length; i++) {
+          lazyItems[first+i] = response[i];
         }
+        
         this.logs = lazyItems;
-        this.lazyLoading = false;
       },
       error: error => {
         console.log(error.error);

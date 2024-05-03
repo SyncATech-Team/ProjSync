@@ -140,3 +140,7 @@ canvas {
 .container {
     padding-left: 0px;
 }
+
+.logs-box {
+    height: max-content;
+}
