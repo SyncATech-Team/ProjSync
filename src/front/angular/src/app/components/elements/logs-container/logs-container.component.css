@@ -1,0 +1,14 @@
+
+.flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.log-item {
+    padding: 10px;
+    border: 1px solid black;
+    margin: 5px;
+}

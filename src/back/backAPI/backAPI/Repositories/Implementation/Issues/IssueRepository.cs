@@ -18,7 +18,7 @@ namespace backAPI.Repositories.Implementation.Issues
         private readonly IUserOnIssueRepository _userOnIssueRepository;
         private readonly IUsersRepository _usersRepository;
         private readonly NotificationService _notificationService;
-        private readonly INotificationsRepository _notificationsRepository;
+        private readonly INotificationsRepository _notificationsRepository
 
         /* *****************************************************************************************
          * Konstruktor
