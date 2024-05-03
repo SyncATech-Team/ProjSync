@@ -110,6 +110,7 @@ export class HomePageComponent implements OnInit {
       this.projectService.getAllProjectsForUser(user.username).subscribe({
         next: (response) => {
           this.projects = response;
+          console.log(this.projects);
           this.projects.forEach((project)=>{ 
             project.isExtanded = false;
             project.isFavorite = false;
@@ -212,6 +213,10 @@ export class HomePageComponent implements OnInit {
       this.issueService.getUserIssues(user?.username).subscribe({
         next: (response) => {
           this.userIssues = response;
+          this.userIssues.forEach((issue)=>{
+            issue.createdDate = new Date(issue.createdDate);
+            issue.dueDate = new Date(issue.dueDate);
+          });
           this.issuesShow = response;
           console.log(this.userIssues);
         },
