@@ -40,7 +40,7 @@ export class CreateProjectComponent implements OnInit{
     creationDate: null!, 
     dueDate: null!,
     budget: 0,
-    visibilityName: "",
+    visibilityName: "Public",
   }
 
   projects: Project[]=[];
