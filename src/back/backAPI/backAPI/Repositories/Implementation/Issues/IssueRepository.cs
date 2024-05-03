@@ -8,6 +8,7 @@ using backAPI.SignalR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace backAPI.Repositories.Implementation.Issues
 {
@@ -18,7 +19,9 @@ namespace backAPI.Repositories.Implementation.Issues
         private readonly IUserOnIssueRepository _userOnIssueRepository;
         private readonly IUsersRepository _usersRepository;
         private readonly NotificationService _notificationService;
-        private readonly INotificationsRepository _notificationsRepository
+        private readonly INotificationsRepository _notificationsRepository;
+        private readonly ILogsRepository _logsRepository;
+        private readonly IIssueGroupRepository _issueGroupRepository;
 
         /* *****************************************************************************************
          * Konstruktor
@@ -28,7 +31,9 @@ namespace backAPI.Repositories.Implementation.Issues
             IUserOnIssueRepository userOnIssueRepository, 
             IUsersRepository usersRepository,
             NotificationService notificationService,
-            INotificationsRepository notificationRepository
+            INotificationsRepository notificationRepository,
+            ILogsRepository logsRepository,
+            IIssueGroupRepository issueGroupRepository
         )
         {
             _dataContext = dataContext;
@@ -36,6 +41,8 @@ namespace backAPI.Repositories.Implementation.Issues
             _usersRepository = usersRepository;
             _notificationService = notificationService;
             _notificationsRepository = notificationRepository;
+            _logsRepository = logsRepository;
+            _issueGroupRepository = issueGroupRepository;
         }
 
         /* *****************************************************************************************
@@ -69,6 +76,15 @@ namespace backAPI.Repositories.Implementation.Issues
             if (anyother != null)
             {
                 return null; // postoji task u istoj grupi sa istim imenom
+            }
+
+            var group = await _issueGroupRepository.GetGroupAsync(task.GroupId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "New task created. Task name: " + task.Name,
+                    DateCreated = DateTime.Now
+                });
             }
 
             await _dataContext.Issues.AddAsync(task);
@@ -215,6 +231,18 @@ namespace backAPI.Repositories.Implementation.Issues
             var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
             if(exists == null) {
                 return false;
+            }
+
+            var group = await _issueGroupRepository.GetGroupAsync(exists.GroupId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "🕔 Changed issue timeline from " +
+                    "[" + exists.CreatedDate.ToLongDateString() + "-" + exists.DueDate.ToLongDateString() + "] to " + 
+                    "[" + model.StartDate.AddDays(1).ToLongDateString() + "-" + model.EndDate.ToLongDateString() + "]" +
+                    " for issue " + exists.Name,
+                    DateCreated = DateTime.Now
+                });
             }
 
             exists.CreatedDate = model.StartDate.AddDays(1);        // dodatak +1 zbog front-a???
