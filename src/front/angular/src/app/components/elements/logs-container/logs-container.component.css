@@ -12,10 +12,12 @@
 }
 
 .log-item {
+    height: 100px;
+    overflow-y: hidden;
     padding: 15px;
     margin: 10px;
     border-radius: 10px;
-    background-color: #f5f5f5; /* Light gray background */
+    background-color: lightblue; /* Light gray background */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
     transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
 }

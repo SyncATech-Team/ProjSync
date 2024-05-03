@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { LogsService } from '../../../_service/logs.service';
 import { Log } from '../../../_models/log.model';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface LazyEvent {
   first: number;
@@ -23,14 +23,13 @@ export class LogsContainerComponent implements OnInit {
 
   constructor(
     private logService: LogsService,
-    private sanitizer: DomSanitizer
+    private _sanitizer: DomSanitizer
   ) { }
 
 
   ngOnInit(): void {
     this.logService.getLogsCount(this.projectName).subscribe({
       next: response => {
-        console.log("Total log count: " + response);
         this.logs = Array.from( {length: response} )
       },
       error: error => {
@@ -60,6 +59,11 @@ export class LogsContainerComponent implements OnInit {
         console.log(error.error);
       }
     })
+  }
+
+  getSanitizedHTML(content: string): string | null {
+    let result = this._sanitizer.sanitize(SecurityContext.HTML,this._sanitizer.bypassSecurityTrustHtml(content));
+    return result;
   }
 
 }

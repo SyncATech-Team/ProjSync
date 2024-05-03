@@ -28,6 +28,7 @@ namespace backAPI.Repositories.Implementation {
 
         public async Task<IEnumerable<LogDto>> GetLogs(int projectId, int startIndex, int endIndex) {
             var logs = await _dataContext.Logs.Where(log => log.ProjectId == projectId).ToListAsync();
+            logs.Sort(CustomLogComparer);
             Console.WriteLine(startIndex + " | " + (endIndex - startIndex));
             var numberOfElements = logs.Count();
             List<LogDto> result = new List<LogDto>();
@@ -55,5 +56,12 @@ namespace backAPI.Repositories.Implementation {
 
             return result;
         }
+
+        private int CustomLogComparer(Log log1, Log log2) {
+            if (log1.DateCreated > log2.DateCreated) return -1;
+            if (log1.DateCreated < log2.DateCreated) return 1;
+            return 0;
+        }
+
     }
 }

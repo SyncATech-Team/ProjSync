@@ -5,6 +5,7 @@ using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
 using backAPI.SignalR;
+using Google.Protobuf.Collections;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -82,7 +83,7 @@ namespace backAPI.Repositories.Implementation.Issues
             if (group != null) {
                 await _logsRepository.AddLogToDatabase(new Log {
                     ProjectId = group.ProjectId,
-                    Message = "New task created. Task name: " + task.Name,
+                    Message = "🆕 New task created. Task name: <strong>" + task.Name + "</strong>",
                     DateCreated = DateTime.Now
                 });
             }
@@ -157,6 +158,15 @@ namespace backAPI.Repositories.Implementation.Issues
                 issue.Completed = usersOnIssueDto.CompletionLevel;
             }
 
+            var group = await _issueGroupRepository.GetGroupAsync(issueId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "🔄 Progress updated on task <strong> " + issue.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+            }
+
             _dataContext.UsersOnIssues.Update(element);
             _dataContext.Issues.Update(issue);
 
@@ -206,6 +216,15 @@ namespace backAPI.Repositories.Implementation.Issues
                 DateCreated = DateTime.Now
             });
 
+            var group = await _issueGroupRepository.GetGroupAsync(issue.GroupId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "⛔ User removed from task <strong>" + issue.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+            }
+
             await _notificationsRepository.AddNotificationRangeAsync(notifications);
 
             return cl;
@@ -237,10 +256,8 @@ namespace backAPI.Repositories.Implementation.Issues
             if (group != null) {
                 await _logsRepository.AddLogToDatabase(new Log {
                     ProjectId = group.ProjectId,
-                    Message = "🕔 Changed issue timeline from " +
-                    "[" + exists.CreatedDate.ToLongDateString() + "-" + exists.DueDate.ToLongDateString() + "] to " + 
-                    "[" + model.StartDate.AddDays(1).ToLongDateString() + "-" + model.EndDate.ToLongDateString() + "]" +
-                    " for issue " + exists.Name,
+                    Message = "ℹ️ Timeline changed for task " +
+                    "<strong>" + exists.Name + "</strong>",
                     DateCreated = DateTime.Now
                 });
             }
@@ -286,6 +303,16 @@ namespace backAPI.Repositories.Implementation.Issues
             }
 
             var result = await _dataContext.SaveChangesAsync();
+            if (result > 0) {
+                var group = await _issueGroupRepository.GetGroupAsync(issueId);
+                if (group != null) {
+                    await _logsRepository.AddLogToDatabase(new Log {
+                        ProjectId = group.ProjectId,
+                        Message = "🔄 Task <strong> " + exists.Name + "</strong> updated",
+                        DateCreated = DateTime.Now
+                    });
+                }
+            }
             return true;
         }
 
@@ -330,6 +357,15 @@ namespace backAPI.Repositories.Implementation.Issues
                 Message = messageContent,
                 DateCreated = DateTime.Now
             });
+
+            var group = await _issueGroupRepository.GetGroupAsync(issueId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "🚀 Users added on task <strong> " + issue.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+            }
 
             await _notificationsRepository.AddNotificationRangeAsync(notifications);
 
