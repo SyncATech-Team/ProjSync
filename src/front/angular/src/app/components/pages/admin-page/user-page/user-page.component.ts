@@ -10,6 +10,7 @@ import { EmailValidationService } from '../../../../_service/email_validator.ser
 import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { PresenceService } from '../../../../_service/presence.service';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 /**
  * Interfejs koji predstavlja jednu kolonu u tabeli koju eksportujemo
@@ -61,6 +62,7 @@ export class UserPageComponent implements OnInit {
   };
 
   searchTerm : string = '';
+  searchTermChanged: Subject<string> = new Subject<string>();
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
@@ -91,7 +93,9 @@ export class UserPageComponent implements OnInit {
     private emailValidationService: EmailValidationService,
     private userPictureService: UserProfilePicture,
     public presenceService: PresenceService
-    ){ }
+    ){
+      this.searchTermChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe(_ => this.loadUsers(this.lastLazyLoadEvent));
+     }
 
   /**
    * OnInit metod:
@@ -285,13 +289,7 @@ export class UserPageComponent implements OnInit {
    * @param table 
    */
   search() {
-    let searchTerm = this.searchTerm.toLowerCase();
-    if (searchTerm.trim() === '') {
-      //Kreira se novi niz za istim elementima 
-      this.showDeactivated(false);
-    } else {
-      this.usersShow = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
-    }
+    this.searchTermChanged.next(this.searchTerm);
   }
 
   /**
@@ -491,7 +489,7 @@ export class UserPageComponent implements OnInit {
 
   loadUsers(event: TableLazyLoadEvent){
     this.lastLazyLoadEvent = event;
-    this.userService.getPaginationAllUsers(!this.visibilityFilter,event).subscribe({
+    this.userService.getPaginationAllUsers(!this.visibilityFilter,event,this.searchTerm.toLowerCase().trim()).subscribe({
       next:(response) => {
         this.users = response.users;
         this.totalRecords = response.numberOfRecords;

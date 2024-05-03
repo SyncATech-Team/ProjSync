@@ -18,7 +18,7 @@ export class UserService {
     return this.http.get<UserGetter[]>(this.baseUrl + "Users");
   }
 
-  getPaginationAllUsers(visibilityFilter: boolean, event: TableLazyLoadEvent) {
+  getPaginationAllUsers(visibilityFilter: boolean, event: TableLazyLoadEvent,search: string) {
     let empty: any[] = [];
     var criteriaObj = {
       first: event.first,
@@ -26,6 +26,9 @@ export class UserService {
       filters: empty,
       multiSortMeta: event.multiSortMeta ? event.multiSortMeta : []
     }
+    if(search !== "")
+      criteriaObj.filters.push({fieldfilters: [{value: search, matchMode: 'contains', operator: 'and'}],field: 'username' });
+
     criteriaObj.filters.push({fieldfilters: [{value: visibilityFilter, matchMode: 'is', operator: 'and'}],field: 'isActive' })
     for(var field in event.filters){
         criteriaObj.filters.push({...{fieldfilters: event.filters[field]},field}); 
