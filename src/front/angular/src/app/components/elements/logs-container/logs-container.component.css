@@ -27,3 +27,7 @@
     background-color: #e0e0e0;
     box-shadow: black;
 } */
+
+:host ::ng-deep p-scroller-loader {
+    background-color: red;
+}
