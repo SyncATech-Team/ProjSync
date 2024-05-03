@@ -5,11 +5,8 @@ using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
 using backAPI.SignalR;
-using Google.Protobuf.Collections;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 
 namespace backAPI.Repositories.Implementation.Issues
 {
