@@ -43,7 +43,12 @@
             [rowsPerPageOptions]="[5, 10, 25, 50]"
             [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {{issuesShow.length}} entries"
-            sortField="multiple">
+            sortMode="multiple">
+
+            <!--Default order
+                 sortField="completed"
+                [sortOrder]="1"
+            -->
 
                 <ng-template pTemplate="caption">
                     <div class="table-header">
@@ -179,6 +184,7 @@
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" pSortableColumn="completed">
                                 <div class="flex align-items-center">
                                     Completed
+                                    <p-sortIcon field="completed"></p-sortIcon>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" pSortableColumn="projectName">
