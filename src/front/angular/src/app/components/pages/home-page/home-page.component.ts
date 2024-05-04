@@ -48,12 +48,16 @@ export class HomePageComponent implements OnInit {
   usersPhotos : PhotoForUser[] = [];
 
   showUserTasks: boolean = false;
+  selectedTab : string = "myProjects";
   userIssues : IssueModel[] = [];
   issueColumns! : string[];
   selectedIssueColumns!: string[];
   showIssueColumns!: string[];
   issuesShow: any[] = [];
   ref: DynamicDialogRef | undefined;
+  IssueTypes : any[] = ["Bug", "Story", "Task"];
+  IssueStatus: any[] = ["Panning", "In progress", "Done"];
+  IssuePrioritys: any[] = ["Medium", "Low", "Lowest", "High", "Highest"];
 
   constructor(
     public accoutService: AccountService,
@@ -73,8 +77,8 @@ export class HomePageComponent implements OnInit {
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
 
-    this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'ProjectName', 'CreatedDate'];
-    this.selectedIssueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed'];
+    this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'CreatedDate'];
+    this.selectedIssueColumns = ['Type','Status','Priority', 'Due Date', 'ProjectName', 'Completed'];
     this.showIssueColumns = ['Name', ...this.selectedIssueColumns];
 
     this.initializeProjects();
@@ -106,6 +110,7 @@ export class HomePageComponent implements OnInit {
       this.projectService.getAllProjectsForUser(user.username).subscribe({
         next: (response) => {
           this.projects = response;
+          console.log(this.projects);
           this.projects.forEach((project)=>{ 
             project.isExtanded = false;
             project.isFavorite = false;
@@ -202,11 +207,16 @@ export class HomePageComponent implements OnInit {
   }
 
   filterTasksByUser() {
+    this.selectedTab = 'myTasks';
     let user = this.accoutService.getCurrentUser(); //potencijalno dodati kao polje i da se onda samo jednom getuje username
     if(user){
       this.issueService.getUserIssues(user?.username).subscribe({
         next: (response) => {
           this.userIssues = response;
+          this.userIssues.forEach((issue)=>{
+            issue.createdDate = new Date(issue.createdDate);
+            issue.dueDate = new Date(issue.dueDate);
+          });
           this.issuesShow = response;
           console.log(this.userIssues);
         },
@@ -251,6 +261,7 @@ export class HomePageComponent implements OnInit {
   }
   
   filterProjects(filter :string ):void {
+    this.selectedTab = 'myProjects';
     this.visibilityFilter = filter;
     if(filter=="stared")
       {
@@ -294,7 +305,8 @@ export class HomePageComponent implements OnInit {
         issue.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.reporterUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.statusName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.projectName.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 

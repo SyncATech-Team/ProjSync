@@ -39,7 +39,7 @@ export class IssueService {
     return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/projectName?projectName=${projectName}`);
   }
 
-  getPaginationAllIssuesForProject(projectName: string, event: TableLazyLoadEvent) {
+  getPaginationAllIssuesForProject(projectName: string, event: TableLazyLoadEvent,search: string) {
     let empty: any[] = [];
     var criteriaObj = {
       first: event.first,
@@ -47,7 +47,8 @@ export class IssueService {
       filters: empty,
       multiSortMeta: event.multiSortMeta ? event.multiSortMeta : []
     }
-    
+    if(search !== "")
+      criteriaObj.filters.push({fieldfilters: [{value: search, matchMode: 'contains', operator: 'and'}],field: 'name' })
     for(var field in event.filters){
         criteriaObj.filters.push({...{fieldfilters: event.filters[field]},field}); 
     }
