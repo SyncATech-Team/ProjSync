@@ -182,7 +182,7 @@
                             <span class="p-column-title" style="font-weight: bold">Actions</span>
                             <div class="flexdiv-custom">
                                 
-                                <div class="action">
+                                <div *ngIf="user.companyRoleName !== 'Administrator'" class="action">
                                     <div class="deleteBtn">
                                         <button [ngClass]="{'active p-button-success': user.isActive, 'inactive p-button-danger': !user.isActive}" 
                                             type="button" pButton pRipple 
