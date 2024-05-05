@@ -46,6 +46,10 @@ export class IssueCardComponent implements OnChanges, OnInit {
       header: 'Issue - update',
       width: '65%',
       modal:true,
+      maximizable: true,
+      closable: true,
+      dismissableMask: true,
+      closeOnEscape: true,
       breakpoints: {
           '960px': '75vw',
           '640px': '90vw'
