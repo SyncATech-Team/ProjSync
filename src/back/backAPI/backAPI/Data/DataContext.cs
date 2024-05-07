@@ -281,5 +281,6 @@ namespace backAPI.Data
         public DbSet<IssueStatus> IssueStatuses { get; set; }
         public DbSet<IssueComment> IssueComments { get; set; }
         public DbSet<IssueDependencies> IssueDependencies { get; set; }
+        public DbSet<IssueDocumentation> IssueDocumentations { get; set; }
     }
 }
