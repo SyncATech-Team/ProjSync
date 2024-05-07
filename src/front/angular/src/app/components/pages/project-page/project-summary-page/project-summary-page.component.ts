@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
@@ -13,7 +13,7 @@ type ValidChartType = 'bar' | 'radar' | 'doughnut' | 'pie' | 'polarArea';
   templateUrl: './project-summary-page.component.html',
   styleUrl: './project-summary-page.component.css'
 })
-export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
+export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDestroy {
   projectName: string | null = '';
   projectType: string = '';
   projectKey: string = '';
@@ -66,6 +66,23 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
     this.projectName = route.snapshot.paramMap.get('projectName');
   }
 
+  ngOnInit(): void {
+    this.projectService.getProjectByName(this.projectName).subscribe({
+      next: (response)=>{
+        this.project= response;
+        this.projectType = this.project.typeName;
+        this.projectKey = this.project.key;
+        this.projectImageSource = this.project.icon!;
+        this.isLoading = false;
+        this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.project.description);
+      },
+      error: (error)=>{
+        console.log(error);
+      }
+    });
+
+  }
+
   ngAfterViewInit(): void {
 
     // Kreiranje grafika o tipu zadataka
@@ -106,20 +123,15 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit(): void {
-    this.projectService.getProjectByName(this.projectName).subscribe({
-      next: (response)=>{
-        this.project= response;
-        this.projectType = this.project.typeName;
-        this.projectKey = this.project.key;
-        this.projectImageSource = this.project.icon!;
-        this.isLoading = false;
-        this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.project.description);
-      },
-      error: (error)=>{
-        console.log(error);
-      }
-    });
+  ngOnDestroy(): void {
+    
+    // Destroy charts
+
+
+    this.issueTypesChart.destroy();
+    this.issuePrioritiesChart.destroy();
+    this.issueStatusesChart.destroy();
+    this.issueGroupsChart.destroy();
 
   }
 
