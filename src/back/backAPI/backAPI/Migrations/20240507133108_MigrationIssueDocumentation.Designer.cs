@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240507130308_IssueDocumentation")]
-    partial class IssueDocumentation
+    [Migration("20240507133108_MigrationIssueDocumentation")]
+    partial class MigrationIssueDocumentation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

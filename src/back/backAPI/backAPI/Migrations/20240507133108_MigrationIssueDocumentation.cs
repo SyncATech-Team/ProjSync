@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class IssueDocumentation : Migration
+    public partial class MigrationIssueDocumentation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
