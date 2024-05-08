@@ -4,6 +4,7 @@ using backAPI.Entities.Domain;
 using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
+using backAPI.Repositories.Interface.Projects;
 using backAPI.SignalR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ namespace backAPI.Repositories.Implementation.Issues
         private readonly IUsersRepository _usersRepository;
         private readonly NotificationService _notificationService;
         private readonly INotificationsRepository _notificationsRepository;
+        private readonly IProjectsRepository _projectsRepository;
+        private readonly IIssueGroupRepository _issueGroupRepository;
 
         /* *****************************************************************************************
          * Konstruktor
@@ -28,7 +31,9 @@ namespace backAPI.Repositories.Implementation.Issues
             IUserOnIssueRepository userOnIssueRepository, 
             IUsersRepository usersRepository,
             NotificationService notificationService,
-            INotificationsRepository notificationRepository
+            INotificationsRepository notificationRepository,
+            IProjectsRepository projectsRepository,
+            IIssueGroupRepository issueGroupRepository
         )
         {
             _dataContext = dataContext;
@@ -36,6 +41,8 @@ namespace backAPI.Repositories.Implementation.Issues
             _usersRepository = usersRepository;
             _notificationService = notificationService;
             _notificationsRepository = notificationRepository;
+            _projectsRepository = projectsRepository;
+            _issueGroupRepository = issueGroupRepository;
         }
 
         /* *****************************************************************************************
@@ -217,11 +224,21 @@ namespace backAPI.Repositories.Implementation.Issues
                 return false;
             }
 
-            exists.CreatedDate = model.StartDate.AddDays(1);        // dodatak +1 zbog front-a???
-            exists.UpdatedDate = DateTime.Now;
-            exists.DueDate = model.EndDate;
-            await _dataContext.SaveChangesAsync();
-            return true;
+            Project project = await getIssueProject(exists.GroupId);
+
+            Console.WriteLine(project.CreationDate);
+            Console.WriteLine(model.StartDate);
+            Console.WriteLine(model.EndDate);
+
+            if (project.CreationDate <= model.StartDate && model.StartDate <= model.EndDate) {
+                exists.CreatedDate = model.StartDate;
+                exists.UpdatedDate = DateTime.Now;
+                exists.DueDate = model.EndDate;
+                await _dataContext.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> UpdateIssue(int issueId, JIssueDto model)
@@ -259,6 +276,12 @@ namespace backAPI.Repositories.Implementation.Issues
 
             var result = await _dataContext.SaveChangesAsync();
             return true;
+        }
+
+        private async Task<Project> getIssueProject(int groupId) {
+            var group = await _issueGroupRepository.GetGroupAsync(groupId);
+            var project = await _projectsRepository.GetProjectById(group.ProjectId);
+            return project;
         }
 
         public async Task<double> UpdateUsersOnIssue(int issueId, UsersOnIssueDto model)

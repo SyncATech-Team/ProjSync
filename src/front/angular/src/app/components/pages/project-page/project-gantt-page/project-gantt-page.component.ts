@@ -37,6 +37,7 @@ import { UserOnProjectService } from '../../../../_service/userOnProject.service
 import { UserGetter } from '../../../../_models/user-getter';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { ProjectService } from '../../../state/project/project.service';
+import { DateService } from '../../../../_service/date.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -301,8 +302,8 @@ dragMoved(event: GanttDragEvent) {}
 dragEnded(event: GanttDragEvent) {
     // this.msgPopupService.showInfo(`Event: dragEnded ${event.item.title}`);
     let issueId = event.item.id as unknown as number;
-    let newStartDate = fromUnixTime(event.item.start!);
-    let newEndDate = fromUnixTime(event.item.end!);
+    let newStartDate = DateService.convertToUTC(fromUnixTime(event.item.start!));
+    let newEndDate = DateService.convertToUTC(fromUnixTime(event.item.end!));
     
     let model: IssueDateUpdate = {
         id: issueId,
@@ -316,6 +317,8 @@ dragEnded(event: GanttDragEvent) {
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
+            this.msgPopupService.showError("Task cannot start before project start date");
+            this.refresh();
         }
     });
     
