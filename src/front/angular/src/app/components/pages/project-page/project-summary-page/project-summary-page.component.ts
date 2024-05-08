@@ -70,9 +70,21 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDes
     this.projectName = route.snapshot.paramMap.get('projectName');
   }
 
-  // ovde zatvaramo konekciju sa hubom
-  ngOnDestroy(): void {
-    this.logService.stopHubConnection();
+  ngOnInit(): void {
+    this.projectService.getProjectByName(this.projectName).subscribe({
+      next: (response)=>{
+        this.project= response;
+        this.projectType = this.project.typeName;
+        this.projectKey = this.project.key;
+        this.projectImageSource = this.project.icon!;
+        this.isLoading = false;
+        this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.project.description);
+      },
+      error: (error)=>{
+        console.log(error);
+      }
+    });
+
   }
 
   ngAfterViewInit(): void {
@@ -115,21 +127,15 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDes
 
   }
 
-  ngOnInit(): void {
-    this.logService.createConnection(this.accountService.getCurrentUser()!);
-    this.projectService.getProjectByName(this.projectName).subscribe({
-      next: (response)=>{
-        this.project= response;
-        this.projectType = this.project.typeName;
-        this.projectKey = this.project.key;
-        this.projectImageSource = this.project.icon!;
-        this.isLoading = false;
-        this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.project.description);
-      },
-      error: (error)=>{
-        console.log(error);
-      }
-    });
+  ngOnDestroy(): void {
+    
+    // Destroy charts
+
+
+    this.issueTypesChart.destroy();
+    this.issuePrioritiesChart.destroy();
+    this.issueStatusesChart.destroy();
+    this.issueGroupsChart.destroy();
 
   }
 

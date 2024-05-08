@@ -52,8 +52,8 @@ export class IssueDetailComponent {
     });
   }
 
-  openIssuePage() {
-    if (!this.issue) return;
-    this.onOpenIssue.emit(this.issue.id);
-  }
+  // openIssuePage() {
+  //   if (!this.issue) return;
+  //   this.onOpenIssue.emit(this.issue.id);
+  // }
 }

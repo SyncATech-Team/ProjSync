@@ -4,6 +4,7 @@ using backAPI.Entities.Domain;
 using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
+using backAPI.Repositories.Interface.Projects;
 using backAPI.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -18,6 +19,8 @@ namespace backAPI.Repositories.Implementation.Issues
         private readonly IUsersRepository _usersRepository;
         private readonly NotificationService _notificationService;
         private readonly INotificationsRepository _notificationsRepository;
+        private readonly IProjectsRepository _projectsRepository;
+        private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly ILogsRepository _logsRepository;
         private readonly IIssueGroupRepository _issueGroupRepository;
 
@@ -31,6 +34,8 @@ namespace backAPI.Repositories.Implementation.Issues
             NotificationService notificationService,
             INotificationsRepository notificationRepository,
             ILogsRepository logsRepository,
+            IIssueGroupRepository issueGroupRepository,
+            IProjectsRepository projectsRepository,
             IIssueGroupRepository issueGroupRepository
         )
         {
@@ -39,6 +44,8 @@ namespace backAPI.Repositories.Implementation.Issues
             _usersRepository = usersRepository;
             _notificationService = notificationService;
             _notificationsRepository = notificationRepository;
+            _projectsRepository = projectsRepository;
+            _issueGroupRepository = issueGroupRepository;
             _logsRepository = logsRepository;
             _issueGroupRepository = issueGroupRepository;
         }
@@ -259,11 +266,21 @@ namespace backAPI.Repositories.Implementation.Issues
                 });
             }
 
-            exists.CreatedDate = model.StartDate.AddDays(1);        // dodatak +1 zbog front-a???
-            exists.UpdatedDate = DateTime.Now;
-            exists.DueDate = model.EndDate;
-            await _dataContext.SaveChangesAsync();
-            return true;
+            Project project = await getIssueProject(exists.GroupId);
+
+            Console.WriteLine(project.CreationDate);
+            Console.WriteLine(model.StartDate);
+            Console.WriteLine(model.EndDate);
+
+            if (project.CreationDate <= model.StartDate && model.StartDate <= model.EndDate) {
+                exists.CreatedDate = model.StartDate;
+                exists.UpdatedDate = DateTime.Now;
+                exists.DueDate = model.EndDate;
+                await _dataContext.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> UpdateIssue(int issueId, JIssueDto model)
@@ -277,6 +294,11 @@ namespace backAPI.Repositories.Implementation.Issues
             var reporter = await _dataContext.UsersOnIssues.FirstOrDefaultAsync(uoi => uoi.IssueId == issueId && uoi.Reporting == true);
             if (reporter == null)
             {
+                return false;
+            }
+
+            var existsName = await checkIfExistsIssueWithTheSameNameInsideGroup(exists.Id, exists.GroupId, model.Title);
+            if(existsName) {
                 return false;
             }
 
@@ -946,5 +968,22 @@ namespace backAPI.Repositories.Implementation.Issues
 
             return ( await issues.Select(i => i.Issue).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
         }
+
+        private async Task<Project> getIssueProject(int groupId) {
+            var group = await _issueGroupRepository.GetGroupAsync(groupId);
+            var project = await _projectsRepository.GetProjectById(group.ProjectId);
+            return project;
+        }
+
+        private async Task<bool> checkIfExistsIssueWithTheSameNameInsideGroup(int issueId, int groupId, string candidateName) {
+            var exists = await _dataContext.Issues.Where(
+                issue =>    issue.Id != issueId &&
+                            issue.GroupId == groupId &&
+                            issue.Name == candidateName
+            ).ToListAsync();
+
+            return exists.Any();
+        }
+
     }
 }

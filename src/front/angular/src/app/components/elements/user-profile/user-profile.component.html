@@ -17,11 +17,11 @@
         </div>
 
         <div class="userInfo container">
-            <div class="address" *ngIf="user.address != null">
+            <div class="address" *ngIf="user.address != ''">
                 <i class="fa-solid fa-house"></i><span> {{user.address}}</span>
             </div>
 
-            <div class="contact" *ngIf="user.contactPhone != null">
+            <div class="contact" *ngIf="user.contactPhone != ''">
                 <i class="fa-solid fa-phone"></i><span> {{user.contactPhone}}</span>
             </div>
 

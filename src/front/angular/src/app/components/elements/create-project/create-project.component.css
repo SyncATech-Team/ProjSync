@@ -8,3 +8,7 @@
 :host ::ng-deep .content-editor .ql-image {
     display: none;
 }
+
+:host ::ng-deep .content-editor{
+    font-weight: normal;
+}

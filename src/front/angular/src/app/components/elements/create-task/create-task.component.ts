@@ -1,11 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../../../_service/issue.service';
 import { ActivatedRoute } from '@angular/router';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserGetter } from '../../../_models/user-getter';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IssueType } from '../../../_models/issue-type';
-import { IssuePriority, JIssue } from '../../../_models/issue';
+import { JIssue } from '../../../_models/issue';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { IssueStatus } from '../../../_models/issue-status';
 import { CreateGroupComponent } from '../create-group/create-group.component';
@@ -19,6 +18,7 @@ import { IssuePriorityIcon } from '../../../_models/issue-priority-icon';
 import { ProjectConst } from '../../config/const';
 import { CreateIssueModel } from '../../../_models/create-issue.model';
 import { IssueTypeWithIcon } from '../../../_models/issue-type-icon';
+import { DateService } from '../../../_service/date.service';
 
 @Component({
   selector: 'app-create-task',
@@ -174,14 +174,13 @@ export class CreateTaskComponent implements OnInit {
           this.msgPopUpService.showError("Unable to create task, start date is empty");
           return;
         }
-        this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
-        this.issueCreator.createdDate = new Date(Date.UTC(this.issueCreator.createdDate.getFullYear(), this.issueCreator.createdDate.getMonth(), this.issueCreator.createdDate.getDate()));
-        this.issueCreator.updatedDate = new Date();
+        this.issueCreator.createdDate = DateService.convertToUTC(this.form.controls['issue-create-date'].value);
+        this.issueCreator.updatedDate = DateService.convertToUTC(new Date());
         if(this.form.controls['issue-due-date'].value == null){
           this.msgPopUpService.showError("Unable to create task, due date is empty");
           return;
         }
-        this.issueCreator.dueDate = this.form.controls['issue-due-date'].value;
+        this.issueCreator.dueDate = DateService.convertToUTC(this.form.controls['issue-due-date'].value);
         this.issueCreator.ownerUsername = this.currentUser!;
         if(this.form.controls['issue-reporter'].value == null){
           this.msgPopUpService.showError("Unable to create task, reporter is not selected");
