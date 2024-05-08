@@ -22,7 +22,6 @@ namespace backAPI.Repositories.Implementation.Issues
         private readonly IProjectsRepository _projectsRepository;
         private readonly IIssueGroupRepository _issueGroupRepository;
         private readonly ILogsRepository _logsRepository;
-        private readonly IIssueGroupRepository _issueGroupRepository;
 
         /* *****************************************************************************************
          * Konstruktor
@@ -35,8 +34,7 @@ namespace backAPI.Repositories.Implementation.Issues
             INotificationsRepository notificationRepository,
             ILogsRepository logsRepository,
             IIssueGroupRepository issueGroupRepository,
-            IProjectsRepository projectsRepository,
-            IIssueGroupRepository issueGroupRepository
+            IProjectsRepository projectsRepository
         )
         {
             _dataContext = dataContext;
@@ -47,7 +45,6 @@ namespace backAPI.Repositories.Implementation.Issues
             _projectsRepository = projectsRepository;
             _issueGroupRepository = issueGroupRepository;
             _logsRepository = logsRepository;
-            _issueGroupRepository = issueGroupRepository;
         }
 
         /* *****************************************************************************************
@@ -257,14 +254,6 @@ namespace backAPI.Repositories.Implementation.Issues
             }
 
             var group = await _issueGroupRepository.GetGroupAsync(exists.GroupId);
-            if (group != null) {
-                await _logsRepository.AddLogToDatabase(new Log {
-                    ProjectId = group.ProjectId,
-                    Message = "ℹ️ Timeline changed for task " +
-                    "<strong>" + exists.Name + "</strong>",
-                    DateCreated = DateTime.Now
-                });
-            }
 
             Project project = await getIssueProject(exists.GroupId);
 
@@ -277,6 +266,14 @@ namespace backAPI.Repositories.Implementation.Issues
                 exists.UpdatedDate = DateTime.Now;
                 exists.DueDate = model.EndDate;
                 await _dataContext.SaveChangesAsync();
+
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "ℹ️ Timeline changed for task " +
+                    "<strong>" + exists.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+
                 return true;
             }
 
