@@ -50,8 +50,10 @@ namespace backAPI.Repositories.Implementation.Issues
 
         public async Task<IEnumerable<IssueDocumentation>> GetDocumentationForIssue(int issueId)
         {
+
             var result = await _dataContext.IssueDocumentation.Where(doc => doc.IssueId == issueId).ToListAsync();
             return result;
+
         }
 
         public async Task<string> WriteMultipleFilesAsync(int issueId, List<IFormFile> files)
