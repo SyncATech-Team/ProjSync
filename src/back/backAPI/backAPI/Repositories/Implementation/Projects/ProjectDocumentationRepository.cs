@@ -1,6 +1,7 @@
 ﻿using backAPI.Data;
 using backAPI.DTO.Documentation;
 using backAPI.Entities.Domain;
+using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Security.AccessControl;
 namespace backAPI.Repositories.Implementation.Projects {
     public class ProjectDocumentationRepository : IProjectDocumentationRepository {
         private readonly DataContext _dataContext;
+        private readonly ILogsRepository _logsRepository;
 
         private readonly string[] allowedFileExtensions = new[] {
             ".jpg", ".jpeg", ".png", ".gif", ".bmp", "svg", // images
@@ -17,8 +19,12 @@ namespace backAPI.Repositories.Implementation.Projects {
 
         private readonly int MAX_FILESIZE = 10_485_760;
 
-        public ProjectDocumentationRepository(DataContext dataContext) {
+        public ProjectDocumentationRepository(
+            DataContext dataContext,
+            ILogsRepository logsRepository
+        ) {
             _dataContext = dataContext;
+            _logsRepository = logsRepository;
         }
 
         public bool ProjectDocumentationDirectoryExist() {
@@ -69,6 +75,12 @@ namespace backAPI.Repositories.Implementation.Projects {
             await _dataContext.ProjectDocumentation.AddRangeAsync(arr);
             await _dataContext.SaveChangesAsync();
 
+            await _logsRepository.AddLogToDatabase(new Log {
+                ProjectId = projectId,
+                Message = "📄 Total of " + files.Count() + " file/files uploaded",
+                DateCreated = DateTime.Now
+            });
+
             return "OK";
         }
 
@@ -114,6 +126,12 @@ namespace backAPI.Repositories.Implementation.Projects {
 
             _dataContext.ProjectDocumentation.Remove(itemToDelete);
             await _dataContext.SaveChangesAsync();
+
+            await _logsRepository.AddLogToDatabase(new Log {
+                ProjectId = itemToDelete.ProjectId,
+                Message = "📄 File " + itemToDelete.Title + "<span style='background: red;'> deleted</span>",
+                DateCreated = DateTime.Now,
+            });
 
             try {
                 // Validate and delete the file

@@ -5,6 +5,8 @@ import { ProjectService } from '../../../../_service/project.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Chart } from 'chart.js/auto';
 import { StatisticsService } from '../../../../_service/statistics.service';
+import { LogsService } from '../../../../_service/logs.service';
+import { AccountService } from '../../../../_service/account.service';
 
 type ValidChartType = 'bar' | 'radar' | 'doughnut' | 'pie' | 'polarArea';
 
@@ -61,7 +63,9 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDes
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private sanitizer: DomSanitizer,
-    private statisticsService: StatisticsService
+    private statisticsService: StatisticsService,
+    private logService: LogsService,
+    private accountService: AccountService
   ){
     this.projectName = route.snapshot.paramMap.get('projectName');
   }

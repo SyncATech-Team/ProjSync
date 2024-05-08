@@ -56,6 +56,7 @@ builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
 builder.Services.AddScoped<IIssueCommentRepository, IssueCommentRepository>();
 builder.Services.AddScoped<INotificationsRepository, NotificationRepository>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+builder.Services.AddScoped<ILogsRepository, LogsRepository>();
 builder.Services.AddSignalR();
 // uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
 builder.Services.AddSingleton<PresenceTracker>();
@@ -95,6 +96,7 @@ app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<CommentsHub>("hubs/comment");
 app.MapHub<NotificationHub>("hubs/notification");
+app.MapHub<LogsHub>("hubs/logs");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

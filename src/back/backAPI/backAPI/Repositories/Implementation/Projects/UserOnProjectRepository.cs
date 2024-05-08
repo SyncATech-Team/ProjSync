@@ -12,13 +12,20 @@ namespace backAPI.Repositories.Implementation.Projects
         private readonly DataContext dataContext;
         private readonly IUsersRepository usersRepository;
         private readonly IProjectsRepository projectsRepository;
+        private readonly ILogsRepository logsRepository;
 
-        public UserOnProjectRepository(DataContext dataContext, IUsersRepository usersRepository, IProjectsRepository projectsRepository)
-        {
+        public UserOnProjectRepository(
+            DataContext dataContext, 
+            IUsersRepository usersRepository,
+            IProjectsRepository projectsRepository,
+            ILogsRepository logsRepository
+        ) {
             this.dataContext = dataContext;
             this.usersRepository = usersRepository;
             this.projectsRepository = projectsRepository;
+            this.logsRepository = logsRepository;
         }
+
         public async Task<bool> AddUserToProjectAsync(string projectName, string username, string color)
         {
             var idProject = await projectsRepository.GetProjectByName(projectName);
@@ -46,6 +53,12 @@ namespace backAPI.Repositories.Implementation.Projects
 
             dataContext.UsersOnProjects.Add(newUserOnProject);
             await dataContext.SaveChangesAsync();
+
+            await logsRepository.AddLogToDatabase(new Log {
+                ProjectId = idProject.Id,
+                Message = "🎉 User joined the project",
+                DateCreated = DateTime.Now
+            });
 
             return true;
         }
@@ -122,6 +135,12 @@ namespace backAPI.Repositories.Implementation.Projects
 
             dataContext.UsersOnProjects.Remove(userOnProject);
             await dataContext.SaveChangesAsync();
+
+            await logsRepository.AddLogToDatabase(new Log {
+                ProjectId = project.Id,
+                Message = "⛔ User removed from the project",
+                DateCreated = DateTime.Now
+            });
 
             return true;
         }
