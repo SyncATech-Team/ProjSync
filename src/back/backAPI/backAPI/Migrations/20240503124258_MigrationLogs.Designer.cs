@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backAPI.Data;
 
@@ -10,9 +11,11 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240503124258_MigrationLogs")]
+    partial class MigrationLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
@@ -368,12 +371,7 @@ namespace backAPI.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("Logs");
                 });
@@ -830,17 +828,6 @@ namespace backAPI.Migrations
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>
-                {
-                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("backAPI.Entities.Domain.Log", b =>
                 {
                     b.HasOne("backAPI.Entities.Domain.Project", "Project")
                         .WithMany()

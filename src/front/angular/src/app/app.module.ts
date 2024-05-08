@@ -116,6 +116,9 @@ import {MeterGroupModule} from "primeng/metergroup";
 import {BadgeModule} from "primeng/badge";
 import { HubConnectionInterceptor } from './_interceptors/hub-connection.interceptor';
 
+import { ScrollerModule } from 'primeng/scroller';
+import { LogsContainerComponent } from './components/elements/logs-container/logs-container.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -172,7 +175,8 @@ import { HubConnectionInterceptor } from './_interceptors/hub-connection.interce
     AdminEditProfileComponent,
     UploadDocumentComponent,
     IssueChangeProgressComponent,
-    NotificationsPageComponent
+    NotificationsPageComponent,
+    LogsContainerComponent
   ],
     imports: [
         BrowserModule,
@@ -218,7 +222,8 @@ import { HubConnectionInterceptor } from './_interceptors/hub-connection.interce
         DividerModule,
         SliderModule,
         MeterGroupModule,
-        BadgeModule
+        BadgeModule,
+        ScrollerModule
     ],
   providers: [
     CookieService,
