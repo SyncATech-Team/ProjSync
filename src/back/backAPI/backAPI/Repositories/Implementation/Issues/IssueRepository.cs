@@ -255,6 +255,11 @@ namespace backAPI.Repositories.Implementation.Issues
                 return false;
             }
 
+            var existsName = await checkIfExistsIssueWithTheSameNameInsideGroup(exists.Id, exists.GroupId, model.Title);
+            if(existsName) {
+                return false;
+            }
+
             exists.UpdatedDate = DateTime.Now;
             exists.Description = model.Description;
             exists.Name = model.Title;
@@ -276,12 +281,6 @@ namespace backAPI.Repositories.Implementation.Issues
 
             var result = await _dataContext.SaveChangesAsync();
             return true;
-        }
-
-        private async Task<Project> getIssueProject(int groupId) {
-            var group = await _issueGroupRepository.GetGroupAsync(groupId);
-            var project = await _projectsRepository.GetProjectById(group.ProjectId);
-            return project;
         }
 
         public async Task<double> UpdateUsersOnIssue(int issueId, UsersOnIssueDto model)
@@ -908,5 +907,22 @@ namespace backAPI.Repositories.Implementation.Issues
 
             return ( await issues.Select(i => i.Issue).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
         }
+
+        private async Task<Project> getIssueProject(int groupId) {
+            var group = await _issueGroupRepository.GetGroupAsync(groupId);
+            var project = await _projectsRepository.GetProjectById(group.ProjectId);
+            return project;
+        }
+
+        private async Task<bool> checkIfExistsIssueWithTheSameNameInsideGroup(int issueId, int groupId, string candidateName) {
+            var exists = await _dataContext.Issues.Where(
+                issue =>    issue.Id != issueId &&
+                            issue.GroupId == groupId &&
+                            issue.Name == candidateName
+            ).ToListAsync();
+
+            return exists.Any();
+        }
+
     }
 }

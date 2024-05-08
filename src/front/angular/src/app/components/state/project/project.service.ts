@@ -87,18 +87,38 @@ export class ProjectService {
       .subscribe();
   }
 
-  // opsti endpoint za azuriranjem zadataka bez podrske za azuriranje user-a na zadatku
-  updateIssue(issue: JIssue) {
-    this._http
-      .put(`${this.baseUrl}Issues/kb/${issue.id}`, issue).subscribe();
+  /** 
+   * opsti endpoint za azuriranjem zadataka bez podrske za azuriranje user-a na zadatku  
+   * @NAPOMENA Potencijalno potrebno obezbediti da ukoliko se menja a izmena nije uspesna da se vrati na stare vrednosti
+   * kao sto je uradjeno sa naslovom.
+   */
+  updateIssue(issue: JIssue, oldTitle: string | null = null) {
+    console.log(oldTitle)
 
-    this._store.update((state) => {
-      const issues = arrayUpsert(state.issues, issue.id, issue);
-      return {
-        ...state,
-        issues
-      };
-    });
+    this._http
+      .put(`${this.baseUrl}Issues/kb/${issue.id}`, issue).subscribe({
+        next: _ => {
+          this._store.update((state) => {
+            const issues = arrayUpsert(state.issues, issue.id, issue);
+            return {
+              ...state,
+              issues
+            };
+          });
+        },
+        error: error => {
+          // Revert the title back to the old value if the update fails
+          if(oldTitle == null) return;
+          issue.title = oldTitle;
+          this._store.update((state) => {
+            const issues = arrayUpsert(state.issues, issue.id, issue);
+            return {
+              ...state,
+              issues
+            };
+          });
+        }
+      });
   }
 
   // radi efikasnosti dodat je poseban endpoint na back-u koji je specijalizovan
