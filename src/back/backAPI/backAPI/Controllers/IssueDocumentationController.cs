@@ -54,7 +54,7 @@ namespace backAPI.Controllers
             var issue = await _issueRepository.GetIssueById(issueId);
             if (issue == null)
             {
-                return BadRequest("There is no issue with the given name");
+                return BadRequest("There is no issue with the given id");
             }
 
             List<DocumentTitles> documentTitles = new List<DocumentTitles>();

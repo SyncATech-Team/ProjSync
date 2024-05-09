@@ -50,7 +50,7 @@ namespace backAPI.Repositories.Implementation.Issues
 
         public async Task<IEnumerable<IssueDocumentation>> GetDocumentationForIssue(int issueId)
         {
-
+            Console.WriteLine("ISSUE ID  " + issueId);
             var result = await _dataContext.IssueDocumentation.Where(doc => doc.IssueId == issueId).ToListAsync();
             return result;
 
@@ -140,9 +140,9 @@ namespace backAPI.Repositories.Implementation.Issues
             return documentTitles;
         }
 
-        public async Task<ProjectDocumentation> GetDocumentById(int documentId)
+        public async Task<IssueDocumentation> GetDocumentById(int documentId)
         {
-            return await _dataContext.ProjectDocumentation.FirstOrDefaultAsync(d => d.Id == documentId);
+            return await _dataContext.IssueDocumentation.FirstOrDefaultAsync(d => d.Id == documentId);
         }
     }
 }
