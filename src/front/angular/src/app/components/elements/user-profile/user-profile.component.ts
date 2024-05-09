@@ -24,6 +24,7 @@ export class UserProfileComponent implements OnInit{
   user : UserGetter = {
     username: "",
     email: "",
+    password: '',
     firstName: "",
     lastName: "",
     companyRoleName: "",

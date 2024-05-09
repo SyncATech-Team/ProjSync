@@ -21,6 +21,7 @@ export class AdminEditProfileComponent implements OnInit {
   editUser: UserGetter = {
     username: '',
     email: '',
+    password: '',
     firstName: '',
     lastName: '',
     companyRoleName: '',

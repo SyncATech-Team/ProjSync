@@ -29,6 +29,7 @@ export class EditProfilePageComponent implements OnInit {
   editUser: UserGetter = {
     username: '',
     email: '',
+    password: '',
     firstName: '',
     lastName: '',
     companyRoleName: '',
