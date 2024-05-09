@@ -1,9 +1,7 @@
 ﻿using backAPI.DTO.Documentation;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Implementation.Issues;
-using backAPI.Repositories.Implementation.Projects;
 using backAPI.Repositories.Interface.Issues;
-using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
@@ -26,7 +24,7 @@ namespace backAPI.Controllers
             var issue = await _issueRepository.GetIssueById(issueId);
             if (issue == null)
             {
-                return BadRequest("There is no project with the given name");
+                return BadRequest("There is no issue with the given id");
             }
 
             Console.WriteLine("Postoji projekat");
@@ -56,7 +54,7 @@ namespace backAPI.Controllers
             var issue = await _issueRepository.GetIssueById(issueId);
             if (issue == null)
             {
-                return BadRequest("There is no project with the given name");
+                return BadRequest("There is no issue with the given name");
             }
 
             List<DocumentTitles> documentTitles = new List<DocumentTitles>();
