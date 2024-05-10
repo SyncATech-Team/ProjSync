@@ -21,7 +21,7 @@ export class IssueDocumentationService {
             formData.append('files', file);
         });
 
-        return this.http.post(`${this.baseUrl}issue-documentation/${issueId}`, formData);
+        return this.http.post(`${this.baseUrl}IssueDocumentation/issue-documentation/${issueId}`, formData);
     }
 
     getDocumentTitles(issueId: number): Observable<DocumentTitle[]> {

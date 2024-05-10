@@ -115,6 +115,7 @@ import { IssueChangeProgressComponent } from './components/elements/issues/issue
 import {MeterGroupModule} from "primeng/metergroup";
 import {BadgeModule} from "primeng/badge";
 import { HubConnectionInterceptor } from './_interceptors/hub-connection.interceptor';
+import { UploadIssueDocumentComponent } from './components/elements/upload-issue-document/upload-issue-document.component';
 
 @NgModule({
   declarations: [
@@ -172,7 +173,8 @@ import { HubConnectionInterceptor } from './_interceptors/hub-connection.interce
     AdminEditProfileComponent,
     UploadDocumentComponent,
     IssueChangeProgressComponent,
-    NotificationsPageComponent
+    NotificationsPageComponent,
+    UploadIssueDocumentComponent
   ],
     imports: [
         BrowserModule,
