@@ -236,8 +236,8 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
-    console.log(issueId);
-    console.log(this.usersPhotos);
+    // console.log(issueId);
+    // console.log(this.usersPhotos);
     this.ref1 = this._modalService.open(IssueModalComponent, {
       header: 'Issue - update',
       width: '65%',
@@ -397,11 +397,11 @@ onDragDropped(event: GanttTableDragDroppedEvent) {
 }
 
 onDragStarted(event: GanttTableDragStartedEvent) {
-    console.log('Drag started', event);
+    // console.log('Drag started', event);
 }
 
 onDragEnded(event: GanttTableDragEndedEvent) {
-    console.log('Drag ended', event);
+    // console.log('Drag ended', event);
 }
 
 expandAllGroups() {
@@ -433,7 +433,7 @@ showCreateTaskPopupTaskGantt() {
     this.ref.onClose.subscribe((data: any) => {
       if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
 
-      console.log("Response: " + data + " . Refreshing tasks...");
+    //   console.log("Response: " + data + " . Refreshing tasks...");
       this.refresh();
     });
 
