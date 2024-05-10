@@ -22,6 +22,9 @@ export class BoardFilterComponent implements OnInit {
   userIds: string[];
   users!: JUser[];
 
+  MAX_NUMBER_OF_USERS_TO_SHOW: number = 5;
+  showDropdown: boolean = false;
+
   constructor(
     public projectQuery: ProjectQuery,
     public filterQuery: FilterQuery,

@@ -11,10 +11,10 @@
   <div class="d-flex flex-row mr-3">
     <p-avatarGroup>
       <ng-container *ngIf="(projectQuery.users$ | async) as users">
-        <div *ngFor="let user of users.slice(0, 5); let i = index"
+        <div *ngFor="let user of users.slice(0, MAX_NUMBER_OF_USERS_TO_SHOW); let i = index"
              class="lift-avatar cursor-pointer ml-1 flex rounded-circle transition-transform duration-100"
              [class.is-active]="isUserSelected(user)"
-             [ngStyle]="{ 'z-index': i === 5 ? 1 : 0, 'margin-left.px': i !== 0 ? -20 : 0, 'position': 'relative' }"
+             [ngStyle]="{ 'z-index': i === MAX_NUMBER_OF_USERS_TO_SHOW ? 1 : 0, 'margin-left.px': i !== 0 ? -20 : 0, 'position': 'relative' }"
              [pTooltip]="user.name">
           <p-avatar class="d-flex select-none shadow-outline-white"
                     [image]="UserImagePath(user?.username)"
@@ -25,16 +25,16 @@
           </p-avatar>
         </div>
     
-        <ng-container *ngIf="users.length > 5">
+        <ng-container *ngIf="users.length > MAX_NUMBER_OF_USERS_TO_SHOW">
           <div class="lift-avatar cursor-pointer ml-1 flex rounded-circle transition-transform duration-100"
-               [pTooltip]="getGroupTooltip(users.slice(5))">
+               [pTooltip]="getGroupTooltip(users.slice(MAX_NUMBER_OF_USERS_TO_SHOW))">
             <p-avatar class="d-flex select-none shadow-outline-white bg-primary text-white remaining-avatar"
                       shape="circle"
                       size="large"
                       [ngStyle]="{ 'z-index': 1, 'margin-left.px': -20, 'position': 'relative' }"
-                      [pTooltip]="getGroupTooltip(users.slice(5))"
-                      (click)="groupClicked(users.slice(5))">
-              +{{ users.length - 5 }}
+                      [pTooltip]="getGroupTooltip(users.slice(MAX_NUMBER_OF_USERS_TO_SHOW))"
+                      (click)="groupClicked(users.slice(MAX_NUMBER_OF_USERS_TO_SHOW))">
+              +{{ users.length - MAX_NUMBER_OF_USERS_TO_SHOW }}
             </p-avatar>
           </div>
         </ng-container>
