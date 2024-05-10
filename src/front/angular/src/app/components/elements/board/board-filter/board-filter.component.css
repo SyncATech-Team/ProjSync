@@ -3,6 +3,15 @@
   z-index: 1;
 }
 
+.remaining-avatar {
+  background-color: transparent !important;
+  cursor: default;
+}
+
 .lift-avatar:hover {
   transform: translateY(-5px);
+}
+
+:host ::ng-deep .p-avatar {
+  background-color: #1255b9;
 }
