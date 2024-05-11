@@ -2,13 +2,10 @@
 using backAPI.DTO;
 using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
-using backAPI.Repositories.Implementation;
-using backAPI.Repositories.Implementation.Issues;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 
 namespace backAPI.SignalR
 {
@@ -81,7 +78,8 @@ namespace backAPI.SignalR
                 List<string> usernames = new List<string>();
 
                 var commentor = await _usersRepository.GetUserById(Convert.ToInt32(commentDto.UserId));
-                var issueReporter = await _usersRepository.GetUserById(issue.OwnerId);
+                int reporterId = await _issueRepository.GetReporterId(issue.Id);            // uzmi ID reportera na zadatku
+                var issueReporter = await _usersRepository.GetUserById(reporterId);         // gettuj reportera
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 usernames.Add(issueReporter.UserName);
 
@@ -91,7 +89,6 @@ namespace backAPI.SignalR
                 }
 
                 usernames.RemoveAll(u => u == commentor.UserName);
-                await _notificationService.NotifyUsers(usernames.ToArray(), issue.Name);
 
 
                 List<Notification> notifications = new List<Notification>();
@@ -100,8 +97,13 @@ namespace backAPI.SignalR
                         "<strong>Task: </strong>" + issue.Name +
                         "<br>" +
                         "<strong>User: </strong>" + commentor.FirstName + " " + commentor.LastName +
-                        "<br>" +
-                        "<strong>Date: </strong>" + Convert.ToDateTime(commentDto.CreatedAt).ToLongDateString() ;
+                "<br>" +
+                        "<strong>Commented at: </strong>" + 
+                        DateTime.ParseExact(
+                            commentDto.CreatedAt, 
+                            "yyyy-MM-ddTHH:mm:ss.fffZ", 
+                            System.Globalization.CultureInfo.InvariantCulture
+                        ).ToString("MMMM dd, yyyy, h:mm:ss tt");
 
                 foreach (var assigneeId in assigneeIds)
                 {
@@ -126,8 +128,9 @@ namespace backAPI.SignalR
                 }
 
                 await _notificationsRepository.AddNotificationRangeAsync(notifications);
+                await _notificationService.NotifyUsers(usernames.ToArray(), messageContent);
 
-
+                
                 var user = await _usersRepository.GetUserById(Int32.Parse(commentDto.UserId));
                 var userDto = new UserDto()
                 {
