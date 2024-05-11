@@ -33,10 +33,25 @@
                       size="large"
                       [ngStyle]="{ 'z-index': 1, 'margin-left.px': -20, 'position': 'relative' }"
                       [pTooltip]="getGroupTooltip(users.slice(MAX_NUMBER_OF_USERS_TO_SHOW))"
-                      (click)="groupClicked(users.slice(MAX_NUMBER_OF_USERS_TO_SHOW))">
+                      (click)="overlayPanel.toggle($event)">
               +{{ users.length - MAX_NUMBER_OF_USERS_TO_SHOW }}
             </p-avatar>
           </div>
+          <p-overlayPanel #overlayPanel>
+            <ng-template pTemplate="content">
+              <ng-container *ngFor="let option of users.slice(MAX_NUMBER_OF_USERS_TO_SHOW)">
+                <div class="d-flex align-items-center items-center">
+                  <p-avatar
+                    [image]="UserImagePath(option?.username)"
+                    shape="circle"
+                    size="normal"
+                    [pTooltip]="option?.name">
+                  </p-avatar>
+                  <span class="m-2"> {{ option?.name }} </span>
+                </div>
+              </ng-container>
+            </ng-template>
+          </p-overlayPanel>
         </ng-container>
       </ng-container>
     </p-avatarGroup>    
