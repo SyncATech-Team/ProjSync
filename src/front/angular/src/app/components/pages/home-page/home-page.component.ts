@@ -110,7 +110,7 @@ export class HomePageComponent implements OnInit {
       this.projectService.getAllProjectsForUser(user.username).subscribe({
         next: (response) => {
           this.projects = response;
-          console.log(this.projects);
+          // console.log(this.projects);
           this.projects.forEach((project)=>{ 
             project.isExtanded = false;
             project.isFavorite = false;
@@ -218,7 +218,7 @@ export class HomePageComponent implements OnInit {
             issue.dueDate = new Date(issue.dueDate);
           });
           this.issuesShow = response;
-          console.log(this.userIssues);
+          // console.log(this.userIssues);
         },
         error: (error) => {
           console.log(error.error);
@@ -329,7 +329,7 @@ export class HomePageComponent implements OnInit {
   }
 
   test(tst : any){
-    console.log(tst);
+    // console.log(tst);
   }
 
   MAX_PROJECT_NAME_LENGTH_DISPLAY = 20;
@@ -408,7 +408,7 @@ export class HomePageComponent implements OnInit {
 
   // Otvaranje modala za edit issue edit
   openIssueModal(issueId : string, projectName: string){
-    console.log(issueId);
+    // console.log(issueId);
     this._projectService.getProject(projectName);
     this.ref = this._modalService.open(IssueModalComponent, {
       header: 'Issue - update',

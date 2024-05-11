@@ -22,6 +22,9 @@ export class BoardFilterComponent implements OnInit {
   userIds: string[];
   users!: JUser[];
 
+  MAX_NUMBER_OF_USERS_TO_SHOW: number = 5;
+  showDropdown: boolean = false;
+
   constructor(
     public projectQuery: ProjectQuery,
     public filterQuery: FilterQuery,
@@ -83,4 +86,18 @@ export class BoardFilterComponent implements OnInit {
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
     return this.usersPhotos[ind].photoSource;
   }
+
+  getGroupTooltip(users: any[]): string {
+    return '+' + users.length + ' more';
+  }
+  
+  getGroupAvatarImage(users: any[]): string {
+    // This is just an example, you can use any image you like for the group avatar
+    return '../../../../../assets/images/DefaultAccountProfileImages/default_account_image_2.png';
+  }
+  
+  groupClicked(users: any[]): void {
+    // Handle group click here, you can do whatever action you need
+  }
+
 }
