@@ -3,6 +3,11 @@
   z-index: 1;
 }
 
+.subgroup-active {
+  box-shadow: 0 0 0 4px #1255b9;
+  z-index: 1;
+}
+
 .remaining-avatar {
   background-color: transparent !important;
   cursor: default;
@@ -14,4 +19,8 @@
 
 :host ::ng-deep .p-avatar {
   background-color: #1255b9;
+}
+
+.custom-cursor-pointer {
+  cursor: default;
 }

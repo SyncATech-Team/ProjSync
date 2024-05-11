@@ -39,15 +39,24 @@
           </div>
           <p-overlayPanel #overlayPanel>
             <ng-template pTemplate="content">
-              <ng-container *ngFor="let option of users.slice(MAX_NUMBER_OF_USERS_TO_SHOW)">
-                <div class="d-flex align-items-center items-center">
-                  <p-avatar
-                    [image]="UserImagePath(option?.username)"
-                    shape="circle"
-                    size="normal"
-                    [pTooltip]="option?.name">
-                  </p-avatar>
-                  <span class="m-2"> {{ option?.name }} </span>
+              <ng-container *ngFor="let user of users.slice(MAX_NUMBER_OF_USERS_TO_SHOW)">
+                <div 
+                  class="d-flex align-items-center items-center custom-cursor-pointer"
+                  (click)="userChanged(user)"
+                >
+                  
+                  <div class="cursor-pointer ml-1 flex rounded-circle"
+                      [class.subgroup-active]="isUserSelected(user)"
+                  >
+                    <p-avatar
+                      class="d-flex select-none shadow-outline-white"
+                      [image]="UserImagePath(user?.username)"
+                      shape="circle"
+                      size="normal"
+                    >
+                    </p-avatar>
+                  </div>
+                  <span class="m-2"> {{ user?.name }} </span>
                 </div>
               </ng-container>
             </ng-template>
