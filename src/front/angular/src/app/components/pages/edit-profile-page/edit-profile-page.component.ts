@@ -68,7 +68,7 @@ export class EditProfilePageComponent implements OnInit {
         this.user = response;
         this.username = this.user.username;
         this.editUser = response;
-        console.log(this.user);
+        // console.log(this.user);
         if(this.user.profilePhoto != null) {
           this.userProfilePhoto.getUserImage(this.user.username).subscribe({
             next: response => {

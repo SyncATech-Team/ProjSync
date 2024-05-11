@@ -281,7 +281,7 @@ export class UserPageComponent implements OnInit {
       tekst = event.target.value;
     }
 
-    console.log(tekst);
+    // console.log(tekst);
   }
 
   /**
@@ -445,7 +445,7 @@ export class UserPageComponent implements OnInit {
    * @param email 
    */
   emailFormatCheck(email: string) {
-    console.log("Checking: " + email);
+    // console.log("Checking: " + email);
     let isValid: boolean = this.emailValidationService.isValidEmailAddress(email);
     let mailInput: HTMLInputElement = document.getElementsByClassName("email")[0] as HTMLInputElement;
     

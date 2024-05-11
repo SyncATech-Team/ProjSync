@@ -190,7 +190,7 @@ export class RolePageComponent implements OnInit {
       tekst = event.target.value;
     }
 
-    console.log(tekst);
+    // console.log(tekst);
   }
 
   /**
