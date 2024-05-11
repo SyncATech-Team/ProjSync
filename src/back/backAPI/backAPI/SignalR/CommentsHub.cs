@@ -101,7 +101,7 @@ namespace backAPI.SignalR
                         "<br>" +
                         "<strong>User: </strong>" + commentor.FirstName + " " + commentor.LastName +
                         "<br>" +
-                        "<strong>Date: </strong>" + commentDto.CreatedAt ;
+                        "<strong>Date: </strong>" + Convert.ToDateTime(commentDto.CreatedAt).ToLongDateString() ;
 
                 foreach (var assigneeId in assigneeIds)
                 {
