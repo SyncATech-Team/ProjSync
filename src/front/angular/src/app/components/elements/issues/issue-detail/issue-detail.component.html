@@ -27,7 +27,10 @@
             <issue-description [issue]="issue"></issue-description>
 
             <!-- Attachements -->
-            <app-upload-issue-document [issueID]="issue.id"></app-upload-issue-document>
+            <div class="upload-wrapper">
+                <app-upload-issue-document [issueID]="issue.id"></app-upload-issue-document>
+
+            </div>
 
             <div class="pt-4 pb-2 fs-5 fw-bold">Comments</div>
             <issue-comments [issue]="issue"

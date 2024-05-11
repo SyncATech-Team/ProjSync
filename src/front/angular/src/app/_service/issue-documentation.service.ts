@@ -25,7 +25,7 @@ export class IssueDocumentationService {
     }
 
     getDocumentTitles(issueId: number): Observable<DocumentTitle[]> {
-        return this.http.get<DocumentTitle[]>(`${this.baseUrl}issue-documentation/get-titles/${issueId}`);
+        return this.http.get<DocumentTitle[]>(`${this.baseUrl}IssueDocumentation/issue-documentation/get-titles/${issueId}`);
     }
 
     deleteDocument(documentId: number): Observable<any> {

@@ -23,7 +23,6 @@ export class UploadIssueDocumentComponent {
 
     this.showUploadProgressBar = true;
     const issueIdNumber: number = parseInt(this.issueID, 10);
-    console.log(issueIdNumber);
     this.issueDocumentationService.uploadDocument(issueIdNumber, filesArray).subscribe({
       next: response => {
         this.showUploadProgressBar = false;
