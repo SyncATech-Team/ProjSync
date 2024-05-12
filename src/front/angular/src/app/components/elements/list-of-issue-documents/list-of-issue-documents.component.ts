@@ -1,40 +1,47 @@
-import { ChangeDetectorRef, Component, Injectable, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IssueDocumentationService } from '../../../_service/issue-documentation.service';
 import { DocumentTitle } from '../../../_models/document-title.model';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { ConfirmationService } from 'primeng/api';
+import { DocumentRefreshService } from '../../../_service/documentRefreshService.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list-of-issue-documents',
   templateUrl: './list-of-issue-documents.component.html',
   styleUrl: './list-of-issue-documents.component.css'
 })
-@Injectable({
-  providedIn:'root'
-})
-export class ListOfIssueDocumentsComponent {
+export class ListOfIssueDocumentsComponent implements OnInit, OnDestroy {
   @Input() issueID!: string;
 
   documentTitles: DocumentTitle[] = [];
   documentTitlesBackup: DocumentTitle[] = [];
 
+  private subscription: Subscription;
+
   constructor(
     private issueDocumentationService: IssueDocumentationService,
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
-    private cdr: ChangeDetectorRef
-  ){}
+    private docsRefreshService: DocumentRefreshService
+  ){
+    this.subscription = this.docsRefreshService.refreshDocumentList.subscribe(() => { // kreiraj subscription na eventEmiter za upload dokumenata
+      this.refresh();
+    });
+  }
+
+  ngOnDestroy(): void { // unsubscribe zbog potencijalnik memory leakova
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   ngOnInit() : void {
-    console.log("POZVANA");
-    console.log("!!!! " + this.issueID);
     const issueIdNumber: number = parseInt(this.issueID!, 10);
-    console.log("TEST " + issueIdNumber);
     this.issueDocumentationService.getDocumentTitles(issueIdNumber).subscribe({
       next: response => {
         this.documentTitles = response.sort(this.sortFunc);
         this.documentTitlesBackup = response.sort(this.sortFunc);
-        console.log(this.documentTitles);
       },
       error: error => {
         console.log(error.error);
@@ -42,8 +49,7 @@ export class ListOfIssueDocumentsComponent {
     });
   }
 
-  public refresh(issueID : any){
-    this.issueID = ""+issueID;
+  public refresh(){
     this.ngOnInit();
   }
 
