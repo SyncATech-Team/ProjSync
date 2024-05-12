@@ -112,4 +112,11 @@ export class NavBarComponent implements OnInit {
     image.src = vecaSlika.src;
      
   }
+
+  navigateToDesiredTab(showUserTasks: string): void {
+    this.router.navigate(['/home'], {
+      queryParams: { showUserTasks }
+    });
+  }
+
 }

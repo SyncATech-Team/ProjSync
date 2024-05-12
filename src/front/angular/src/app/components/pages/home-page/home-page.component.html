@@ -16,13 +16,17 @@
             <!-- Explore projects -->
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterProjects('public')"
-                    [class.active-tab]="selectedTab === 'myProjects'">My projects</a>
+                    [routerLink]="['/home']"
+                    [queryParams]="{ showUserTasks: false }"
+                    routerLinkActive="router-link-active"
+                    [class.active-tab]="!tasksTabSelected">My projects</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab"
-                    (click)="filterTasksByUser()"
-                    [class.active-tab]="selectedTab === 'myTasks'">My tasks</a>
+                    [routerLink]="['/home']"
+                    [queryParams]="{ showUserTasks: true }"
+                    routerLinkActive="router-link-active"
+                    [class.active-tab]="tasksTabSelected">My tasks</a>
             </li>
         </ul>
         <!-- End -->
