@@ -116,6 +116,7 @@ import {MeterGroupModule} from "primeng/metergroup";
 import {BadgeModule} from "primeng/badge";
 import { HubConnectionInterceptor } from './_interceptors/hub-connection.interceptor';
 import { UploadIssueDocumentComponent } from './components/elements/upload-issue-document/upload-issue-document.component';
+import { ListOfIssueDocumentsComponent } from './components/elements/list-of-issue-documents/list-of-issue-documents.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +175,8 @@ import { UploadIssueDocumentComponent } from './components/elements/upload-issue
     UploadDocumentComponent,
     IssueChangeProgressComponent,
     NotificationsPageComponent,
-    UploadIssueDocumentComponent
+    UploadIssueDocumentComponent,
+    ListOfIssueDocumentsComponent
   ],
     imports: [
         BrowserModule,

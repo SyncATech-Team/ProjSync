@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IssueDocumentationService } from '../../../_service/issue-documentation.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { ListOfIssueDocumentsComponent } from '../list-of-issue-documents/list-of-issue-documents.component';
 
 @Component({
   selector: 'app-upload-issue-document',
@@ -14,7 +15,8 @@ export class UploadIssueDocumentComponent {
 
   constructor(
     private issueDocumentationService : IssueDocumentationService,
-    private msgPopupService: MessagePopupService
+    private msgPopupService: MessagePopupService,
+    private listOfDocuments: ListOfIssueDocumentsComponent
   ){  }
 
   onFileSelected(event: any){
@@ -28,7 +30,7 @@ export class UploadIssueDocumentComponent {
         this.showUploadProgressBar = false;
         this.msgPopupService.showSuccess("Files successfully uploaded.");
         //Ovde osvezi prikaz na modalu za task
-
+        this.listOfDocuments.refresh(issueIdNumber);
         //
         event.target.value = "";
       },

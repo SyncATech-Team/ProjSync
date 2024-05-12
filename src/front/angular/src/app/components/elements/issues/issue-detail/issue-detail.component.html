@@ -29,7 +29,9 @@
             <!-- Attachements -->
             <div class="upload-wrapper">
                 <app-upload-issue-document [issueID]="issue.id"></app-upload-issue-document>
-
+                <div class="list-of-uploaded">
+                    <app-list-of-issue-documents [issueID]="issue.id"></app-list-of-issue-documents>
+                </div>
             </div>
 
             <div class="pt-4 pb-2 fs-5 fw-bold">Comments</div>

@@ -29,11 +29,11 @@ export class IssueDocumentationService {
     }
 
     deleteDocument(documentId: number): Observable<any> {
-        return this.http.delete<void>(`${this.baseUrl}issue-documentation?id=${documentId}`);
+        return this.http.delete<void>(`${this.baseUrl}IssueDocumentation/issue-documentation?id=${documentId}`);
     }
 
     getDocumentContents(documentId: number): Observable<ArrayBuffer> {
-        return this.http.get(`${this.baseUrl}issue-documentation/${documentId}/download`, { responseType: 'arraybuffer' });
+        return this.http.get(`${this.baseUrl}IssueDocumentation/issue-documentation/${documentId}/download`, { responseType: 'arraybuffer' });
     }
     
 }
