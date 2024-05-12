@@ -161,6 +161,10 @@ export class ListOfIssueDocumentsComponent {
       reject: () => {
 
       }
-    })
+    });
+  }
+
+  toggleOlderVersions(element: any) {
+    element.showOlderVersions = !element.showOlderVersions;
   }
 }

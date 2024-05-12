@@ -21,6 +21,7 @@
   }
   
   .card {
+    width: 100%;
     background-color: #f0f8ff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -97,7 +98,7 @@
   .preview-btn:hover {
     background-color: darkorange;
   }
-  
+
   .older-versions {
     margin-top: 10px;
     width: 100%;
@@ -140,9 +141,19 @@
   .search {
     margin-top: 1%;
   }
+
+  .older-version-buttons{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .older-version-buttons .preview-btn{
+    margin-left: 5px;
+  }
   
   .older-version-buttons button {
     cursor: pointer;
+    width: 5rem;
     padding: 5px 5px;
     border: none;
     border-radius: 4px;
