@@ -258,7 +258,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
       if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
 
-      console.log("Response: " + data + " . Refreshing tasks...");
+      // console.log("Response: " + data + " . Refreshing tasks...");
       this.tasks = [];
       this.tasksByGroup = [];
       this.tasks_backup = [];

@@ -115,6 +115,9 @@ import { IssueChangeProgressComponent } from './components/elements/issues/issue
 import {MeterGroupModule} from "primeng/metergroup";
 import {BadgeModule} from "primeng/badge";
 import { HubConnectionInterceptor } from './_interceptors/hub-connection.interceptor';
+
+import { ScrollerModule } from 'primeng/scroller';
+import { LogsContainerComponent } from './components/elements/logs-container/logs-container.component';
 import { UploadIssueDocumentComponent } from './components/elements/upload-issue-document/upload-issue-document.component';
 import { ListOfIssueDocumentsComponent } from './components/elements/list-of-issue-documents/list-of-issue-documents.component';
 
@@ -176,7 +179,8 @@ import { ListOfIssueDocumentsComponent } from './components/elements/list-of-iss
     IssueChangeProgressComponent,
     NotificationsPageComponent,
     UploadIssueDocumentComponent,
-    ListOfIssueDocumentsComponent
+    ListOfIssueDocumentsComponent,
+    LogsContainerComponent
   ],
     imports: [
         BrowserModule,
@@ -222,7 +226,8 @@ import { ListOfIssueDocumentsComponent } from './components/elements/list-of-iss
         DividerModule,
         SliderModule,
         MeterGroupModule,
-        BadgeModule
+        BadgeModule,
+        ScrollerModule
     ],
   providers: [
     CookieService,

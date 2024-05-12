@@ -4,8 +4,8 @@ using backAPI.Entities.Domain;
 using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
+using backAPI.Repositories.Interface.Projects;
 using backAPI.SignalR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -19,6 +19,9 @@ namespace backAPI.Repositories.Implementation.Issues
         private readonly IUsersRepository _usersRepository;
         private readonly NotificationService _notificationService;
         private readonly INotificationsRepository _notificationsRepository;
+        private readonly IProjectsRepository _projectsRepository;
+        private readonly IIssueGroupRepository _issueGroupRepository;
+        private readonly ILogsRepository _logsRepository;
 
         /* *****************************************************************************************
          * Konstruktor
@@ -28,7 +31,10 @@ namespace backAPI.Repositories.Implementation.Issues
             IUserOnIssueRepository userOnIssueRepository, 
             IUsersRepository usersRepository,
             NotificationService notificationService,
-            INotificationsRepository notificationRepository
+            INotificationsRepository notificationRepository,
+            ILogsRepository logsRepository,
+            IIssueGroupRepository issueGroupRepository,
+            IProjectsRepository projectsRepository
         )
         {
             _dataContext = dataContext;
@@ -36,6 +42,9 @@ namespace backAPI.Repositories.Implementation.Issues
             _usersRepository = usersRepository;
             _notificationService = notificationService;
             _notificationsRepository = notificationRepository;
+            _projectsRepository = projectsRepository;
+            _issueGroupRepository = issueGroupRepository;
+            _logsRepository = logsRepository;
         }
 
         /* *****************************************************************************************
@@ -69,6 +78,15 @@ namespace backAPI.Repositories.Implementation.Issues
             if (anyother != null)
             {
                 return null; // postoji task u istoj grupi sa istim imenom
+            }
+
+            var group = await _issueGroupRepository.GetGroupAsync(task.GroupId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "🆕 New task created. Task name: <strong>" + task.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
             }
 
             await _dataContext.Issues.AddAsync(task);
@@ -141,6 +159,15 @@ namespace backAPI.Repositories.Implementation.Issues
                 issue.Completed = usersOnIssueDto.CompletionLevel;
             }
 
+            var group = await _issueGroupRepository.GetGroupAsync(issueId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "🔄 Progress updated on task <strong> " + issue.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+            }
+
             _dataContext.UsersOnIssues.Update(element);
             _dataContext.Issues.Update(issue);
 
@@ -190,6 +217,15 @@ namespace backAPI.Repositories.Implementation.Issues
                 DateCreated = DateTime.Now
             });
 
+            var group = await _issueGroupRepository.GetGroupAsync(issue.GroupId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "⛔ User removed from task <strong>" + issue.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+            }
+
             await _notificationsRepository.AddNotificationRangeAsync(notifications);
 
             return cl;
@@ -217,11 +253,31 @@ namespace backAPI.Repositories.Implementation.Issues
                 return false;
             }
 
-            exists.CreatedDate = model.StartDate.AddDays(1);        // dodatak +1 zbog front-a???
-            exists.UpdatedDate = DateTime.Now;
-            exists.DueDate = model.EndDate;
-            await _dataContext.SaveChangesAsync();
-            return true;
+            var group = await _issueGroupRepository.GetGroupAsync(exists.GroupId);
+
+            Project project = await getIssueProject(exists.GroupId);
+
+            Console.WriteLine(project.CreationDate);
+            Console.WriteLine(model.StartDate);
+            Console.WriteLine(model.EndDate);
+
+            if (project.CreationDate <= model.StartDate && model.StartDate <= model.EndDate) {
+                exists.CreatedDate = model.StartDate;
+                exists.UpdatedDate = DateTime.Now;
+                exists.DueDate = model.EndDate;
+                await _dataContext.SaveChangesAsync();
+
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "ℹ️ Timeline changed for task " +
+                    "<strong>" + exists.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> UpdateIssue(int issueId, JIssueDto model)
@@ -235,6 +291,11 @@ namespace backAPI.Repositories.Implementation.Issues
             var reporter = await _dataContext.UsersOnIssues.FirstOrDefaultAsync(uoi => uoi.IssueId == issueId && uoi.Reporting == true);
             if (reporter == null)
             {
+                return false;
+            }
+
+            var existsName = await checkIfExistsIssueWithTheSameNameInsideGroup(exists.Id, exists.GroupId, model.Title);
+            if(existsName) {
                 return false;
             }
 
@@ -258,6 +319,16 @@ namespace backAPI.Repositories.Implementation.Issues
             }
 
             var result = await _dataContext.SaveChangesAsync();
+            if (result > 0) {
+                var group = await _issueGroupRepository.GetGroupAsync(issueId);
+                if (group != null) {
+                    await _logsRepository.AddLogToDatabase(new Log {
+                        ProjectId = group.ProjectId,
+                        Message = "🔄 Task <strong> " + exists.Name + "</strong> updated",
+                        DateCreated = DateTime.Now
+                    });
+                }
+            }
             return true;
         }
 
@@ -302,6 +373,15 @@ namespace backAPI.Repositories.Implementation.Issues
                 Message = messageContent,
                 DateCreated = DateTime.Now
             });
+
+            var group = await _issueGroupRepository.GetGroupAsync(issueId);
+            if (group != null) {
+                await _logsRepository.AddLogToDatabase(new Log {
+                    ProjectId = group.ProjectId,
+                    Message = "🚀 Users added on task <strong> " + issue.Name + "</strong>",
+                    DateCreated = DateTime.Now
+                });
+            }
 
             await _notificationsRepository.AddNotificationRangeAsync(notifications);
 
@@ -885,5 +965,22 @@ namespace backAPI.Repositories.Implementation.Issues
 
             return ( await issues.Select(i => i.Issue).Skip(criteria.First).Take(criteria.Rows).ToListAsync(), numberOfRecords);
         }
+
+        private async Task<Project> getIssueProject(int groupId) {
+            var group = await _issueGroupRepository.GetGroupAsync(groupId);
+            var project = await _projectsRepository.GetProjectById(group.ProjectId);
+            return project;
+        }
+
+        private async Task<bool> checkIfExistsIssueWithTheSameNameInsideGroup(int issueId, int groupId, string candidateName) {
+            var exists = await _dataContext.Issues.Where(
+                issue =>    issue.Id != issueId &&
+                            issue.GroupId == groupId &&
+                            issue.Name == candidateName
+            ).ToListAsync();
+
+            return exists.Any();
+        }
+
     }
 }

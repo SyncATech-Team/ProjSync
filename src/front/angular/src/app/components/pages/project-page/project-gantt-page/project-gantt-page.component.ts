@@ -37,6 +37,7 @@ import { UserOnProjectService } from '../../../../_service/userOnProject.service
 import { UserGetter } from '../../../../_models/user-getter';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { ProjectService } from '../../../state/project/project.service';
+import { DateService } from '../../../../_service/date.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -235,8 +236,8 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
-    console.log(issueId);
-    console.log(this.usersPhotos);
+    // console.log(issueId);
+    // console.log(this.usersPhotos);
     this.ref1 = this._modalService.open(IssueModalComponent, {
       header: 'Issue - update',
       width: '65%',
@@ -301,8 +302,8 @@ dragMoved(event: GanttDragEvent) {}
 dragEnded(event: GanttDragEvent) {
     // this.msgPopupService.showInfo(`Event: dragEnded ${event.item.title}`);
     let issueId = event.item.id as unknown as number;
-    let newStartDate = fromUnixTime(event.item.start!);
-    let newEndDate = fromUnixTime(event.item.end!);
+    let newStartDate = DateService.convertToUTC(fromUnixTime(event.item.start!));
+    let newEndDate = DateService.convertToUTC(fromUnixTime(event.item.end!));
     
     let model: IssueDateUpdate = {
         id: issueId,
@@ -316,6 +317,8 @@ dragEnded(event: GanttDragEvent) {
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
+            this.msgPopupService.showError("Task cannot start before project start date");
+            this.refresh();
         }
     });
     
@@ -394,11 +397,11 @@ onDragDropped(event: GanttTableDragDroppedEvent) {
 }
 
 onDragStarted(event: GanttTableDragStartedEvent) {
-    console.log('Drag started', event);
+    // console.log('Drag started', event);
 }
 
 onDragEnded(event: GanttTableDragEndedEvent) {
-    console.log('Drag ended', event);
+    // console.log('Drag ended', event);
 }
 
 expandAllGroups() {
@@ -430,7 +433,7 @@ showCreateTaskPopupTaskGantt() {
     this.ref.onClose.subscribe((data: any) => {
       if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
 
-      console.log("Response: " + data + " . Refreshing tasks...");
+    //   console.log("Response: " + data + " . Refreshing tasks...");
       this.refresh();
     });
 

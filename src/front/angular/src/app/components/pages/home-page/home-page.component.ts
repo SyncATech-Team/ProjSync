@@ -15,6 +15,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-modal.component';
 import { ProjectQuery } from '../../state/project/project.query';
 import { ProjectService as ProjectService2 } from '../../state/project/project.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -69,10 +70,18 @@ export class HomePageComponent implements OnInit {
     private issueService : IssueService,
     private _modalService: DialogService,
     private _projectQuery: ProjectQuery,
-    private _projectService: ProjectService2
+    private _projectService: ProjectService2,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+
+    let routeShowTasks = undefined;
+    this.route.queryParams.subscribe(params => {
+      routeShowTasks = params['showUserTasks'];
+    });
+
     this.columns = ['Key','Type','Owner','Creation Date','Due Date','Budget','Progress'];
     this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
@@ -91,7 +100,6 @@ export class HomePageComponent implements OnInit {
     var user = this.accoutService.getCurrentUser();
     if(user?.permitions)
       this.permitions = user.permitions;
-    this.filterProjects('public');
 
     this.userService.getAllUsers().subscribe({
       next: (response) => {
@@ -99,6 +107,27 @@ export class HomePageComponent implements OnInit {
         this.Users = this.users.map(item => item.username);
         // console.log(this.users);
         this.getUserProfilePhotos(this.users);
+      }
+    });
+
+    if(routeShowTasks == 'true') { this.filterTasksByUser(); }
+    else { this.filterProjects('public'); }
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.handleRouteChange();
+      }
+    });
+
+  }
+
+  handleRouteChange() {
+    this.route.queryParams.subscribe(params => {
+      const routeShowTasks = params['showUserTasks'];
+      if (routeShowTasks === 'true') {
+        this.filterTasksByUser();
+      } else {
+        this.filterProjects('public');
       }
     });
   }
@@ -110,7 +139,7 @@ export class HomePageComponent implements OnInit {
       this.projectService.getAllProjectsForUser(user.username).subscribe({
         next: (response) => {
           this.projects = response;
-          console.log(this.projects);
+          // console.log(this.projects);
           this.projects.forEach((project)=>{ 
             project.isExtanded = false;
             project.isFavorite = false;
@@ -218,7 +247,7 @@ export class HomePageComponent implements OnInit {
             issue.dueDate = new Date(issue.dueDate);
           });
           this.issuesShow = response;
-          console.log(this.userIssues);
+          // console.log(this.userIssues);
         },
         error: (error) => {
           console.log(error.error);
@@ -329,7 +358,7 @@ export class HomePageComponent implements OnInit {
   }
 
   test(tst : any){
-    console.log(tst);
+    // console.log(tst);
   }
 
   MAX_PROJECT_NAME_LENGTH_DISPLAY = 20;
@@ -408,7 +437,7 @@ export class HomePageComponent implements OnInit {
 
   // Otvaranje modala za edit issue edit
   openIssueModal(issueId : string, projectName: string){
-    console.log(issueId);
+    // console.log(issueId);
     this._projectService.getProject(projectName);
     this.ref = this._modalService.open(IssueModalComponent, {
       header: 'Issue - update',
@@ -428,4 +457,9 @@ export class HomePageComponent implements OnInit {
       }
     });
   }
+
+  get tasksTabSelected() {
+    return this.showUserTasks;
+  }
+
 }

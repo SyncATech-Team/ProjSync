@@ -16,14 +16,14 @@ export const navbarData = [
     },
     {
         routeLink : '/home/projects/documents/',
-        icon: 'fa-regular fa-file',
+        icon: 'fa-solid fa-file',
         label: 'Documents'
     },
-    {
-        routeLink : '',
-        icon: 'fa-solid fa-chart-pie',
-        label: 'Reports'
-    },
+    // {
+    //     routeLink : '',
+    //     icon: 'fa-solid fa-chart-pie',
+    //     label: 'Reports'
+    // },
     {
         routeLink : '/home/projects/settings/',
         icon: 'fa-solid fa-wrench',
