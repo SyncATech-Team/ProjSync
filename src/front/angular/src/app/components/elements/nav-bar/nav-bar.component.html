@@ -13,6 +13,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 left--menu">
         <!-- Ovde su bili linkovi za dropdown opcije -->
+        <div class="navbar-item work-link" (click)="word.toggle($event)">
+          <span class="navbar-text">Work</span>
+          <p-overlayPanel #word [dismissable]="true" appendTo="body">
+            <ng-template pTemplate="content">
+              <div class="dropdown-div">
+                <div class="dropdown-item" (click)="navigateToDesiredTab('false')">
+                  My Projects
+                </div>
+                <div class="dropdown-item" (click)="navigateToDesiredTab('true')">
+                  My Tasks
+                </div>
+              </div>
+            </ng-template>
+          </p-overlayPanel>
+        </div>        
       </ul>
 
       <div class="d-flex right--side">
