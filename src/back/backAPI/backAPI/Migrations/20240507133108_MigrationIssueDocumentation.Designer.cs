@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240417201058_MigrationSQLite")]
-    partial class MigrationSQLite
+    [Migration("20240507133108_MigrationIssueDocumentation")]
+    partial class MigrationIssueDocumentation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,6 +204,9 @@ namespace backAPI.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ListPosition")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -287,6 +290,31 @@ namespace backAPI.Migrations
                     b.HasIndex("TargetId");
 
                     b.ToTable("IssueDependencies");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDocumentation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateUploaded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("IssueDocumentation");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>
@@ -805,6 +833,17 @@ namespace backAPI.Migrations
                     b.Navigation("Origin");
 
                     b.Navigation("Target");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDocumentation", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Issue", "Issue")
+                        .WithMany()
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>

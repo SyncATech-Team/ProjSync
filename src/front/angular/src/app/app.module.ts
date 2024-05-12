@@ -118,6 +118,8 @@ import { HubConnectionInterceptor } from './_interceptors/hub-connection.interce
 
 import { ScrollerModule } from 'primeng/scroller';
 import { LogsContainerComponent } from './components/elements/logs-container/logs-container.component';
+import { UploadIssueDocumentComponent } from './components/elements/upload-issue-document/upload-issue-document.component';
+import { ListOfIssueDocumentsComponent } from './components/elements/list-of-issue-documents/list-of-issue-documents.component';
 
 @NgModule({
   declarations: [
@@ -176,6 +178,8 @@ import { LogsContainerComponent } from './components/elements/logs-container/log
     UploadDocumentComponent,
     IssueChangeProgressComponent,
     NotificationsPageComponent,
+    UploadIssueDocumentComponent,
+    ListOfIssueDocumentsComponent,
     LogsContainerComponent
   ],
     imports: [

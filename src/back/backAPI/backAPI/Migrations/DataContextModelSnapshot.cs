@@ -289,6 +289,31 @@ namespace backAPI.Migrations
                     b.ToTable("IssueDependencies");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDocumentation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateUploaded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("IssueDocumentation");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -827,6 +852,17 @@ namespace backAPI.Migrations
                     b.Navigation("Origin");
 
                     b.Navigation("Target");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDocumentation", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Issue", "Issue")
+                        .WithMany()
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>

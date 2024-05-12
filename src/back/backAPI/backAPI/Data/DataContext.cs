@@ -284,5 +284,6 @@ namespace backAPI.Data
 
         // LOG
         public DbSet<Log> Logs { get; set; }
+        public DbSet<IssueDocumentation> IssueDocumentation { get; set; }
     }
 }

@@ -4,6 +4,8 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import {ProjectService} from "../../../state/project/project.service";
 import {ProjectQuery} from "../../../state/project/project.query";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
+import { DocumentTitle } from '../../../../_models/document-title.model';
+import { IssueDocumentationService } from '../../../../_service/issue-documentation.service';
 
 @Component({
   selector: 'issue-detail',
@@ -18,11 +20,15 @@ export class IssueDetailComponent {
   @Output() onOpenIssue = new EventEmitter<string>();
   @Input() usersPhotos!: PhotoForUser[];
 
+  documentTitles: DocumentTitle[] = [];
+  documentTitlesBackup: DocumentTitle[] = [];
+
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     public projectQuery: ProjectQuery,
-    private _projectService: ProjectService) {
+    private _projectService: ProjectService,
+    private issueDocumentationService : IssueDocumentationService) {
   }
 
   closeModal() {
