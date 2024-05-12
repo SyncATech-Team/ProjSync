@@ -52,6 +52,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IProjectDocumentationRepository, ProjectDocumentationRepository>();
+builder.Services.AddScoped<IIssueDocumentationRepository, IssueDocumentationRepository>();
 builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
 builder.Services.AddScoped<IIssueCommentRepository, IssueCommentRepository>();
 builder.Services.AddScoped<INotificationsRepository, NotificationRepository>();

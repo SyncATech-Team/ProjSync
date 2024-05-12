@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationSQLite : Migration
+    public partial class MigrationIssueDocumentation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -437,7 +437,8 @@ namespace backAPI.Migrations
                     DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     OwnerId = table.Column<int>(type: "INTEGER", nullable: false),
                     GroupId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Completed = table.Column<double>(type: "REAL", nullable: false)
+                    Completed = table.Column<double>(type: "REAL", nullable: false),
+                    ListPosition = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -527,6 +528,28 @@ namespace backAPI.Migrations
                         principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IssueDocumentation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Path = table.Column<string>(type: "TEXT", nullable: true),
+                    IssueId = table.Column<int>(type: "INTEGER", nullable: false),
+                    DateUploaded = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IssueDocumentation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IssueDocumentation_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -629,6 +652,11 @@ namespace backAPI.Migrations
                 name: "IX_IssueDependencies_TargetId",
                 table: "IssueDependencies",
                 column: "TargetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IssueDocumentation_IssueId",
+                table: "IssueDocumentation",
+                column: "IssueId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IssueGroups_ProjectId",
@@ -770,6 +798,9 @@ namespace backAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "IssueDependencies");
+
+            migrationBuilder.DropTable(
+                name: "IssueDocumentation");
 
             migrationBuilder.DropTable(
                 name: "Notifications");

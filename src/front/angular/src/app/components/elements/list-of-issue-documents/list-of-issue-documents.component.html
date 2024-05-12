@@ -1,0 +1,42 @@
+<div class="card-container">
+    <div *ngFor="let element of documentTitles" class="card">
+      <div class="card-content">
+        
+        <img src="{{getIcon(element.title)}}" alt="Document Icon" class="document-icon">
+        <div>
+          <div class="title" pTooltip="{{element.title}}">
+            {{ getTitle(element.title) }}
+          </div>
+          <div class="date">{{ element.dateUploaded | date:'medium' }}</div>
+        </div>
+        
+        <div class="options">
+          <button *ngIf="isPdfOrImageExtension(element.title)" class="preview-btn" (click)="previewDocument(element.documentId, element.title)">Preview</button>
+          <button class="download-btn" (click)="downloadDocument(element.documentId, element.title)">Download</button>
+          <button class="delete-btn" (click)="deleteDocument(element.documentId, element.title)">Delete</button>
+        </div>
+        
+        <div *ngIf="element.olderVersions.length > 0">
+          <span class="show-older-span" (click)="toggleOlderVersions(element)">Show Older Versions</span>
+        </div>
+
+        <div *ngIf="element.showOlderVersions" class="older-versions">
+          <div *ngFor="let older of element.olderVersions" class="older-version">
+            
+            <div>
+              <div class="older-title" pTooltip="{{older.title}}"> {{ getTitle(older.title) }} </div>
+              <span> {{ older.dateUploaded | date:'medium' }} </span>
+            </div>
+
+            <div class="older-version-buttons">
+              <button *ngIf="isPdfOrImageExtension(element.title)" class="preview-btn" (click)="previewDocument(element.documentId, element.title)">Preview</button>
+              <button class="download-btn" (click)="downloadDocument(element.documentId, element.title)">Download</button>
+              <button class="delete-btn" (click)="deleteDocument(older.documentId, element.title)">Delete</button>
+            </div>
+          
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>  
