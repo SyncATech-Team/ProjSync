@@ -10,9 +10,7 @@ import { Router } from '@angular/router';
 })
 export class PasswordResetComponent {
 
-  constructor(private accountService: AccountService, private router: Router) {
-
-  }
+  constructor(private accountService: AccountService, private router: Router) { }
 
   private passResetToken = "";
   private email = "";
@@ -25,16 +23,13 @@ export class PasswordResetComponent {
   }
 
   showPassword: boolean = false;
-  showPasswordOld: boolean = false;
   showPasswordCnf: boolean = false;
 
-  togglePasswordVisibility(){
+  togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-  togglePasswordVisibilityOld(){
-    this.showPasswordOld = !this.showPasswordOld;
-  }
-  togglePasswordVisibilityCnf(){
+
+  togglePasswordVisibilityCnf() {
     this.showPasswordCnf = !this.showPasswordCnf;
   }
 
@@ -45,7 +40,8 @@ export class PasswordResetComponent {
 
     this.accountService.resetPassword(this.passwordReset).subscribe({
       next: _ => {
-        this.router.navigateByUrl('home')
+        this.freeLocalStorage();
+        this.router.navigateByUrl('home');
       }
     });
   }
@@ -57,6 +53,10 @@ export class PasswordResetComponent {
     var token = JSON.parse(storage);
     this.passResetToken = token['token'];
     this.email = token['email'];
+  }
+
+  freeLocalStorage() {
+    localStorage.removeItem('pass-reset');
   }
 
 }
