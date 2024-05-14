@@ -151,6 +151,12 @@ ngOnInit(): void {
 
     this.loading = true;
 
+    this.fetchGroups();
+    this.fetchIssues();
+    this.fetchUsers();
+}
+
+fetchGroups() {
     this.groupService.getAllGroups(this.projectName).subscribe({
         next: response => {
             let data = response;
@@ -164,13 +170,14 @@ ngOnInit(): void {
                 })
             }
             this.groups = dataGroups;
-            // console.log(this.groups);
         },
         error: error => {
             console.log("ERROR!!!");
         } 
-    })
+    });
+}
 
+fetchIssues() {
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
         next: response => {
             let data = response;
@@ -208,16 +215,18 @@ ngOnInit(): void {
             console.log("Error fetching tasks: " + error.error);
         }
     });
+}
 
+fetchUsers() {
     this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
         next: (response) => {
-          this.users = response.filter(user => user.username !== 'admin');
-          this.usersPhotos = this.userPictureService.getUserProfilePhotos(this.users);
+            this.users = response.filter(user => user.username !== 'admin');
+            this.usersPhotos = this.userPictureService.getUserProfilePhotos(this.users);
         },
         error: (error) => {
-          console.log(error);
+            console.log(error);
         }
-      });
+    });
 }
 
 // ngAfterViewInit(): void {
@@ -377,7 +386,10 @@ viewChange(event: GanttView) {
 }
 
 refresh() {
-    this.ngOnInit();
+    this.loading = true;
+    this.fetchGroups();
+    this.fetchIssues();
+    this.fetchUsers();
 }
 
 onDragDropped(event: GanttTableDragDroppedEvent) {
