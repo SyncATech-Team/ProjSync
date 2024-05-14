@@ -10,6 +10,7 @@ import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-r
 import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
 import { PresenceService } from './presence.service';
 import { NotificationService } from './notification.service';
+import { ForgotPasswordModel } from '../_models/forgot-password';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,15 @@ export class AccountService {
 
   confirmEmail(email: string | null, token: string | null) {
     return this.http.post<ResetPasswordAfterEmailConformation>(this.baseUrl + `account/confirm-email?email=${email}&token=${token}`, {})
+      .pipe(
+        map((response: ResetPasswordAfterEmailConformation) => {
+          localStorage.setItem('pass-reset', JSON.stringify(response));
+        })
+      );
+  }
+
+  forgotPassword(model: ForgotPasswordModel) {
+    return this.http.post<ResetPasswordAfterEmailConformation>(this.baseUrl + `account/forgot-password`, model)
       .pipe(
         map((response: ResetPasswordAfterEmailConformation) => {
           localStorage.setItem('pass-reset', JSON.stringify(response));
