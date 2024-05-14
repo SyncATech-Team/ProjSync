@@ -77,7 +77,7 @@ namespace backAPI.Controllers {
             }
 
             var result = await _statisticsRepository.CalculateProjectProgress(project.Id);
-
+                    
             return result;
         }
     }

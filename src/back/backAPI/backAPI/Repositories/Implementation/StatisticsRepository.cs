@@ -101,8 +101,16 @@ namespace backAPI.Repositories.Implementation {
             var issuesForGroup = await (
                 from issue in dataContext.Issues
                 join issueGroup in dataContext.IssueGroups on issue.GroupId equals issueGroup.Id
+                where issue.GroupId == groupId
                 select issue
             ).ToListAsync();
+
+            Console.WriteLine(issuesForGroup.Count.ToString());
+
+            if(issuesForGroup.Any() == false)
+            {
+                return Tuple.Create(0.0, 0.0);
+            }
 
             double totalDays = 0;
             double totalProgress = 0;
@@ -113,6 +121,7 @@ namespace backAPI.Repositories.Implementation {
 
             foreach (var issue in issuesForGroup)
             {
+                Console.WriteLine(issue.CreatedDate + " - " + issue.DueDate);
                 var dateDiff = issue.DueDate - issue.CreatedDate;
                 double days = dateDiff.TotalDays;
 
@@ -140,14 +149,26 @@ namespace backAPI.Repositories.Implementation {
             }
 
             var dateDiff2 = maxDate - minDate;
+            Console.WriteLine(maxDate +  " : " + minDate);
+            Console.WriteLine("TEST " + dateDiff2);
             double differenceInDays = dateDiff2.TotalDays;
-
+            Console.WriteLine("TESTTTESTT " + totalDays);
+            if (totalDays == 0)
+            {
+                totalDays = 1;
+            }
             return Tuple.Create(totalProgress / totalDays, differenceInDays);
         }
 
         public async Task<double> CalculateProjectProgress(int projectId)
         {
             var groups = await issueGroupRepository.GetGroupsAsync(projectId);
+
+            if(groups.Any() == false)
+            {
+                return 0;
+            }
+
             double totalProgress = 0;
             double totalDays = 0;
 
@@ -156,6 +177,11 @@ namespace backAPI.Repositories.Implementation {
                 var progress = await CalculateGroupProgress(group.Id);
                 totalProgress += progress.Item1 * progress.Item2;
                 totalDays += progress.Item2;
+            }
+
+            if (totalDays == 0)
+            {
+                totalDays = 1;
             }
 
             return totalProgress / totalDays;
