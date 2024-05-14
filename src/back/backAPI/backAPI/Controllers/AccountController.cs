@@ -171,7 +171,8 @@ namespace backAPI.Controllers
         }
 
         [HttpPost("change-password-auth-user")]
-        public async Task<ActionResult<string>> ChangePasswordOfLoggedUser(ChangePasswordDto changePassword) {
+        public async Task<ActionResult<string>> ChangePasswordOfLoggedUser(ChangePasswordDto changePassword) 
+        {
             var user = await _userManager.FindByNameAsync(changePassword.Username);
             if (user == null) return BadRequest(new { message = "There is no user with given username" });    // unlikely
 
@@ -184,5 +185,21 @@ namespace backAPI.Controllers
             return Ok(new { message = "Password changed" });
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult<ResetPasswordAfterEmailConfirmationDto>> ForgotPassword(LoginDto loginDto)
+        {
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (user != null)
+            {
+                var resetPassToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                ResetPasswordAfterEmailConfirmationDto response = new ResetPasswordAfterEmailConfirmationDto
+                {
+                    Token = resetPassToken,
+                    Email = loginDto.Email
+                };
+                return response;
+            }
+            else return BadRequest("User is not registered");
+        }
     }
 }
