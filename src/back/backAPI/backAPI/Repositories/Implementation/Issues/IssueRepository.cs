@@ -175,6 +175,25 @@ namespace backAPI.Repositories.Implementation.Issues
             return cl;
         }
 
+        public async Task<string> DeleteIssue(int issueId) {
+
+            Issue entityToDelete = await _dataContext.Issues.FirstOrDefaultAsync(x => x.Id == issueId);
+            if (entityToDelete == null) { return "Issue Not Found"; }
+
+            _dataContext.Issues.Remove(entityToDelete);
+
+            string returnMessage = "OK";
+            try {
+                await _dataContext.SaveChangesAsync();
+                returnMessage = "OK";
+            }
+            catch (Exception) {
+                returnMessage = "Issue has a dependency";
+            }
+
+            return returnMessage;
+        }
+
         public async Task<double> DeleteUserOnIssue(int issueId, string userId)
         {
             int userIdToDelete = Int32.Parse(userId);

@@ -505,6 +505,15 @@ namespace backAPI.Controllers
             return Ok(updated);
         }
 
+        [HttpDelete("delete-issue/{issueId}")]
+        public async Task<IActionResult> DeleteIssue(int issueId) {
+            var deleted = await _issueRepository.DeleteIssue(issueId);
+            if(deleted != "OK") {
+                return BadRequest(new { message = deleted });
+            }
+            return Ok();
+        }
+
         [HttpDelete("delete-uoi/{issueId}/{userId}")]
         public async Task<IActionResult> UpdateUsersOnIssue(int issueId, string userId)
         {

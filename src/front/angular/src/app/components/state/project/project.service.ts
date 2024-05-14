@@ -13,6 +13,8 @@ import {UsersWithCompletion} from "../../../_models/user-completion-level";
 import {JCommentDto} from "../../../_models/jcomment-dto";
 import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {User} from "../../../_models/user";
+import { IssueService } from '../../../_service/issue.service';
+import { MessagePopupService } from '../../../_service/message-popup.service';
 
 
 @Injectable({
@@ -26,7 +28,12 @@ export class ProjectService {
   private commentsSource = new BehaviorSubject<JComment[]>([]);
   comments$ = this.commentsSource.asObservable();
 
-  constructor(private _http: HttpClient, private _store: ProjectStore) {
+  constructor(
+    private _http: HttpClient, 
+    private _store: ProjectStore,
+    private _issueService: IssueService,
+    private _msgPopupService: MessagePopupService
+  ) {
     this.baseUrl = environment.apiUrl;
   }
 
@@ -157,12 +164,20 @@ export class ProjectService {
   }
 
   deleteIssue(issueId: string) {
-    this._store.update((state) => {
-      const issues = arrayRemove(state.issues, issueId);
-      return {
-        ...state,
-        issues
-      };
+    this._issueService.deleteIssue(issueId).subscribe({
+      next: () => {
+        this._store.update((state) => {
+          const issues = arrayRemove(state.issues, issueId);
+          return {
+            ...state,
+            issues
+          };
+        });
+      },
+      error: error => {
+        console.log(error.error);
+        this._msgPopupService.showError(error.error.message);
+      }
     });
   }
 

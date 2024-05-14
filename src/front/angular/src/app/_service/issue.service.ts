@@ -80,4 +80,8 @@ export class IssueService {
   getUserIssues(username : string) {
     return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/userIssues?username=${username}`);
   }
+
+  deleteIssue(id: string) {
+    return this.http.delete<void>(`${this.baseUrl}Issues/delete-issue/${id}`);
+  }
 }
