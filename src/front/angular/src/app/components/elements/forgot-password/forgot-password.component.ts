@@ -3,6 +3,7 @@ import { EmailValidationService } from '../../../_service/email_validator.servic
 import { Router } from '@angular/router';
 import { AccountService } from '../../../_service/account.service';
 import { MessageService } from "primeng/api";
+import { ForgotPasswordModel } from '../../../_models/forgot-password';
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,10 +11,9 @@ import { MessageService } from "primeng/api";
   styleUrl: './forgot-password.component.css'
 })
 export class ForgotPasswordComponent {
-  user : any = {
-    email:  "",
-    password:  ""
-  }
+  user: ForgotPasswordModel = {
+    email: ''
+  };
 
   emailValid: boolean = false;
 
@@ -33,5 +33,15 @@ export class ForgotPasswordComponent {
     if (!this.emailValid) {
       return;
     }
+
+    this.accountService.forgotPassword(this.user).subscribe({
+      next: () => {
+        this.router.navigateByUrl("account/password-reset");
+      },
+
+      error: _ => {
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: "Please check Your email" });
+      }
+    });
   }
 }

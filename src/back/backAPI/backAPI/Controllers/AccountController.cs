@@ -186,16 +186,16 @@ namespace backAPI.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<ActionResult<ResetPasswordAfterEmailConfirmationDto>> ForgotPassword(LoginDto loginDto)
+        public async Task<ActionResult<ResetPasswordAfterEmailConfirmationDto>> ForgotPassword(ForgotPasswordDto forgotPassword)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
             if (user != null)
             {
                 var resetPassToken = await _userManager.GeneratePasswordResetTokenAsync(user);
                 ResetPasswordAfterEmailConfirmationDto response = new ResetPasswordAfterEmailConfirmationDto
                 {
                     Token = resetPassToken,
-                    Email = loginDto.Email
+                    Email = forgotPassword.Email
                 };
                 return response;
             }
