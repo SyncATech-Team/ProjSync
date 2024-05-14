@@ -4,18 +4,17 @@ import { Project } from '../../../_models/project.model';
 import { ProjectService } from '../../../_service/project.service';
 import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectType } from '../../../_models/project-type';
-import { CompanyroleService } from '../../../_service/companyrole.service';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { IssueService } from '../../../_service/issue.service';
-import { IssueModel } from '../../../_models/model-issue.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-modal.component';
 import { ProjectQuery } from '../../state/project/project.query';
 import { ProjectService as ProjectService2 } from '../../state/project/project.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { JIssue } from '../../../_models/issue';
 
 @Component({
   selector: 'app-home-page',
@@ -50,21 +49,20 @@ export class HomePageComponent implements OnInit {
 
   showUserTasks: boolean = false;
   selectedTab : string = "myProjects";
-  userIssues : IssueModel[] = [];
+  userIssues : JIssue[] = [];
   issueColumns! : string[];
   selectedIssueColumns!: string[];
   showIssueColumns!: string[];
   issuesShow: any[] = [];
   ref: DynamicDialogRef | undefined;
   IssueTypes : any[] = ["Bug", "Story", "Task"];
-  IssueStatus: any[] = ["Panning", "In progress", "Done"];
+  IssueStatus: any[] = ["Planning", "In progress", "Done"];
   IssuePrioritys: any[] = ["Medium", "Low", "Lowest", "High", "Highest"];
 
   constructor(
     public accoutService: AccountService,
     private projectService:ProjectService,
     private projectTypes:ProjectTypeService,
-    private companyroleService: CompanyroleService,
     private userService: UserService,
     private userPictureService: UserProfilePicture,
     private issueService : IssueService,
@@ -243,8 +241,8 @@ export class HomePageComponent implements OnInit {
         next: (response) => {
           this.userIssues = response;
           this.userIssues.forEach((issue)=>{
-            issue.createdDate = new Date(issue.createdDate);
-            issue.dueDate = new Date(issue.dueDate);
+            issue.createdAt = new Date(issue.createdAt).toISOString(); // Convert Date object to string
+            issue.dueDate = new Date(issue.dueDate).toISOString();
           });
           this.issuesShow = response;
           // console.log(this.userIssues);
@@ -330,11 +328,11 @@ export class HomePageComponent implements OnInit {
     }
 
     this.issuesShow = this.userIssues.filter(issue =>
-        issue.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.reporterUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.statusName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.status.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.priority.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.projectName.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }

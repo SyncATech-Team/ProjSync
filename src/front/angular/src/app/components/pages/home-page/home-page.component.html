@@ -83,18 +83,18 @@
                 <ng-template pTemplate="header" let-issueColumns>
                     <tr>
                         <ng-container *ngFor="let column of issueColumns">
-                            <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="name">
+                            <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="title">
                                 <div class="flex align-items-center">
                                 Name
-                                <p-sortIcon field="name"></p-sortIcon>
-                                <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                                <p-sortIcon field="title"></p-sortIcon>
+                                <p-columnFilter type="text" field="title" display="menu"></p-columnFilter>
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="typeName">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="type">
                                 <div class="flex align-items-center">
                                     Type
-                                    <p-sortIcon field="typeName"></p-sortIcon>
-                                    <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <p-sortIcon field="type"></p-sortIcon>
+                                    <p-columnFilter field="type" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                         <ng-template pTemplate="header">
                                             <div class="px-3 pt-3 pb-0">
                                                 <span class="font-bold">Type</span>
@@ -112,11 +112,11 @@
                                     </p-columnFilter>
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="statusName">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="status">
                                 <div class="flex align-items-center">
                                 Status
-                                <p-sortIcon field="statusName"></p-sortIcon>
-                                <p-columnFilter field="statusName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                <p-sortIcon field="status"></p-sortIcon>
+                                <p-columnFilter field="status" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                     <ng-template pTemplate="header">
                                         <div class="px-3 pt-3 pb-0">
                                             <span class="font-bold">Status</span>
@@ -134,11 +134,11 @@
                                 </p-columnFilter>
                             </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priorityName">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priority">
                                 <div class="flex align-items-center">
                                 Priority
-                                <p-sortIcon field="priorityName"></p-sortIcon>
-                                <p-columnFilter field="priorityName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                <p-sortIcon field="priority"></p-sortIcon>
+                                <p-columnFilter field="priority" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                     <ng-template pTemplate="header">
                                         <div class="px-3 pt-3 pb-0">
                                             <span class="font-bold">Priority</span>
@@ -156,11 +156,11 @@
                                 </p-columnFilter>
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" pSortableColumn="createdDate">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" pSortableColumn="createdAt">
                                 <div class="flex align-items-center">
                                     Created date
-                                    <p-sortIcon field="createdDate"></p-sortIcon>
-                                    <p-columnFilter type="date" field="createdDate" display="menu">
+                                    <p-sortIcon field="createdAt"></p-sortIcon>
+                                    <p-columnFilter type="date" field="createdAt" display="menu">
                                         <ng-template pTemplate="filter" let-filter="filterCallback">
                                             <p-calendar dateFormat="dd/mm/yy" (onSelect)="filter($event)"></p-calendar>
                                         </ng-template>
@@ -208,25 +208,25 @@
                             <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
                                 <div id="name-cont">
                                     <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
-                                    pTooltip="{{issue.name}}"
-                                    >{{  getTaskName(issue.name) }}</a>
+                                    pTooltip="{{issue.title}}"
+                                    >{{  getTaskName(issue.title) }}</a>
                                     <!--KOMENTAR: SREDITI SLUCAJ KAD JE USER NIJE NA PROJEKTU A IMA TASK NA ISTOM (click)="openIssueModal(issue.id, issue.projectName)" -->
                                 </div>
                             </td>
                             <td *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" style="width: 17vh; text-align: center;">
                                 <span class="p-column-title" style="font-weight: bold;">Type</span>
-                                <p-tag class="p-tag-fill" [value]="issue.typeName" [severity]="getSeverity(issue.typeName)"></p-tag>
+                                <p-tag class="p-tag-fill" [value]="issue.type" [severity]="getSeverity(issue.type)"></p-tag>
                             </td>
                             <td *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" style="width: 17vh; text-align: center;">
                                 <span class="p-column-title" style="font-weight: bold;">Status</span>
-                                <p-tag class="p-tag-fill" [value]="issue.statusName" [severity]="getSeverity(issue.statusName)"></p-tag>
+                                <p-tag class="p-tag-fill" [value]="issue.status" [severity]="getSeverity(issue.status)"></p-tag>
                             </td>
                             <td *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" style="width: 17vh; text-align: center; ">
                                 <span class="p-column-title" style="font-weight: bold;">Priority</span>
-                                <p-tag class="p-tag-fill" [value]="issue.priorityName" [severity]="getSeverity(issue.priorityName)"></p-tag>
+                                <p-tag class="p-tag-fill" [value]="issue.priority" [severity]="getSeverity(issue.priority)"></p-tag>
                             </td>
                             <td *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">CreatedDate</span>
-                                {{ issue.createdDate | date: 'dd/MM/yyyy' }}
+                                {{ issue.createdAt | date: 'dd/MM/yyyy' }}
                             </td>
                             <td *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Due Date</span>
                                 {{ issue.dueDate | date: 'dd/MM/yyyy' }}
