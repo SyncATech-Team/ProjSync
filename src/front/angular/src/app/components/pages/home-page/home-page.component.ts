@@ -206,6 +206,9 @@ export class HomePageComponent implements OnInit {
     if(currentDate >= endDate){
       return 100;
     }
+    else if(currentDate <= startDate){
+      return 0;
+    }
 
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)); // Ukupan broj dana planiran za trajanje projekta
     // console.log(totalDays);
