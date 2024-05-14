@@ -1,5 +1,5 @@
 #page-wrapper {
-    height: 100vh;
+    height: calc(100vh-46px);
     overflow-y: auto;
 }
 

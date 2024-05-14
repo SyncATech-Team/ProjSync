@@ -9,7 +9,7 @@
     height: 95vh;
 }
 #page-wrapper {
-    height: 100vh;
+    height: calc(100vh - 48px);
     overflow-y: auto;
 }
 
