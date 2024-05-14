@@ -1,4 +1,5 @@
 ﻿using backAPI.Data;
+using backAPI.Repositories.Implementation.Issues;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.EntityFrameworkCore;
@@ -93,6 +94,71 @@ namespace backAPI.Repositories.Implementation {
             }
 
             return result;
+        }
+
+        private async Task<Tuple<double, double>> CalculateGroupProgress(int groupId )
+        {
+            var issuesForGroup = await (
+                from issue in dataContext.Issues
+                join issueGroup in dataContext.IssueGroups on issue.GroupId equals issueGroup.Id
+                select issue
+            ).ToListAsync();
+
+            double totalDays = 0;
+            double totalProgress = 0;
+
+            Boolean flag = false;
+            DateTime minDate = new DateTime();
+            DateTime maxDate = new DateTime();
+
+            foreach (var issue in issuesForGroup)
+            {
+                var dateDiff = issue.DueDate - issue.CreatedDate;
+                double days = dateDiff.TotalDays;
+
+                totalDays += days;
+                totalProgress += issue.Completed / 100 * days;
+
+                if(flag == false)
+                {
+                    minDate = issue.CreatedDate;
+                    maxDate = issue.DueDate;
+                    flag = true;
+                }
+                else
+                {
+                    if(issue.CreatedDate < minDate)
+                    {
+                        minDate = issue.CreatedDate;
+                    }
+                    
+                    if(issue.DueDate > maxDate)
+                    {
+                        maxDate = issue.DueDate;
+                    }
+                }
+            }
+
+            var dateDiff2 = maxDate - minDate;
+            double differenceInDays = dateDiff2.TotalDays;
+
+            return Tuple.Create(totalProgress / totalDays, differenceInDays);
+        }
+
+        public async Task<double> CalculateProjectProgress(int projectId)
+        {
+            var groups = await issueGroupRepository.GetGroupsAsync(projectId);
+            double totalProgress = 0;
+            double totalDays = 0;
+
+            foreach(var group in groups)
+            {
+                var progress = await CalculateGroupProgress(group.Id);
+                totalProgress += progress.Item1 * progress.Item2;
+                totalDays += progress.Item2;
+            }
+
+            return totalProgress / totalDays;
         }
     }
 }

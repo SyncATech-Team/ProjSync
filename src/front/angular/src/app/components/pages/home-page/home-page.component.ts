@@ -25,9 +25,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 export class HomePageComponent implements OnInit {
   projectImageSource : string = "";
   defaultImagePath : string = "../../../../assets/project-icon/default_project_image.png";
+  projectCompletioTimeMap: Map<string, number> = new Map<string, number>();
   projectCompletionMap: Map<string, number> = new Map<string, number>();
 
   projects: Project[]=[];
+  issuesForProject : IssueModel[] = [];
   Types: any[]=[];
 
   projectsShow: any[] = [];
@@ -118,7 +120,6 @@ export class HomePageComponent implements OnInit {
         this.handleRouteChange();
       }
     });
-
   }
 
   handleRouteChange() {
@@ -146,8 +147,9 @@ export class HomePageComponent implements OnInit {
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
 
-            const completion = this.calculateProjectCompletion(project.creationDate, project.dueDate);
-            this.projectCompletionMap.set(project.key, completion);
+            const completion = this.calculateProjectCompletionTime(project.creationDate, project.dueDate);
+            this.calculateProjectCompletion(project.name);
+            this.projectCompletioTimeMap.set(project.key, completion);
           });
           this.filterProjects(this.visibilityFilter);
         },
@@ -199,8 +201,13 @@ export class HomePageComponent implements OnInit {
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
     return this.usersPhotos[ind].photoSource;
   }
-
-  calculateProjectCompletion(startDate: Date, endDate: Date): number {
+  
+  calculateProjectCompletion(projectName : string){
+    let tezinaZadatka = 0;
+    let sumaTezina = 0;
+  }
+  
+  calculateProjectCompletionTime(startDate: Date, endDate: Date): number {
     const currentDate = new Date();
 
     if(currentDate >= endDate){

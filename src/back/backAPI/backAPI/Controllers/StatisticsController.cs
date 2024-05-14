@@ -67,5 +67,18 @@ namespace backAPI.Controllers {
             return result;
         }
 
+        [HttpGet("projectProgress/{projectName}")]
+        public async Task<ActionResult<double>> GetProjectProgress(string projectName)
+        {
+            var project = await _projectsRepository.GetProjectByName(projectName);
+            if (project == null)
+            {
+                return BadRequest("There is not project with the given name");
+            }
+
+            var result = await _statisticsRepository.CalculateProjectProgress(project.Id);
+
+            return result;
+        }
     }
 }
