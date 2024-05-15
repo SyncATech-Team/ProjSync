@@ -6,11 +6,11 @@ import { IssuePriority } from '../_models/issue-prioritys';
 import { IssueStatus } from '../_models/issue-status';
 import { Observable } from 'rxjs';
 import { CreateIssueModel } from '../_models/create-issue.model';
-import { IssueModel } from '../_models/model-issue.model';
 import { IssueDateUpdate } from '../_models/issue-date-update.model';
 import { IssueDependencyUpdater } from '../_models/issue-dependency-create-delete';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { IssueModelLazyLoad } from '../_models/model-issue-lazy-load';
+import { JIssue } from '../_models/issue';
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +32,11 @@ export class IssueService {
   }
 
   getAllIssuesInGroup(groupId: number) {
-    return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/groupId?groupId=${groupId}`);
+    return this.http.get<JIssue[]>(`${this.baseUrl}Issues/groupId?groupId=${groupId}`);
   }
 
   getAllIssuesForProject(projectName: string) {
-    return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/projectName?projectName=${projectName}`);
+    return this.http.get<JIssue[]>(`${this.baseUrl}Issues/projectName?projectName=${projectName}`);
   }
 
   getPaginationAllIssuesForProject(projectName: string, event: TableLazyLoadEvent,search: string) {
@@ -62,7 +62,7 @@ export class IssueService {
   }
 
   createIssue(model: CreateIssueModel){
-    return this.http.post<IssueModel>(this.baseUrl + "Issues", model);
+    return this.http.post<JIssue>(this.baseUrl + "Issues", model);
   }
 
   updateIssueStartEndDate(issueId: number, model: IssueDateUpdate) {
@@ -78,7 +78,7 @@ export class IssueService {
   }
   
   getUserIssues(username : string) {
-    return this.http.get<IssueModel[]>(`${this.baseUrl}Issues/userIssues?username=${username}`);
+    return this.http.get<JIssue[]>(`${this.baseUrl}Issues/userIssues?username=${username}`);
   }
 
   deleteIssue(id: string) {

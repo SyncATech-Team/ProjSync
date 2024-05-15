@@ -215,21 +215,21 @@
                                     <div class="alignt-text-left">
                                         <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
                                             (click)="openIssueModal(task.id)"
-                                            pTooltip="{{task.name}}"
-                                            >{{ getTrimmedTitle(task.name) }}</a>
+                                            pTooltip="{{task.title}}"
+                                            >{{ getTrimmedTitle(task.title) }}</a>
                                     </div>
                                 </td>
                                 <td *ngIf="column=='Priority' && selectedColumns.includes('Priority')" style="width: 17vh; " class="fill-td">
                                     <span class="p-column-title" style="font-weight: bold;">Priority</span>
-                                    <p-tag class="p-tag-fill" [value]="task.priorityName" [severity]="getSeverity(task.priorityName)"></p-tag>
+                                    <p-tag class="p-tag-fill" [value]="task.priority" [severity]="getSeverity(task.priority)"></p-tag>
                                 </td>
                                 <td *ngIf="column=='Type' && selectedColumns.includes('Type')" style="width: 17vh; " class="fill-td">
                                     <span class="p-column-title" style="font-weight: bold;">Type</span>
-                                    <p-tag class="p-tag-fill" [value]="task.typeName" [severity]="getSeverity(task.typeName)"></p-tag>
+                                    <p-tag class="p-tag-fill" [value]="task.type" [severity]="getSeverity(task.type)"></p-tag>
                                 </td>
                                 <td *ngIf="column=='Status' && selectedColumns.includes('Status')" style="width: 17vh; " class="fill-td">
                                     <span class="p-column-title" style="font-weight: bold;">Status</span>
-                                    <p-tag class="p-tag-fill" [value]="task.statusName" [severity]="getSeverity(task.statusName)"></p-tag>
+                                    <p-tag class="p-tag-fill" [value]="task.status" [severity]="getSeverity(task.status)"></p-tag>
                                 </td>
                                 <td *ngIf="column=='Reporter' && selectedColumns.includes('Reporter')" style="width: 17vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Reporter</span>
@@ -245,11 +245,11 @@
                                 </td>
                                 <td *ngIf="column=='Created Date' && selectedColumns.includes('Created Date')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Created Date</span>
-                                    {{ task.createdDate | date : 'dd/MM/yyyy' }}
+                                    {{ task.createdAt | date : 'dd/MM/yyyy' }}
                                 </td>
                                 <td *ngIf="column=='Updated Date' && selectedColumns.includes('Updated Date')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Updated Date</span>
-                                    {{ task.updatedDate | date : 'dd/MM/yyyy' }}
+                                    {{ task.updatedAt | date : 'dd/MM/yyyy' }}
                                 </td>
                                 <td *ngIf="column=='Completed' && selectedColumns.includes('Completed')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Completed</span>

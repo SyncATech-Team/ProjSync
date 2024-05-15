@@ -105,8 +105,6 @@ namespace backAPI.Repositories.Implementation {
                 select issue
             ).ToListAsync();
 
-            Console.WriteLine(issuesForGroup.Count.ToString());
-
             if(issuesForGroup.Any() == false)
             {
                 return Tuple.Create(0.0, 0.0);
@@ -115,7 +113,7 @@ namespace backAPI.Repositories.Implementation {
             double totalDays = 0;
             double totalProgress = 0;
 
-            Boolean flag = false;
+            bool flag = false;
             DateTime minDate = new DateTime();
             DateTime maxDate = new DateTime();
 
@@ -124,6 +122,12 @@ namespace backAPI.Repositories.Implementation {
                 Console.WriteLine(issue.CreatedDate + " - " + issue.DueDate);
                 var dateDiff = issue.DueDate - issue.CreatedDate;
                 double days = dateDiff.TotalDays;
+
+                Console.WriteLine("Days: " + days);
+                if (days == 0)
+                {
+                    days = 1;
+                }
 
                 totalDays += days;
                 totalProgress += issue.Completed / 100 * days;
@@ -149,13 +153,14 @@ namespace backAPI.Repositories.Implementation {
             }
 
             var dateDiff2 = maxDate - minDate;
-            Console.WriteLine(maxDate +  " : " + minDate);
-            Console.WriteLine("TEST " + dateDiff2);
             double differenceInDays = dateDiff2.TotalDays;
-            Console.WriteLine("TESTTTESTT " + totalDays);
             if (totalDays == 0)
             {
                 totalDays = 1;
+            }
+            if (differenceInDays == 0)
+            {
+                differenceInDays = 1;
             }
             return Tuple.Create(totalProgress / totalDays, differenceInDays);
         }
