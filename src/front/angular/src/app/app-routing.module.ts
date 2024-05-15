@@ -25,11 +25,12 @@ import { loginGuard } from './_guards/login.guard';
 import { AdminEditProfileComponent } from './components/pages/admin-page/admin-edit-profile/admin-edit-profile.component';
 import { ProjectGuard } from './_guards/project.guard';
 import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
-
+import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
   { path: 'login', component: LoginPageComponent, canActivate: [loginGuard]},
+  { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] },
   { path: 'test', component: SamotestComponent },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },

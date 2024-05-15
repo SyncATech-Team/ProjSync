@@ -120,6 +120,8 @@ import { ScrollerModule } from 'primeng/scroller';
 import { LogsContainerComponent } from './components/elements/logs-container/logs-container.component';
 import { UploadIssueDocumentComponent } from './components/elements/upload-issue-document/upload-issue-document.component';
 import { ListOfIssueDocumentsComponent } from './components/elements/list-of-issue-documents/list-of-issue-documents.component';
+import { ForgotPasswordComponent } from './components/elements/forgot-password/forgot-password.component';
+import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +182,9 @@ import { ListOfIssueDocumentsComponent } from './components/elements/list-of-iss
     NotificationsPageComponent,
     UploadIssueDocumentComponent,
     ListOfIssueDocumentsComponent,
-    LogsContainerComponent
+    LogsContainerComponent,
+    ForgotPasswordComponent,
+    PageForgotPasswordComponent
   ],
     imports: [
         BrowserModule,

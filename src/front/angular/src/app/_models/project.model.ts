@@ -11,5 +11,6 @@ export interface Project{
     visibilityName: string,
     isExtanded?: boolean,
     isFavorite?: boolean,
-    subProjects?: Project[]
+    subProjects?: Project[],
+    projectProgress? : number
 }

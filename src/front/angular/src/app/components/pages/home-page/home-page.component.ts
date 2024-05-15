@@ -14,6 +14,7 @@ import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-mod
 import { ProjectQuery } from '../../state/project/project.query';
 import { ProjectService as ProjectService2 } from '../../state/project/project.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { StatisticsService } from '../../../_service/statistics.service';
 import { JIssue } from '../../../_models/issue';
 
 @Component({
@@ -24,9 +25,11 @@ import { JIssue } from '../../../_models/issue';
 export class HomePageComponent implements OnInit {
   projectImageSource : string = "";
   defaultImagePath : string = "../../../../assets/project-icon/default_project_image.png";
+  projectCompletioTimeMap: Map<string, number> = new Map<string, number>();
   projectCompletionMap: Map<string, number> = new Map<string, number>();
 
   projects: Project[]=[];
+  issuesForProject : IssueModel[] = [];
   Types: any[]=[];
 
   projectsShow: any[] = [];
@@ -70,7 +73,8 @@ export class HomePageComponent implements OnInit {
     private _projectQuery: ProjectQuery,
     private _projectService: ProjectService2,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private statisticService: StatisticsService
   ) { }
 
   ngOnInit(): void {
@@ -116,7 +120,6 @@ export class HomePageComponent implements OnInit {
         this.handleRouteChange();
       }
     });
-
   }
 
   handleRouteChange() {
@@ -144,8 +147,9 @@ export class HomePageComponent implements OnInit {
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
 
-            const completion = this.calculateProjectCompletion(project.creationDate, project.dueDate);
-            this.projectCompletionMap.set(project.key, completion);
+            const completion = this.calculateProjectCompletionTime(project.creationDate, project.dueDate);
+            this.projectCompletioTimeMap.set(project.key, completion);
+            this.projectCompletionMap.set(project.key, Math.floor(project.projectProgress! * 100));
           });
           this.filterProjects(this.visibilityFilter);
         },
@@ -197,12 +201,15 @@ export class HomePageComponent implements OnInit {
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
     return this.usersPhotos[ind].photoSource;
   }
-
-  calculateProjectCompletion(startDate: Date, endDate: Date): number {
+  
+  calculateProjectCompletionTime(startDate: Date, endDate: Date): number {
     const currentDate = new Date();
 
     if(currentDate >= endDate){
       return 100;
+    }
+    else if(currentDate <= startDate){
+      return 0;
     }
 
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)); // Ukupan broj dana planiran za trajanje projekta
@@ -228,6 +235,23 @@ export class HomePageComponent implements OnInit {
         return 'progress-yellow';
       } else {
         return 'progress-red';
+      }
+    }
+    else return "";
+  }
+
+  getClassForProjectProgress(percentage: number | undefined): string {
+    if(percentage != undefined){
+      if (percentage <= 15) {
+        return 'project-progress-red'; 
+      }
+      else if(percentage <= 45){
+        return 'project-progress-orange'
+      }
+      else if (percentage <= 70) {
+        return 'project-progress-green';
+      } else {
+        return 'project-progress-light-green';
       }
     }
     else return "";
