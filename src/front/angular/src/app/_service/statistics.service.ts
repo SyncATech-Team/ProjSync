@@ -26,4 +26,8 @@ export class StatisticsService {
         return this.http.get<{[key: string]: string}>(`${this.baseUrl}Statistics/taskgroups/${projectName}`);
     }
 
+    getProjectProgress(projectName: string) {
+        return this.http.get<number>(`${this.baseUrl}Statistics/projectProgress/${projectName}`);
+    }
+
 }

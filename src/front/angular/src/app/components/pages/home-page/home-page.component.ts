@@ -16,6 +16,7 @@ import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-mod
 import { ProjectQuery } from '../../state/project/project.query';
 import { ProjectService as ProjectService2 } from '../../state/project/project.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { StatisticsService } from '../../../_service/statistics.service';
 
 @Component({
   selector: 'app-home-page',
@@ -74,7 +75,8 @@ export class HomePageComponent implements OnInit {
     private _projectQuery: ProjectQuery,
     private _projectService: ProjectService2,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private statisticService: StatisticsService
   ) { }
 
   ngOnInit(): void {
@@ -203,8 +205,18 @@ export class HomePageComponent implements OnInit {
   }
   
   calculateProjectCompletion(projectName : string){
-    let tezinaZadatka = 0;
-    let sumaTezina = 0;
+    this.statisticService.getProjectProgress(projectName).subscribe({
+      next:(respone) =>{
+        let projectProgress = respone;
+        projectProgress = projectProgress * 100;
+        console.log(projectName + " : " + projectProgress);
+        this.projectCompletionMap.set(projectName, projectProgress);
+        console.log(this.projectCompletionMap);
+      },
+      error:(error) => {
+        console.log(error.error);
+      }
+    });
   }
   
   calculateProjectCompletionTime(startDate: Date, endDate: Date): number {
