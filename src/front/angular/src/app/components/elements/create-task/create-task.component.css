@@ -25,6 +25,8 @@
     }
 }
 
+/* DODAVANJE NOVE GRUPE */
+
 :host ::ng-deep .issue-group-wrapper .add-new-group button{
     padding: 2px 8px;
     border-radius: 6px;
@@ -56,10 +58,6 @@
 }
 
 /* MULTISELECT KRAJ*/
-
-:host ::ng-deep .form-group .input-size span{
-    margin-left: 8px;
-}
 
 :host ::ng-deep .form-group .input-size span{
     padding: 5px;
@@ -118,6 +116,10 @@
         display: flex;
         flex-direction: column;
     }
+    
+    .calendar-wrapper .created-date{
+        margin-right: 0;
+    }
 }
 
 /* SLICICE NA DROPDOWN */
@@ -140,4 +142,13 @@
 :host ::ng-deep .content-editor .ql-video,
 :host ::ng-deep .content-editor .ql-image {
     display: none;
+}
+
+:host ::ng-deep .p-datepicker table td{
+    padding: 6px;
+}
+
+:host ::ng-deep .p-datepicker table span{
+    width: 28px;
+    height: 28px;
 }

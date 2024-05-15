@@ -22,12 +22,20 @@ export class UserOnProjectService {
         return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject?projectName=${projectName}`);
     }
 
+    getAllUsersOnProjectThatCanManageProject(projectName: string) {
+        return this.http.get<UserGetter[]>(`${this.baseUrl}UserOnProject/canManageProjects?projectName=${projectName}`);
+    }
+
     getAllProjectsByUser(username: string){
         return this.http.get<Project[]>(`${this.baseUrl}UserOnProject/user/${username}`);
     }
 
     removeUserFromProject(projectName : string, username : string){
         return this.http.delete<void>(`${this.baseUrl}UserOnProject?projectName=${projectName}&username=${username}`);
+    }
+
+    checkUserPresenceOnProject(projectName : string, username: string){
+        return this.http.get<string>(`${this.baseUrl}UserOnProject/check?projectname=${projectName}&username=${username}`);
     }
 
     addUserOnProject(projectName : string, username : string, color : string){

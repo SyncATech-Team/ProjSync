@@ -21,12 +21,17 @@ import { ProjectDocumentsPageComponent } from './components/pages/project-page/p
 import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
-
+import { loginGuard } from './_guards/login.guard';
+import { AdminEditProfileComponent } from './components/pages/admin-page/admin-edit-profile/admin-edit-profile.component';
+import { ProjectGuard } from './_guards/project.guard';
+import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
+import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
+  { path: 'login', component: LoginPageComponent, canActivate: [loginGuard]},
+  { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] },
   { path: 'test', component: SamotestComponent },
-  { path: 'login', component: LoginPageComponent },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },
   {
@@ -35,20 +40,22 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'home', component: HomePageComponent, canActivate: [HomeGuard] },
+      { path: 'home/notifications', component: NotificationsPageComponent, canActivate: [HomeGuard] },
       { path: 'home/edit-profile', component: EditProfilePageComponent, canActivate: [HomeGuard] },
-      { path: 'home/projects', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
-      { path: 'home/projects/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
-      { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent, canActivate: [HomeGuard]},
-      { path: 'home/projects/people/:projectName', component: ProjectPeoplePageComponent, canActivate: [HomeGuard]},
-      { path: 'home/projects/tasks/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard] },
-      { path: 'home/projects/gantt/:projectName', component: ProjectGanttPageComponent, canActivate: [HomeGuard] },
-      { path: 'home/projects/kanban/:projectName', component: ProjectKanbanPageComponent, canActivate: [HomeGuard] },
-      { path: 'home/projects/settings/:projectName', component: ProjectSettingsPageComponent, canActivate: [HomeGuard] },
-      { path: 'home/projects/documents/:projectName', component: ProjectDocumentsPageComponent, canActivate: [HomeGuard] },
-      { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
-      { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
+      { path: 'home/projects', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
+      { path: 'home/projects/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
+      { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent, canActivate: [HomeGuard, ProjectGuard]},
+      { path: 'home/projects/people/:projectName', component: ProjectPeoplePageComponent, canActivate: [HomeGuard, ProjectGuard]},
+      { path: 'home/projects/tasks/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
+      { path: 'home/projects/gantt/:projectName', component: ProjectGanttPageComponent, canActivate: [HomeGuard, ProjectGuard] },
+      { path: 'home/projects/kanban/:projectName', component: ProjectKanbanPageComponent, canActivate: [HomeGuard, ProjectGuard] },
+      { path: 'home/projects/settings/:projectName', component: ProjectSettingsPageComponent, canActivate: [HomeGuard, ProjectGuard] },
+      { path: 'home/projects/documents/:projectName', component: ProjectDocumentsPageComponent, canActivate: [HomeGuard, ProjectGuard] },
+      // { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
+      // { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
       { path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard] },
-      { path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard] }
+      { path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard] },
+      { path: 'admin/editProfile', component: AdminEditProfileComponent, canActivate: [adminGuard] }
     ]
   },
   { path: 'pageNotFound', component: NotFoundPageComponent },

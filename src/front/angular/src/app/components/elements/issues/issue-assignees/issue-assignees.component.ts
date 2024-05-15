@@ -4,6 +4,12 @@ import {JIssue} from "../../../../_models/issue";
 import {JUser} from "../../../../_models/user-issues";
 import {ProjectService} from "../../../state/project/project.service";
 import {OverlayPanel} from "primeng/overlaypanel";
+import {PhotoForUser} from "../../../../_models/photo-for-user";
+import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
+import {UsersWithCompletion} from "../../../../_models/user-completion-level";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {IssueChangeProgressComponent} from "../issue-change-progress/issue-change-progress.component";
+import {PresenceService} from "../../../../_service/presence.service";
 
 @Component({
   selector: 'issue-assignees',
@@ -14,15 +20,24 @@ import {OverlayPanel} from "primeng/overlaypanel";
 export class IssueAssigneesComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
   @Input() users!: JUser[] | null;
+  @Input() usersPhotos!: PhotoForUser[];
   assignees!: (JUser | undefined)[];
+  valueList!: UsersWithCompletion[];
 
-  constructor(private _projectService: ProjectService, private cdr: ChangeDetectorRef) {}
+  ref: DynamicDialogRef | undefined;
+
+  constructor(private _projectService: ProjectService,
+              private userPictureService: UserProfilePicture,
+              private cdr: ChangeDetectorRef,
+              public dialogService: DialogService,
+              public presenceService: PresenceService) {}
 
   ngOnInit(): void {
     this.cdr.markForCheck();
     if (this.users) {
       // @ts-ignore
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
+      this.valueList = this.issue.usersWithCompletion;
     }
   }
 
@@ -31,26 +46,61 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
     if (this.users && issueChange.currentValue !== issueChange.previousValue) {
       // @ts-ignore
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
+      this.valueList = this.issue.usersWithCompletion;
     }
   }
 
   removeUser(userId: string | undefined) {
     const newUserIds = this.issue.userIds.filter((x) => x !== userId);
-    this._projectService.updateIssue({
+    const newCLIds = this.issue.usersWithCompletion.filter((x) => x.id !== userId);
+    this._projectService.deleteUserOnIssue({
       ...this.issue,
-      userIds: newUserIds
+      userIds: newUserIds,
+      usersWithCompletion: newCLIds
+    }, userId);
+  }
+
+  show(userId: string | undefined, userName: string | undefined, completionLevel: number) {
+    this.ref = this.dialogService.open(IssueChangeProgressComponent, {
+      data: {
+        issueId: this.issue.id,
+        userId: userId,
+        userName: userName,
+        currentCompletionLevel: completionLevel
+      },
+      header: 'Change Progress'
     });
   }
 
   addUserToIssue(user: JUser, op: OverlayPanel) {
-    this._projectService.updateIssue({
+
+    let userOnIssue: UsersWithCompletion = {
+      id: user.id,
+      userId: user.id,
+      completionLevel: 0.0
+    }
+    this._projectService.updateUserOnIssue({
       ...this.issue,
-      userIds: [...this.issue.userIds, user.id]
-    });
+      userIds: [...this.issue.userIds, user.id],
+      usersWithCompletion: [...this.issue.usersWithCompletion, userOnIssue]
+    }, userOnIssue);
     op.hide();
   }
 
   isUserSelected(user: JUser): boolean {
     return this.issue.userIds.includes(user.id);
+  }
+
+  UserImagePath(username: string | undefined): string {
+    if (!this.users) return "";
+    let index = this.users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(this.users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(this.users[index].username);
+
+    let ind = this.usersPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersPhotos[ind].photoSource;
   }
 }

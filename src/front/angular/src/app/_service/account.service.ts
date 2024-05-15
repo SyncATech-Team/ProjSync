@@ -7,15 +7,22 @@ import { environment } from '../../environments/environment';
 import { UserGetter } from '../_models/user-getter';
 import { ResetPassword } from '../_models/reset-password';
 import { ResetPasswordAfterEmailConformation } from '../_models/reset-password-response';
-import { CompanyroleService } from './companyrole.service';
+import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
+import { PresenceService } from './presence.service';
+import { NotificationService } from './notification.service';
+import { ForgotPasswordModel } from '../_models/forgot-password';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  
-  constructor(private http: HttpClient,private companyroleService: CompanyroleService) { }
+
+  constructor(
+    private http: HttpClient,
+    private presenceService: PresenceService,
+    private notificationService: NotificationService
+  ) { }
 
   login(model: any) {
     // POST: http://localhost:5000/api/Account/login, model se salje preko body-ja
@@ -44,13 +51,14 @@ export class AccountService {
     if (typeof localStorage === 'undefined') {
       return null; // localStorage is not available, return null
     }
-    
+
     var storage = localStorage.getItem("user");
     if(!storage) return null;
 
     var user = JSON.parse(storage);
     return {
       username: user['username'],
+      id: user['id'],
       token: user['token'],
       roles: user['roles'],
       permitions: user['permitions']
@@ -65,7 +73,6 @@ export class AccountService {
     // korisnik moze da ima jednu ili vise uloga, zato pravimo niz
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     user.permitions = permitions;
-
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -77,6 +84,15 @@ export class AccountService {
 
   confirmEmail(email: string | null, token: string | null) {
     return this.http.post<ResetPasswordAfterEmailConformation>(this.baseUrl + `account/confirm-email?email=${email}&token=${token}`, {})
+      .pipe(
+        map((response: ResetPasswordAfterEmailConformation) => {
+          localStorage.setItem('pass-reset', JSON.stringify(response));
+        })
+      );
+  }
+
+  forgotPassword(model: ForgotPasswordModel) {
+    return this.http.post<ResetPasswordAfterEmailConformation>(this.baseUrl + `account/forgot-password`, model)
       .pipe(
         map((response: ResetPasswordAfterEmailConformation) => {
           localStorage.setItem('pass-reset', JSON.stringify(response));
@@ -97,9 +113,19 @@ export class AccountService {
     );
   }
 
+  resendLink(model: ForgotPasswordModel) {
+    return this.http.post(this.baseUrl + "Account/resend-link", model);
+  }
+
+  changePasswordForAuthorizedUser(model: AuthUserChangePassword) {
+    return this.http.post<string>(this.baseUrl + "Account/change-password-auth-user", model);
+  }
+
   logout() {
     // izbrisati iz lokalne memorije
     localStorage.removeItem('user');
+    this.presenceService.stopHubConnection();
+    this.notificationService.stopHubConnection();
   }
 
   getDecodedToken(token: string) {

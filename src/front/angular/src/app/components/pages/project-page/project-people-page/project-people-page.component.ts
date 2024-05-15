@@ -71,26 +71,27 @@ export class ProjectPeoplePageComponent implements OnInit{
     this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
       next: (response) => {
         
-        this.users = response;
+        this.users = response.filter(user => user.isActive == true);
         this.users_backup = response;
-        console.log(this.usersPhotos);
-        this.userRole = this.users_backup.map(user => user.companyRoleName);
+        // console.log(this.usersPhotos);
+        // this.userRole = this.users_backup.map(user => user.companyRoleName);
+        const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
+        this.userRole = Array.from(uniqueRoles);
+        this.userService.getAllUsers().subscribe({
+          next: (response) => {
+            this.getUserProfilePhotos(this.users);
+            this.allUsers = response.filter(user => user.companyRoleName !== 'Administrator');
+            var userNames = this.users_backup.map(user => user.username);
+            this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username) && user.isActive == true);
+            this.getUserProfilePhotos(this.allUsers);
+          },
+          error: (error) => {
+            console.log(error); 
+          }
+        });
       },
       error: (error) => {
         console.log(error);
-      }
-    });
-
-    this.userService.getAllUsers().subscribe({
-      next: (response) => {
-        this.getUserProfilePhotos(this.users);
-        this.allUsers = response.filter(user => user.username !== 'admin');
-        var userNames = this.users_backup.map(user => user.username);
-        this.allUsers = this.allUsers.filter(user => !userNames.includes(user.username));
-        this.getUserProfilePhotos(this.allUsers);
-      },
-      error: (error) => {
-        console.log(error); 
       }
     });
 
@@ -186,7 +187,9 @@ export class ProjectPeoplePageComponent implements OnInit{
             if(indexToRemoveBackup !== -1) {
               this.users_backup.splice(indexToRemoveBackup, 1);
             }
-            this.userRole = this.users_backup.map(user => user.companyRoleName);
+            // this.userRole = this.users_backup.map(user => user.companyRoleName);
+            const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
+            this.userRole = Array.from(uniqueRoles);
             this.msgPopupService.showSuccess("User removed from project successfully.");
           },
           error: error => {
@@ -208,12 +211,14 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.allUsers = this.allUsers.filter(user => user.username !== (this.userForAdd as any).username);
         this.userForAdd = "";
 
-        console.log(this.color);        
+        // console.log(this.color);
         this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
           next: (response) => {
             this.users = response;
             this.users_backup = response;
-            this.userRole = this.users_backup.map(user => user.companyRoleName);
+            // this.userRole = this.users_backup.map(user => user.companyRoleName);
+            const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
+            this.userRole = Array.from(uniqueRoles);
           },
           error: (error) => {
             console.log(error);
@@ -256,6 +261,10 @@ export class ProjectPeoplePageComponent implements OnInit{
       dismissableMask: true,
       closeOnEscape: true,
       maximizable: true,
+      breakpoints: {
+        '1100px':'75vw',
+        '400px' : '90vw'
+      },
       data: {
         username: username,
         usersPhotos: this.usersPhotos,

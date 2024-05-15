@@ -55,7 +55,10 @@ namespace backAPI.Entities.Domain
         /// Procenat zavrsenosti zadatka u opsegu od 0% do 100%
         /// </summary>
         public double Completed { get; set; } = 0.0;    // procenat zavrsenosti zadatka
-        
+        /// <summary>
+        /// Pozicija u listi na Kanban-u
+        /// </summary>
+        public int ListPosition { get; set; }
 
 
         [ForeignKey("StatusId")] public IssueStatus IssueStatus { get; set; }

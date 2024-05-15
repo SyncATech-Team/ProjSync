@@ -6,6 +6,8 @@ import { FileUploadEvent } from 'primeng/fileupload';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
+import { AuthUserChangePassword } from '../../../_models/change-passowrd-auth-user';
+import { AccountService } from '../../../_service/account.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -41,12 +43,23 @@ export class EditProfilePageComponent implements OnInit {
 
   profilePicturePath : string = ''; 
 
+  changePasswordFields: AuthUserChangePassword = {
+    username: "",
+    currentPassword: "",
+    newPassword: ""
+  }
+
+  newPasswordAgain: string = "";
+
+  pattern = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+
   constructor(private userService: UserService,
     private messageService: MessageService,
     private msgPopupService: MessagePopupService,
     private userProfilePhoto: UserProfilePicture,
     private navBarComponent: NavBarComponent,
-    private confirmationService: ConfirmationService) {}
+    private confirmationService: ConfirmationService,
+    private accountService: AccountService) {}
 
 
   ngOnInit(): void {
@@ -55,7 +68,7 @@ export class EditProfilePageComponent implements OnInit {
         this.user = response;
         this.username = this.user.username;
         this.editUser = response;
-        console.log(this.user);
+        // console.log(this.user);
         if(this.user.profilePhoto != null) {
           this.userProfilePhoto.getUserImage(this.user.username).subscribe({
             next: response => {
@@ -117,16 +130,34 @@ export class EditProfilePageComponent implements OnInit {
 
   applyEditChanges() {
     this.editUser.isActive = this.user?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
-    this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
+    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.editUser.contactPhone) || this.editUser.contactPhone == ''){//testira format broja telefona
+      this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
+        next: response => {
+          this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully edited user info', life: 3000 });
+          this.ngOnInit();
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Unable to edit user info', life: 3000 });
+        }
+      });
+    }
+    else{
+      this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Not a valid phone format. Valid format 061 1234567', life: 3000 });// los format telefona
+    }
+  } 
+
+  changePassword() {
+    this.changePasswordFields.username = this.user!.username;
+    this.accountService.changePasswordForAuthorizedUser(this.changePasswordFields).subscribe({
       next: response => {
-        this.msgPopupService.showSuccess("Successfully edited user info");
+        this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: "Password changed", life: 3000 });
         this.ngOnInit();
       },
       error: error => {
-        this.msgPopupService.showError("Unable to edit user info");
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: "Password not changed", life: 3000 });
       }
-    });
-  } 
+    })
+  }
 
   onFileSelected(event: any){
     this.imageLoading = true;
@@ -142,7 +173,6 @@ export class EditProfilePageComponent implements OnInit {
 
       this.userProfilePhoto.uploadUserImage(this.username, selectedFile).subscribe({
         next: response => {
-          this.msgPopupService.showSuccess("Successfully uploaded image");
           this.ngOnInit();
 
           if(this.fileInputRef){
@@ -213,4 +243,35 @@ export class EditProfilePageComponent implements OnInit {
       });
     }
   }
+
+  theSamePasswords() {
+    let check = this.changePasswordFields.newPassword === this.newPasswordAgain;
+    if(check == false) {
+      document.getElementById("newpswdverify")?.classList.add("problem");
+      document.getElementById("newpswd")?.classList.add("problem");
+    }
+    else {
+      document.getElementById("newpswdverify")?.classList.remove("problem");
+      document.getElementById("newpswd")?.classList.remove("problem");
+    }
+
+    check = check && this.changePasswordFields.newPassword != "" && this.newPasswordAgain != "";
+    if(check == false || this.changePasswordFields.currentPassword == "") return false;
+
+    if(!this.pattern.test(this.changePasswordFields.newPassword)) {
+      document.getElementById("error-display-span")!.innerHTML = `
+      Invalid password pattern  
+      <i 
+          class="pi pi-question-circle"
+          style="color: black"
+          title="Password needs to be at least 6 characters long and have one upper letter and one digit"></i>
+      `;
+    }
+    else {
+      document.getElementById("error-display-span")!.innerHTML = "";
+    }
+
+    return check && this.changePasswordFields.currentPassword != "";
+  }
+
 }

@@ -8,6 +8,7 @@
   cursor: grab;
   margin-bottom: 5px;
   margin-left: 5px;
+  width: 100%;
 }
 
 .issue {
@@ -29,4 +30,40 @@
 .issue:hover {
   background-color: lightblue;
   cursor: pointer;
+}
+
+.issue p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.type-Task {
+  background-color: #8fb1e7;
+}
+
+.type-Bug {
+
+  background-color: rgb(230, 59, 59);
+}
+
+.type-Story {
+  
+  background-color: rgb(125, 225, 125);
+}
+
+#span-type {
+  padding: 3px;
+  border-radius: 5px;
 }

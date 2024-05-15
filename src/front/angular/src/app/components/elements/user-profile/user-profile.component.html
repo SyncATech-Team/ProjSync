@@ -12,12 +12,16 @@
             <span class="title">&#64;{{ user.username }} &bull;  Member since {{ user.createdAt | date:'MMMM dd, yyyy' }}</span>
         </div>
 
+        <div class="username-online" *ngIf="(presenceService.onlineUsers$ | async)?.includes(user.username)">
+          <i class="pi pi-user" style="color: green"></i> Online now
+        </div>
+
         <div class="userInfo container">
-            <div class="address" *ngIf="user.address != null">
+            <div class="address" *ngIf="user.address != ''">
                 <i class="fa-solid fa-house"></i><span> {{user.address}}</span>
             </div>
 
-            <div class="contact" *ngIf="user.contactPhone != null">
+            <div class="contact" *ngIf="user.contactPhone != ''">
                 <i class="fa-solid fa-phone"></i><span> {{user.contactPhone}}</span>
             </div>
 
@@ -35,12 +39,8 @@
                             {{ project.name }}
                         </div>
                         <span class="status">
-                            
-                        Due date: {{ project.dueDate | date:'MMMM dd, yyyy' }}
+                            Due date: {{ project.dueDate | date:'MMMM dd, yyyy' }}
                         </span>
-                        <div class="button-wrapper">
-                            <button class="content-button status-button open">Open</button>
-                        </div>
                     </li>
                 </ul>
             </div>

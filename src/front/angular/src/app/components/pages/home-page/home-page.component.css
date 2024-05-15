@@ -33,6 +33,31 @@ input[type="checkbox"]:checked:before {
     color: #5E5BF4;
 }
 
+.table-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table-header .left-side{
+    display: flex;
+    flex-direction: row;
+}
+
+:host ::ng-deep .table-header .left-side .project-search{
+    width: 30vh;
+    margin-left: 10px;
+}
+
+.table-header .input-search input{
+    min-width: 14rem;
+    padding: 12px;
+}
+.table-header .input-search i{
+    margin-right: 20px;
+}
+
 th{
     position: sticky;
     top: 0;
@@ -43,22 +68,34 @@ th{
 
 .nav .nav-item{
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .profilecontent img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 
-.progress-bar-wrapper{
+#name-cont {
+    display: flex;
+    align-items: center;
+}
+
+#name-cont img {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    margin-right: 5px;
+}
+
+.fullName{
+    margin-left: 4px;
+    margin-right: 10px;
+}
+
+:host ::ng-deep .progress-bar-wrapper{
     width: 20vh;
-}
-
-.input-search input{
-    padding-left: 30px;
-}
-.input-search i{
-    padding-left: 10px;
 }
 
 @media screen and (max-width: 960px) {
@@ -67,4 +104,49 @@ th{
         flex-direction: column;
         width: 100%;
     }
+}
+
+/* BOJE PROGRESS BAR ZA PREOSTALO VREME */
+
+:host ::ng-deep .progress-bar-wrapper .progress-green .p-progressbar-value{
+    background-color: #22c55e;
+}
+  
+:host ::ng-deep .progress-bar-wrapper .progress-yellow .p-progressbar-value {
+    background: rgb(247,207,0);
+    background: linear-gradient(90deg, rgba(247,207,0,1) 0%, rgba(250,151,84,0.8128501400560224) 48%, rgba(239,148,68,0.9332983193277311) 100%);
+}
+  
+:host ::ng-deep .progress-bar-wrapper .progress-red .p-progressbar-value {
+    background-color: #ef4444;
+}
+
+:host ::ng-deep p-tag span {
+    width: 100% !important;
+}
+
+:host ::ng-deep .nav-tabs .nav-item .active-tab{
+    background-color: #cecef0;
+}
+
+:host ::ng-deep .active-tab {
+    font-weight: 600;
+}
+
+:host ::ng-deep .progress-bar-wrapper .project-progress-red .p-progressbar-value {
+    background-color: #ef4444;
+}
+
+:host ::ng-deep .progress-bar-wrapper .project-progress-orange .p-progressbar-value {
+    background: rgb(247,207,0);
+    background: linear-gradient(90deg, rgba(247,207,0,1) 0%, rgba(250,151,84,0.8128501400560224) 48%, rgba(239,148,68,0.9332983193277311) 100%);
+}
+
+:host ::ng-deep .progress-bar-wrapper .project-progress-green .p-progressbar-value {
+    background: rgb(0,112,0);
+    background: linear-gradient(90deg, rgba(0,112,0,1) 0%, rgba(5,190,23,0.8128501400560224) 69%, rgba(119,252,60,0.9332983193277311) 100%);
+}
+
+:host ::ng-deep .progress-bar-wrapper .project-progress-light-green .p-progressbar-value {
+    background-color: #9ff778;
 }

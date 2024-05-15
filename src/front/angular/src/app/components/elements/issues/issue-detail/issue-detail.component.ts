@@ -3,6 +3,9 @@ import {JIssue} from '../../../../_models/issue';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ProjectService} from "../../../state/project/project.service";
 import {ProjectQuery} from "../../../state/project/project.query";
+import {PhotoForUser} from "../../../../_models/photo-for-user";
+import { DocumentTitle } from '../../../../_models/document-title.model';
+import { IssueDocumentationService } from '../../../../_service/issue-documentation.service';
 
 @Component({
   selector: 'issue-detail',
@@ -15,12 +18,17 @@ export class IssueDetailComponent {
   @Input() isShowCloseButton!: boolean;
   @Output() onClosed = new EventEmitter();
   @Output() onOpenIssue = new EventEmitter<string>();
+  @Input() usersPhotos!: PhotoForUser[];
+
+  documentTitles: DocumentTitle[] = [];
+  documentTitlesBackup: DocumentTitle[] = [];
 
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     public projectQuery: ProjectQuery,
-    private _projectService: ProjectService) {
+    private _projectService: ProjectService,
+    private issueDocumentationService : IssueDocumentationService) {
   }
 
   closeModal() {
@@ -50,8 +58,8 @@ export class IssueDetailComponent {
     });
   }
 
-  openIssuePage() {
-    if (!this.issue) return;
-    this.onOpenIssue.emit(this.issue.id);
-  }
+  // openIssuePage() {
+  //   if (!this.issue) return;
+  //   this.onOpenIssue.emit(this.issue.id);
+  // }
 }

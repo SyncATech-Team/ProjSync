@@ -3,14 +3,15 @@
     <!-- Header od sidenav -->
     <div class="logo-container">
         <div id="image-title">
-            <img class="logo" (click)="toggleCollapse()" src="../../../../assets/Icons/ProjectImg.png">
+            <img id="projectImage" class="logo" (click)="toggleCollapse()"
+            [src]="projectImageSource != null ? projectImageSource : defaultImagePath">
             <div class="logo-header" *ngIf="collapsed">
                 <span class="logo-text">{{ getProjectName() }}</span><br>
                 <span>Key: {{ projectKey }}</span>
             </div>
         </div>
         <button class="button-close" *ngIf="collapsed" (click)="closeSidenav()">
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-angle-left"></i>
         </button>
     </div>
 
@@ -21,7 +22,7 @@
                [routerLink]="data.label === 'Create task' ? null : [data.routeLink + projectName]"
                routerLinkActive="active"
                [routerLinkActiveOptions]="{exact:true}"
-               (click)="handleNavigation(data.label)">
+               (click)="handleNavigation(data.label)" style="cursor: pointer;">
                 <i [class]="data.icon" class="sidenav-link-icon"></i>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{ data.label }}</span>
             </a>

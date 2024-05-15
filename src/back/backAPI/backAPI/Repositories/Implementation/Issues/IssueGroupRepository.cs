@@ -1,6 +1,7 @@
 ﻿using backAPI.Data;
 using backAPI.DTO.Issues;
 using backAPI.Entities.Domain;
+using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +11,17 @@ namespace backAPI.Repositories.Implementation.Issues
     {
 
         private readonly DataContext dataContext;
+        private readonly ILogsRepository logsRepository;
 
         /* *****************************************************************************
          * Konstruktor
          * ***************************************************************************** */
-        public IssueGroupRepository(DataContext dataContext)
-        {
+        public IssueGroupRepository(
+            DataContext dataContext,
+            ILogsRepository logsRepository
+        ) {
             this.dataContext = dataContext;
+            this.logsRepository = logsRepository;
         }
         /* *****************************************************************************
          * Dovlacenje svih grupa za odredjeni projekat
@@ -32,7 +37,13 @@ namespace backAPI.Repositories.Implementation.Issues
         {
             await dataContext.IssueGroups.AddAsync(group);
             await dataContext.SaveChangesAsync();
-            
+
+            await logsRepository.AddLogToDatabase(new Log {
+                ProjectId = group.ProjectId,
+                Message = "🆕 New group created: <strong>" + group.Name + "</strong>",
+                DateCreated = DateTime.Now
+            });
+
             return group;
         }
         /* *****************************************************************************
@@ -56,6 +67,11 @@ namespace backAPI.Repositories.Implementation.Issues
         public async Task<IssueGroupResponseDto> GetGroupForNameInProject(int projectId, int groupId) 
         {
             var result = await dataContext.IssueGroups.FirstOrDefaultAsync(group => group.ProjectId == projectId && group.Id == groupId);
+            
+            if(result == null) { 
+                return null;
+            }
+
             return new IssueGroupResponseDto 
             {
                 Id = result.Id,

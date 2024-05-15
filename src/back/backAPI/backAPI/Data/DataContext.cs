@@ -188,7 +188,7 @@ namespace backAPI.Data
                 .HasOne(t => t.Issue)
                 .WithMany()
                 .HasForeignKey(t => t.IssueId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);  // ukoliko se obrise zadatak brisu se i korisnici koji su na tom zadatku
 
             /* **************************************************************************
              * Strani kljucevi u tabeli >> IssueDependencies <<
@@ -197,13 +197,13 @@ namespace backAPI.Data
                 .HasOne(i => i.Origin)
                 .WithMany()
                 .HasForeignKey(t => t.OriginId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // zadatak se ne moze obrisati ako se koristi kao zavisnost izmedju drugih zadataka
 
             modelBuilder.Entity<IssueDependencies>()
                 .HasOne(i => i.Target)
                 .WithMany()
                 .HasForeignKey(t => t.TargetId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // zadatak se ne moze obrisati ako se koristi kao zavisnost izmedju drugih zadataka
 
             /* *******************************************************************************************************************
              * *******************************************************************************************************************
@@ -281,5 +281,9 @@ namespace backAPI.Data
         public DbSet<IssueStatus> IssueStatuses { get; set; }
         public DbSet<IssueComment> IssueComments { get; set; }
         public DbSet<IssueDependencies> IssueDependencies { get; set; }
+
+        // LOG
+        public DbSet<Log> Logs { get; set; }
+        public DbSet<IssueDocumentation> IssueDocumentation { get; set; }
     }
 }

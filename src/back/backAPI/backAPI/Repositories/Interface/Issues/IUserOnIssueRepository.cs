@@ -6,5 +6,6 @@ namespace backAPI.Repositories.Interface.Issues
     {
         Task<UsersOnIssue> AddUserOnIssue(UsersOnIssue userOnIssue);
         Task<bool> AddUserOnIssue(IEnumerable<UsersOnIssue> usersOnIssue);
+        Task<IEnumerable<Issue>> UserIssuess(int userId);
     }
 }

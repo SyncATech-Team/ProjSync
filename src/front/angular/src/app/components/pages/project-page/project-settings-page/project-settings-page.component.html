@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<app-spinner></app-spinner>
 <p-confirmPopup></p-confirmPopup>
 <div id="pageWraper">
     <app-nav-bar></app-nav-bar>
@@ -12,10 +12,27 @@
                 <span class="titleUpload">Project icon:</span>
                 <div class="container upload">
                     <div class="icon-image">
-                        <img *ngIf="1==1" src="../../../../../assets/images/DefaultAccountProfileImages/default_account_image_1.png" alt="project-default-image">
+                        <img 
+                        [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
+                        alt="project-default-image">
                     </div>
                     <div class="upoloadBtn">
-                        <button pButton pRipple label="Upload icon" class="buttonUpload"></button>
+                        <button pButton pRipple label="Choose icon" class="buttonUpload" (click)="showDialog()"></button>
+                        <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [closable]="true" [dismissableMask]="true" [closeOnEscape]="true">
+                            <ng-template pTemplate="header">
+                                <div class="inline-flex align-items-center justify-content-center gap-2">
+                                    <span class="font-bold white-space-nowrap titleUploadUploadIcon">Choose project icon</span>
+                                </div>
+                            </ng-template>
+                            <div class="wrapper-icons">
+                                <div class="icon" *ngFor="let x of iconIndexes">
+                                    <img [src]="getAllIconsForProject(x)" (click)="setProjectImage($event)">
+                                </div>
+                            </div>
+                            <ng-template pTemplate="footer">
+                                <p-button (click)="visible = false" label="Close" pAutoFocus [autofocus]="true"></p-button>
+                            </ng-template>
+                        </p-dialog>
                     </div>
                 </div>
 
@@ -27,22 +44,55 @@
                     <p-dropdown [options]="projectTypes" formControlName="category" optionLabel="name" placeholder="Select a Category" class="dropdownCateg" [showClear]="true" [(ngModel)]="projectType2"></p-dropdown>
 
                     <span class="title">Description</span>
-                    <textarea rows="2" pInputTextarea formControlName="description" placeholder="Project description" [(ngModel)]="projectDescription2"></textarea>
+                    <!-- <textarea rows="2" pInputTextarea></textarea> -->
+                    <quill-editor class="content-editor"
+                        [(ngModel)]="projectDescription2"
+                        formControlName="description"
+                        [placeholder]="'Enter description'"
+                        >
+                    </quill-editor>
+
+                    <div class="row" style="display: flex; margin-top: 4px;">
+                        <div class="col">
+                            <span class="title"> Start Date</span>
+    
+                            <input 
+                                style="margin-top: 4px;"
+                                type="date"
+                                id="startDate"
+                                formControlName="startDate"
+                                class="form-control"
+                                [(ngModel)]="startDate2"
+                            >
+                        </div>
+    
+                        <div class="col">
+                            <span class="title"> Due Date</span>
+    
+                            <input 
+                                style="margin-top: 4px;"
+                                type="date"
+                                id="dueDate"
+                                formControlName="dueDate"
+                                class="form-control"
+                                [(ngModel)]="dueDate2"
+                            >
+                        </div>
+                    </div>
 
                     <div class="btns">
                         <button type="submit" pButton pRipple label="Submit" class="p-button-primary" [disabled]="!projectName2"></button>
-                        <p-button label="Close" severity="secondary"></p-button>
                     </div>
                 </form>
             </div>
             <div id="right-side" class="container">
-                <div class="wrapper">
+                <div *ngIf="loggedUser!=null && loggedUser.username == projectOwnerUsername" class="wrapper">
                     <div class="info">
-                        <span class="title">Transfer owenership</span>
-                        <p>Transfer this project to another user.</p>
+                        <span class="title">Transfer owenership and leave</span>
+                        <p>Transfer this project to another user and leave this project.</p>
                     </div>
                     <div class="btn-wrap">
-                        <button pButton pRipple label="Transfer" class="button-setting"></button>
+                        <button pButton pRipple label="Transfer & leave" data-bs-toggle="modal" data-bs-target="#modalTransfer" class="button-setting"></button>
                     </div>
                 </div>
 
@@ -55,6 +105,50 @@
                         <button pButton pDanger (click)="openPopUp($event)" label="Deactivate" class="button-setting del p-button-danger"></button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTransfer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Form Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Transfer ownership</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- End of Form Header -->
+            <div class="modal-body">
+                <!-- Form -->
+                <form #transferForm="ngForm" id="transferForm" class="row" autocomplete="off" style="margin-bottom: 5%;">
+                    <p-dropdown 
+                        [options]="users"
+                        optionLabel="username" 
+                        [(ngModel)]="transferToUser"
+                        [filter]="true" 
+                        filterBy="username" 
+                        [showClear]="true" 
+                        [style]="{minWidth: '100%'}" 
+                        name="userForAdd"
+                        placeholder="Transfer to"
+                        #dropdown1>
+                        <ng-template let-user pTemplate="item">
+                            <div class="profilecontent">
+                                <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
+                                <span>{{ user.username }}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" 
+                class="btn btn-primary" 
+                (click)="transfer()" 
+                [disabled]="!transferForm.valid" 
+                data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>

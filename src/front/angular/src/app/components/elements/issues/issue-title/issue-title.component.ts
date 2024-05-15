@@ -25,6 +25,6 @@ export class IssueTitleComponent implements OnChanges {
     this._projectService.updateIssue({
       ...this.issue,
       title: this.titleControl.value
-    });
+    }, this.issue.title);
   }
 }

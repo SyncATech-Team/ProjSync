@@ -117,3 +117,10 @@
     cursor: pointer;
     background-color: transparent;
 }
+
+@media screen and (max-width: 600px) {
+    .content-section ul li{
+        display: flex;
+        flex-direction: column;
+    }
+}

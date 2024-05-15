@@ -10,20 +10,60 @@
 
   <div class="d-flex flex-row mr-3">
     <p-avatarGroup>
-      <div *ngFor="let user of projectQuery.users$ | async"
-           class="lift-avatar cursor-pointer ml-1 flex rounded-circle transition-transform duration-100"
-           [class.is-active]="isUserSelected(user)"
-           [pTooltip]="user.name">
-
-        <p-avatar class="d-flex select-none shadow-outline-white"
-                  [image]="user?.avatarUrl"
-                  shape="circle"
-                  size="large"
-                  [pTooltip]="user?.name"
-                  (click)="userChanged(user)">
-        </p-avatar>
-      </div>
-    </p-avatarGroup>
+      <ng-container *ngIf="(projectQuery.users$ | async) as users">
+        <div *ngFor="let user of users.slice(0, MAX_NUMBER_OF_USERS_TO_SHOW); let i = index"
+             class="lift-avatar cursor-pointer ml-1 flex rounded-circle transition-transform duration-100"
+             [class.is-active]="isUserSelected(user)"
+             [ngStyle]="{ 'z-index': i === MAX_NUMBER_OF_USERS_TO_SHOW ? 1 : 0, 'margin-left.px': i !== 0 ? -20 : 0, 'position': 'relative' }"
+             [pTooltip]="user.name">
+          <p-avatar class="d-flex select-none shadow-outline-white"
+                    [image]="UserImagePath(user?.username)"
+                    shape="circle"
+                    size="large"
+                    [pTooltip]="user?.name"
+                    (click)="userChanged(user)">
+          </p-avatar>
+        </div>
+    
+        <ng-container *ngIf="users.length > MAX_NUMBER_OF_USERS_TO_SHOW">
+          <div class="lift-avatar cursor-pointer ml-1 flex rounded-circle transition-transform duration-100"
+               [pTooltip]="getGroupTooltip(users.slice(MAX_NUMBER_OF_USERS_TO_SHOW))">
+            <p-avatar class="d-flex select-none shadow-outline-white bg-primary text-white remaining-avatar"
+                      shape="circle"
+                      size="large"
+                      [ngStyle]="{ 'z-index': 1, 'margin-left.px': -20, 'position': 'relative' }"
+                      [pTooltip]="getGroupTooltip(users.slice(MAX_NUMBER_OF_USERS_TO_SHOW))"
+                      (click)="overlayPanel.toggle($event)">
+              +{{ users.length - MAX_NUMBER_OF_USERS_TO_SHOW }}
+            </p-avatar>
+          </div>
+          <p-overlayPanel #overlayPanel>
+            <ng-template pTemplate="content">
+              <ng-container *ngFor="let user of users.slice(MAX_NUMBER_OF_USERS_TO_SHOW)">
+                <div 
+                  class="d-flex align-items-center items-center custom-cursor-pointer"
+                  (click)="userChanged(user)"
+                >
+                  
+                  <div class="cursor-pointer ml-1 flex rounded-circle"
+                      [class.subgroup-active]="isUserSelected(user)"
+                  >
+                    <p-avatar
+                      class="d-flex select-none shadow-outline-white"
+                      [image]="UserImagePath(user?.username)"
+                      shape="circle"
+                      size="normal"
+                    >
+                    </p-avatar>
+                  </div>
+                  <span class="m-2"> {{ user?.name }} </span>
+                </div>
+              </ng-container>
+            </ng-template>
+          </p-overlayPanel>
+        </ng-container>
+      </ng-container>
+    </p-avatarGroup>    
   </div>
 
   <p-button

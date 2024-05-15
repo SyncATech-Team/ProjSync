@@ -28,6 +28,16 @@ import { IssueDateUpdate } from '../../../../_models/issue-date-update.model';
 import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
 import { ConfirmationService } from 'primeng/api';
 import { GroupService } from '../../../../_service/group.service';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
+import { IssueModalComponent } from '../../../elements/issues/issue-modal/issue-modal.component';
+import { ProjectQuery } from '../../../state/project/project.query';
+import { PhotoForUser } from '../../../../_models/photo-for-user';
+import { UserOnProjectService } from '../../../../_service/userOnProject.service';
+import { UserGetter } from '../../../../_models/user-getter';
+import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
+import { ProjectService } from '../../../state/project/project.service';
+import { DateService } from '../../../../_service/date.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -95,6 +105,12 @@ groups: GanttGroup[] = [];
 
 expanded = false;
 
+ref: DynamicDialogRef | undefined;
+
+ref1: DynamicDialogRef | undefined;
+users: UserGetter[] = [];
+usersPhotos!: PhotoForUser[];
+
 /**
  * Koje opcije se prikazuju u toolbar-u
  */
@@ -121,14 +137,26 @@ constructor(
     private issueService: IssueService,
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
-    private groupService: GroupService
+    private groupService: GroupService, 
+    private _modalService: DialogService,
+    private _projectQuery: ProjectQuery,
+    private userOnProject : UserOnProjectService,
+    public userPictureService: UserProfilePicture,
+    private _projectService: ProjectService
 ) {}
 
 ngOnInit(): void {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
+    this._projectService.getProject(this.projectName);
 
     this.loading = true;
 
+    this.fetchGroups();
+    this.fetchIssues();
+    this.fetchUsers();
+}
+
+fetchGroups() {
     this.groupService.getAllGroups(this.projectName).subscribe({
         next: response => {
             let data = response;
@@ -142,20 +170,21 @@ ngOnInit(): void {
                 })
             }
             this.groups = dataGroups;
-            console.log(this.groups);
         },
         error: error => {
             console.log("ERROR!!!");
         } 
-    })
+    });
+}
 
+fetchIssues() {
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
         next: response => {
             let data = response;
             const dataIssues = [];
             
             for(let issue of data) {
-                let startDate = new Date(issue.createdDate);
+                let startDate = new Date(issue.createdAt);
                 let endDate = new Date(issue.dueDate);
                 
                 let dependentOnList: string[] = [];
@@ -164,7 +193,7 @@ ngOnInit(): void {
                 
                 dataIssues.push({
                     id: "" + issue.id,
-                    title: issue.name,
+                    title: issue.title,
                     start: getUnixTime(startDate),
                     end: getUnixTime(endDate),
                     group_id: "" + issue.groupId,
@@ -188,17 +217,54 @@ ngOnInit(): void {
     });
 }
 
-ngAfterViewInit(): void {
-    // this.scrollToToday();
+fetchUsers() {
+    this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
+        next: (response) => {
+            this.users = response.filter(user => user.username !== 'admin');
+            this.usersPhotos = this.userPictureService.getUserProfilePhotos(this.users);
+        },
+        error: (error) => {
+            console.log(error);
+        }
+    });
 }
 
-// ngAfterViewInit() {
-    //     setTimeout(() => this.ganttComponent.scrollToDate(1627729997), 200);
-    // }
+// ngAfterViewInit(): void {
+    // this.scrollToToday();
+// }
+
+ngAfterViewInit() {
+    setTimeout(() => this.ganttComponent!.scrollToToday(), 200);
+}
 
 barClick(event: GanttBarClickEvent) {
     // this.msgPopupService.showInfo(`Event: barClick [${event.item.title}]`);
+
+    this.openIssueModal(event.item.id);
+
 }
+
+openIssueModal(issueId : string){
+    // console.log(issueId);
+    // console.log(this.usersPhotos);
+    this.ref1 = this._modalService.open(IssueModalComponent, {
+      header: 'Issue - update',
+      width: '65%',
+      modal:true,
+      closable: true,
+      maximizable: true,
+      dismissableMask: true,
+      closeOnEscape: true,
+      breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+      },
+      data: {
+        issue$: this._projectQuery.issueById$(issueId.toString()),
+        usersPhotos: this.usersPhotos
+      }
+    });
+  }
 
 lineClick(event: GanttLineClickEvent) {
 
@@ -245,8 +311,8 @@ dragMoved(event: GanttDragEvent) {}
 dragEnded(event: GanttDragEvent) {
     // this.msgPopupService.showInfo(`Event: dragEnded ${event.item.title}`);
     let issueId = event.item.id as unknown as number;
-    let newStartDate = fromUnixTime(event.item.start!);
-    let newEndDate = fromUnixTime(event.item.end!);
+    let newStartDate = DateService.convertToUTC(fromUnixTime(event.item.start!));
+    let newEndDate = DateService.convertToUTC(fromUnixTime(event.item.end!));
     
     let model: IssueDateUpdate = {
         id: issueId,
@@ -260,6 +326,8 @@ dragEnded(event: GanttDragEvent) {
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
+            this.msgPopupService.showError("Task cannot start before project start date");
+            this.refresh();
         }
     });
     
@@ -313,10 +381,15 @@ selectView(type: GanttViewType) {
 
 viewChange(event: GanttView) {
     this.selectedViewType = event.viewType;
+    this.expanded = true;
+    this.ganttComponent!.expandAll();
 }
 
 refresh() {
-    this.ngOnInit();
+    this.loading = true;
+    this.fetchGroups();
+    this.fetchIssues();
+    this.fetchUsers();
 }
 
 onDragDropped(event: GanttTableDragDroppedEvent) {
@@ -336,11 +409,11 @@ onDragDropped(event: GanttTableDragDroppedEvent) {
 }
 
 onDragStarted(event: GanttTableDragStartedEvent) {
-    console.log('Drag started', event);
+    // console.log('Drag started', event);
 }
 
 onDragEnded(event: GanttTableDragEndedEvent) {
-    console.log('Drag ended', event);
+    // console.log('Drag ended', event);
 }
 
 expandAllGroups() {
@@ -352,5 +425,30 @@ expandAllGroups() {
         this.ganttComponent!.expandAll();
     }
 }
+
+showCreateTaskPopupTaskGantt() {
+    this.ref = this._modalService.open(CreateTaskComponent, {
+      header: 'Create task',
+        width: '50%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        data: {
+          projectName: this.projectName
+        }
+    });
+
+    this.ref.onClose.subscribe((data: any) => {
+      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+
+    //   console.log("Response: " + data + " . Refreshing tasks...");
+      this.refresh();
+    });
+
+  }
 
 }

@@ -1,50 +1,138 @@
-<div id="pageWraper">
-    <app-nav-bar></app-nav-bar>
-    <div id="contentPages">
+<app-spinner></app-spinner>
+<app-nav-bar></app-nav-bar>
+<div id="contentPages">
 
-        <app-project-sidebar 
-            [projectName]="projectName"></app-project-sidebar>
+    <app-project-sidebar 
+        [projectName]="projectName"></app-project-sidebar>
 
-        <div id="content">
-            <div class="container" id="projectHeader">
-                <h1>{{project.name}}</h1>
-                <img *ngIf="1==1; else secondImageSource"
-                src={{getDefaultImagePath()}} alt="project-default-image">
-                <ng-template #secondImageSource>
-                    <img src="{{getDefaultImagePath()}}" alt="project-image">
-                </ng-template>
+    <div id="content">
+        <div class="row">
+            
+            <div class="col-sm-3 wrapper-box custom-margin-right">
+                <div class="content-box">
+                    <img
+                    [src]="projectImageSource != null ? projectImageSource : defaultImagePath"
+                    alt="project-default-image">
+                    &nbsp;&nbsp;
+                    <h4>{{project.name}}</h4>
+                </div>
+                <div class="container">
+                    <span class="span-bold">Key: </span> {{project.key}}
+                </div>
+                <div class="container">
+                    <span class="span-bold">Visibility:</span> {{project.visibilityName}}
+                </div>
+                <div class="container">
+                    <span class="span-bold">Type: </span> {{project.typeName}}
+                </div>
+                <div class="container">
+                    <span class="span-bold">Owner: </span> {{project.ownerUsername}}
+                </div>
             </div>
-            <hr class="mt-2 mb-3" />
-            <div class="container">
-                <p>Project key: {{project.key}}</p>
-            </div>
-            <div class="container">
-                <p>Project visibility: {{project.visibilityName}}</p>
-            </div>
-            <div class="container">
-                <p>Project type: {{project.typeName}}</p>
-            </div>
-            <div class="container">
-                <p id="descriptionLabel">Description: </p>
-                <p id="description">
-                    {{project.description}} 
-                </p>
-            </div>
-            <div class="container">
-                <p>Owner: {{project.ownerUsername}}</p>
-            </div>
-            <div class="container">
-                <p>Creation date: {{project.creationDate | date: 'dd/MM/yyyy'}}</p>
-            </div>
-            <div class="container">
-                <p>Due date: {{project.dueDate | date: 'dd/MM/yyyy'}}</p>
-            </div>
-            <div class="container">
-                <p>Bugdet: {{project.budget}}</p>
+
+            <div class="col-sm-8 wrapper-box charts-div">
+                
+                <div class="content-box">
+                    <div>
+                        <canvas id="task-types-canvas" #issueTypes></canvas>
+                        <div class="div-caption">Share of task types</div>
+                        <div class="chart-options">
+                            <div class="custom-select">
+                                <select (change)="changeChartType('type', $event.target)">
+                                    <option value="bar">Bar Chart</option>
+                                    <option value="radar">Radar Chart</option>
+                                    <option value="doughnut">Doughnut Chart</option>
+                                    <option selected value="pie">Pie Chart</option>
+                                    <option value="polarArea">Polar Area Chart</option>
+                                </select>
+                            </div>
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-types-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <div>
+                        <canvas id="task-priorities-canvas" #issuePriorities></canvas>
+                        <div class="div-caption">Share of task priorities</div>
+                        <div class="chart-options">
+                            <div class="custom-select">
+                                <select (change)="changeChartType('priority', $event.target)">
+                                    <option value="bar">Bar Chart</option>
+                                    <option value="radar">Radar Chart</option>
+                                    <option value="doughnut">Doughnut Chart</option>
+                                    <option selected value="pie">Pie Chart</option>
+                                    <option value="polarArea">Polar Area Chart</option>
+                                </select>
+                            </div>
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-priorities-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <div>
+                        <canvas id="task-statuses-canvas" #issueStatuses></canvas>
+                        <div class="div-caption">Share of task statuses</div>
+                        <div class="chart-options">
+                            <div class="custom-select">
+                                <select (change)="changeChartType('status', $event.target)">
+                                    <option value="bar">Bar Chart</option>
+                                    <option value="radar">Radar Chart</option>
+                                    <option value="doughnut">Doughnut Chart</option>
+                                    <option selected value="pie">Pie Chart</option>
+                                    <option value="polarArea">Polar Area Chart</option>
+                                </select>
+                            </div>
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-statuses-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <div>
+                        <canvas id="task-groups-canvas" #issueGroups></canvas>
+                        <div class="div-caption">Share of task groups</div>
+                        <div class="chart-options">
+                            <div class="custom-select">
+                                <select (change)="changeChartType('group', $event.target)">
+                                    <option value="bar">Bar Chart</option>
+                                    <option value="radar">Radar Chart</option>
+                                    <option value="doughnut">Doughnut Chart</option>
+                                    <option selected value="pie">Pie Chart</option>
+                                    <option value="polarArea">Polar Area Chart</option>
+                                </select>
+                            </div>
+                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-groups-canvas')">
+                                <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        
+
+        <div class="row custom-margin-top">
+            <div class="col-sm-5 wrapper-box custom-margin-right">
+                <h4>Description</h4>
+                <div id="description" [innerHTML]= "safeDescription"></div>
+            </div>
+            <div class="col-sm-6 wrapper-box logs-box">
+                <h4>Logs</h4>
+                <app-logs-container [projectName]="projectName!"></app-logs-container>
+            </div>
+        </div>
+
+        <div>
+            <br>
+        </div>
+
     </div>
 </div>
-
-

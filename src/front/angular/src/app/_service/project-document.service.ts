@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Observable, catchError, last, map, pipe, tap } from 'rxjs';
+import { DocumentTitle } from '../_models/document-title.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +13,28 @@ export class ProjectDocumentService {
 
   constructor(private http:HttpClient) { }
 
-  uploadDocument(docFile: File){
-    const formData= new FormData();
-    formData.append('document', docFile, docFile.name);
-    console.log(docFile);
-    return this.http.post<any>(this.baseUrl + 'Documents/project/' + docFile.name, formData, {
-      reportProgress: true,
-      observe: 'events'
+  uploadDocument(projectName: string, docFiles: File[]) {
+    const formData = new FormData();
+
+    // Append each file to the FormData object
+    docFiles.forEach((file, index) => {
+        formData.append('files', file); // Use 'files' as the field name
     });
 
+    // Ensure that the projectName is being sent correctly if needed
+    return this.http.post(this.baseUrl + 'project-documentation/' + projectName, formData);
+  }
+
+  getDocumentTitles(projectName: string) {
+    return this.http.get<DocumentTitle[]>(this.baseUrl + 'project-documentation/get-titles/' + projectName);
+  }
+
+  deleteDocument(documentId: number) {
+    return this.http.delete<void>(`${this.baseUrl}project-documentation?id=${documentId}`);
+  }
+
+  getDocumentContents(documentId: number): Observable<ArrayBuffer> {
+    return this.http.get(`${this.baseUrl}project-documentation/${documentId}/download`, { responseType: 'arraybuffer' });
   }
 
 }

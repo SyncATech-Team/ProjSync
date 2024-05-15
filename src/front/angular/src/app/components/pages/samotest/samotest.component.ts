@@ -13,6 +13,6 @@ export class SamotestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._projectService.getProject();
+    // this._projectService.getProject();
   }
 }

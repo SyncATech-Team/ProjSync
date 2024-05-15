@@ -1,0 +1,16 @@
+<div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border">
+  <p>Please change progress for {{ userName }}</p>
+  <div class="card">
+    <input type="text" pInputText [(ngModel)]="sliderValue" />
+    <p-slider [step]="5" [(ngModel)]="sliderValue"></p-slider>
+  </div>
+</div>
+
+<p-divider></p-divider>
+
+<p-button
+  [text]="true"
+  [raised]="true"
+  label="Change Progress"
+  (click)="changeProgress()">
+</p-button>

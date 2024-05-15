@@ -201,6 +201,9 @@ namespace backAPI.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ListPosition")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -286,6 +289,31 @@ namespace backAPI.Migrations
                     b.ToTable("IssueDependencies");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDocumentation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateUploaded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("IssueDocumentation");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -351,6 +379,28 @@ namespace backAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("IssueType");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
@@ -804,7 +854,29 @@ namespace backAPI.Migrations
                     b.Navigation("Target");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.IssueDocumentation", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Issue", "Issue")
+                        .WithMany()
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.IssueGroup", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.Log", b =>
                 {
                     b.HasOne("backAPI.Entities.Domain.Project", "Project")
                         .WithMany()
@@ -887,7 +959,7 @@ namespace backAPI.Migrations
                     b.HasOne("backAPI.Entities.Domain.Issue", "Issue")
                         .WithMany()
                         .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backAPI.Entities.Domain.User", "User")

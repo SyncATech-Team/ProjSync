@@ -1,0 +1,14 @@
+:host ::ng-deep .content-editor .ql-editor {
+    height: 8rem;
+    overflow-y: auto;
+}
+
+:host ::ng-deep .content-editor .ql-link,
+:host ::ng-deep .content-editor .ql-video,
+:host ::ng-deep .content-editor .ql-image {
+    display: none;
+}
+
+:host ::ng-deep .content-editor{
+    font-weight: normal;
+}

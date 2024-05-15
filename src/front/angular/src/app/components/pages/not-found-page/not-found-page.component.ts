@@ -19,7 +19,7 @@ export class NotFoundPageComponent {
         }
         if (user.roles.includes("Admin")){
           this.page = "admin page";
-          this.path = "/admin"
+          this.path = "/admin/user"
         }
       }
       else{
