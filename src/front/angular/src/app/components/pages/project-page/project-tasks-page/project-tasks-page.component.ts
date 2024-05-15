@@ -4,7 +4,6 @@ import { Subject, Subscription, debounce, debounceTime, distinctUntilChanged } f
 import { IssueService } from '../../../../_service/issue.service';
 import { GroupInProject } from '../../../../_models/group-in-project';
 import { GroupService } from '../../../../_service/group.service';
-import { IssueModel } from '../../../../_models/model-issue.model';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../../elements/issues/issue-modal/issue-modal.component';
@@ -38,15 +37,15 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   columns!: string[];
   showColumns!: string[];
 
-  tasks : IssueModel[] = [];
-  tasks_backup: IssueModel[]=[];
+  tasks : JIssue[] = [];
+  tasks_backup: JIssue[]=[];
   searchTerm: string = '';
   searchTermChanged: Subject<string> = new Subject<string>();
   tasksByGroup: any[] = [];
   usersPhotos!: PhotoForUser[];
   users: UserGetter[] = [];
   groupsInProject : GroupInProject[] = [];
-  issuesInGroup : IssueModel[] = [];
+  issuesInGroup : JIssue[] = [];
   groupNames : any[] | undefined;
 
   issueType: string [] = ['Task','Bug','Story'];

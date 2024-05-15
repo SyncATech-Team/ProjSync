@@ -2,7 +2,7 @@
 {
     public class IssueLazyLoadDto
     {
-        public List<IssueDto> Issues { get; set; }
+        public List<JIssueDto> Issues { get; set; }
         public int NumberOfRecords { get; set; }
     }
 }

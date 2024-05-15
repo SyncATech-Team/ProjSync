@@ -24,5 +24,14 @@ namespace backAPI.DTO.Issues
         public double Completed { get; set; }
         public List<JCommentDto> Comments { get; set; }
         public string ProjectId { get; set; }
+
+        // Dodato
+        public string OwnerUsername { get; set; }
+        public string ProjectName { get; set; }
+        public string GroupName { get; set; }
+        public string ReporterUsername { get; set; }
+        public string[] AssigneeUsernames { get; set; }
+        public int[] DependentOnIssues { get; set; }
+        public int GroupId { get; set; }
     }
 }
