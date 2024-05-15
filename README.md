@@ -43,9 +43,8 @@ After you're finished please remove all the comments and instructions!
     - [Tehnologije](#tech-stack)
     - [Glavne funkcionalnosti](#key-features)
   - [🚀 Live Demo](#live-demo)
-- [💻 Getting Started](#getting-started)
+- [💻 Pokretanje aplikacije](#getting-started)
   - [Setup](#setup)
-  - [Prerequisites](#prerequisites)
   - [Korišćenje](#usage)
 - [👥 Authors](#authors)
 <!-- - [🙏 Acknowledgements](#acknowledgements) -->
@@ -60,26 +59,34 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 
 ### Tech Stack <a name="tech-stack"></a>
 
-Što se tehnologija tiče, navedena aplikacija je razvijena korišćenjem savremenih web tehnologija - Angular kao frontend, dok je za potrebe serverske strane korišćen .NET framework i MySQL baza podataka.
+Što se tehnologija tiče, navedena aplikacija je razvijena korišćenjem savremenih web tehnologija - Angular kao frontend, dok je za potrebe serverske strane korišćen .NET framework i SQLite baza podataka.
 
 <details>
   <summary>Client</summary>
   <ul>
-    <li><a href="https://angular.io/">Angular</a></li>
+    <li><a href="https://angular.io/">
+    Angular
+    </a>
+    ([Dokumentacija](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/manuals/angular/AngularManual_vPDF.pdf))
+    </li>
   </ul>
 </details>
 
 <details>
   <summary>Server</summary>
   <ul>
-    <li><a href="https://dotnet.microsoft.com/en-us/">.NET</a></li>
+    <li><a href="https://dotnet.microsoft.com/en-us/">.NET</a>
+    ([Dokumentacija](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/manuals/dotnet/DotNETManual_vPDF.pdf))
+    </li>
   </ul>
 </details>
 
 <details>
 <summary>Database</summary>
   <ul>
-    <li><a href="https://www.mysql.com/">MySQL</a></li>
+    <li><a href="https://www.sqlite.org/">SQLite</a>
+    ([Dokumentacija](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/manuals/sqlite/SQLiteManual_vPDF.pdf))
+    </li>
   </ul>
 </details>
 
@@ -99,15 +106,15 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Demo Link](https://google.com) - biće priložen prilikom migracije na server
+- [Live Demo Link](http://softeng.pmf.kg.ac.rs:10204) - biće priložen prilikom migracije na server
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
-## 💻 Getting Started <a name="getting-started"></a>
+## 💻 Pokretanje aplikacije <a name="getting-started"></a>
 
-### Prerequisites
+### Neophodni alati
 
 Za potrebe pokretanja aplikacije neophodno je imati instalirano:
 * Node.js - moze se preuzeti putem sledeceg [linka](https://nodejs.org/en/download)
@@ -122,9 +129,6 @@ Za potrebe pokretanja aplikacije neophodno je imati instalirano:
 * OS: Windows x64
 * .NET 8.0.200
 
-Za potrebe kreiranja MySQL baze podataka korišćena je WAMP verzija 3.3.2 koja se može pronaći na sledećem [linku](https://www.wampserver.com/en/).  
-Međutim, moguće je korišćenje MySQL baze podataka i na druge načine uz **ograničenje default storage engine-a** na: **InnoDb**.
-
 ### Setup
 
 Aplikacija se može klonirati u željeni direktorijum sledećom komandom:
@@ -137,13 +141,16 @@ Kao rezultat komande u trenutnom radnom direktorijumu će biti kloniran projekat
 
 Takodje, moguće je preuzeti i **.zip** verziju koju je potrebno otpakovati u određeni direktorijum takođe.
 
-### Korišćenje
+Za potrebe kreiranja odgovarajuce baze podataka opciono je potrebno promeniti konekcioni string u fajlu _appsettings.json_ koji je u sledecem formatu:
+```sh
+"SyncATechDefaultConectionSQLite": "Data Source=database.db;Foreign Keys=True"
+```
 
-Prvi korak pri korišćenju aplikacije je kreiranje baze. U *Developer PowerShell*-u pokrenuti komandu **dotnet ef database update** iz root direktorijuma solution-a. Ukoliko baza prethodno postoji pokrenuti komandu **dotnet ef database drop**.
+### Korišćenje <a name="usage"></a>
 
-Ukoliko koristite WAMP server za potrebe pokretanja aplikacije moguće je na Windows-u pokrenuti .bat fajl: *start_services.bat* lociran u *src* direktorijumu projekta i pratiti dalja uputstva. Pokretanjem ove skripte podići će se lokalni WAMP server i odraditi komande za pokretanje frontend i backend delova aplikacije.
+Prvi korak pri korišćenju aplikacije je kreiranje baze. U *Developer PowerShell*-u pokrenuti komandu **dotnet ef database update** iz root direktorijuma solution-a (```/src/back/backAPI/backAPI/```). Ukoliko baza prethodno postoji, a potrebno ju je obrisati, pokrenuti komandu **dotnet ef database drop**.
 
-U suprotnom, moguće je manuelno pokretanje frontend i backend delova aplikacije:
+Frontend i backend aplikacije je moguce pokrenuti komandama:
 ```sh
 # potrebno pokrenuti iz direktorijuma /src/front/angular
 ng serve [--open]
@@ -172,18 +179,64 @@ Example command:
 ```
 --->
 
-<!--
+
 ### Deployment
 
-You can deploy this project using:
+Za potrebne deployment-a aplikacije potrebno je build-ovati frontend sledecim nizom komandi:
+* Premestiti se u direktorijum ```/src/front/angular ```
+* Pokrenuti komandu ```ng build ```. Kao rezultat ove komande kreirace se build-ovana verzija za production u direktorijum _dist_.
+
+Backend deo aplikacije publish-ovati sledecim nizom komandi:
+* Premestiti se u direktorijum ```/src/back/backAPI/backAPI ```
+* Pokrenuti komandu ```dotnet publish -c Release -o out ```. Kao rezultat ove komande u trenutnom direktorijumu ce biti kreiran novi direktorijum pod nazivom _out_ u kome ce se nalaziti potrebni .dll, dependency i ostali fajlovi.
+* Prekopirati fajl baze podataka sa ekstenzijom **.db** u out direktorijum.
+
+Kao rezultat prethodnih komandi kreirani su svi potrebni fajlovi za deployment.  
+Sada je potrebno prekopirati kreirane build fajlove u odgovarajuce direktorijume na serveru.
+
+Direktorijum ```dist ``` u kome je buildovan frontend potrebno je prekopirati na server komandom:
+```sh
+  scp -r ./dist/angular syncatech@softeng.pmf.kg.ac.rs:~/production/front
+```
+***Napomena: Navedenu komandu potrebno je pokrenuti iz direktorijuma ```/src/front/angular ```.
+
+Direktorijum ``` out ``` u kome je publishovana Release verzija backend-a i baze podataka potrebno je prekopirati na server komandom:
+```sh
+  scp -r ./out syncatech@softeng.pmf.kg.ac.rs:~/production/back
+```
+***Napomena: Navedenu komandu potrebno je pokrenuti iz direktorijuma ```/src/back/backAPI/backAPI ```
+
+Nakon izvrsenih komandi na serveru se u odgovarajucim direktorijumima nalaze potrebne verzije za pokretanje aplikacije.
+
+**Screen**  
+Radi lakseg iskustva u radu sa terminalima na serveru moguce je koristiti komandu _screen_.  
+```sh
+  screen -S production-front # kreira prozor za pokretanje frontend dela aplikacije
+  screen -S production-back # kreira prozor za pokretanje backend dela aplikacije
+```
+Iz jednog screen-a moguce je izaci prosledjivanjem signala sa tastature ```CTRL + A + D ```  
+Moguce je izlistati trenutno aktuelne screen-ove komandom ```screen -ls ```  
+Moguce je aktivirati screen komandom ```screen -r naziv ```
+
+Aplikaciju je potrebno pokrenuti startovanjem frontend i backend dela sledecim komandama:  
+```sh
+  # iz direktorijuma production/front/angular/browser pokrenuti komandu
+  python3 -m http.server 10204
+```
+Kao rezultat ove komande python ce pokrenuti server koji slusa na portu 10204.
+```sh
+  # iz direktorijuma production/back/out pokrenuti komandu
+  dotnet backAPI.dll --urls=http://0.0.0.0:10205/
+```
+Kao argument komande prosledjuje se port na kome ce slusati backend server.
 
 
+<!--
 Example:
 
 ```sh
-
 ```
- -->
+-->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -212,11 +265,6 @@ Example:
 - LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
 
 👤 **Milan Bajić**
-
-- GitHub: [@githubhandle](https://github.com/githubhandle)
-- LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
-
-👤 **Dora Dimitrijević**
 
 - GitHub: [@githubhandle](https://github.com/githubhandle)
 - LinkedIn: [LinkedIn](https://linkedin.com/in/linkedinhandle)
