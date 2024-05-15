@@ -29,10 +29,16 @@ namespace backAPI.Repositories.Implementation.Projects
 
         public async Task<Project> CreateProject(ProjectDto request)
         {
+            if (request.VisibilityName == "" || request.Name == "" || request.Key == "" || request.TypeName == "" || request.OwnerUsername == "")
+            {
+                Console.WriteLine("USOOO U NULLL");
+                return null;
+            }
+
             var user = await usersRepository.GetUserByUsername(request.OwnerUsername);
             var type = await projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName);
             var visibility = await projectVisibilitiesRepository.GetProjectVisibilityByNameAsync(request.VisibilityName);
-
+            
             var project = new Project
             {
                 Name = request.Name,
@@ -119,6 +125,7 @@ namespace backAPI.Repositories.Implementation.Projects
             project.Key = request.Key;
             project.TypeId = projectTypesRepository.GetProjectTypeByNameAsync(request.TypeName).Result.Id;
             project.OwnerId = usersRepository.GetUserByUsername(request.OwnerUsername).Result.Id;
+            project.IconPath = request.Icon;
             project.ParentId = request.ParentProjectName == null ? null : GetProjectByName(request.ParentProjectName).Result.Id;
             project.CreationDate = request.CreationDate;
             project.DueDate = request.DueDate;
@@ -155,6 +162,22 @@ namespace backAPI.Repositories.Implementation.Projects
                 .Where(x => x.User.UserName == username)
                 .Select(x => x.Project)
                 .ToListAsync();
+        }
+
+        public async Task<bool> TransferProject(string name, string transferToUser)
+        {
+            var project = await GetProjectByName(name);
+
+            if (project == null)
+            {
+                return false;
+            }
+
+            project.OwnerId = usersRepository.GetUserByUsername(transferToUser).Result.Id;
+
+            await dataContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

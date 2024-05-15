@@ -14,8 +14,7 @@ export class IssueStatusComponent implements OnInit {
   IssueStatusDisplayMap = IssueStatusDisplay;
 
   variants = {
-    [IssueStatus.BACKLOG]: 'secondary',
-    [IssueStatus.SELECTED]: 'secondary',
+    [IssueStatus.PLANNING]: 'secondary',
     [IssueStatus.IN_PROGRESS]: '',
     [IssueStatus.DONE]: 'success'
   };
@@ -27,8 +26,7 @@ export class IssueStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.issueStatuses = [
-      new IssueStatusValueTitle(IssueStatus.BACKLOG),
-      new IssueStatusValueTitle(IssueStatus.SELECTED),
+      new IssueStatusValueTitle(IssueStatus.PLANNING),
       new IssueStatusValueTitle(IssueStatus.IN_PROGRESS),
       new IssueStatusValueTitle(IssueStatus.DONE)
     ];

@@ -84,6 +84,7 @@ import { BoardFilterComponent } from './components/elements/board/board-filter/b
 import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
+import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
 
 // GANTT CHART MODULES
 import { NgxGanttModule } from '@worktile/gantt';
@@ -97,13 +98,30 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CreateTaskComponent } from './components/elements/create-task/create-task.component';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { CreateGroupComponent } from './components/elements/create-group/create-group.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 import { IssueAssigneesComponent } from './components/elements/issues/issue-assignees/issue-assignees.component';
 import { UserProfileComponent } from './components/elements/user-profile/user-profile.component';
 import { DatePipe } from '@angular/common';
+
+import { CookieService } from 'ngx-cookie-service';
+import { AdminEditProfileComponent } from './components/pages/admin-page/admin-edit-profile/admin-edit-profile.component';
+import { KnobModule } from "primeng/knob";
+import { ProgressBarModule } from 'primeng/progressbar';
+import {DividerModule} from "primeng/divider";
+import { UploadDocumentComponent } from './components/elements/upload-document/upload-document.component';
+import {SliderModule} from "primeng/slider";
+import { IssueChangeProgressComponent } from './components/elements/issues/issue-change-progress/issue-change-progress.component';
+import {MeterGroupModule} from "primeng/metergroup";
+import {BadgeModule} from "primeng/badge";
+import { HubConnectionInterceptor } from './_interceptors/hub-connection.interceptor';
+
+import { ScrollerModule } from 'primeng/scroller';
+import { LogsContainerComponent } from './components/elements/logs-container/logs-container.component';
+import { UploadIssueDocumentComponent } from './components/elements/upload-issue-document/upload-issue-document.component';
+import { ListOfIssueDocumentsComponent } from './components/elements/list-of-issue-documents/list-of-issue-documents.component';
+import { ForgotPasswordComponent } from './components/elements/forgot-password/forgot-password.component';
+import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -157,59 +175,75 @@ import { DatePipe } from '@angular/common';
     BoardFilterComponent,
     IssueReporterComponent,
     ProjectKanbanPageComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    AdminEditProfileComponent,
+    UploadDocumentComponent,
+    IssueChangeProgressComponent,
+    NotificationsPageComponent,
+    UploadIssueDocumentComponent,
+    ListOfIssueDocumentsComponent,
+    LogsContainerComponent,
+    ForgotPasswordComponent,
+    PageForgotPasswordComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    BsDropdownModule.forRoot(),
-    TableModule,
-    TagModule,
-    ButtonModule,
-    ToastModule,
-    ModalModule.forRoot(),
-    QuillModule.forRoot(),
-    ConfirmDialogModule,
-    MultiSelectModule,
-    CalendarModule,
-    DropdownModule,
-    OverlayPanelModule,
-    FileUploadModule,
-    ColorPickerModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    InputTextareaModule,
-    CheckboxModule,
-    ConfirmPopupModule,
-    NgxGanttModule,
-    ThyLayoutModule,
-    ThyButtonModule,
-    ThySwitchModule,
-    ContentLoaderModule,
-    DragDropModule,
-    DialogModule,
-    TooltipModule,
-    environment.production ? [] : AkitaNgDevtools,
-    AkitaNgRouterStoreModule,
-    AvatarModule,
-    AvatarGroupModule,
-    CdkTextareaAutosize,
-    InputSwitchModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        BsDropdownModule.forRoot(),
+        TableModule,
+        TagModule,
+        ButtonModule,
+        ToastModule,
+        ModalModule.forRoot(),
+        QuillModule.forRoot(),
+        ConfirmDialogModule,
+        MultiSelectModule,
+        CalendarModule,
+        DropdownModule,
+        OverlayPanelModule,
+        FileUploadModule,
+        ColorPickerModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        InputTextareaModule,
+        CheckboxModule,
+        ConfirmPopupModule,
+        NgxGanttModule,
+        ThyLayoutModule,
+        ThyButtonModule,
+        ThySwitchModule,
+        ContentLoaderModule,
+        DragDropModule,
+        DialogModule,
+        TooltipModule,
+        environment.production ? [] : AkitaNgDevtools,
+        AkitaNgRouterStoreModule,
+        AvatarModule,
+        AvatarGroupModule,
+        CdkTextareaAutosize,
+        InputSwitchModule,
+        KnobModule,
+        ProgressBarModule,
+        DividerModule,
+        SliderModule,
+        MeterGroupModule,
+        BadgeModule,
+        ScrollerModule
+    ],
   providers: [
-    provideClientHydration(),
-    provideHttpClient(withFetch()),  // dodato kako bi se prevazisao warrning iz konzole
+    CookieService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HubConnectionInterceptor, multi: true},
     MessageService,
     ConfirmationService,
     DialogService,
     DatePipe,
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
-  ],
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

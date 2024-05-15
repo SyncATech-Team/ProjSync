@@ -12,13 +12,20 @@ namespace backAPI.Repositories.Implementation.Projects
         private readonly DataContext dataContext;
         private readonly IUsersRepository usersRepository;
         private readonly IProjectsRepository projectsRepository;
+        private readonly ILogsRepository logsRepository;
 
-        public UserOnProjectRepository(DataContext dataContext, IUsersRepository usersRepository, IProjectsRepository projectsRepository)
-        {
+        public UserOnProjectRepository(
+            DataContext dataContext, 
+            IUsersRepository usersRepository,
+            IProjectsRepository projectsRepository,
+            ILogsRepository logsRepository
+        ) {
             this.dataContext = dataContext;
             this.usersRepository = usersRepository;
             this.projectsRepository = projectsRepository;
+            this.logsRepository = logsRepository;
         }
+
         public async Task<bool> AddUserToProjectAsync(string projectName, string username, string color)
         {
             var idProject = await projectsRepository.GetProjectByName(projectName);
@@ -47,6 +54,12 @@ namespace backAPI.Repositories.Implementation.Projects
             dataContext.UsersOnProjects.Add(newUserOnProject);
             await dataContext.SaveChangesAsync();
 
+            await logsRepository.AddLogToDatabase(new Log {
+                ProjectId = idProject.Id,
+                Message = "🎉 User joined the project",
+                DateCreated = DateTime.Now
+            });
+
             return true;
         }
 
@@ -64,6 +77,22 @@ namespace backAPI.Repositories.Implementation.Projects
                 .Where(x => x.Project.Name == projectName)
                 .Select(x => x.User)
                 .ToListAsync();
+        }
+
+        public async Task<User> GetUserOnProjectAsync(string projectname, string username)
+        {
+            return await dataContext.Users
+                .Join(dataContext.UsersOnProjects,
+                u => u.Id,
+                up => up.UserId,
+                (u, up) => new { User = u, UserProject = up })
+                .Join(dataContext.Projects,
+                up => up.UserProject.ProjectId,
+                p => p.Id,
+                (up, p) => new { up.User, Project = p })
+                .Where(x => x.User.UserName == username && x.Project.Name == projectname)
+                .Select(x => x.User)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Project>> GetProjectsByUser(string username)
@@ -107,7 +136,33 @@ namespace backAPI.Repositories.Implementation.Projects
             dataContext.UsersOnProjects.Remove(userOnProject);
             await dataContext.SaveChangesAsync();
 
+            await logsRepository.AddLogToDatabase(new Log {
+                ProjectId = project.Id,
+                Message = "⛔ User removed from the project",
+                DateCreated = DateTime.Now
+            });
+
             return true;
+        }
+
+        public async Task<IEnumerable<User>> GetUsersOnProjectThatCanManageProjectAsync(string projectName)
+        {
+            return await dataContext.Users
+                .Join(dataContext.UsersOnProjects,
+                    u => u.Id,
+                    up => up.UserId,
+                    (u, up) => new { User = u, UserProject = up })
+                .Join(dataContext.Projects,
+                    up => up.UserProject.ProjectId,
+                    p => p.Id,
+                    (up, p) => new { up.User, Project = p })
+                .Join(dataContext.CRoles,
+                    u => u.User.CompanyRoleId,
+                    cr => cr.Id,
+                    (u, cr) => new { u.User, u.Project, CompanyRole = cr })
+                .Where(x => x.CompanyRole.CanManageProjects && x.Project.Name == projectName)
+                .Select(x => x.User)
+                .ToListAsync();
         }
     }
 }

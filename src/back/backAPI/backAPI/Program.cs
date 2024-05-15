@@ -11,6 +11,7 @@ using backAPI.Services.Implementation;
 using backAPI.Services.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using backAPI.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +52,16 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IProjectDocumentationRepository, ProjectDocumentationRepository>();
+builder.Services.AddScoped<IIssueDocumentationRepository, IssueDocumentationRepository>();
 builder.Services.AddScoped<IUserOnIssueRepository, UserOnIssueRepository>();
+builder.Services.AddScoped<IIssueCommentRepository, IssueCommentRepository>();
+builder.Services.AddScoped<INotificationsRepository, NotificationRepository>();
+builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+builder.Services.AddScoped<ILogsRepository, LogsRepository>();
+builder.Services.AddSignalR();
+// uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
+builder.Services.AddSingleton<PresenceTracker>();
+builder.Services.AddSingleton<NotificationService>();
 
 var app = builder.Build();
 
@@ -66,7 +76,7 @@ Console.ForegroundColor = ConsoleColor.Yellow;
 Console.WriteLine("Adding CORS policy");
 Console.WriteLine("");
 
-/*
+
 int numOfOrigins = int.Parse(builder.Configuration["AllowedCorsOrigins:NumOfOrigins"]);
 string[] origins = new string[numOfOrigins];
 for (int i = 0; i < numOfOrigins; i++) {
@@ -76,19 +86,19 @@ for (int i = 0; i < numOfOrigins; i++) {
 
     origins[i] = address;
 }
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(origins));
-// app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-*/
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(origins));
 
 Console.WriteLine("");
 Console.WriteLine("CORS policy specified...");
 
 Console.ForegroundColor = ConsoleColor.White;
 
-app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<CommentsHub>("hubs/comment");
+app.MapHub<NotificationHub>("hubs/notification");
+app.MapHub<LogsHub>("hubs/logs");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

@@ -7,7 +7,7 @@
   transition: background 0.1s ease 0s;
   overflow: auto;
   overflow-y: hidden;
-  width: 100%;
+  width: 70%;
   border-radius: 3px;
   appearance: none;
   height: auto;
@@ -30,4 +30,18 @@
   user-select: none;
   padding: 12px 16px;
   border-radius: 4px;
+}
+
+.info-user {
+  display: flex;
+  align-items: center;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+.comment-space {
+  width: 70%;
+  overflow-wrap: break-word;
 }

@@ -1,15 +1,17 @@
-﻿using backAPI.Entities.Domain;
+﻿using backAPI.DTO.Documentation;
+using backAPI.Entities.Domain;
 
-namespace backAPI.Repositories.Interface.Projects
-{
-    public interface IProjectDocumentationRepository
-    {
+namespace backAPI.Repositories.Interface.Projects {
+    public interface IProjectDocumentationRepository {
 
-        void saveDocument( ProjectDocumentation documentation);
+        bool ProjectDocumentationDirectoryExist();
+        Task<string> WriteMultipleFilesAsync(int projectId, List<IFormFile> files);
+        Task<IEnumerable<ProjectDocumentation>> GetDocumentationForProject(int projectId);
 
-        List<ProjectDocumentation> GetAll(long projectId);
+        IEnumerable<DocumentTitles> GetOlderVersionsSorted(ProjectDocumentation newest, IEnumerable<ProjectDocumentation> all);
 
-        ProjectDocumentation GetById(long documentId);
+        Task<bool> DeleteDocument(int documentId);
 
+        Task<ProjectDocumentation> GetDocumentById(int documentId);
     }
 }

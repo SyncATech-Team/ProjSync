@@ -1,55 +1,156 @@
 #contentPages {
-    display: flex;
-}
-.content{
-    height: 100vh;
-    width: 100%;
-    overflow-y: auto;
-    padding: 2%;
+  display: flex;
 }
 
-#Name{
-    color: #280173;
-
+.content {
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+  padding: 2%;
 }
-/* 
-.file-input {
-    display: none;
-  } */
 
-.dropzone{
-    width: 80%;
-    height: 10%;
-    padding: 0;
-    text-align: center;
-    position: relative;
-    margin: 0 auto;
-    margin-bottom: 3%;
+#document-space {
+  margin-top: 1%;
+  text-align: center;
+}
 
-    input{
-        opacity: 0;
-        position: absolute;
-        z-index: 2;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-    }
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
 
-    h3{
-        font-size: 20px;
-        font-weight: 600;
-        color: #38424c;
-    }
+.card {
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
 
-    button{
-        margin: 0;
-        padding: 2rem;
-        width: 100%;
-        height: 100%;
-        
-    }
-    button:hover{
-        background-color:lightgray;
-    }
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.date {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.preview-btn,
+.download-btn,
+.show-older-btn,
+.delete-btn {
+  cursor: pointer;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #1e90ff;
+  color: white;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: darkblue;
+}
+
+.download-btn {
+  margin-left: 5px;
+}
+
+.show-older-btn {
+  margin-left: 5px;
+}
+
+.delete-btn {
+  margin-left: 5px;
+  background-color: rgb(185, 58, 58);
+}
+
+.delete-btn:hover {
+  background-color: darkred;
+}
+
+.preview-btn {
+  background-color: rgb(231, 175, 71);
+}
+
+.preview-btn:hover {
+  background-color: darkorange;
+}
+
+.older-versions {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.older-version {
+  text-align: left;
+  margin-top: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.document-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 10px;
+}
+
+.older-title {
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.older-title:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.show-older-span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.show-older-span:hover {
+  color: red;
+}
+
+.search {
+  margin-top: 1%;
+}
+
+.older-version-buttons button {
+  cursor: pointer;
+  padding: 5px 5px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px; /* smaller font size */
+}
+
+/* Media query for smaller devices */
+@media screen and (max-width: 600px) {
+  .card-container {
+    grid-template-columns: 1fr; /* One card per row on smaller devices */
+  }
 }

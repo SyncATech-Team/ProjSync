@@ -5,7 +5,7 @@
 .content {
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 55.6px);
     overflow-y: scroll;
 }
 
@@ -29,6 +29,12 @@
     color: #5e6c84;
     font-size: 1rem;
     padding: 0 0 8px;
+}
+
+.titleUploadUploadIcon{
+    font-size: 20px;
+    font-weight: 600;
+    color: #5e6c84;
 }
 
 .upload{
@@ -57,7 +63,6 @@
     color: #42526e;
     display: block;
     font-weight: 500;
-    margin: 12px 0px 24px;
     font-size: 24px;
 }
 
@@ -71,6 +76,7 @@
     color: #5e6c84;
     font-size: .8125rem;
     padding: 0 0 8px;
+    margin-top: 5px;
 }
 
 :host ::ng-deep .form-group .projectName {
@@ -99,6 +105,18 @@
     border-radius: 4px;
     padding: 5px 10px;
     margin-right: 10px;
+}
+
+/* Deskripcija quill */
+:host ::ng-deep .content-editor .ql-editor {
+    height: 6rem;
+    overflow-y: auto;
+}
+
+:host ::ng-deep .content-editor .ql-link,
+:host ::ng-deep .content-editor .ql-video,
+:host ::ng-deep .content-editor .ql-image {
+    display: none;
 }
 
 #right-side{
@@ -152,4 +170,37 @@
     #right-side{
         border-left: none;  
     }
+}
+
+.profilecontent img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* Ikonice za projekat */
+
+.wrapper-icons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
+.wrapper-icons .icon{
+    margin: 6px;
+}
+
+.wrapper-icons .icon img{
+    height: 40px;
+    width: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.wrapper-icons .icon img:hover{
+    transition: 0.2s ease;
+    border: 3px solid lightblue;
+    border-radius: 6px;
+    padding: 1px;
 }

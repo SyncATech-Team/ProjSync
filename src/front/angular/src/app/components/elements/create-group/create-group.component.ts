@@ -32,7 +32,7 @@ export class CreateGroupComponent implements OnInit {
     this.form = this.formBuilder.group({
       'group-name' : []
     });
-    console.log(this.form.controls['group-name'])
+    // console.log(this.form.controls['group-name'])
   }
 
   ngOnInit(){
@@ -43,23 +43,29 @@ export class CreateGroupComponent implements OnInit {
     if(this.projectName){
       // console.log(this.form.controls['group-name'].value);
       // console.log(this.projectName);
+      // console.log(this.form.controls['group-name'].value);
+      if(this.form.controls['group-name'].value == null){
+        this.msgPopUpService.showError("Unable to create group. Group name can not be empty.");
+        return;
+      }
       this.groupInProject.GroupName = this.form.controls['group-name'].value;
       this.groupInProject.ProjectName = this.projectName;
-      console.log(this.groupInProject);
+      // console.log(this.groupInProject);
       
       this.groupService.createGroup(this.groupInProject).subscribe({
         next : (response) => {
           this.msgPopUpService.showSuccess("Group successfully created");
-          this._modal.close();          
+          this.closeModal("created-group");        
         },
         error : (error) => {
-          this.msgPopUpService.showError("Unable to create group. Duplicate name inside project!");
+          this.msgPopUpService.showError(error.error.message);
+          // this.msgPopUpService.showError("Unable to create group. Duplicate name inside project!");
         }
       });
     }
   }
 
-  closeModal() {
-    this._modal.close();
+  closeModal(param: string) {
+    this._modal.close(param);
   }
 }

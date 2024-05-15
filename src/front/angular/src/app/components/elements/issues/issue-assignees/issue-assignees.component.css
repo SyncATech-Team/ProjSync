@@ -16,3 +16,23 @@
   background-color: lightblue;
   cursor: pointer;
 }
+
+.info-section {
+  width: 70%;
+  display: flex;
+  align-items: center;
+}
+
+.progress-info {
+  width: 40%;
+}
+
+@keyframes pi-blink {
+  0% {opacity: 1;}
+  100% {opacity: 0.4;}
+}
+
+.is-online {
+  animation: pi-blink 1.5s linear infinite;
+  color: rgb(1, 189, 42);
+}

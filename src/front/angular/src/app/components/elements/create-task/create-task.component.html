@@ -1,3 +1,5 @@
+<app-spinner></app-spinner>
+
 <div id="container-wrapper" class="container">
     <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
         <p>Issue group</p>
@@ -8,13 +10,10 @@
         </div>
 
         <p>Issue name</p>
-        <!-- [(ngModel)]="value" -->
-        <!-- <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" class="issueName" spellcheck="false"/> -->
         <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" spellcheck="false"/>
 
 
         <p>Issue type</p>
-        <!-- [(ngModel)]="selectedIssueType" -->
         <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="value" placeholder="Select issue type" class="input-size" [showClear]="true">
         <ng-template let-type pTemplate="selectedItem">
             <svg-icon [name]="type.icon"
@@ -33,7 +32,6 @@
         </p-dropdown>
 
         <p>Issue priority</p>
-        <!-- [(ngModel)]="selectedPriorityModel" -->
         <p-dropdown [options]="priorities"  optionLabel="value" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true">
             <ng-template let-priority pTemplate="selectedItem">
                 <svg-icon [name]="priority.icon"
@@ -42,7 +40,7 @@
                 </svg-icon>
                 <span>{{ priority.value }}</span>
             </ng-template>
-            
+
             <ng-template let-priority pTemplate="content">
                 <svg-icon [name]="priority.icon"
                         [size]="20"
@@ -51,16 +49,11 @@
                 <span>{{ priority.value }}</span>
             </ng-template>
         </p-dropdown>
-        
-        <!-- <issue-priority [issue]="jIssue"></issue-priority> -->
 
         <p>Issue status</p>
-        <!-- [(ngModel)]="value1" -->
         <p-dropdown formControlName="issue-status" optionLabel="name" [options]="issueStatus" placeholder="Select issue status" class="input-size" [showClear]="true"></p-dropdown>
 
         <p>Description</p>
-        <!-- <textarea formControlName="issue-description" rows="5" cols="30" pInputTextarea spellcheck="false"></textarea> -->
-        <!-- (onEditorCreated)="editorCreated($event)" [modules]="editorOptions" -->
         <ng-container *ngIf="true">
             <quill-editor class="content-editor"
                           formControlName="issue-description"
@@ -71,25 +64,22 @@
 
         <div class="calendar-wrapper">
             <div class="created-date">
-                <p>Created Date</p>
-                <!-- [(ngModel)]="date1"  -->
-                <p-calendar formControlName= "issue-create-date" [showIcon]="true" class="date1" placeholder="dd/mm/yyyy"></p-calendar>
+                <p>Started Date</p>
+                <p-calendar  formControlName= "issue-create-date" [showIcon]="true" class="date1" placeholder="dd/mm/yyyy" ></p-calendar>
             </div>
 
             <div class="due-date">
                 <p>Due Date</p>
-                <!-- [(ngModel)]="date1"  -->
-                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="dd/mm/yyyy"></p-calendar>                
+                <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="dd/mm/yyyy"></p-calendar>
             </div>
         </div>
 
         <p>Reporter</p>
-        <!-- [(ngModel)]="projectType2" -->
         <p-dropdown
-            formControlName="issue-reporter" 
-            [options]="users" optionLabel="username" 
-            placeholder="Select reporter" 
-            class="input-size" 
+            formControlName="issue-reporter"
+            [options]="users" optionLabel="username"
+            placeholder="Select reporter"
+            class="input-size"
             [showClear]="true">
             <ng-template let-user pTemplate="selectedItem">
                 <div class="profilecontent">
@@ -106,8 +96,7 @@
         </p-dropdown>
 
         <p>Assigned</p>
-        <!-- [(ngModel)]="selectedAssignees" -->
-        <p-multiSelect [options]="users"  placeholder="Select a Country" optionLabel="username" class="multi-select-dropdown">
+        <p-multiSelect [options]="users" formControlName="issue-assigner" placeholder="Select a assignee" optionLabel="username" class="multi-select-dropdown">
             <ng-template let-user pTemplate="item">
                 <div class="profilecontent">
                     <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
@@ -117,9 +106,8 @@
         </p-multiSelect>
 
         <div class="btns">
-            <!--  [disabled]="!projectName2" -->
             <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
-            <p-button label="Close" severity="secondary" (click)="closeModal()"></p-button>
+            <p-button label="Close" severity="secondary" (click)="closeModal('exited')"></p-button>
         </div>
     </form>
 </div>

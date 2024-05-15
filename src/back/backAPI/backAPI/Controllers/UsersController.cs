@@ -1,7 +1,10 @@
 ﻿using backAPI.DTO;
+using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
+using backAPI.SignalR;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace backAPI.Controllers
 {
@@ -9,13 +12,20 @@ namespace backAPI.Controllers
         private readonly IUsersRepository _usersRepository;
         private readonly ICompanyRolesRepository _companyRolesRepository;
         private readonly IEmailService _emailService;
+        private readonly PresenceTracker _presenceTracker;
 
 
         // TODO: Dodati servis za JWT
-        public UsersController(IUsersRepository usersRepository, IEmailService emailService, ICompanyRolesRepository companyRolesRepository) {
+        public UsersController(
+            IUsersRepository usersRepository, 
+            IEmailService emailService, 
+            ICompanyRolesRepository companyRolesRepository,
+            PresenceTracker presenceTracker
+        ) {
             _usersRepository = usersRepository;
             _emailService = emailService;
             _companyRolesRepository = companyRolesRepository;
+            _presenceTracker = presenceTracker;
         }
 
         /* *****************************************************************************
@@ -48,6 +58,44 @@ namespace backAPI.Controllers
             }
 
             return dTOUsers;
+        }
+
+        [HttpGet("pagination")]
+        public async Task<IActionResult> GetPaginationAllUsers(string criteria)
+        {
+            List<UserDto> dTOUsers = new List<UserDto>();
+            UsersOnProjectLazyLoadDto lazyLoadDto = new UsersOnProjectLazyLoadDto();
+
+            Criteria criteriaObj = JsonConvert.DeserializeObject<Criteria>(criteria);
+
+            var result = await _usersRepository.GetPaginationAllUsersAsync(criteriaObj);
+
+            foreach (var user in result.users)
+            {
+                // Enkapsuliraj podatke o korisniku u DTO objekat
+                dTOUsers.Add(new UserDto
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    CompanyRoleName = _companyRolesRepository.GetCompanyRoleById(user.CompanyRoleId).Result.Name,
+                    ProfilePhoto = user.ProfilePhoto,
+                    Address = user.Address,
+                    ContactPhone = user.ContactPhone,
+                    Status = user.Status,
+                    IsVerified = user.IsVerified,
+                    PreferedLanguage = user.PreferedLanguage,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt,
+                    isActive = user.IsActive
+                });
+            }
+
+            lazyLoadDto.Users = dTOUsers;
+            lazyLoadDto.NumberOfRecords = result.numberOfRecords;
+
+            return Ok(lazyLoadDto);
         }
 
         /* *****************************************************************************
@@ -102,6 +150,9 @@ namespace backAPI.Controllers
             if(deleted == false) {
                 return NotFound("There is no user with specified username");
             }
+
+            // posalji signal ulogovanom nalogu da je potrebno izlogovati ga jer mu je nalog deaktiviran
+            await _presenceTracker.OnAccountDeactivation(username);
 
             return Ok();
         }

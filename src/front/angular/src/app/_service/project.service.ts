@@ -29,4 +29,8 @@ export class ProjectService {
   updateProject(projectName: string,model: Project){
     return this.http.put<Project>(this.baseUrl + `Projects/${projectName}`,model);
   }
+
+  transferProject(projectName: string,transferToUser: string){
+    return this.http.put<Project>(this.baseUrl + `Projects/transfer/${projectName}`,transferToUser);
+  }
 }

@@ -1,4 +1,5 @@
-﻿using backAPI.Entities.Domain;
+﻿using backAPI.DTO.Documentation;
+using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Projects;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,76 +7,131 @@ namespace backAPI.Controllers
 {
     [Route("api/")]
     [ApiController]
-    public class DocumentsController : ControllerBase
-    {
+    public class DocumentsController : ControllerBase {
 
-        private readonly IProjectDocumentationRepository repository;
-        public DocumentsController(IProjectDocumentationRepository repository) { 
-        
-            this.repository = repository;
+        private readonly IProjectDocumentationRepository docsRepository;
+        private readonly IProjectsRepository projectsRepository;
+
+
+        public DocumentsController(
+            IProjectDocumentationRepository docsRepository,
+            IProjectsRepository projectsRepository) {
+
+            this.docsRepository = docsRepository;
+            this.projectsRepository = projectsRepository;
 
         }
 
-        [HttpPost("project/{projectId}")]
-        public ActionResult UploadDocument(int projectId, IFormFile documentFile)
-        {
-            if (documentFile == null || documentFile.Length == 0)
-            {
-                return BadRequest("Invalid file");
+        [HttpPost("project-documentation/{projectName}")]
+        public async Task<ActionResult> UploadDocument(string projectName, List<IFormFile> files) {
+            var project = await projectsRepository.GetProjectByName(projectName);
+            if (project == null) {
+                return BadRequest("There is no project with the given name");
             }
 
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "..\\Project-Documentation\\" + projectId);
+            Console.WriteLine("Postoji projekat");
 
-            if (!Directory.Exists(uploadsFolder))
-            {
-                Directory.CreateDirectory(uploadsFolder);
+            // proveri da li postoji direktorijum u koji zelimo da sacuvamo fajl
+            // kreirati direktorijum za skladistenje dokumenata
+            if (docsRepository.ProjectDocumentationDirectoryExist() == false) {
+                Directory.CreateDirectory("../project-documentation");
             }
 
-            ProjectDocumentation projectDocs = new ProjectDocumentation();
+            var result = await docsRepository.WriteMultipleFilesAsync(project.Id, files);
+            if (result != "OK") {
+                return BadRequest($"Failed to upload documents: {result}");
+            }
 
-            projectDocs.ProjectId = projectId;
-            projectDocs.Path = uploadsFolder;
-            projectDocs.Title = documentFile.FileName;
-            projectDocs.DateUploaded = DateTime.Now;
+            Console.WriteLine("Upload??? : " + result);
 
-
-            repository.saveDocument(projectDocs);
-
-            var path = Path.Combine(projectDocs.Path, projectDocs.Title);
-
-            var stream = new FileStream(path, FileMode.Create);
-            
-            documentFile.CopyTo(stream);
-
-            stream.Close();
-
-            return Ok(new { fileUrl = path });
+            return Ok();
         }
 
+        [HttpGet("project-documentation/get-titles/{projectName}")]
+        public async Task<ActionResult<IEnumerable<DocumentTitles>>> GetDocumentTitles(string projectName) {
 
-        [HttpGet("project/{projectId}/documents")]
-        public List<ProjectDocumentation> GetProjectDocuments(int projectId)
-        {
-            return repository.GetAll(projectId);
-        }
-
-        //TO DO DELETE
-
-
-        [HttpGet("project/documents/{documentId}")]
-        public ActionResult GetDocument(int documentId)
-        {
-
-            ProjectDocumentation projectDocs = repository.GetById(documentId);
-
-            if(projectDocs == null)
-            {
-                return NotFound(new {message = "Document not found"});
+            var project = await projectsRepository.GetProjectByName(projectName);
+            if (project == null) {
+                return BadRequest("There is no project with the given name");
             }
 
-            var bytes = System.IO.File.ReadAllBytes(Path.Combine(projectDocs.Path,projectDocs.Title));
+            List<DocumentTitles> documentTitles = new List<DocumentTitles>();
 
-            return new FileStreamResult(new MemoryStream(bytes), "application/pdf");
+            var papers = await docsRepository.GetDocumentationForProject(project.Id);
+
+            // proveriti da li postoje dokumenti sa istim naslovom
+            // ukoliko postoje proveriti datum dodavanja i vratiti najnoviji a ostale vratiti kao older versions
+
+            foreach (var paper in papers) {
+                var sameTitle = papers.Where<ProjectDocumentation>(p => p.Id != paper.Id && p.Title == paper.Title);
+                if (sameTitle.Any() == false) {
+                    // ne postoji drugi dokument sa istim imenom
+                    documentTitles.Add(new DocumentTitles { 
+                        DocumentId = paper.Id,
+                        Title = paper.Title,
+                        DateUploaded = paper.DateUploaded,
+                        OlderVersions = []
+                    });
+
+                    continue;
+                }
+
+
+                // postoji bar jedan dokument koji ima isti naziv kao i trenutni
+                // proveriti da li postoji noviji
+                // ukoliko je trenutni najnoviji onda trenutni proglasiti kao najnoviji
+
+                var existsNewerDocument = sameTitle.Where(o => o.DateUploaded > paper.DateUploaded);
+                if(existsNewerDocument.Any()) {
+                    continue; // ovaj dokument ce biti dodat kada se bude dodavao noviji
+                }
+
+                // trenutni dokument je najnoviji i sve ostale treba dodati u njegovu listu OlderVersion
+                IEnumerable<DocumentTitles> olderVersions = [];
+                foreach(var older in sameTitle) {
+                    olderVersions = olderVersions.Append(new DocumentTitles {
+                        DocumentId = older.Id,
+                        Title = older.Title,
+                        DateUploaded = older.DateUploaded,
+                        OlderVersions = []
+                    });
+                }
+
+                var d = new DocumentTitles {
+                    DocumentId = paper.Id,
+                    Title = paper.Title,
+                    DateUploaded = paper.DateUploaded,
+                    OlderVersions = olderVersions.OrderByDescending(p => p.DateUploaded).ToArray<DocumentTitles>()
+                };
+
+
+                documentTitles.Add(d);
+            }
+
+            return documentTitles;
+        }
+
+        [HttpDelete("project-documentation")]
+        public async Task<ActionResult> DeleteRecord(int id) {
+            var deleted = await docsRepository.DeleteDocument(id);
+            if (deleted == false) { return BadRequest("Unable to delete record"); }
+            return Ok(deleted);
+        }
+
+        [HttpGet("project-documentation/{id}/download")]
+        public async Task<IActionResult> GetDocumentContent(int id) {
+            var document = await docsRepository.GetDocumentById(id);
+            if (document == null) {
+                return NotFound();
+            }
+
+            var filePath = document.Path;
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(fileBytes, "application/octet-stream", document.Title);
         }
 
     }

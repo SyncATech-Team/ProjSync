@@ -63,7 +63,12 @@ namespace backAPI.Controllers
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Worker");
+            IdentityResult roleResult;
+            if (companyRole.Name == "Administrator")
+                roleResult = await _userManager.AddToRoleAsync(user, "Admin");
+            else
+                roleResult = await _userManager.AddToRoleAsync(user, "Worker");
+            
             if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
             // kreiranje tokena za verifikaciju email-a
@@ -133,6 +138,7 @@ namespace backAPI.Controllers
 
                 return new LoginResponseDto
                 {
+                    Id = user.Id,
                     Username = user.UserName,
                     Token = await _tokenService.CreateToken(user)
                 };
@@ -144,6 +150,12 @@ namespace backAPI.Controllers
         {
             // check if there is user in database already
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+        }
+
+        private async Task<bool> UserExistsByEmail(string email)
+        {
+            // check if there is user in database already
+            return await _userManager.Users.AnyAsync(x => x.Email == email);
         }
 
         [HttpPost("reset-password")]
@@ -158,9 +170,71 @@ namespace backAPI.Controllers
 
             return new LoginResponseDto
             {
+                Id = user.Id,
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user)
             };
+        }
+
+        [HttpPost("change-password-auth-user")]
+        public async Task<ActionResult<string>> ChangePasswordOfLoggedUser(ChangePasswordDto changePassword) 
+        {
+            var user = await _userManager.FindByNameAsync(changePassword.Username);
+            if (user == null) return BadRequest(new { message = "There is no user with given username" });    // unlikely
+
+            var changedPasswordResult = await _userManager.ChangePasswordAsync(user, changePassword.CurrentPassword, changePassword.NewPassword);
+        
+            if(!changedPasswordResult.Succeeded) {
+                return BadRequest(new { message = "Invalid password" });
+            }
+
+            return Ok(new { message = "Password changed" });
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult<ResetPasswordAfterEmailConfirmationDto>> ForgotPassword(ForgotPasswordDto forgotPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
+            if (user != null)
+            {
+                var resetPassToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                ResetPasswordAfterEmailConfirmationDto response = new ResetPasswordAfterEmailConfirmationDto
+                {
+                    Token = resetPassToken,
+                    Email = forgotPassword.Email
+                };
+                return response;
+            }
+            else return BadRequest("User is not registered");
+        }
+
+        [HttpPost("resend-link")]
+        public async Task<ActionResult> ResendLink(ForgotPasswordDto forgotPassword)
+        {
+            if (await UserExistsByEmail(forgotPassword.Email))
+            {
+                var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
+                if (user != null)
+                {
+                    if (user.EmailConfirmed) 
+                    {
+                        return BadRequest("User already confirmed mail");
+                    }
+
+                    // kreiranje tokena za verifikaciju email-a
+                    var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    // Obavzeno enkodovati token!
+                    var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
+                    var conformationLink = $"http://localhost:4200/account/confirm-email?email={user.Email}&token={encodedToken}";
+
+                    // poslati registacioni mejl [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS]
+                    // _emailService.SendToConfirmEmail(user.Email, user.UserName, conformationLink);
+
+                    return Ok();
+                } else return BadRequest("User cant be fetched from Database");
+
+            }
+            else return BadRequest("Username is not registered");
         }
     }
 }

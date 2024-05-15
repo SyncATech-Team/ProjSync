@@ -1,11 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../../../_service/issue.service';
 import { ActivatedRoute } from '@angular/router';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserGetter } from '../../../_models/user-getter';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IssueType } from '../../../_models/issue-type';
-import { IssuePriority, JIssue } from '../../../_models/issue';
+import { JIssue } from '../../../_models/issue';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { IssueStatus } from '../../../_models/issue-status';
 import { CreateGroupComponent } from '../create-group/create-group.component';
@@ -19,6 +18,7 @@ import { IssuePriorityIcon } from '../../../_models/issue-priority-icon';
 import { ProjectConst } from '../../config/const';
 import { CreateIssueModel } from '../../../_models/create-issue.model';
 import { IssueTypeWithIcon } from '../../../_models/issue-type-icon';
+import { DateService } from '../../../_service/date.service';
 
 @Component({
   selector: 'app-create-task',
@@ -36,8 +36,6 @@ export class CreateTaskComponent implements OnInit {
   // issuePrioritys : IssuePriority[] = [];
   issueStatus : IssueStatus[] = [];
   usersPhotos: PhotoForUser[] = [];
-
-  selectedAssignees : UserGetter[] = [];
   currentUser? : string;
 
   issueCreator : CreateIssueModel = {
@@ -46,9 +44,9 @@ export class CreateTaskComponent implements OnInit {
     statusName: "",
     priorityName: "",
     description: "",
-    createdDate: new Date(),
+    createdDate: null!,
     updatedDate: new Date(),
-    dueDate: new Date(),
+    dueDate: null!,
     ownerUsername: "",
     reporterUsername: "",
     assigneeUsernames: [],
@@ -70,7 +68,7 @@ export class CreateTaskComponent implements OnInit {
     private accountServis: AccountService,
     private groupService: GroupService,
     private userPictureService: UserProfilePicture
-  ) { 
+  ) {
     this.currentUser = this.accountServis.getCurrentUser()?.username;
     this.form = this.formBuilder.group({
       'issue-group': [],
@@ -106,7 +104,7 @@ export class CreateTaskComponent implements OnInit {
           console.log(error);
         }
       });
-    
+
     if(this.projectName)
       this.userOnProject.getAllUsersOnProject(this.projectName).subscribe({
         next: (response) => {
@@ -143,24 +141,57 @@ export class CreateTaskComponent implements OnInit {
 
       try {
         this.issueCreator.name = this.form.controls['issue-name'].value;
+        // PROVERA NAZIVA
+        if(this.issueCreator.name == null || this.issueCreator.name == ""){
+          this.msgPopUpService.showError("Unable to create task, task name is empty");
+          return;
+        }
 
         this.selectedIssueType = this.form.controls['issue-type'].value;
+        // PROVERA TIPA
+        if(this.selectedIssueType == null){
+          this.msgPopUpService.showError("Unable to create task, task type is empty");
+          return;
+        }
         this.issueCreator.typeName = this.selectedIssueType.value;
-
-        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;
-        // this.issueCreator.priorityName = this.selectedPriorityModel.value;
+        
         this.selectedPriorityModel = this.form.controls['issue-priority'].value;
+        // PROVERA PRIORITETA
+        if(this.selectedPriorityModel == null){
+          this.msgPopUpService.showError("Unable to create task, task priority is empty");
+          return;
+        }
         this.issueCreator.priorityName = this.selectedPriorityModel.value;
-        console.log(this.selectedPriorityModel);
 
+        //PROVERA STATUSA
+        if(this.form.controls['issue-status'].value == null){
+          this.msgPopUpService.showError("Unable to create task, task status is empty");
+          return;
+        }  
+        this.issueCreator.statusName = this.form.controls['issue-status'].value.name;      
         this.issueCreator.description = this.form.controls['issue-description'].value;
-        this.issueCreator.createdDate = this.form.controls['issue-create-date'].value;
-        this.issueCreator.updatedDate = new Date();
-        this.issueCreator.dueDate = this.form.controls['issue-due-date'].value;
+        if(this.form.controls['issue-create-date'].value == null){
+          this.msgPopUpService.showError("Unable to create task, start date is empty");
+          return;
+        }
+        this.issueCreator.createdDate = DateService.convertToUTC(this.form.controls['issue-create-date'].value);
+        this.issueCreator.updatedDate = DateService.convertToUTC(new Date());
+        if(this.form.controls['issue-due-date'].value == null){
+          this.msgPopUpService.showError("Unable to create task, due date is empty");
+          return;
+        }
+        this.issueCreator.dueDate = DateService.convertToUTC(this.form.controls['issue-due-date'].value);
         this.issueCreator.ownerUsername = this.currentUser!;
+        if(this.form.controls['issue-reporter'].value == null){
+          this.msgPopUpService.showError("Unable to create task, reporter is not selected");
+          return;
+        }
         this.issueCreator.reporterUsername = this.form.controls['issue-reporter'].value.username;
-        const assignedToUsernames = this.selectedAssignees.map(user => user.username);
-        this.issueCreator.assigneeUsernames = assignedToUsernames;
+        if(this.form.controls['issue-assigner'].value == null){
+          this.msgPopUpService.showError("Unable to create task, assignee is not selected");
+          return;
+        }
+        this.issueCreator.assigneeUsernames = this.form.controls['issue-assigner'].value.map((user: UserGetter) => user.username);
         this.issueCreator.dependentOnIssues = [];  // ZA SADA PRAZAN STRING TREBA OMOGUCITI I BIRANJE ZAVISNOSTI
         this.issueCreator.projectName = this.projectName;
         this.issueCreator.groupName = this.form.controls['issue-group'].value.name;
@@ -172,10 +203,12 @@ export class CreateTaskComponent implements OnInit {
           this._issueService.createIssue(this.issueCreator).subscribe({
             next : (response) => {
               this.msgPopUpService.showSuccess("Task successfully created");
-              this._modal.close();
+              this.closeModal("created-task");
             },
             error : (error) => {
-              console.log(error);
+              if(error.error.message == "A task cannot be created because its creation date is before the project creation date"){
+                this.msgPopUpService.showError("A task cannot be created because its creation date is before the project creation date");
+              }
             }
           })
         }
@@ -186,8 +219,8 @@ export class CreateTaskComponent implements OnInit {
     }
   }
 
-  closeModal() {
-    this._modal.close();
+  closeModal(param: string) {
+    this._modal.close(param);
   }
 
   showCreateGroupPopUp(){
@@ -200,12 +233,19 @@ export class CreateTaskComponent implements OnInit {
       modal: true,
       dismissableMask: true,
       closeOnEscape: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      },
       data: {
         projectName: this.projectName,
       }
     });
-  
+
     this.ref.onClose.subscribe((data: any) => {
+      if(data != "created-group") return;     // NE REFRESHUJ MODAL ZA KREIRANJE ZADATKA UKOLIKO NIJE DODATA GRUPA
+
+      // console.log("Refresh modal");
       this.ngOnInit();
     });
   }
@@ -218,7 +258,7 @@ export class CreateTaskComponent implements OnInit {
             let path = response['fileContents'];
             path = this.userPictureService.decodeBase64Image(response['fileContents']);
             var ph: PhotoForUser = {
-              username: user.username, 
+              username: user.username,
               photoSource: path
             };
             this.usersPhotos.push(ph);

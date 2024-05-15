@@ -1,0 +1,29 @@
+.flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.card {
+    width: 100%;
+    border: 0px !important;
+}
+
+.log-item {
+    height: 100px;
+    overflow-y: hidden;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: whitesmoke; /* Light gray background */
+    border-left: 4px solid #007bff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+}
+/* 
+.log-item:hover {
+    background-color: #e0e0e0;
+    box-shadow: black;
+} */

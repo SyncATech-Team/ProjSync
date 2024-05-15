@@ -1,16 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
 import { UserService } from '../../../../_service/user.service';
-import { Table } from 'primeng/table';
+import { Table, TableLazyLoadEvent } from 'primeng/table';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
-import { Observable } from 'rxjs';
-import { CompanyRole } from '../../../../_models/company-role';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
 import { EmailValidationService } from '../../../../_service/email_validator.service';
 import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
+import { PresenceService } from '../../../../_service/presence.service';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ForgotPasswordModel } from '../../../../_models/forgot-password';
+import { AccountService } from '../../../../_service/account.service';
 
 /**
  * Interfejs koji predstavlja jednu kolonu u tabeli koju eksportujemo
@@ -43,7 +45,7 @@ export class UserPageComponent implements OnInit {
   users_backup: UserGetter[] = [];
   usersShow: UserGetter[] = [];
 
-  roles$: Observable<CompanyRole[]> | undefined;
+  roles$: any[] | undefined;
 
   initialUsername: string = '';
   editUser: UserGetter = {
@@ -62,19 +64,23 @@ export class UserPageComponent implements OnInit {
   };
 
   searchTerm : string = '';
+  searchTermChanged: Subject<string> = new Subject<string>();
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
 
   first = 0;
   rows = 10;
+  totalRecords = 0;
   loading: boolean = true;
   activityValues: number[] = [0, 100];
   @ViewChild(Table) table!:Table;
 
-  visibilityFilter: boolean = true;
+  visibilityFilter: boolean = false;
 
   usersPhotos: PhotoForUser[] = [];
+
+  lastLazyLoadEvent!: TableLazyLoadEvent;
 
   //#endregion
 
@@ -87,8 +93,12 @@ export class UserPageComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private companyRoleService: CompanyroleService,
     private emailValidationService: EmailValidationService,
-    private userPictureService: UserProfilePicture
-    ){ }
+    private userPictureService: UserProfilePicture,
+    public presenceService: PresenceService,
+    public accountService: AccountService
+    ){
+      this.searchTermChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe(_ => this.loadUsers(this.lastLazyLoadEvent));
+     }
 
   /**
    * OnInit metod:
@@ -100,18 +110,18 @@ export class UserPageComponent implements OnInit {
    */
   ngOnInit(): void {
       // Dovuci registrovane korisnike iz baze putem servisa
-      this.userService.getAllUsers().subscribe({
-        next: response => {
-          this.users = response;
-          this.users_backup = response;
-          this.getUserProfilePhotos();
-          this.showDeactivated(false);
-          // console.log(this.users);
-        },
-        error: error => {
-          console.log("ERROR: " + error.error);
-        }
-      });
+      // this.userService.getAllUsers().subscribe({
+      //   next: response => {
+      //     this.users = response;
+      //     this.users_backup = response;
+      //     this.getUserProfilePhotos();
+      //     this.showDeactivated(false);
+      //     // console.log(this.users);
+      //   },
+      //   error: error => {
+      //     console.log("ERROR: " + error.error);
+      //   }
+      // });
 
       // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
       this.cols = [
@@ -121,7 +131,14 @@ export class UserPageComponent implements OnInit {
       ];
 
       // Dovuci kreirane uloge u kompaniji
-      this.roles$ = this.companyRoleService.getAllCompanyRoles();
+      this.companyRoleService.getAllCompanyRoles().subscribe({
+        next: (response) => {
+          this.roles$ = response.map(role => role.name);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
 
       this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
   }
@@ -220,7 +237,14 @@ export class UserPageComponent implements OnInit {
 
             this.users[userIndex].isActive = !this.users[userIndex].isActive;
 
-            this.userService.updateUserInfo(this.users[userIndex].username, this.users[userIndex]).subscribe({});
+            this.userService.updateUserInfo(this.users[userIndex].username, this.users[userIndex]).subscribe({
+              next: (response) => {
+                this.showDeactivated(false);
+              },
+              error: (err) => {
+                console.log(err);
+              }
+            });
 
             if(this.users[userIndex].isActive == true){
               this.msgPopupService.showSuccess("User activated");
@@ -228,8 +252,7 @@ export class UserPageComponent implements OnInit {
             else{
               this.msgPopupService.showSuccess("User deactivated");
             }
-            this.table.reset();
-            this.showDeactivated(false);
+            
           },
           error: error => {
             this.msgPopupService.showError("Unable to deactive user");
@@ -261,7 +284,7 @@ export class UserPageComponent implements OnInit {
       tekst = event.target.value;
     }
 
-    console.log(tekst);
+    // console.log(tekst);
   }
 
   /**
@@ -269,13 +292,7 @@ export class UserPageComponent implements OnInit {
    * @param table 
    */
   search() {
-    let searchTerm = this.searchTerm.toLowerCase();
-    if (searchTerm.trim() === '') {
-      //Kreira se novi niz za istim elementima 
-      this.showDeactivated(false);
-    } else {
-      this.usersShow = this.users_backup.filter(user => user.username.toLowerCase().includes(searchTerm));
-    }
+    this.searchTermChanged.next(this.searchTerm);
   }
 
   /**
@@ -408,6 +425,21 @@ export class UserPageComponent implements OnInit {
       img.src = this.getUserImagePath(user.username);
     }
   }
+
+  resendActivationLink(user: UserGetter) {
+    let model: ForgotPasswordModel = {
+      email: user.email
+    }
+    
+    this.accountService.resendLink(model).subscribe({
+      next: _ => {
+        this.msgPopupService.showInfo("Verification link sent");
+      },
+      error: error => {
+        this.msgPopupService.showError(error.error);
+      }
+    });
+  }
   /**
    * Metod koji se poziva na klik dugmeta za promenu podataka korisnika.
    * Izvrsava provere da li su novi podaci validni i poziva servis za izmenu podataka.
@@ -418,7 +450,7 @@ export class UserPageComponent implements OnInit {
     this.userService.updateUserInfo(this.initialUsername, this.editUser).subscribe({
       next: response => {
         this.msgPopupService.showSuccess("Successfully edited user info");
-        this.ngOnInit();
+        this.showDeactivated(false);
       },
       error: error => {
         this.msgPopupService.showError("Unable to edit user");
@@ -431,7 +463,7 @@ export class UserPageComponent implements OnInit {
    * @param email 
    */
   emailFormatCheck(email: string) {
-    console.log("Checking: " + email);
+    // console.log("Checking: " + email);
     let isValid: boolean = this.emailValidationService.isValidEmailAddress(email);
     let mailInput: HTMLInputElement = document.getElementsByClassName("email")[0] as HTMLInputElement;
     
@@ -453,12 +485,10 @@ export class UserPageComponent implements OnInit {
 
   // Koriste se pri filtriranju usera
   // checkbox filter || checker se koristi kako bi znali da li zelimo da menjamo stanje tabele ili ne
-  showDeactivated(checker : boolean){
-    if(checker){
+  showDeactivated(condition: boolean){
+    if(condition)
       this.visibilityFilter = !this.visibilityFilter;
-    }
-
-    this.filterUsers(this.visibilityFilter);
+    this.loadUsers(this.lastLazyLoadEvent);
   }
 
 
@@ -473,6 +503,22 @@ export class UserPageComponent implements OnInit {
     {
       this.usersShow=this.users.filter((users)=> users.isActive==false);
     }
+  }
+
+  loadUsers(event: TableLazyLoadEvent){
+    this.lastLazyLoadEvent = event;
+    this.userService.getPaginationAllUsers(!this.visibilityFilter,event,this.searchTerm.toLowerCase().trim()).subscribe({
+      next:(response) => {
+        this.users = response.users;
+        this.totalRecords = response.numberOfRecords;
+        this.getUserProfilePhotos();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+
+    });
+    
   }
 
 }

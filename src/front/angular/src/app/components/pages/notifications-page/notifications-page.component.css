@@ -1,0 +1,95 @@
+#page-wrapper {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.notification-center {
+    max-width: 600px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.unread-count {
+    font-size: 16px;
+    color: #777;
+}
+
+.notifications {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.notification {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #007bff;
+    border-radius: 5px;
+    transition: border-left-color 0.3s;
+}
+
+.notification:hover {
+    /* border-left-color: #0056b3; */
+    border-left-color: purple;
+    transition: border-left-color 0.3s ease-in-out;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+}
+
+.mark-read {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.mark-read:hover {
+    text-decoration: underline;
+}
+
+.content {
+    margin: 10px 0 0 0;
+    font-size: 16px;
+}
+
+#mark-all-read {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#mark-all-read:hover {
+    background-color: #0056b3;
+}

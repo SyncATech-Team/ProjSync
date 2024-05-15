@@ -3,6 +3,7 @@ import { JIssue } from '../../../../_models/issue';
 import { FormControl } from '@angular/forms';
 import { quillConfiguration } from '../../../config/editor';
 import {ProjectService} from "../../../state/project/project.service";
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'issue-description',
@@ -16,7 +17,10 @@ export class IssueDescriptionComponent implements OnChanges {
   isEditing!: boolean;
   isWorking!: boolean;
 
-  constructor(private _projectService: ProjectService) {}
+  constructor(
+    private _projectService: ProjectService,
+    private _sanitizer: DomSanitizer
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const issueChange = changes['issue'];
@@ -46,5 +50,9 @@ export class IssueDescriptionComponent implements OnChanges {
   cancel() {
     this.descriptionControl.patchValue(this.issue.description);
     this.setEditMode(false);
+  }
+
+  getSanitizedHTML(content: string): SafeHtml {
+    return this._sanitizer.bypassSecurityTrustHtml(content);
   }
 }

@@ -4,8 +4,16 @@
     --color-value-2: #bcd0f5;
 }
 
+.nav_right_opt{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .navbar .logo{
     margin-right: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .button-collapse{
@@ -102,4 +110,50 @@
 
 .email {
     font-size: 12px;
+}
+
+.logo a {
+    font-size: unset !important;
+}
+
+.navbar-brand img {
+    height: 100%;
+    width: 100px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.logo-link {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.logo-link:hover {
+    transform: scale(1.1);
+}
+
+.work-link {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: fit-content;
+}
+
+.work-link:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.navbar-text {
+    color: #5E5BF4;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.dropdown-item {
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+}
+
+.dropdown-item:hover {
+    cursor: pointer;
+    background-color: #d8dde6;
 }

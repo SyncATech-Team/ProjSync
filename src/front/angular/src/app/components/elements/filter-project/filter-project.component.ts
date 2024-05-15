@@ -55,7 +55,7 @@ export class FilterProjectComponent implements OnInit{
 
   initializeFilters():void {
     this.projects=this.homePage.projects;
-    console.log(this.projects);
+    // console.log(this.projects);
   }
 
   onSuccessfulCreation(){

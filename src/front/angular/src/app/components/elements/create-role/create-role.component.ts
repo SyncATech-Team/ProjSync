@@ -4,6 +4,7 @@ import { CompanyroleService } from '../../../_service/companyrole.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { NgForm } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
+import { RolePageComponent } from '../../pages/admin-page/role-page/role-page.component';
 
 @Component({
   selector: 'app-create-role',
@@ -26,14 +27,16 @@ export class CreateRoleComponent {
   constructor(
     private croleService: CompanyroleService,
     private msgPopUpService: MessagePopupService,
-    private changeDetectorRef: ChangeDetectorRef) { }
+    private changeDetectorRef: ChangeDetectorRef,
+    private adminRolePage: RolePageComponent) { }
 
   createRole() {
-    console.log(this.roleToCreate);
+    // console.log(this.roleToCreate);
     this.croleService.create(this.roleToCreate).subscribe({
       next: (response) => {
         this.msgPopUpService.showSuccess("Successfully created new role!");
         this.onSuccessfullCreation();
+        this.adminRolePage.ngOnInit();
       },
       error: (error) => {
         this.msgPopUpService.showError("Unable to create new role! Make sure there are no duplicate names.")

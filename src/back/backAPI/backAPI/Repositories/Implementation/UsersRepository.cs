@@ -7,6 +7,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using backAPI.Entities.Domain;
+using backAPI.Other.Helpers;
+using Newtonsoft.Json.Linq;
 
 namespace backAPI.Repositories.Implementation
 {
@@ -199,6 +201,335 @@ namespace backAPI.Repositories.Implementation
                 user.ProfilePhoto = photoURL;
                 await dataContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<(IEnumerable<User> users, int numberOfRecords)> GetPaginationAllUsersAsync(Criteria criteria)
+        {
+            var users = dataContext.Users
+                .Join(dataContext.CRoles,
+                    u => u.CompanyRoleId,
+                    cr => cr.Id,
+                    (u, cr) => new { User = u, CompanyRole = cr });
+
+            if (criteria.Filters.Count > 0)
+            {
+                var users2 = users;
+                var users3 = users;
+                foreach (var filter in criteria.Filters)
+                {
+                    users2 = users;
+                    users3 = users.Where(u => u.User.UserName==null);
+                    foreach (var fieldFilter in filter.Fieldfilters)
+                    {
+                        if (fieldFilter.Value.GetType() == typeof(string))
+                        {
+                            if (fieldFilter.MatchMode == "startsWith")
+                            {
+                                if (filter.Field == "username")
+                                {
+                                    users2 = users.Where(u => u.User.UserName.StartsWith((string)fieldFilter.Value));
+                                }
+                                else
+                                {
+                                    users2 = users.Where(u => u.User.Email.StartsWith((string)fieldFilter.Value));
+                                }
+                            }
+                            else
+                            {
+                                if (fieldFilter.MatchMode == "contains")
+                                {
+                                    if (filter.Field == "username")
+                                    {
+                                        users2 = users.Where(u => u.User.UserName.Contains((string)fieldFilter.Value));
+                                    }
+                                    else
+                                    {
+                                        users2 = users.Where(u => u.User.Email.Contains((string)fieldFilter.Value));
+                                    }
+                                }
+                                else
+                                {
+                                    if (fieldFilter.MatchMode == "notContains")
+                                    {
+                                        if (filter.Field == "username")
+                                        {
+                                            users2 = users.Where(u => !u.User.UserName.Contains((string)fieldFilter.Value));
+                                        }
+                                        else
+                                        {
+                                            users2 = users.Where(u => !u.User.Email.Contains((string)fieldFilter.Value));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (fieldFilter.MatchMode == "endsWith")
+                                        {
+                                            if (filter.Field == "username")
+                                            {
+                                                users2 = users.Where(u => u.User.UserName.EndsWith((string)fieldFilter.Value));
+                                            }
+                                            else
+                                            {
+                                                users2 = users.Where(u => u.User.Email.EndsWith((string)fieldFilter.Value));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (fieldFilter.MatchMode == "equals")
+                                            {
+                                                if (filter.Field == "username")
+                                                {
+                                                    users2 = users.Where(u => u.User.UserName.Equals((string)fieldFilter.Value));
+                                                }
+                                                else
+                                                {
+                                                    users2 = users.Where(u => u.User.Email.Equals((string)fieldFilter.Value));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (fieldFilter.MatchMode == "notEquals")
+                                                {
+                                                    if (filter.Field == "username")
+                                                    {
+                                                        users2 = users.Where(u => !u.User.UserName.Equals((string)fieldFilter.Value));
+                                                    }
+                                                    else
+                                                    {
+                                                        users2 = users.Where(u => !u.User.Email.Equals((string)fieldFilter.Value));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (fieldFilter.Value.GetType() == typeof(DateTime))
+                            {
+                                if (fieldFilter.MatchMode == "dateIs")
+                                {
+                                    if (filter.Field == "createdAt")
+                                    {
+                                        users2 = users.Where(u => u.User.CreatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                    }
+                                    else
+                                    {
+                                        users2 = users.Where(u => u.User.UpdatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                    }
+                                }
+                                else
+                                {
+                                    if (fieldFilter.MatchMode == "dateIsNot")
+                                    {
+                                        if (filter.Field == "createdAt")
+                                        {
+                                            users2 = users.Where(u => !u.User.CreatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        }
+                                        else
+                                        {
+                                            users2 = users.Where(u => !u.User.UpdatedAt.Date.Equals(((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (fieldFilter.MatchMode == "dateAfter")
+                                        {
+                                            if (filter.Field == "createdAt")
+                                            {
+                                                users2 = users.Where(u => u.User.CreatedAt.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            }
+                                            else
+                                            {
+                                                users2 = users.Where(u => u.User.UpdatedAt.Date > (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (fieldFilter.MatchMode == "dateBefore")
+                                            {
+                                                if (filter.Field == "createdAt")
+                                                {
+                                                    users2 = users.Where(u => u.User.CreatedAt.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                }
+                                                else
+                                                {
+                                                    users2 = users.Where(u => u.User.UpdatedAt.Date < (((DateTime)fieldFilter.Value).AddDays(1).Date));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if(fieldFilter.Value.GetType() == typeof(JArray))
+                                {
+                                    users2 = users.Where(u => (((JArray)fieldFilter.Value).ToObject<List<string>>()).Contains(u.CompanyRole.Name));
+                                }
+                                else
+                                {
+                                    users2 = users.Where(u => u.User.IsActive == (bool)fieldFilter.Value);  
+                                }  
+                            }
+                        }
+                        if(fieldFilter.Operator == "or")
+                        {
+                            users3 = users3.Union(users2);
+                        }
+                        else
+                        {
+                            users = users2;
+                            users3 = users;
+                        } 
+                    }
+                    users = users3;
+                }
+            }
+            int numberOfRecords = users.Count();
+            if (criteria.MultiSortMeta.Count > 0)
+            {
+                MultiSortMeta firstOrder = criteria.MultiSortMeta[0];
+                criteria.MultiSortMeta.RemoveAt(0);
+                var orderdUsers = users.OrderBy(u => u.User.UserName);
+
+                if (firstOrder.Order == 1)
+                {
+                    if (firstOrder.Field == "username")
+                    {
+                        orderdUsers = users.OrderBy(u => u.User.UserName);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "email")
+                        {
+                            orderdUsers = users.OrderBy(u => u.User.Email);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "companyRoleName")
+                            {
+                                orderdUsers = users.OrderBy(u => u.CompanyRole.Name);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "createdAt")
+                                {
+                                    orderdUsers = users.OrderBy(u => u.User.CreatedAt);
+                                }
+                                else
+                                {
+                                    orderdUsers = users.OrderBy(u => u.User.UpdatedAt);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (firstOrder.Field == "username")
+                    {
+                        orderdUsers = users.OrderByDescending(u => u.User.UserName);
+                    }
+                    else
+                    {
+                        if (firstOrder.Field == "email")
+                        {
+                            orderdUsers = users.OrderByDescending(u => u.User.Email);
+                        }
+                        else
+                        {
+                            if (firstOrder.Field == "companyRoleName")
+                            {
+                                orderdUsers = users.OrderByDescending(u => u.CompanyRole.Name);
+                            }
+                            else
+                            {
+                                if (firstOrder.Field == "createdAt")
+                                {
+                                    orderdUsers = users.OrderByDescending(u => u.User.CreatedAt);
+                                }
+                                else
+                                {
+                                    orderdUsers = users.OrderByDescending(u => u.User.UpdatedAt);
+                                }
+                            }
+                        }
+                    }
+                }
+                foreach (var order in criteria.MultiSortMeta)
+                {
+                    if (order.Order == 1)
+                    {
+                        if (order.Field == "username")
+                        {
+                            orderdUsers = orderdUsers.ThenBy(u => u.User.UserName);
+                        }
+                        else
+                        {
+                            if (order.Field == "email")
+                            {
+                                orderdUsers = orderdUsers.ThenBy(u => u.User.Email);
+                            }
+                            else
+                            {
+                                if (order.Field == "companyRoleName")
+                                {
+                                    orderdUsers = orderdUsers.ThenBy(u => u.CompanyRole.Name);
+                                }
+                                else
+                                {
+                                    if (order.Field == "createdAt")
+                                    {
+                                        orderdUsers = orderdUsers.ThenBy(u => u.User.CreatedAt);
+                                    }
+                                    else
+                                    {
+                                        orderdUsers = orderdUsers.ThenBy(u => u.User.UpdatedAt);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (order.Field == "username")
+                        {
+                            orderdUsers = orderdUsers.ThenByDescending(u => u.User.UserName);
+                        }
+                        else
+                        {
+                            if (order.Field == "email")
+                            {
+                                orderdUsers = orderdUsers.ThenByDescending(u => u.User.Email);
+                            }
+                            else
+                            {
+                                if (order.Field == "companyRoleName")
+                                {
+                                    orderdUsers = orderdUsers.ThenByDescending(u => u.CompanyRole.Name);
+                                }
+                                else
+                                {
+                                    if (order.Field == "createdAt")
+                                    {
+                                        orderdUsers = orderdUsers.ThenByDescending(u => u.User.CreatedAt);
+                                    }
+                                    else
+                                    {
+                                        orderdUsers = orderdUsers.ThenByDescending(u => u.User.UpdatedAt);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return (await orderdUsers.Select(u => u.User).Skip(criteria.First).Take(criteria.Rows).ToArrayAsync(), numberOfRecords);
+            }
+
+            return (await users.Select(u => u.User).Skip(criteria.First).Take(criteria.Rows).ToArrayAsync(),numberOfRecords);
         }
     }
 }

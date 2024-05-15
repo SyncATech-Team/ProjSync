@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { Project } from '../../../../_models/project.model';
 import { ProjectService } from '../../../../_service/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,11 @@ import { ProjectTypeService } from '../../../../_service/project-type.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProjectType } from '../../../../_models/project-type';
 import { ProjectDocumentService } from '../../../../_service/project-document.service'
+import { DocumentTitle } from '../../../../_models/document-title.model';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-project-documents-page',
   templateUrl: './project-documents-page.component.html',
@@ -16,24 +20,13 @@ import { ProjectDocumentService } from '../../../../_service/project-document.se
 })
 export class ProjectDocumentsPageComponent implements OnInit{
 
-  form : FormGroup;
-  projectName: string | null = '';
-  fileName: String | null = '';
+  projectName: string = '';
+  documentTitles: DocumentTitle[] = [];
+  documentTitlesBackup: DocumentTitle[] = [];
+  loading: boolean = false;
 
-  projectTypes: ProjectType []=[];
-  
-  project: Project = {
-    name: "",
-    key: "",
-    typeName: "",
-    description: "",
-    ownerUsername: "",
-    creationDate: new Date(), 
-    dueDate: new Date(),
-    budget: 0,
-    visibilityName: ""
-  }
-  
+  searchTerm: string = "";
+
   constructor (
     private ProjectDocService: ProjectDocumentService,
     private route: ActivatedRoute,
@@ -44,53 +37,150 @@ export class ProjectDocumentsPageComponent implements OnInit{
     private projectTypeService: ProjectTypeService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService){
-      this.projectName = route.snapshot.paramMap.get('projectName');
-      this.form = this.formBuilder.group({
-        name: [''],
-        category: [''],
-        description: ['']
-      });
-  
-      this.projectTypeService.getAllProjectTypes().subscribe({
-        next: (response)=>{
-          this.projectTypes = response;
-        },
-        error: (error)=>{
-          console.log(error);
-        }
-      });};
 
-
+      this.projectName = route.snapshot.paramMap.get('projectName')!;
+    
+    };
 
   ngOnInit(): void {
-    this.projectService.getProjectByName(this.projectName).subscribe({
-      next: (response)=>{
-        this.project= response;
+    this.ProjectDocService.getDocumentTitles(this.projectName).subscribe({
+      next: response => {
+        this.documentTitles = response.sort(this.sortFunc);
+        this.documentTitlesBackup = response.sort(this.sortFunc);
+      },
+      error: error => {
+        console.log(error.error);
+      }
+    })
+  }
 
-        //Za ispis u input poljima default-no
-        // this.projectName2 = this.project.name;
-        // this.projectType2 = this.project.typeName;
-        // this.projectDescription2 = this.project.description;
+  private sortFunc(a: DocumentTitle, b: DocumentTitle): number {
+    if(a.dateUploaded < b.dateUploaded) return 1;
+    if(a.dateUploaded == b.dateUploaded) return 0;
+    return -1;
+  }
 
-        this.form.patchValue({
-          category: this.projectTypes.find(type => type.name === this.project.typeName)
+  deleteDocument(id: number, docName: string) {
+    
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this document?',
+      header: 'Delete: ' + docName + "?",
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      acceptIcon:"none",
+      rejectIcon:"none",
+
+      accept: () => {
+        this.ProjectDocService.deleteDocument(id).subscribe({
+          next: _ => {
+            this.msgPopupService.showSuccess("Selected document deleted successfully");
+            this.ngOnInit();
+          },
+          error: error => {
+            this.msgPopupService.showError("Unable to delete choosen document");
+          }
         });
       },
-      error: (error)=>{
-        console.log(error);
+      reject: () => {
+
       }
+    })
+  }
+
+  toggleOlderVersions(element: any) {
+    element.showOlderVersions = !element.showOlderVersions;
+  }
+  
+  getIcon(fileName: string): string {
+    let extension = fileName.split(".")[fileName.split(".").length-1];
+    return "assets/document-type-icons/icon_" + extension + ".png";
+
+  }
+
+  searchDocuments() {
+
+    let searchTerm = this.searchTerm.toLowerCase().trim();
+    let filteredTitles = [...this.documentTitlesBackup];
+    filteredTitles = filteredTitles.filter(title => title.title.toLowerCase().includes(searchTerm));
+    this.documentTitles = filteredTitles;
+
+  }
+
+  /**
+   * Funkcija koja za prosledjeni naslov vraca isti naslov ukoliko je duzina odgovarajuca
+   * U slucaju da je naslov predug naziv ce biti skracen sa dodatim ... na kraju
+   */
+  getTitle(current: string) {
+
+    const LIMIT = 20;
+    if (current.length < LIMIT ) return current;
+    return current.substring(0, LIMIT) + "...";
+
+  }
+
+  downloadDocument(documentId: number, title: string) {
+    this.ProjectDocService.getDocumentContents(documentId).subscribe(data => {
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = title; // Filename for the downloaded file
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a); // Remove the <a> element after downloading
+    }, error => {
+      // Handle error
+      console.error('Error downloading document:', error);
+      this.msgPopupService.showError('Error downloading document');
     });
   }
 
-  onFileSelected(event: any){
-    const file:File = event.target.files[0];
+  previewDocument(documentId: number, title: string) {
+    this.ProjectDocService.getDocumentContents(documentId).subscribe(data => {
+      
+      const blob = new Blob([data]);
+      
+      const fileType = this.getFileType(title);
 
-    if(file){
-      this.ProjectDocService.uploadDocument(file).subscribe({
+      if(fileType === "pdf") {
+        const url = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' })); // Adjust the type as per your document type
+        window.open(url, '_blank'); // Open the URL in a new tab for preview
+        window.URL.revokeObjectURL(url);
+      }
+      else if(fileType === "image") {
+        const imageUrl = URL.createObjectURL(blob);
+        const img = new Image();
+        img.src = imageUrl;
+        const w = window.open("_blank");
+        w!.document.write(img.outerHTML);
+      }
+      else {
+        this.downloadDocument(documentId, title);
+      }
+      
+    }, error => {
+      // Handle error
+      console.error('Error previewing document:', error);
+      this.msgPopupService.showError('Error previewing document');
+    });
+  }
 
-      })
-
+  private getFileType(title: string): string {
+    const extension = title.split('.').pop()?.toLowerCase();
+    if (extension === 'pdf') {
+      return 'pdf';
+    } else if ( extension != undefined && ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'].includes(extension)) {
+      return 'image';
+    } else {
+      return 'other';
     }
+  }
+
+  isPdfOrImageExtension(title: string): boolean {
+    let fType = this.getFileType(title.toLowerCase());
+    return fType === "pdf" || fType === "image";
   }
 
 }
