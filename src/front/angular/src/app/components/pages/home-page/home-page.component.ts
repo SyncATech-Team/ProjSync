@@ -29,7 +29,6 @@ export class HomePageComponent implements OnInit {
   projectCompletionMap: Map<string, number> = new Map<string, number>();
 
   projects: Project[]=[];
-  issuesForProject : IssueModel[] = [];
   Types: any[]=[];
 
   projectsShow: any[] = [];
