@@ -150,8 +150,8 @@ export class HomePageComponent implements OnInit {
             project.dueDate = new Date(project.dueDate); 
 
             const completion = this.calculateProjectCompletionTime(project.creationDate, project.dueDate);
-            this.calculateProjectCompletion(project.name);
             this.projectCompletioTimeMap.set(project.key, completion);
+            this.projectCompletionMap.set(project.key, project.projectProgress! * 100);
           });
           this.filterProjects(this.visibilityFilter);
         },
@@ -202,21 +202,6 @@ export class HomePageComponent implements OnInit {
     let ind = this.usersPhotos.findIndex(u => u.username == username);
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
     return this.usersPhotos[ind].photoSource;
-  }
-  
-  calculateProjectCompletion(projectName : string){
-    this.statisticService.getProjectProgress(projectName).subscribe({
-      next:(respone) =>{
-        let projectProgress = respone;
-        projectProgress = projectProgress * 100;
-        console.log(projectName + " : " + projectProgress);
-        this.projectCompletionMap.set(projectName, projectProgress);
-        console.log(this.projectCompletionMap);
-      },
-      error:(error) => {
-        console.log(error.error);
-      }
-    });
   }
   
   calculateProjectCompletionTime(startDate: Date, endDate: Date): number {

@@ -498,7 +498,9 @@
                                             <i class="pi pi-pencil"></i>
                                         </div>
                                         <div class="progress-bar-wrapper">
-                                            <p-progressBar></p-progressBar>
+                                            <p-progressBar #content
+                                            [value]="projectCompletionMap.get(project.key)"
+                                            ></p-progressBar>
                                         </div>
                                     </div>
 
