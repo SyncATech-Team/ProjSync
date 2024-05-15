@@ -27,11 +27,6 @@
 .form-floating label::after{
     background-color: transparent !important;
 }
-
-.form-floating label::before{
-    background-color: transparent !important;
-}
-
-.form-control:focus + .form-label{
-    color:var(--text-color);
+.form-floating label{
+    color: var(--text-color);
 }

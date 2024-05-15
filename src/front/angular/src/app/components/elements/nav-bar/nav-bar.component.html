@@ -31,18 +31,33 @@
       </ul>
 
       <div class="d-flex right--side">
-        <p-inputSwitch [(ngModel)]="isDarkTheme" (onChange)="changeTheme()" />
+        
 
         <form class="d-flex nav_right_opt" role="search">
-          <input id="navbar-general-serach" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <input type="text" class="p-inputttext-sm" pInputText [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
         </form>
         <!-- <div class="notification-wrap"> -->
           <div class=" nav_right_opt" >
             <app-notification></app-notification>
           </div>
         <!-- </div> -->
-        <div class="nav_right_opt">
-          <i class="fa-solid fa-gear " style="color: black"></i>
+        
+        <div >
+          <p-overlayPanel #settings>
+              <ng-template pTemplate="content">
+                <div class="dropdown-div" id="dropdown-user-info">
+                  <div>
+                      <p> Dark mode: </p>
+                      <p-inputSwitch [(ngModel)]="isDarkTheme" (onChange)="changeTheme()" />
+                  </div>
+                </div>
+              </ng-template>
+          </p-overlayPanel>
+          <div class="nav_right_op">
+            <i id="gear" class="fa-solid fa-gear " (click)="settings.toggle($event)" ></i>
+          </div>
+          
+          
         </div>
         
         <!-- POPOVER -->

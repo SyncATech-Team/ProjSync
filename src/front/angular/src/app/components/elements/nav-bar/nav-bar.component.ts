@@ -55,7 +55,8 @@ export class NavBarComponent implements OnInit {
       error: error => {
         console.log(error.error);
       }
-    })
+    });
+    this.isDarkTheme =  this.themeService.getTheme();
   }
   
   logout() {

@@ -121,12 +121,13 @@
     margin: 2rem 0;
     /* height: 100vh; */
     border-left: 1px solid rgb(188, 185, 185);
+    color: var(--text-color);
 }
 
 #right-side .wrapper{
     margin-bottom: 10px;
     border-radius: 6px;
-    background-color: #f4eff1;
+    background-color: var(--surface-d);
     padding: 10px 18px;
     display: flex;
     align-items: center;
@@ -134,14 +135,12 @@
 }
 
 .wrapper .title{
-    color: #42526e;
     font-weight: 500;
     font-size: 18px;
 }
 
 .wrapper p{
     margin-bottom: 0;
-    color: #5e6c84;
 }
 
 :host ::ng-deep .wrapper .button-setting{
@@ -200,4 +199,14 @@
     border: 3px solid lightblue;
     border-radius: 6px;
     padding: 1px;
+}
+
+.modal-content {
+    color: var(--text-color);
+    background-color: var(--surface-card);
+}
+
+.row input{
+    color: var(--text-color);
+    background-color: var(--surface-ground);
 }

@@ -71,19 +71,22 @@ th{
 
 .nav-tabs{
     border-bottom-color: var(--text-color);
-    margin-bottom: 1px;
 }
 
 .nav-tabs .nav-item .nav-link{
     color: var(--text-color);
     background-color: var(--surface-ground);
+    border-bottom-color: transparent !important;
     border-color: var(--surface-d);
-    border-bottom-color: var(--text-color);
+    margin-bottom: 1px;
 }
 
 .nav-tabs .nav-item .nav-link.active{
     background-color: var(--surface-e);
-    border-color: var(--text-color-secondary);
+    border-top-color: var(--text-color-secondary);
+    border-left-color: var(--text-color-secondary);
+    border-right-color: var(--text-color-secondary);
+    border-bottom-color: transparent !important;
 }
 
 .profilecontent img {
