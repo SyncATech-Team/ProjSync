@@ -151,7 +151,7 @@ export class HomePageComponent implements OnInit {
 
             const completion = this.calculateProjectCompletionTime(project.creationDate, project.dueDate);
             this.projectCompletioTimeMap.set(project.key, completion);
-            this.projectCompletionMap.set(project.key, project.projectProgress! * 100);
+            this.projectCompletionMap.set(project.key, Math.floor(project.projectProgress! * 100));
           });
           this.filterProjects(this.visibilityFilter);
         },
@@ -237,6 +237,23 @@ export class HomePageComponent implements OnInit {
         return 'progress-yellow';
       } else {
         return 'progress-red';
+      }
+    }
+    else return "";
+  }
+
+  getClassForProjectProgress(percentage: number | undefined): string {
+    if(percentage != undefined){
+      if (percentage <= 15) {
+        return 'project-progress-red'; 
+      }
+      else if(percentage <= 45){
+        return 'project-progress-orange'
+      }
+      else if (percentage <= 70) {
+        return 'project-progress-green';
+      } else {
+        return 'project-progress-light-green';
       }
     }
     else return "";
