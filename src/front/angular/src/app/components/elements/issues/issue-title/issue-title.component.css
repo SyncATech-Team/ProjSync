@@ -19,6 +19,7 @@
   appearance: none;
   height: auto;
   color: #718096;
+  background-color: var(--surface-ground);
 }
 .textarea-inline-control:hover:not(:focus) {
     background-color: lightgray;

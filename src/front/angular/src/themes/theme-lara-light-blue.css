@@ -1,1 +1,9 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
+
+:root {
+    --default-color: #263238;
+    --color-value-1: #d8dde6;
+    --color-value-2: #bcd0f5;
+    --side-bar-link: black;
+}
+

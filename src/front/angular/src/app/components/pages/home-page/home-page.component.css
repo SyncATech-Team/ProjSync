@@ -53,22 +53,37 @@ input[type="checkbox"]:checked:before {
 .table-header .input-search input{
     min-width: 14rem;
     padding: 12px;
-}
-.table-header .input-search i{
-    margin-right: 20px;
+    margin-left: 12px;
 }
 
 th{
     position: sticky;
     top: 0;
     z-index: 999;
-    border: 1px solid rgb(226, 232, 240);
+    border: 1px solid var(--surface-d);
     border-top: 0;
 }
 
 .nav .nav-item{
     cursor: pointer;
     margin-top: 2px;
+}
+
+.nav-tabs{
+    border-bottom-color: var(--text-color);
+    margin-bottom: 1px;
+}
+
+.nav-tabs .nav-item .nav-link{
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+    border-color: var(--surface-d);
+    border-bottom-color: var(--text-color);
+}
+
+.nav-tabs .nav-item .nav-link.active{
+    background-color: var(--surface-e);
+    border-color: var(--text-color-secondary);
 }
 
 .profilecontent img {

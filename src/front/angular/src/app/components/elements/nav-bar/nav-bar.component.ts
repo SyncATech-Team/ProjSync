@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { ThemeService } from '../../../../themes/theme.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -20,11 +21,14 @@ export class NavBarComponent implements OnInit {
 
   profilePicturePath: string = '';
 
+  isDarkTheme: boolean = false;
+
   constructor(
       private accountService: AccountService,
       private router: Router,
       private userService: UserService,
-      private userProfilePictureService: UserProfilePicture
+      private userProfilePictureService: UserProfilePicture,
+      private themeService: ThemeService
     ) {
   }
 
@@ -117,6 +121,10 @@ export class NavBarComponent implements OnInit {
     this.router.navigate(['/home'], {
       queryParams: { showUserTasks }
     });
+  }
+
+  changeTheme(){
+    this.themeService.switchTheme(this.isDarkTheme);
   }
 
 }

@@ -1,8 +1,4 @@
-.sidenav {
-    --color-value-initial: #263238;
-    --color-value-1: #d8dde6;
-    --color-value-2: #d3dff7;
-}
+
 
 .sidenav{
     background: var(--color-value-1);
@@ -13,7 +9,7 @@
     /* z-index: 1;
     top: 0; */
     width: 5rem;
-    box-shadow: 0.063rem 0 1.25rem 0 #8690a3; 
+    box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
 }
 
 /* HEADER */
@@ -45,7 +41,7 @@
 .sidenav .logo-container .logo-header{
     margin-left: 1rem;
     font-size: 18px;
-    color: black;
+    color: var(--side-bar-link);
 }
 
 .sidenav .logo-container p{
@@ -104,7 +100,7 @@
     align-items: center;
     justify-content: left;
     height: 3rem;
-    color: black;
+    color: var(--side-bar-link);
     text-decoration: none;
     /* border-radius: 0.625rem; */
     transition: all .3s ease;

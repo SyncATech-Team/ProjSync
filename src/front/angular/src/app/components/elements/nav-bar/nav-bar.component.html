@@ -31,6 +31,8 @@
       </ul>
 
       <div class="d-flex right--side">
+        <p-inputSwitch [(ngModel)]="isDarkTheme" (onChange)="changeTheme()" />
+
         <form class="d-flex nav_right_opt" role="search">
           <input id="navbar-general-serach" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         </form>
