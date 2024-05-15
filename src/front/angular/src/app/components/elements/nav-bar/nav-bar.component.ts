@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { PhotoForUser } from '../../../_models/photo-for-user';
 
 @Component({
   selector: 'app-nav-bar',
@@ -20,23 +21,30 @@ export class NavBarComponent implements OnInit {
 
   profilePicturePath: string = '';
 
+  selectedUser?: UserGetter = undefined;
+  usersForChat: UserGetter[] = [];
+  usersForChatPhotos: PhotoForUser[] = [];
+
   constructor(
       private accountService: AccountService,
       private router: Router,
       private userService: UserService,
-      private userProfilePictureService: UserProfilePicture
+      private userPictureService: UserProfilePicture
     ) {
   }
 
   ngOnInit(): void {
+
+    this.fetchUsersForChat();
+
     this.userService.getUser(this.getUsername()).subscribe({
       next: response => {
         this.user = response;
         if(this.user.profilePhoto != null) {
-          this.userProfilePictureService.getUserImage(this.user.username).subscribe({
+          this.userPictureService.getUserImage(this.user.username).subscribe({
             next: response => {
               this.profilePicturePath = response['fileContents'];
-              this.profilePicturePath = this.userProfilePictureService.decodeBase64Image(response['fileContents']);
+              this.profilePicturePath = this.userPictureService.decodeBase64Image(response['fileContents']);
               this.setUserPicture(this.profilePicturePath);
           },
             error: error => {
@@ -52,6 +60,58 @@ export class NavBarComponent implements OnInit {
         console.log(error.error);
       }
     })
+  }
+
+  // Create method to fetch users
+  fetchUsersForChat() {
+    this.userService.getAllUsers().subscribe(users => {
+      this.usersForChat = users.filter(user => user.companyRoleName !== 'Administrator');
+      this.getUserProfilePhotos(this.usersForChat);
+    });
+  }
+
+  getUserProfilePhotos(users: UserGetter[]) {
+    for(const user of users) {
+      if(user.profilePhoto != null) {
+        this.userPictureService.getUserImage(user.username).subscribe({
+          next: response => {
+            let path = response['fileContents'];
+            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            var ph: PhotoForUser = {
+              username: user.username, 
+              photoSource: path
+            };
+            this.usersForChatPhotos.push(ph);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        var ph: PhotoForUser = {
+          username: user.username,
+          photoSource: "SLIKA_JE_NULL"
+        }
+        this.usersForChatPhotos.push(ph);
+      }
+    }
+  }
+
+  getUserImagePath(username: string,users: UserGetter[]) {
+    let index = users.findIndex(u => u.username === username);
+    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
+
+    if(users[index].profilePhoto == null)
+      return this.userPictureService.getDefaultImageForUser(users[index].username);
+
+    let ind = this.usersForChatPhotos.findIndex(u => u.username == username);
+    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
+    return this.usersForChatPhotos[ind].photoSource;
+  }
+
+  onUserChange(event: any) {
+    console.log(event);
   }
   
   logout() {
@@ -89,9 +149,9 @@ export class NavBarComponent implements OnInit {
 
     if(src === "SLIKA_JE_NULL") {
       if(this.user)
-        image.src = this.userProfilePictureService.getDefaultImageForUser(this.user.username);
+        image.src = this.userPictureService.getDefaultImageForUser(this.user.username);
       else
-        image.src = this.userProfilePictureService.getFirstDefaultImagePath();
+        image.src = this.userPictureService.getFirstDefaultImagePath();
     }
     else {
       image.src = src;
@@ -99,7 +159,7 @@ export class NavBarComponent implements OnInit {
   }
 
   getDefaultImage() {
-    return this.userProfilePictureService.getFirstDefaultImagePath();
+    return this.userPictureService.getFirstDefaultImagePath();
   }
 
   setSmallerUserPicture() {

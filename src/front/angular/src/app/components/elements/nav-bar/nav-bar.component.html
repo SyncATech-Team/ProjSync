@@ -27,16 +27,31 @@
               </div>
             </ng-template>
           </p-overlayPanel>
-        </div> 
-        <div class="navbar-item work-link">
-          <span class="navbar-text">Chat</span>
-        </div>       
+        </div>      
       </ul>
 
       <div class="d-flex right--side">
-        <form class="d-flex nav_right_opt" role="search">
-          <input id="navbar-general-serach" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        </form>
+
+        <p-dropdown 
+          [options]="usersForChat" 
+          [(ngModel)]="selectedUser"
+          optionLabel="username"
+          [showClear]="true"
+          placeholder="Chat with...">
+              <ng-template pTemplate="selectedItem">
+                <div class="user-div flex align-items-center gap-2" *ngIf="selectedUser">
+                  <img src="{{ getUserImagePath(selectedUser.username, usersForChat ) }}" style="width: 18px" />
+                  <div>{{ selectedUser.username }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-user pTemplate="item">
+                <div class="user-div flex align-items-center gap-2">
+                  <img src="{{ getUserImagePath(user.username, usersForChat ) }}" style="width: 18px" />
+                  <div>{{ user.username }}</div>
+                </div>
+              </ng-template>
+        </p-dropdown>
+        
         <!-- <div class="notification-wrap"> -->
           <div class=" nav_right_opt" >
             <app-notification></app-notification>

@@ -159,3 +159,10 @@
     cursor: pointer;
     background-color: #d8dde6;
 }
+
+.user-div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: auto;
+}
