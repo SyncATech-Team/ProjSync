@@ -477,16 +477,16 @@
                                         </div>
                                         <div class="progress-bar-wrapper">
                                             <p-progressBar 
-                                            [value]="projectCompletionMap.get(project.key)"
+                                            [value]="projectCompletioTimeMap.get(project.key)"
                                             [pTooltip]="tooltipContent"
                                             tooltipPosition="top" 
                                             [style]="{'margin-bottom': '5px'}"
                                             class="time-progress"
-                                            [ngClass]="getProgressBarClass(projectCompletionMap.get(project.key))"></p-progressBar>
+                                            [ngClass]="getProgressBarClass(projectCompletioTimeMap.get(project.key))"></p-progressBar>
                                             <ng-template #tooltipContent>
                                                 <div class="flex align-items-center">
                                                     <i class="fa-regular fa-clock"></i>
-                                                    <span> <b> {{ projectCompletionMap.get(project.key) }}%</b> </span>
+                                                    <span> <b> {{ projectCompletioTimeMap.get(project.key) }}%</b> </span>
                                                 </div>
                                             </ng-template>
                                         </div>
@@ -498,7 +498,18 @@
                                             <i class="pi pi-pencil"></i>
                                         </div>
                                         <div class="progress-bar-wrapper">
-                                            <p-progressBar></p-progressBar>
+                                            <p-progressBar #content
+                                            [value]="projectCompletionMap.get(project.key)"
+                                            [pTooltip]="tooltipContentProgress"
+                                            tooltipPosition="top" 
+                                            [ngClass]="getClassForProjectProgress(projectCompletionMap.get(project.key))">
+                                            ></p-progressBar>
+                                            <ng-template #tooltipContentProgress>
+                                                <div class="flex align-items-center">
+                                                    <i class="pi pi-pencil"></i>
+                                                    <span> <b> {{ projectCompletionMap.get(project.key) }}%</b> </span>
+                                                </div>
+                                            </ng-template>
                                         </div>
                                     </div>
 

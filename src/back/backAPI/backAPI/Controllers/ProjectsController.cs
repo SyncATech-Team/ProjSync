@@ -27,12 +27,14 @@ namespace backAPI.Controllers
         private readonly IUserOnIssueRepository _userOnIssueRepository;
         private readonly IUserOnProjectRepository _userOnProjectRepository;
         private readonly IIssueCommentRepository _issueCommentRepository;
+        private readonly IStatisticsRepository _statisticsRepository;
 
         public ProjectsController(IProjectsRepository projectsRepository, IUsersRepository usersRepository,
             IProjectTypesRepository projectTypesRepository, IProjectVisibilitiesRepository projectVisibilitiesRepository,
             IIssueRepository issueRepository,IIssueTypeRepository issueTypeRepository, IIssueStatusRepository issueStatusRepository,
             IIssuePriorityRepository issuePriorityRepository, IIssueGroupRepository issueGroupRepository, IUserOnIssueRepository userOnIssueRepository,
-            IUserOnProjectRepository userOnProjectRepository, IIssueCommentRepository issueCommentRepository)
+            IUserOnProjectRepository userOnProjectRepository, IIssueCommentRepository issueCommentRepository,
+            IStatisticsRepository statisticsRepository)
         {
             _projectsRepository = projectsRepository;
             _usersRepository = usersRepository;
@@ -46,6 +48,7 @@ namespace backAPI.Controllers
             _userOnIssueRepository = userOnIssueRepository;
             _userOnProjectRepository = userOnProjectRepository;
             _issueCommentRepository = issueCommentRepository;
+            _statisticsRepository = statisticsRepository;
         }
         /* ***************************************************************************************
          * Get all projects
@@ -68,6 +71,8 @@ namespace backAPI.Controllers
 
                 var parentName = (parent == null) ? "No parent" : parent.Name;
 
+                var projectProgress = await _statisticsRepository.CalculateProjectProgress(project.Id);
+
                 result.Add(new ProjectDto {
                     Name = project.Name,
                     Key = project.Key,
@@ -79,7 +84,8 @@ namespace backAPI.Controllers
                     OwnerUsername = owner,
                     ParentProjectName = parentName,
                     Budget = project.Budget,
-                    VisibilityName = visibility.Name
+                    VisibilityName = visibility.Name,
+                    ProjectProgress = projectProgress
                 });
             }
             return result;
@@ -126,8 +132,11 @@ namespace backAPI.Controllers
 
             var projects = await _projectsRepository.GetProjectsForUserAsync(username);
 
+
             foreach (var project in projects)
             {
+
+                var projectProgress = await _statisticsRepository.CalculateProjectProgress(project.Id);
                 
                 dTOProjects.Add(new ProjectDto
                 {
@@ -140,7 +149,8 @@ namespace backAPI.Controllers
                     DueDate = project.DueDate,
                     OwnerUsername = await _usersRepository.IdToUsername(project.OwnerId),
                     Budget = project.Budget,
-                    VisibilityName = _projectVisibilitiesRepository.GetProjectVisibilityByIdAsync(project.VisibilityId).Result.Name
+                    VisibilityName = _projectVisibilitiesRepository.GetProjectVisibilityByIdAsync(project.VisibilityId).Result.Name,
+                    ProjectProgress = projectProgress
 
                 });
             }
