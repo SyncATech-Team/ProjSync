@@ -51,8 +51,8 @@ const routes: Routes = [
       { path: 'home/projects/kanban/:projectName', component: ProjectKanbanPageComponent, canActivate: [HomeGuard, ProjectGuard] },
       { path: 'home/projects/settings/:projectName', component: ProjectSettingsPageComponent, canActivate: [HomeGuard, ProjectGuard] },
       { path: 'home/projects/documents/:projectName', component: ProjectDocumentsPageComponent, canActivate: [HomeGuard, ProjectGuard] },
-      { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
-      { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
+      // { path: 'admin', component: AdminPageComponent, canActivate: [adminGuard] },
+      // { path: 'admin/dashboard', component: DashboardPageComponent, canActivate: [adminGuard] },
       { path: 'admin/user', component: UserPageComponent, canActivate: [adminGuard] },
       { path: 'admin/role', component: RolePageComponent, canActivate: [adminGuard] },
       { path: 'admin/editProfile', component: AdminEditProfileComponent, canActivate: [adminGuard] }
