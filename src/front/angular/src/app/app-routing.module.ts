@@ -30,7 +30,7 @@ import { PageForgotPasswordComponent } from './components/pages/page-forgot-pass
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
   { path: 'login', component: LoginPageComponent, canActivate: [loginGuard]},
-  { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] },
+  // { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] }, // TODO: uncomment this line when forgot password is ready
   { path: 'test', component: SamotestComponent },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },
