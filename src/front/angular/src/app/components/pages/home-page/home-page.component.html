@@ -178,11 +178,11 @@
                                 </p-columnFilter>
                                 </div>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" pSortableColumn="reporter">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" pSortableColumn="reporterUsername">
                                 <div class="flex align-items-center">
                                     Reporter
-                                    <p-sortIcon field="reporter"></p-sortIcon>
-                                    <p-columnFilter type="text" field="reporter" display="menu"></p-columnFilter>
+                                    <p-sortIcon field="reporterUsername"></p-sortIcon>
+                                    <p-columnFilter type="text" field="reporterUsername" display="menu"></p-columnFilter>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" pSortableColumn="completed">

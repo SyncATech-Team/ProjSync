@@ -57,7 +57,7 @@ export class HomePageComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
   IssueTypes : any[] = ["Bug", "Story", "Task"];
   IssueStatus: any[] = ["Planning", "In progress", "Done"];
-  IssuePrioritys: any[] = ["Medium", "Low", "Lowest", "High", "Highest"];
+  IssuePrioritys: any[] = ["Lowest", "Low", "Medium", "High", "Highest"];
 
   constructor(
     public accoutService: AccountService,
@@ -245,6 +245,14 @@ export class HomePageComponent implements OnInit {
             issue.dueDate = new Date(issue.dueDate).toISOString();
           });
           this.issuesShow = response;
+          
+          // convert createdAt from string to Date for all issues
+          this.issuesShow.forEach((issue) => {
+            issue.createdAt = new Date(issue.createdAt);
+            issue.dueDate = new Date(issue.dueDate);
+            issue.updatedAt = new Date(issue.updatedAt);
+          });
+
           // console.log(this.userIssues);
         },
         error: (error) => {
