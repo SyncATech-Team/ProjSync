@@ -11,6 +11,8 @@ import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { PresenceService } from '../../../../_service/presence.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ForgotPasswordModel } from '../../../../_models/forgot-password';
+import { AccountService } from '../../../../_service/account.service';
 
 /**
  * Interfejs koji predstavlja jednu kolonu u tabeli koju eksportujemo
@@ -92,7 +94,8 @@ export class UserPageComponent implements OnInit {
     private companyRoleService: CompanyroleService,
     private emailValidationService: EmailValidationService,
     private userPictureService: UserProfilePicture,
-    public presenceService: PresenceService
+    public presenceService: PresenceService,
+    public accountService: AccountService
     ){
       this.searchTermChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe(_ => this.loadUsers(this.lastLazyLoadEvent));
      }
@@ -421,6 +424,21 @@ export class UserPageComponent implements OnInit {
     if(img) {
       img.src = this.getUserImagePath(user.username);
     }
+  }
+
+  resendActivationLink(user: UserGetter) {
+    let model: ForgotPasswordModel = {
+      email: user.email
+    }
+    
+    this.accountService.resendLink(model).subscribe({
+      next: _ => {
+        this.msgPopupService.showInfo("Verification link sent");
+      },
+      error: error => {
+        this.msgPopupService.showError(error.error);
+      }
+    });
   }
   /**
    * Metod koji se poziva na klik dugmeta za promenu podataka korisnika.
