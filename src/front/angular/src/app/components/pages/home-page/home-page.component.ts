@@ -147,7 +147,7 @@ export class HomePageComponent implements OnInit {
             project.dueDate = new Date(project.dueDate); 
 
             const completion = this.calculateProjectCompletionTime(project.creationDate, project.dueDate);
-            this.projectCompletioTimeMap.set(project.key, completion);
+            this.projectCompletioTimeMap.set(project.key, Math.floor(completion));
             this.projectCompletionMap.set(project.key, Math.floor(project.projectProgress! * 100));
           });
           this.filterProjects(this.visibilityFilter);
