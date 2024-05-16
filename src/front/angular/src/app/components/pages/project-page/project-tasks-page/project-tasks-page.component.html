@@ -241,15 +241,15 @@
                                 </td>
                                 <td *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Due Date</span>
-                                    {{ task.dueDate | date : 'dd/MM/yyyy' }}
+                                    {{ task.dueDate.split(' ',1)[0] }}
                                 </td>
                                 <td *ngIf="column=='Created Date' && selectedColumns.includes('Created Date')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Created Date</span>
-                                    {{ task.createdAt | date : 'dd/MM/yyyy' }}
+                                    {{ task.createdAt.split(' ',1)[0] }}
                                 </td>
                                 <td *ngIf="column=='Updated Date' && selectedColumns.includes('Updated Date')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Updated Date</span>
-                                    {{ task.updatedAt | date : 'dd/MM/yyyy' }}
+                                    {{ task.updatedAt.split(' ',1)[0] }}
                                 </td>
                                 <td *ngIf="column=='Completed' && selectedColumns.includes('Completed')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Completed</span>
