@@ -2,11 +2,38 @@
     display: flex;
 }
 
+#navbar{
+    height: 3.4rem;
+}
+
 .content {
     display: flex;
     width: 100%;
-    height: calc(100vh - 55.6px);
+    height: calc(100vh - 3.45rem);
     overflow-y: scroll;
+}
+
+@media screen and (max-width: 991px) {
+    #navbar{
+        height: 3.5rem;
+    }
+    .content {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 3.5rem);
+        overflow-y: scroll;
+    }
+}
+@media screen and (max-width: 293px) {
+    #navbar{
+        height: 5.82rem;
+    }
+    .content {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 5.82rem);
+        overflow-y: scroll;
+    }
 }
 
 #projectIconUpdate{
