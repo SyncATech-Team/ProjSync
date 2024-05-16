@@ -236,7 +236,16 @@
                             </td>
                             <td *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold;">Completed</span>
-                                <p-progressBar [value]=issue.completed></p-progressBar>
+                                <p-progressBar [value]=issue.completed
+                                [pTooltip]="myIssueProgressToolTip"
+                                tooltipPosition="top" 
+                                ></p-progressBar>
+                                <ng-template #myIssueProgressToolTip>
+                                    <div class="flex align-items-center">
+                                        <i class="fa-solid fa-check"></i> 
+                                        <span> <b> {{ issue.completed }}%</b> </span>
+                                    </div>
+                                </ng-template>
                             </td>
                             <td *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" style="width: 17vh; ">
                                 <span class="p-column-title" style="font-weight: bold;">Project name</span>
@@ -422,8 +431,22 @@
                                 <p-sortIcon field="budget"></p-sortIcon>
                                 <p-columnFilter type="numeric" field="budget" display="menu"></p-columnFilter>
                             </th>
-                            <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')">
+                            <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')" class="progress-project-th">
                                 Progress
+                                <span class="progress-toolTip">
+                                <i class="pi pi-question-circle"
+                                    [pTooltip]="exampleOfProgress"
+                                    tooltipPosition="right" ></i>
+                                    <ng-template #exampleOfProgress>
+                                        <div class="flex align-items-center">
+                                            <i class="fa-regular fa-clock"></i>
+                                            <span>  Procenat proteklog vremena od kreiranja projekta do njegovog kraja.</span>
+                                            <br><br>
+                                            <i class="pi pi-pencil"></i>
+                                            <span>  Procenat izvršenosti projekta računa se kao...</span>
+                                        </div>
+                                    </ng-template>
+                                </span>
                             </th>                            
                         </ng-container>
                     </tr>
