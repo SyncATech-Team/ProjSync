@@ -28,7 +28,12 @@
 
             <!-- Attachements -->
             <div class="upload-wrapper">
-                <app-upload-issue-document [issueID]="issue.id"></app-upload-issue-document>
+                <div *ngIf="permission && permission.canUploadFiles === 'True'"  id="Doc-upload" >
+                    <app-upload-issue-document [issueID]="issue.id"></app-upload-issue-document>
+                </div>
+                <div *ngIf="permission && permission.canUploadFiles === 'False'">
+                    <div class="pt-4 pb-2 fs-5 fw-bold">Attachements</div>
+                </div>
                 <div class="list-of-uploaded">
                     <app-list-of-issue-documents [issueID]="issue.id"></app-list-of-issue-documents>
                 </div>
