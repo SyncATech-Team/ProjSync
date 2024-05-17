@@ -1,7 +1,36 @@
+#navbar{
+    height: 3.4rem;
+}
+
 #page-wrapper {
-    height: calc(100vh-46px);
+    height: calc(100vh - 3.45rem);
     overflow-y: auto;
 }
+
+/* Promena velicine navbar diva u odnosu na sirinu ekrana */
+@media screen and (max-width: 991px) {
+    #navbar{
+        height: 3.5rem;
+    }
+    .content {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 3.5rem);
+        overflow-y: scroll;
+    }
+}
+@media screen and (max-width: 293px) {
+    #navbar{
+        height: 5.82rem;
+    }
+    .content {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 5.82rem);
+        overflow-y: scroll;
+    }
+}
+/* End */
 
 .notification-center {
     max-width: 600px;

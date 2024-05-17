@@ -3,14 +3,43 @@
     height: 100vh;
 }
 
+#navbar{
+    height: 3.4rem;
+}
+
+
 #content {
     margin-left: 20px;
     margin-top: 10px;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 3.45rem);
     overflow-y: scroll;
     overflow-x: hidden;
     width: 100%;
 }
+/* Promena velicine navbar diva u odnosu na sirinu ekrana */
+@media screen and (max-width: 991px) {
+    #navbar{
+        height: 3.5rem;
+    }
+    .content {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 3.5rem);
+        overflow-y: scroll;
+    }
+}
+@media screen and (max-width: 293px) {
+    #navbar{
+        height: 5.82rem;
+    }
+    .content {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 5.82rem);
+        overflow-y: scroll;
+    }
+}
+/* End */
 
 h4{
     margin: 0;
