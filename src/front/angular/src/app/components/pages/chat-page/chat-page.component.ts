@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { UserGetter } from '../../../_models/user-getter';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
@@ -10,7 +10,7 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.css'
 })
-export class ChatPageComponent implements OnInit {
+export class ChatPageComponent implements OnInit, AfterViewInit {
 
   usersForChat: UserGetter[] = [];
   usersForChatPhotos: PhotoForUser[] = [];
@@ -27,6 +27,10 @@ export class ChatPageComponent implements OnInit {
     this.fetchUsersForChat();
   }
 
+  ngAfterViewInit() {
+    this.scrollToTheLatestMessage();
+  }
+
   searchUsers(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
     let query = event.query;
@@ -39,6 +43,11 @@ export class ChatPageComponent implements OnInit {
     }
 
     this.filteredUsers = filtered;
+  }
+
+  scrollToTheLatestMessage() {
+    let element = document.getElementById('messages-div-id') as HTMLElement;
+    element.scrollTop = element.scrollHeight;
   }
 
   getUserProfilePhotos(users: UserGetter[]) {
