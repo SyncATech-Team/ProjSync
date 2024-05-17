@@ -1,6 +1,7 @@
 export interface UserGetter {
     username: string;
     email: string;
+    password: string;
     firstName: string;
     lastName: string;
     companyRoleName: string;

@@ -51,6 +51,7 @@ export class UserPageComponent implements OnInit {
   editUser: UserGetter = {
     username: '',
     email: '',
+    password: '',
     firstName: '',
     lastName: '',
     companyRoleName: '',
@@ -190,6 +191,7 @@ export class UserPageComponent implements OnInit {
     this.users_backup.push({
       username: user.username,
       email: user.email,
+      password: '',
       firstName: user.firstName,
       lastName: user.lastName,
       companyRoleName: user.companyRoleName,
