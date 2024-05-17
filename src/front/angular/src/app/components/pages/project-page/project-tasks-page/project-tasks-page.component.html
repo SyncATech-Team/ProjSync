@@ -17,9 +17,15 @@
                 </div>
 
                 <div id="change-view">
-                    <thy-button class="selected-button">List</thy-button>
-                    <thy-button routerLink="/home/projects/kanban/{{projectName}}">Kanban</thy-button>
-                    <thy-button routerLink="/home/projects/gantt/{{projectName}}">Gantt</thy-button>
+                    <div class="Viewbtn">
+                        <thy-button routerLink="/home/projects/tasks/{{projectName}}" id="Viewbtn">List</thy-button>
+                    </div>
+                    <div class="Viewbtn">
+                        <thy-button routerLink="/home/projects/kanban/{{projectName}}" id="Viewbtn">Kanban</thy-button>
+                    </div>
+                    <div class="Viewbtn">
+                        <thy-button class="selected-button" id="Viewbtn">Gantt</thy-button>
+                    </div>
                 </div>
             </div>
             <div id="tasks">
