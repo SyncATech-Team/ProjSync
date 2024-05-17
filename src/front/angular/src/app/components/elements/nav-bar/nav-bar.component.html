@@ -32,26 +32,10 @@
 
       <div class="d-flex right--side">
 
-        <p-dropdown 
-          [options]="usersForChat" 
-          [(ngModel)]="selectedUser"
-          optionLabel="username"
-          [showClear]="true"
-          placeholder="Chat with...">
-              <ng-template pTemplate="selectedItem">
-                <div class="user-div flex align-items-center gap-2" *ngIf="selectedUser">
-                  <img src="{{ getUserImagePath(selectedUser.username, usersForChat ) }}" style="width: 18px" />
-                  <div>{{ selectedUser.username }}</div>
-                </div>
-              </ng-template>
-              <ng-template let-user pTemplate="item">
-                <div class="user-div flex align-items-center gap-2">
-                  <img src="{{ getUserImagePath(user.username, usersForChat ) }}" style="width: 18px" />
-                  <div>{{ user.username }}</div>
-                </div>
-              </ng-template>
-        </p-dropdown>
-        
+        <div class="nav_right_opt">
+          <app-chat-element></app-chat-element>
+        </div>
+
         <!-- <div class="notification-wrap"> -->
           <div class=" nav_right_opt" >
             <app-notification></app-notification>

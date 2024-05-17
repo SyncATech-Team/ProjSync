@@ -124,6 +124,7 @@ import { ForgotPasswordComponent } from './components/elements/forgot-password/f
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 import { ChatPageComponent } from './components/pages/chat-page/chat-page.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChatElementComponent } from './components/elements/chat-element/chat-element.component';
 
 @NgModule({
   declarations: [
@@ -187,7 +188,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     LogsContainerComponent,
     ForgotPasswordComponent,
     PageForgotPasswordComponent,
-    ChatPageComponent
+    ChatPageComponent,
+    ChatElementComponent
   ],
     imports: [
         BrowserModule,

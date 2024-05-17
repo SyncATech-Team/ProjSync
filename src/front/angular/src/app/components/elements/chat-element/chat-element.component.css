@@ -1,0 +1,67 @@
+.chat {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .chat-icon {
+    font-size: 24px;
+    color: black;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  
+  .chat-icon:hover {
+    color: #5E5BF4;
+  }
+  
+  .badge-chat {
+    position: absolute;
+    top: -5px;
+    left: 18px;
+    padding: 0 5px;
+    font-size: 14px;
+    line-height: 18px;
+    height: 18px;
+    color: #FFF;
+    border-radius: 11px;
+    white-space: nowrap;
+  }
+  
+  .chat.new-chat .badge-pulse {
+    animation: pulse 2s ease-out;
+    animation-iteration-count: infinite;
+  }
+  
+  @keyframes pulse {
+    40% {
+      transform: scale3d(1, 1, 1);
+    }
+  
+    50% {
+      transform: scale3d(1.3, 1.3, 1.3);
+    }
+  
+    55% {
+      transform: scale3d(1, 1, 1);
+    }
+    
+    60% {
+      transform: scale3d(1.3, 1.3, 1.3);
+    }
+  
+    65% {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+.badgecolor-red {
+  background: rgb(210, 42, 42)
+}
+
+.badgecolor-yellow {
+  background: #b7b710;
+}
+
+.badgecolor-blue {
+  background: #5E5BF4;
+}

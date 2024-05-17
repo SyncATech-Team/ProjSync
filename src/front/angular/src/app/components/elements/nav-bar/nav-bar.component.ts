@@ -21,10 +21,6 @@ export class NavBarComponent implements OnInit {
 
   profilePicturePath: string = '';
 
-  selectedUser?: UserGetter = undefined;
-  usersForChat: UserGetter[] = [];
-  usersForChatPhotos: PhotoForUser[] = [];
-
   constructor(
       private accountService: AccountService,
       private router: Router,
@@ -34,8 +30,6 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.fetchUsersForChat();
 
     this.userService.getUser(this.getUsername()).subscribe({
       next: response => {
@@ -60,54 +54,6 @@ export class NavBarComponent implements OnInit {
         console.log(error.error);
       }
     })
-  }
-
-  // Create method to fetch users
-  fetchUsersForChat() {
-    this.userService.getAllUsers().subscribe(users => {
-      this.usersForChat = users.filter(user => user.companyRoleName !== 'Administrator');
-      this.getUserProfilePhotos(this.usersForChat);
-    });
-  }
-
-  getUserProfilePhotos(users: UserGetter[]) {
-    for(const user of users) {
-      if(user.profilePhoto != null) {
-        this.userPictureService.getUserImage(user.username).subscribe({
-          next: response => {
-            let path = response['fileContents'];
-            path = this.userPictureService.decodeBase64Image(response['fileContents']);
-            var ph: PhotoForUser = {
-              username: user.username, 
-              photoSource: path
-            };
-            this.usersForChatPhotos.push(ph);
-          },
-          error: error => {
-            console.log(error);
-          }
-        });
-      }
-      else {
-        var ph: PhotoForUser = {
-          username: user.username,
-          photoSource: "SLIKA_JE_NULL"
-        }
-        this.usersForChatPhotos.push(ph);
-      }
-    }
-  }
-
-  getUserImagePath(username: string,users: UserGetter[]) {
-    let index = users.findIndex(u => u.username === username);
-    if(index == -1) return this.userPictureService.getFirstDefaultImagePath();
-
-    if(users[index].profilePhoto == null)
-      return this.userPictureService.getDefaultImageForUser(users[index].username);
-
-    let ind = this.usersForChatPhotos.findIndex(u => u.username == username);
-    if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
-    return this.usersForChatPhotos[ind].photoSource;
   }
 
   onUserChange(event: any) {
