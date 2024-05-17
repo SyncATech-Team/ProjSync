@@ -13,5 +13,7 @@
         public DateTime DueDate { get; set; }
         public double? Budget { get; set; }
         public string VisibilityName { get; set; }
+
+        public double ProjectProgress { get; set; } = 0.0;
     }
 }

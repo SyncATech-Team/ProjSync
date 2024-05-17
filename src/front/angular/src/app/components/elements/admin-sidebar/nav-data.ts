@@ -1,17 +1,5 @@
 export const navbarData = [
     {
-        routeLink : '/admin',
-        icon: 'fa-solid fa-house',
-        label: 'Home',
-        position: 'middle'
-    },
-    {
-        routeLink : '/admin/dashboard',
-        icon: 'fa-solid fa-chart-line',
-        label: 'Dashboard',
-        position: 'middle'
-    },
-    {
         routeLink : '/admin/user',
         icon: 'fa-solid fa-users',
         label: 'Users',
@@ -24,15 +12,9 @@ export const navbarData = [
         position: 'middle'
     },
     {
-        routeLink : '/pageNotFound',
-        icon: 'fa-sharp fa-solid fa-gear',
-        label: "Settings",
-        position: "bottom"
-    },
-    {
         routeLink : '/admin/editProfile',
         icon: 'fa-regular fa-user',
-        label: "Admin profile",
+        label: "Profile",
         position: "bottom"
     },
     {

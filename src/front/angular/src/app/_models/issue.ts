@@ -48,10 +48,18 @@ export interface JIssue {
   timeRemaining: number;
   createdAt: string;
   updatedAt: string;
+  dueDate: string;
   reporterId: string;
   userIds: string[];
   usersWithCompletion: UsersWithCompletion[];
   completed: number;
   comments: JComment[];
   projectId: string;
+  ownerUsername: string;
+  projectName: string;
+  groupName: string;
+  reporterUsername: string;
+  assigneeUsernames: string[];
+  dependentOnIssues: string[];
+  groupId: string;
 }

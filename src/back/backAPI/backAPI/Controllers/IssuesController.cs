@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using backAPI.Other.Helpers;
 using Newtonsoft.Json;
 using backAPI.SignalR;
+using backAPI.DTO;
 
 namespace backAPI.Controllers
 {
@@ -26,6 +27,7 @@ namespace backAPI.Controllers
         private readonly IUserOnIssueRepository _userOnIssueRepository;
         private readonly NotificationService _issueNotificationService;
         private readonly INotificationsRepository _notificationsRepository;
+        private readonly IIssueCommentRepository _issueCommentRepository;
 
         /* ***************************************************************************************************
          * Konstruktor
@@ -40,7 +42,8 @@ namespace backAPI.Controllers
             IIssueGroupRepository issueGroupRepository,
             IUserOnIssueRepository userOnIssueRepository,
             NotificationService issueNotificationService,
-            INotificationsRepository notificationsRepository
+            INotificationsRepository notificationsRepository,
+            IIssueCommentRepository issueCommentRepository
             ) {
                 _issueRepository = issueRepository;
                 _projectsRepository = projectsRepository;
@@ -52,10 +55,11 @@ namespace backAPI.Controllers
                 _userOnIssueRepository = userOnIssueRepository;
                 _issueNotificationService = issueNotificationService;
                 _notificationsRepository = notificationsRepository;
+                _issueCommentRepository = issueCommentRepository;
         }
 
         [HttpGet("issueId")]
-        public async Task<ActionResult<IssueDto>> GetIssueById(int issueId)
+        public async Task<ActionResult<JIssueDto>> GetIssueById(int issueId)
         {
             var issue = await _issueRepository.GetIssueById(issueId);
 
@@ -69,6 +73,9 @@ namespace backAPI.Controllers
             var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
             var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
             var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+            var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
+            var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
+
             List<string> assigneeUsernames = new List<string>();
             foreach (var assignee in assigneeIds)
             {
@@ -76,36 +83,63 @@ namespace backAPI.Controllers
                 assigneeUsernames.Add(user.UserName);
             }
 
-            IssueDto issueDto = new IssueDto
+            List<JCommentDto> commentDtos = new List<JCommentDto>();
+            foreach (var item in comments)
             {
-                Id = issue.Id,
-                Name = issue.Name,
-                TypeName = issueType.Name,
-                StatusName = issueStatus.Name,
-                PriorityName = issuePriority.Name,
+                var user = await _usersRepository.GetUserById(item.UserId);
+                var userDto = new UserDto()
+                {
+                    Name = user.FirstName + ' ' + user.LastName,
+                    Username = user.UserName
+                };
+
+                commentDtos.Add(new JCommentDto
+                {
+                    Id = item.Id,
+                    IssueId = item.IssueId.ToString(),
+                    UserId = item.UserId.ToString(),
+                    Body = item.Content,
+                    CreatedAt = item.Created.ToString(),
+                    UpdatedAt = item.Created.ToString(),
+                    User = userDto
+                });
+            }
+
+            JIssueDto issueDto = new JIssueDto
+            {
+                Id = issue.Id.ToString(),
+                Title = issue.Name,
+                Type = issueType.Name,
+                Status = issueStatus.Name,
+                Priority = issuePriority.Name,
+                ListPosition = issue.ListPosition,
                 Description = issue.Description,
-                CreatedDate = issue.CreatedDate,
-                UpdatedDate = issue.UpdatedDate,
-                DueDate = issue.DueDate,
+                CreatedAt = issue.CreatedDate.ToString(),
+                UpdatedAt = issue.UpdatedDate.ToString(),
+                DueDate = issue.DueDate.ToString(),
+                ReporterId = reporterId.ToString(),
+                UserIds = assigneeIds.Select(x => x.ToString()).ToList(),
+                UsersWithCompletion = assigneeeCompletionLevel.ToList(),
+                Completed = issue.Completed,
+                Comments = commentDtos,
+                ProjectId = project.Id.ToString(),
                 OwnerUsername = issueOwner.UserName,
                 ProjectName = project.Name,
                 GroupName = issueGroup.Name,
                 ReporterUsername = reporterUsername.UserName,
                 AssigneeUsernames = assigneeUsernames.ToArray(),
                 DependentOnIssues = issueDependencies.ToArray(),
-                Completed = issue.Completed,
                 GroupId = issueGroup.Id
-
             };
             
             return issueDto;
         }
 
         [HttpGet("groupId")]
-        public async Task<ActionResult<IEnumerable<IssueDto>>> GetIssuesFromGroupAsync(int groupId) 
+        public async Task<ActionResult<IEnumerable<JIssueDto>>> GetIssuesFromGroupAsync(int groupId) 
         {
             var issues = await _issueRepository.GetAllIssuesForGivenGroup( groupId );
-            List<IssueDto> result = new List<IssueDto>();
+            List<JIssueDto> result = new List<JIssueDto>();
 
             foreach( var issue in issues )
             {
@@ -119,6 +153,8 @@ namespace backAPI.Controllers
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
                 var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+                var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
+                var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
                 Console.WriteLine(issueDependencies);
 
                 List<string> assigneeUsernames = new List<string>();
@@ -127,24 +163,52 @@ namespace backAPI.Controllers
                     assigneeUsernames.Add(user.UserName);
                 }
 
-                IssueDto issueDto = new IssueDto
+                List<JCommentDto> commentDtos = new List<JCommentDto>();
+                foreach (var item in comments)
                 {
-                    Id = issue.Id,
-                    Name = issue.Name,
-                    TypeName = issueType.Name,
-                    StatusName = issueStatus.Name,
-                    PriorityName = issuePriority.Name,
+                    var user = await _usersRepository.GetUserById(item.UserId);
+                    var userDto = new UserDto()
+                    {
+                        Name = user.FirstName + ' ' + user.LastName,
+                        Username = user.UserName
+                    };
+
+                    commentDtos.Add(new JCommentDto
+                    {
+                        Id = item.Id,
+                        IssueId = item.IssueId.ToString(),
+                        UserId = item.UserId.ToString(),
+                        Body = item.Content,
+                        CreatedAt = item.Created.ToString(),
+                        UpdatedAt = item.Created.ToString(),
+                        User = userDto
+                    });
+                }
+
+                JIssueDto issueDto = new JIssueDto
+                {
+                    Id = issue.Id.ToString(),
+                    Title = issue.Name,
+                    Type = issueType.Name,
+                    Status = issueStatus.Name,
+                    Priority = issuePriority.Name,
+                    ListPosition = issue.ListPosition,
                     Description = issue.Description,
-                    CreatedDate = issue.CreatedDate,
-                    UpdatedDate = issue.UpdatedDate,
-                    DueDate = issue.DueDate,
+                    CreatedAt = issue.CreatedDate.ToString(),
+                    UpdatedAt = issue.UpdatedDate.ToString(),
+                    DueDate = issue.DueDate.ToString(),
+                    ReporterId = reporterId.ToString(),
+                    UserIds = assigneeIds.Select(x => x.ToString()).ToList(),
+                    UsersWithCompletion = assigneeeCompletionLevel.ToList(),
+                    Completed = issue.Completed,
+                    Comments = commentDtos,
+                    ProjectId = project.Id.ToString(),
                     OwnerUsername = issueOwner.UserName,
                     ProjectName = project.Name,
                     GroupName = issueGroup.Name,
                     ReporterUsername = reporterUsername.UserName,
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
-                    Completed = issue.Completed,
                     GroupId = issueGroup.Id
                 };
                 result.Add(issueDto);
@@ -154,11 +218,11 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("projectName")]
-        public async Task<ActionResult<IEnumerable<IssueDto>>> GetAllIssuesForProject(string projectName)
+        public async Task<ActionResult<IEnumerable<JIssueDto>>> GetAllIssuesForProject(string projectName)
         {
             var projectByName = await _projectsRepository.GetProjectByName(projectName);
             var groups = await _issueRepository.GetAllGroupsForGivenProject(projectByName.Id);
-            List<IssueDto> result = new List<IssueDto>();
+            List<JIssueDto> result = new List<JIssueDto>();
 
             foreach (var group in groups)
             {
@@ -175,6 +239,8 @@ namespace backAPI.Controllers
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                     var project = projectByName;
                     var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+                    var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
+                    var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
 
                     List<string> assigneeUsernames = new List<string>();
                     foreach (var assignee in assigneeIds) {
@@ -182,24 +248,52 @@ namespace backAPI.Controllers
                         assigneeUsernames.Add(user.UserName);
                     }
 
-                    IssueDto issueDto = new IssueDto {
-                        Id = issue.Id,
-                        Name = issue.Name,
-                        TypeName = issueType.Name,
-                        StatusName = issueStatus.Name,
-                        PriorityName = issuePriority.Name,
+                    List<JCommentDto> commentDtos = new List<JCommentDto>();
+                    foreach (var item in comments)
+                    {
+                        var user = await _usersRepository.GetUserById(item.UserId);
+                        var userDto = new UserDto()
+                        {
+                            Name = user.FirstName + ' ' + user.LastName,
+                            Username = user.UserName
+                        };
+
+                        commentDtos.Add(new JCommentDto
+                        {
+                            Id = item.Id,
+                            IssueId = item.IssueId.ToString(),
+                            UserId = item.UserId.ToString(),
+                            Body = item.Content,
+                            CreatedAt = item.Created.ToString(),
+                            UpdatedAt = item.Created.ToString(),
+                            User = userDto
+                        });
+                    }
+
+                    JIssueDto issueDto = new JIssueDto {
+                        Id = issue.Id.ToString(),
+                        Title = issue.Name,
+                        Type = issueType.Name,
+                        Status = issueStatus.Name,
+                        Priority = issuePriority.Name,
+                        ListPosition = issue.ListPosition,
                         Description = issue.Description,
-                        CreatedDate = issue.CreatedDate,
-                        UpdatedDate = issue.UpdatedDate,
-                        DueDate = issue.DueDate,
+                        CreatedAt = issue.CreatedDate.ToString(),
+                        UpdatedAt = issue.UpdatedDate.ToString(),
+                        DueDate = issue.DueDate.ToString(),
+                        ReporterId = reporterId.ToString(),
+                        UserIds = assigneeIds.Select(x => x.ToString()).ToList(),
+                        UsersWithCompletion = assigneeeCompletionLevel.ToList(),
+                        Completed = issue.Completed,
+                        Comments = commentDtos,
+                        ProjectId = project.Id.ToString(),
                         OwnerUsername = issueOwner.UserName,
                         ProjectName = project.Name,
                         GroupName = issueGroup.Name,
                         ReporterUsername = reporterUsername.UserName,
                         AssigneeUsernames = assigneeUsernames.ToArray(),
                         DependentOnIssues = issueDependencies.ToArray(),
-                        Completed = issue.Completed,
-                        GroupId = issue.GroupId
+                        GroupId = issueGroup.Id
                     };
                     result.Add(issueDto);
                 }
@@ -209,7 +303,7 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("userIssues")]
-        public async Task<ActionResult<IEnumerable<IssueDto>>> GetIssuesForUser(string username)
+        public async Task<ActionResult<IEnumerable<JIssueDto>>> GetIssuesForUser(string username)
         {
             var user = await _usersRepository.GetUserByUsername(username);
             if(user == null)
@@ -218,7 +312,7 @@ namespace backAPI.Controllers
             }
 
             var issues = await _userOnIssueRepository.UserIssuess(user.Id);
-            List<IssueDto> result = new List<IssueDto>();
+            List<JIssueDto> result = new List<JIssueDto>();
 
             foreach (var issue in issues)
             {
@@ -232,6 +326,8 @@ namespace backAPI.Controllers
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
                 var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+                var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
+                var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
 
                 List<string> assigneeUsernames = new List<string>();
                 foreach (var assignee in assigneeIds)
@@ -240,24 +336,52 @@ namespace backAPI.Controllers
                     assigneeUsernames.Add(assigneeUser.UserName);
                 }
 
-                IssueDto issueDto = new IssueDto
+                List<JCommentDto> commentDtos = new List<JCommentDto>();
+                foreach (var item in comments)
                 {
-                    Id = issue.Id,
-                    Name = issue.Name,
-                    TypeName = issueType.Name,
-                    StatusName = issueStatus.Name,
-                    PriorityName = issuePriority.Name,
+                    var user1 = await _usersRepository.GetUserById(item.UserId);
+                    var userDto = new UserDto()
+                    {
+                        Name = user1.FirstName + ' ' + user1.LastName,
+                        Username = user1.UserName
+                    };
+
+                    commentDtos.Add(new JCommentDto
+                    {
+                        Id = item.Id,
+                        IssueId = item.IssueId.ToString(),
+                        UserId = item.UserId.ToString(),
+                        Body = item.Content,
+                        CreatedAt = item.Created.ToString(),
+                        UpdatedAt = item.Created.ToString(),
+                        User = userDto
+                    });
+                }
+
+                JIssueDto issueDto = new JIssueDto
+                {
+                    Id = issue.Id.ToString(),
+                    Title = issue.Name,
+                    Type = issueType.Name,
+                    Status = issueStatus.Name,
+                    Priority = issuePriority.Name,
+                    ListPosition = issue.ListPosition,
                     Description = issue.Description,
-                    CreatedDate = issue.CreatedDate,
-                    UpdatedDate = issue.UpdatedDate,
-                    DueDate = issue.DueDate,
+                    CreatedAt = issue.CreatedDate.ToString(),
+                    UpdatedAt = issue.UpdatedDate.ToString(),
+                    DueDate = issue.DueDate.ToString(),
+                    ReporterId = reporterId.ToString(),
+                    UserIds = assigneeIds.Select(x => x.ToString()).ToList(),
+                    UsersWithCompletion = assigneeeCompletionLevel.ToList(),
+                    Completed = issue.Completed,
+                    Comments = commentDtos,
+                    ProjectId = project.Id.ToString(),
                     OwnerUsername = issueOwner.UserName,
                     ProjectName = project.Name,
                     GroupName = issueGroup.Name,
                     ReporterUsername = reporterUsername.UserName,
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
-                    Completed = issue.Completed,
                     GroupId = issueGroup.Id
                 };
                 result.Add(issueDto);
@@ -267,11 +391,11 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("pagination/projectName")]
-        public async Task<ActionResult<IEnumerable<IssueDto>>> GetPaginationIssuesForProject(string projectName, string criteria)
+        public async Task<ActionResult<IEnumerable<JIssueDto>>> GetPaginationIssuesForProject(string projectName, string criteria)
         {
             var projectByName = await _projectsRepository.GetProjectByName(projectName);
             var groups = await _issueRepository.GetAllGroupsForGivenProject(projectByName.Id);
-            List<IssueDto> issueDtos = new List<IssueDto>();
+            List<JIssueDto> issueDtos = new List<JIssueDto>();
             IssueLazyLoadDto lazyLoadDto = new IssueLazyLoadDto();
 
             Criteria criteriaObj = JsonConvert.DeserializeObject<Criteria>(criteria);
@@ -290,6 +414,8 @@ namespace backAPI.Controllers
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
                 var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+                var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
+                var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
                 Console.WriteLine(issueDependencies);
 
                 List<string> assigneeUsernames = new List<string>();
@@ -299,24 +425,52 @@ namespace backAPI.Controllers
                     assigneeUsernames.Add(user.UserName);
                 }
 
-                IssueDto issueDto = new IssueDto
+                List<JCommentDto> commentDtos = new List<JCommentDto>();
+                foreach (var item in comments)
                 {
-                    Id = issue.Id,
-                    Name = issue.Name,
-                    TypeName = issueType.Name,
-                    StatusName = issueStatus.Name,
-                    PriorityName = issuePriority.Name,
+                    var user = await _usersRepository.GetUserById(item.UserId);
+                    var userDto = new UserDto()
+                    {
+                        Name = user.FirstName + ' ' + user.LastName,
+                        Username = user.UserName
+                    };
+
+                    commentDtos.Add(new JCommentDto
+                    {
+                        Id = item.Id,
+                        IssueId = item.IssueId.ToString(),
+                        UserId = item.UserId.ToString(),
+                        Body = item.Content,
+                        CreatedAt = item.Created.ToString(),
+                        UpdatedAt = item.Created.ToString(),
+                        User = userDto
+                    });
+                }
+
+                JIssueDto issueDto = new JIssueDto
+                {
+                    Id = issue.Id.ToString(),
+                    Title = issue.Name,
+                    Type = issueType.Name,
+                    Status = issueStatus.Name,
+                    Priority = issuePriority.Name,
+                    ListPosition = issue.ListPosition,
                     Description = issue.Description,
-                    CreatedDate = issue.CreatedDate,
-                    UpdatedDate = issue.UpdatedDate,
-                    DueDate = issue.DueDate,
+                    CreatedAt = issue.CreatedDate.ToString(),
+                    UpdatedAt = issue.UpdatedDate.ToString(),
+                    DueDate = issue.DueDate.ToString(),
+                    ReporterId = reporterId.ToString(),
+                    UserIds = assigneeIds.Select(x => x.ToString()).ToList(),
+                    UsersWithCompletion = assigneeeCompletionLevel.ToList(),
+                    Completed = issue.Completed,
+                    Comments = commentDtos,
+                    ProjectId = project.Id.ToString(),
                     OwnerUsername = issueOwner.UserName,
                     ProjectName = project.Name,
                     GroupName = issueGroup.Name,
                     ReporterUsername = reporterUsername.UserName,
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
-                    Completed = issue.Completed,
                     GroupId = issueGroup.Id
                 };
                 issueDtos.Add(issueDto);

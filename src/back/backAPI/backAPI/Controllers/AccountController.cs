@@ -152,6 +152,12 @@ namespace backAPI.Controllers
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
+        private async Task<bool> UserExistsByEmail(string email)
+        {
+            // check if there is user in database already
+            return await _userManager.Users.AnyAsync(x => x.Email == email);
+        }
+
         [HttpPost("reset-password")]
         public async Task<ActionResult<LoginResponseDto>> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
@@ -200,6 +206,35 @@ namespace backAPI.Controllers
                 return response;
             }
             else return BadRequest("User is not registered");
+        }
+
+        [HttpPost("resend-link")]
+        public async Task<ActionResult> ResendLink(ForgotPasswordDto forgotPassword)
+        {
+            if (await UserExistsByEmail(forgotPassword.Email))
+            {
+                var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
+                if (user != null)
+                {
+                    if (user.EmailConfirmed) 
+                    {
+                        return BadRequest("User already confirmed mail");
+                    }
+
+                    // kreiranje tokena za verifikaciju email-a
+                    var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    // Obavzeno enkodovati token!
+                    var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
+                    var conformationLink = $"http://localhost:4200/account/confirm-email?email={user.Email}&token={encodedToken}";
+
+                    // poslati registacioni mejl [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS]
+                    // _emailService.SendToConfirmEmail(user.Email, user.UserName, conformationLink);
+
+                    return Ok();
+                } else return BadRequest("User cant be fetched from Database");
+
+            }
+            else return BadRequest("Username is not registered");
         }
     }
 }

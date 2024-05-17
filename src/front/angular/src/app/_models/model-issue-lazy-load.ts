@@ -1,6 +1,6 @@
-import { IssueModel } from "./model-issue.model";
+import { JIssue } from "./issue";
 
 export interface IssueModelLazyLoad {
-    issues: IssueModel[],
+    issues: JIssue[],
     numberOfRecords: number
 }

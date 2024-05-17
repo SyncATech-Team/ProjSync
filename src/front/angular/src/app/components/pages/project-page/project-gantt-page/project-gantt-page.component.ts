@@ -184,7 +184,7 @@ fetchIssues() {
             const dataIssues = [];
             
             for(let issue of data) {
-                let startDate = new Date(issue.createdDate);
+                let startDate = new Date(issue.createdAt);
                 let endDate = new Date(issue.dueDate);
                 
                 let dependentOnList: string[] = [];
@@ -193,7 +193,7 @@ fetchIssues() {
                 
                 dataIssues.push({
                     id: "" + issue.id,
-                    title: issue.name,
+                    title: issue.title,
                     start: getUnixTime(startDate),
                     end: getUnixTime(endDate),
                     group_id: "" + issue.groupId,

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {JIssue} from '../../../../_models/issue';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ProjectService} from "../../../state/project/project.service";
@@ -6,13 +6,14 @@ import {ProjectQuery} from "../../../state/project/project.query";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import { DocumentTitle } from '../../../../_models/document-title.model';
 import { IssueDocumentationService } from '../../../../_service/issue-documentation.service';
+import { AccountService } from '../../../../_service/account.service';
 
 @Component({
   selector: 'issue-detail',
   templateUrl: './issue-detail.component.html',
   styleUrl: './issue-detail.component.css'
 })
-export class IssueDetailComponent {
+export class IssueDetailComponent implements OnInit{
   @Input() issue!: JIssue | null;
   @Input() isShowFullScreenButton!: boolean;
   @Input() isShowCloseButton!: boolean;
@@ -22,13 +23,21 @@ export class IssueDetailComponent {
 
   documentTitles: DocumentTitle[] = [];
   documentTitlesBackup: DocumentTitle[] = [];
+  permission: any;
 
   constructor(
+    public accoutService: AccountService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     public projectQuery: ProjectQuery,
     private _projectService: ProjectService,
     private issueDocumentationService : IssueDocumentationService) {
+  }
+  ngOnInit(): void {
+    var user = this.accoutService.getCurrentUser();
+    if(user?.permitions){
+      this.permission = user.permitions;
+    }
   }
 
   closeModal() {

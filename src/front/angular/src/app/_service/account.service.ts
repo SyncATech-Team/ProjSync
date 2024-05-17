@@ -113,6 +113,10 @@ export class AccountService {
     );
   }
 
+  resendLink(model: ForgotPasswordModel) {
+    return this.http.post(this.baseUrl + "Account/resend-link", model);
+  }
+
   changePasswordForAuthorizedUser(model: AuthUserChangePassword) {
     return this.http.post<string>(this.baseUrl + "Account/change-password-auth-user", model);
   }

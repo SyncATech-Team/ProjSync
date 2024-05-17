@@ -4,18 +4,18 @@ import { Project } from '../../../_models/project.model';
 import { ProjectService } from '../../../_service/project.service';
 import { ProjectTypeService } from '../../../_service/project-type.service';
 import { ProjectType } from '../../../_models/project-type';
-import { CompanyroleService } from '../../../_service/companyrole.service';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { IssueService } from '../../../_service/issue.service';
-import { IssueModel } from '../../../_models/model-issue.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../elements/issues/issue-modal/issue-modal.component';
 import { ProjectQuery } from '../../state/project/project.query';
 import { ProjectService as ProjectService2 } from '../../state/project/project.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { StatisticsService } from '../../../_service/statistics.service';
+import { JIssue } from '../../../_models/issue';
 
 @Component({
   selector: 'app-home-page',
@@ -25,6 +25,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 export class HomePageComponent implements OnInit {
   projectImageSource : string = "";
   defaultImagePath : string = "../../../../assets/project-icon/default_project_image.png";
+  projectCompletioTimeMap: Map<string, number> = new Map<string, number>();
   projectCompletionMap: Map<string, number> = new Map<string, number>();
 
   projects: Project[]=[];
@@ -50,21 +51,20 @@ export class HomePageComponent implements OnInit {
 
   showUserTasks: boolean = false;
   selectedTab : string = "myProjects";
-  userIssues : IssueModel[] = [];
+  userIssues : JIssue[] = [];
   issueColumns! : string[];
   selectedIssueColumns!: string[];
   showIssueColumns!: string[];
   issuesShow: any[] = [];
   ref: DynamicDialogRef | undefined;
   IssueTypes : any[] = ["Bug", "Story", "Task"];
-  IssueStatus: any[] = ["Panning", "In progress", "Done"];
-  IssuePrioritys: any[] = ["Medium", "Low", "Lowest", "High", "Highest"];
+  IssueStatus: any[] = ["Planning", "In progress", "Done"];
+  IssuePrioritys: any[] = ["Lowest", "Low", "Medium", "High", "Highest"];
 
   constructor(
     public accoutService: AccountService,
     private projectService:ProjectService,
     private projectTypes:ProjectTypeService,
-    private companyroleService: CompanyroleService,
     private userService: UserService,
     private userPictureService: UserProfilePicture,
     private issueService : IssueService,
@@ -72,7 +72,8 @@ export class HomePageComponent implements OnInit {
     private _projectQuery: ProjectQuery,
     private _projectService: ProjectService2,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private statisticService: StatisticsService
   ) { }
 
   ngOnInit(): void {
@@ -118,7 +119,6 @@ export class HomePageComponent implements OnInit {
         this.handleRouteChange();
       }
     });
-
   }
 
   handleRouteChange() {
@@ -146,8 +146,9 @@ export class HomePageComponent implements OnInit {
             project.creationDate = new Date(project.creationDate);
             project.dueDate = new Date(project.dueDate); 
 
-            const completion = this.calculateProjectCompletion(project.creationDate, project.dueDate);
-            this.projectCompletionMap.set(project.key, completion);
+            const completion = this.calculateProjectCompletionTime(project.creationDate, project.dueDate);
+            this.projectCompletioTimeMap.set(project.key, Math.floor(completion));
+            this.projectCompletionMap.set(project.key, Math.floor(project.projectProgress! * 100));
           });
           this.filterProjects(this.visibilityFilter);
         },
@@ -199,12 +200,15 @@ export class HomePageComponent implements OnInit {
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
     return this.usersPhotos[ind].photoSource;
   }
-
-  calculateProjectCompletion(startDate: Date, endDate: Date): number {
+  
+  calculateProjectCompletionTime(startDate: Date, endDate: Date): number {
     const currentDate = new Date();
 
     if(currentDate >= endDate){
       return 100;
+    }
+    else if(currentDate <= startDate){
+      return 0;
     }
 
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)); // Ukupan broj dana planiran za trajanje projekta
@@ -235,6 +239,23 @@ export class HomePageComponent implements OnInit {
     else return "";
   }
 
+  getClassForProjectProgress(percentage: number | undefined): string {
+    if(percentage != undefined){
+      if (percentage <= 15) {
+        return 'project-progress-red'; 
+      }
+      else if(percentage <= 45){
+        return 'project-progress-orange'
+      }
+      else if (percentage <= 70) {
+        return 'project-progress-green';
+      } else {
+        return 'project-progress-light-green';
+      }
+    }
+    else return "";
+  }
+
   filterTasksByUser() {
     this.selectedTab = 'myTasks';
     let user = this.accoutService.getCurrentUser(); //potencijalno dodati kao polje i da se onda samo jednom getuje username
@@ -243,10 +264,18 @@ export class HomePageComponent implements OnInit {
         next: (response) => {
           this.userIssues = response;
           this.userIssues.forEach((issue)=>{
-            issue.createdDate = new Date(issue.createdDate);
-            issue.dueDate = new Date(issue.dueDate);
+            issue.createdAt = new Date(issue.createdAt).toISOString(); // Convert Date object to string
+            issue.dueDate = new Date(issue.dueDate).toISOString();
           });
           this.issuesShow = response;
+          
+          // convert createdAt from string to Date for all issues
+          this.issuesShow.forEach((issue) => {
+            issue.createdAt = new Date(issue.createdAt);
+            issue.dueDate = new Date(issue.dueDate);
+            issue.updatedAt = new Date(issue.updatedAt);
+          });
+
           // console.log(this.userIssues);
         },
         error: (error) => {
@@ -330,11 +359,11 @@ export class HomePageComponent implements OnInit {
     }
 
     this.issuesShow = this.userIssues.filter(issue =>
-        issue.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.typeName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.reporterUsername.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.statusName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        issue.priorityName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.status.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        issue.priority.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         issue.projectName.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }

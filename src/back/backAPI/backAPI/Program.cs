@@ -76,6 +76,7 @@ Console.ForegroundColor = ConsoleColor.Yellow;
 Console.WriteLine("Adding CORS policy");
 Console.WriteLine("");
 
+
 int numOfOrigins = int.Parse(builder.Configuration["AllowedCorsOrigins:NumOfOrigins"]);
 string[] origins = new string[numOfOrigins];
 for (int i = 0; i < numOfOrigins; i++) {

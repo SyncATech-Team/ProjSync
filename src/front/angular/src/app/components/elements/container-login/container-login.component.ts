@@ -59,7 +59,7 @@ export class ContainerLoginComponent implements OnInit {
         else {
           this.deleteEmailCookie();
         }
-        if (this.hasAdminRole()) this.router.navigateByUrl('/admin');
+        if (this.hasAdminRole()) this.router.navigateByUrl('/admin/user');
         else this.router.navigateByUrl('/home');
       },
 

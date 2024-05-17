@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240507133108_MigrationIssueDocumentation")]
-    partial class MigrationIssueDocumentation
+    [Migration("20240516202423_PostProductionMigrationFix")]
+    partial class PostProductionMigrationFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -382,6 +382,28 @@ namespace backAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("IssueType");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
@@ -857,6 +879,17 @@ namespace backAPI.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.Log", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
                 {
                     b.HasOne("backAPI.Entities.Domain.User", "User")
@@ -929,7 +962,7 @@ namespace backAPI.Migrations
                     b.HasOne("backAPI.Entities.Domain.Issue", "Issue")
                         .WithMany()
                         .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backAPI.Entities.Domain.User", "User")
