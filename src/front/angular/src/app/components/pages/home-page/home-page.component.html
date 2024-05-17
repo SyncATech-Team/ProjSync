@@ -22,7 +22,7 @@
                     [class.active-tab]="!tasksTabSelected">My projects</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab"
+                <a class="nav-link " data-bs-toggle="tab"
                     [routerLink]="['/home']"
                     [queryParams]="{ showUserTasks: true }"
                     routerLinkActive="router-link-active"
@@ -67,10 +67,10 @@
                             </p-multiSelect>
                             
                             <div class="p-input-icon-right input-search">
-                                <input id="home-issues-search" name="projects-serach" class="form-control project-search"
-                                type="search" placeholder="Search" aria-label="Search" 
-                                [(ngModel)]="searchTerm" (input)="searchIssuesTable()" icon="pi pi-search">
-                                <i class="pi pi-search"></i>
+                                <span class="p-input-icon-right">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" (input)="searchIssuesTable()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+                                </span>
                             </div>
                         </div>
 
@@ -319,10 +319,10 @@
                             </div> -->
 
                             <div class="p-input-icon-right input-search">
-                                <input id="home-projects-search" name="projects-serach" class="form-control project-search"
-                                type="search" placeholder="Search" aria-label="Search" 
-                                [(ngModel)]="searchTerm" (input)="filterProjectsByName()" icon="pi pi-search">
-                                <i class="pi pi-search"></i>
+                                <span class="p-input-icon-right">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" (input)="filterProjectsByName()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+                                </span>
                             </div>
                         </div>
 

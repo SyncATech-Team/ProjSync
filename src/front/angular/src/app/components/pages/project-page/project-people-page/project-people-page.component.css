@@ -12,7 +12,7 @@
 }
 
 .content th{
-    border: 1px solid rgb(226, 232, 240);
+    border: 1px solid var(--surface-d);
     border-top: 0;
 }
 
@@ -42,8 +42,6 @@
 
 .search input{
     padding: 11px;
-    border-radius: 5px;
-    border-color: #E4E4E4;
 }
 
 .deleteBtn button{
@@ -76,4 +74,9 @@
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+.modal-content{
+    color: var(--text-color);
+    background-color: var(--surface-card);
 }

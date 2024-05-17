@@ -38,12 +38,12 @@
 }
 
 :host ::ng-deep .btn-group-outline-default .active {
-    background-color: lightblue;
+    background-color: var(--surface-d);
 }
 
 :host ::ng-deep .thy-btn[thytype="primary"] {
-    background-color: lightblue;
-    color: black;
+    background-color: var(--surface-ground);
+    color: var(--text-color);
 }
 
 #tasks-header {
@@ -97,4 +97,14 @@
 
 :host ::ng-deep .gantt-table-scrollbar {
     opacity: 0;
+}
+
+thy-header thy-button{
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+}
+
+thy-content{
+    color: var(--text-color);
+    background-color: var(--surface-);
 }
