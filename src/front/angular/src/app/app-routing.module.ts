@@ -26,6 +26,7 @@ import { AdminEditProfileComponent } from './components/pages/admin-page/admin-e
 import { ProjectGuard } from './_guards/project.guard';
 import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
+import { InfoPageComponent } from './components/pages/info-page/info-page.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
@@ -42,6 +43,7 @@ const routes: Routes = [
       { path: 'home', component: HomePageComponent, canActivate: [HomeGuard] },
       { path: 'home/notifications', component: NotificationsPageComponent, canActivate: [HomeGuard] },
       { path: 'home/edit-profile', component: EditProfilePageComponent, canActivate: [HomeGuard] },
+      { path: 'home/info-page', component: InfoPageComponent, canActivate: [HomeGuard] },
       { path: 'home/projects', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
       { path: 'home/projects/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
       { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent, canActivate: [HomeGuard, ProjectGuard]},

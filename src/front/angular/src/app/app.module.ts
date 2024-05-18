@@ -122,6 +122,7 @@ import { UploadIssueDocumentComponent } from './components/elements/upload-issue
 import { ListOfIssueDocumentsComponent } from './components/elements/list-of-issue-documents/list-of-issue-documents.component';
 import { ForgotPasswordComponent } from './components/elements/forgot-password/forgot-password.component';
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
+import { InfoPageComponent } from './components/pages/info-page/info-page.component';
 
 @NgModule({
   declarations: [
@@ -184,7 +185,8 @@ import { PageForgotPasswordComponent } from './components/pages/page-forgot-pass
     ListOfIssueDocumentsComponent,
     LogsContainerComponent,
     ForgotPasswordComponent,
-    PageForgotPasswordComponent
+    PageForgotPasswordComponent,
+    InfoPageComponent
   ],
     imports: [
         BrowserModule,
