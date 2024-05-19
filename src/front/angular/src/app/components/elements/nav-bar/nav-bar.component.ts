@@ -21,7 +21,7 @@ export class NavBarComponent implements OnInit {
 
   profilePicturePath: string = '';
 
-  isDarkTheme: boolean = false;
+  isDarkTheme?: boolean;
 
   constructor(
       private accountService: AccountService,
@@ -51,16 +51,18 @@ export class NavBarComponent implements OnInit {
         else {
           this.setUserPicture("SLIKA_JE_NULL");
         }
+        this.themeService.switchTheme(this.user!.preferedTheme!);
+        this.isDarkTheme =  this.themeService.getTheme();
       },
       error: error => {
         console.log(error.error);
       }
     });
-    this.isDarkTheme =  this.themeService.getTheme();
   }
   
   logout() {
     this.accountService.logout();
+    this.themeService.switchTheme('lara-light-blue');
     this.router.navigateByUrl('/');
   }
 
@@ -125,7 +127,8 @@ export class NavBarComponent implements OnInit {
   }
 
   changeTheme(){
-    this.themeService.switchTheme(this.isDarkTheme);
+    if(this.isDarkTheme !== undefined)
+      this.themeService.updateTheme(this.user!.username,this.isDarkTheme);
   }
 
 }

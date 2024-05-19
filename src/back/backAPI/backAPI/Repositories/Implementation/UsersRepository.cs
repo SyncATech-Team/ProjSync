@@ -122,6 +122,24 @@ namespace backAPI.Repositories.Implementation
 
             return "OK";
         }
+
+        public async Task<string> UpdateUserPreferedTheme(string username, string theme)
+        {
+            var user = await GetUserByUsername(username);
+
+            // ne postoji user
+            if (user == null)
+            {
+                return "User not found";
+            }
+            
+            user.PreferedTheme = theme;
+
+            await userManager.UpdateAsync(user);
+
+            return "OK";
+        }
+
         /* **********************************************************************************
          * UsernameToId
          * ********************************************************************************** */

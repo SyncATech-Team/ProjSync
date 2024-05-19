@@ -53,4 +53,8 @@ export class UserService {
   getUser(username: string) {
     return this.http.get<UserGetter>(this.baseUrl + "Users/"+username);
   }
+
+  updateUserPreferedTheme(username: string, theme: string) {
+    return this.http.put<void>(`${this.baseUrl}users/theme?&username=${username}&theme=${theme}`,{});
+  }
 }
