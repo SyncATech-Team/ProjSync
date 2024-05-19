@@ -212,13 +212,13 @@ namespace backAPI.Data
                 .HasOne(t => t.UserSender)
                 .WithMany()
                 .HasForeignKey(t => t.SenderId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ChatMessage>()
                 .HasOne(t => t.ReceiverUser)
                 .WithMany()
                 .HasForeignKey(t => t.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             /* *******************************************************************************************************************
              * *******************************************************************************************************************
