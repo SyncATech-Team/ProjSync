@@ -18,6 +18,7 @@
                     field="username"
                     [placeholder]="'Type to search users...'"
                     class="custom-autocomplete"
+                    [spellcheck]="false"
                 >
                     <ng-template pTemplate="selectedItem">
                         <div class="user-div flex align-items-center gap-2" *ngIf="selectedUser">
@@ -35,199 +36,24 @@
             </div>
 
             <div id="previous-chats">
-                
-                <div class="chat-card">
+                <div class="chat-card" *ngFor="let chat of previousChats">
                     <div class="image-info">
-                        <img src="../../../../assets/project-icon/image7.png" alt="">
+                        <img src="{{ getUserImagePath(chat.conversationPartnerUsername, usersForChat ) }}" alt="img">
                         
                         <div class="name-and-last-message">
                             <div class="name">
-                                Chatter name
+                                {{ chat.conversationPartnerName }}
                             </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image6.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
+                            <div class="last-message" pTooltip="{{chat.lastMessage}}">
+                                {{ getTrimmedMessageContent(chat.lastMessage) }}
                             </div>
                         </div>
-                        
                     </div>
                     <div class="last-message-time">
-                        17. May 2024. 12:00 PM
+                        {{ chat.dateCreated | date:'short' }}
                     </div>
                 </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image11.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image11.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image11.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image11.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image11.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image11.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image12.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-
-                <div class="chat-card">
-                    <div class="image-info">
-                        <img src="../../../../assets/project-icon/image13.png" alt="">
-                        
-                        <div class="name-and-last-message">
-                            <div class="name">
-                                Chatter name
-                            </div>
-                            <div class="last-message">
-                                Example last message
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="last-message-time">
-                        17. May 2024. 12:00 PM
-                    </div>
-                </div>
-                
             </div>
-
         </div>
 
         <div id="right-container">

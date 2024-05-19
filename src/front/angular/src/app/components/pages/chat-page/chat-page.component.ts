@@ -4,6 +4,10 @@ import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { UserService } from '../../../_service/user.service';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { ChatService } from '../../../_service/chat.service';
+import { AccountService } from '../../../_service/account.service';
+import { User } from '../../../_models/user';
+import { ChatPreview } from '../../../_models/chat-preview.model';
 
 @Component({
   selector: 'app-chat-page',
@@ -17,18 +21,46 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   selectedUser?: UserGetter = undefined;
   filteredUsers: UserGetter[] = [];
 
+  loggedInUser: User | null = null;
+
+  previousChats: ChatPreview[] = [];
+
   constructor(
     private userPictureService: UserProfilePicture,
-    private userService: UserService
+    private userService: UserService,
+    private chatService: ChatService,
+    private accountService: AccountService
   ) {
   }
 
   ngOnInit(): void {
+    this.setLoggedInUser();
+    this.setUsersPreviousChats();
     this.fetchUsersForChat();
   }
 
   ngAfterViewInit() {
     this.scrollToTheLatestMessage();
+  }
+
+  setLoggedInUser() {
+    this.loggedInUser = this.accountService.getCurrentUser();
+  }
+
+  setUsersPreviousChats() {
+    this.chatService.getUsersPreviousChats("" + this.loggedInUser!.id).subscribe({
+      next: response => {
+        this.previousChats = response;
+        console.log(this.previousChats);
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
+
+  get getPreviousChats() {
+    return this.previousChats;
   }
 
   searchUsers(event: AutoCompleteCompleteEvent) {
@@ -95,6 +127,10 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     let ind = this.usersForChatPhotos.findIndex(u => u.username == username);
     if(ind == -1) return this.userPictureService.getFirstDefaultImagePath();
     return this.usersForChatPhotos[ind].photoSource;
+  }
+
+  getTrimmedMessageContent(message: string) {
+    return message.length > 30 ? message.substring(0, 30) + "..." : message;
   }
 
 }

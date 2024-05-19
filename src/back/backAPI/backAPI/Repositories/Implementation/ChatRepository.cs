@@ -22,8 +22,8 @@ namespace backAPI.Repositories.Implementation {
         public async Task<IEnumerable<ChatPreviewDto>> GetUsersPreviousChats(int userId) {
             // select all chats where the user is the sender or receiver and get the last message
             var chats = await _dataContext.ChatMessages
-                .Where(c => c.SenderId == userId || c.ReceiverId == userId)
-                .GroupBy(c => new { c.SenderId, c.ReceiverId })
+                .Where(c => (c.SenderId == userId && c.ReceiverId != userId) || (c.SenderId != userId && c.ReceiverId == userId))
+                .GroupBy(c => new { SenderId = Math.Min(c.SenderId, c.ReceiverId), ReceiverId = Math.Max(c.SenderId, c.ReceiverId) })
                 .Select(c => c.OrderByDescending(m => m.DateSent).FirstOrDefault())
                 .ToListAsync();
             
@@ -32,6 +32,8 @@ namespace backAPI.Repositories.Implementation {
                 var conversationPartnerId = chat.SenderId == userId ? chat.ReceiverId : chat.SenderId;
                 var conversationPartner = await _dataContext.Users.FindAsync(conversationPartnerId);
                 chatPreviewDtos.Add(new ChatPreviewDto {
+                    ConversationPartnerId = conversationPartner.Id,
+                    ConversationPartnerUsername = conversationPartner.UserName,
                     ConversationPartnerName = conversationPartner.FirstName + " " + conversationPartner.LastName,
                     ConversationPartnerPhoto = conversationPartner.ProfilePhoto,
                     LastMessage = chat.Content,
