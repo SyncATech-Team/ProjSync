@@ -85,6 +85,7 @@ import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
+import { AccordionModule } from 'primeng/accordion';
 
 // GANTT CHART MODULES
 import { NgxGanttModule } from '@worktile/gantt';
@@ -233,7 +234,8 @@ import { InfoPageComponent } from './components/pages/info-page/info-page.compon
         SliderModule,
         MeterGroupModule,
         BadgeModule,
-        ScrollerModule
+        ScrollerModule,
+        AccordionModule
     ],
   providers: [
     CookieService,
