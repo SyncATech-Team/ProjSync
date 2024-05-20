@@ -5,6 +5,10 @@
     margin-right: 10px;
 }
 
+.icon{
+    margin-left: 10px;
+}
+
 .navbar .logo{
     margin-right: 6vh;
     display: flex;
