@@ -31,7 +31,7 @@ import { InfoPageComponent } from './components/pages/info-page/info-page.compon
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
   { path: 'login', component: LoginPageComponent, canActivate: [loginGuard]},
-  // { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] }, // TODO: uncomment this line when forgot password is ready
+  { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] },
   { path: 'test', component: SamotestComponent },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },

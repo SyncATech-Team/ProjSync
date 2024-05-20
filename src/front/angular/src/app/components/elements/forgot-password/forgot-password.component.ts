@@ -36,7 +36,7 @@ export class ForgotPasswordComponent {
 
     this.accountService.forgotPassword(this.user).subscribe({
       next: () => {
-        this.router.navigateByUrl("account/password-reset");
+        this.messageService.add({ severity: 'success', summary: 'Rejected', detail: "Verification link sent on Your email. Please verify email and reset password" });
       },
 
       error: _ => {
