@@ -85,6 +85,7 @@ import { CdkTextareaAutosize } from "@angular/cdk/text-field";
 import { IssueReporterComponent } from './components/elements/issues/issue-reporter/issue-reporter.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
+import { AccordionModule } from 'primeng/accordion';
 
 // GANTT CHART MODULES
 import { NgxGanttModule } from '@worktile/gantt';
@@ -122,6 +123,7 @@ import { UploadIssueDocumentComponent } from './components/elements/upload-issue
 import { ListOfIssueDocumentsComponent } from './components/elements/list-of-issue-documents/list-of-issue-documents.component';
 import { ForgotPasswordComponent } from './components/elements/forgot-password/forgot-password.component';
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
+import { InfoPageComponent } from './components/pages/info-page/info-page.component';
 
 @NgModule({
   declarations: [
@@ -184,7 +186,8 @@ import { PageForgotPasswordComponent } from './components/pages/page-forgot-pass
     ListOfIssueDocumentsComponent,
     LogsContainerComponent,
     ForgotPasswordComponent,
-    PageForgotPasswordComponent
+    PageForgotPasswordComponent,
+    InfoPageComponent
   ],
     imports: [
         BrowserModule,
@@ -231,7 +234,8 @@ import { PageForgotPasswordComponent } from './components/pages/page-forgot-pass
         SliderModule,
         MeterGroupModule,
         BadgeModule,
-        ScrollerModule
+        ScrollerModule,
+        AccordionModule
     ],
   providers: [
     CookieService,

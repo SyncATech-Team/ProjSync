@@ -191,7 +191,11 @@
                 <div class="my-img-container"></div>
             </ng-template>
             <div class="btns-wrapper">
-                <input id="fileInput" #fileInputRef type="file" (change)="onFileSelected($event)" style="display:none;" id="files">
+                <input id="fileInput"
+                #fileInputRef type="file"
+                (change)="onFileSelected($event)" style="display:none;"
+                id="files"
+                accept=".jpg, .jpeg, .png">
                 <label for="files" class="files-btn">Select file</label>
                 
                 <p-button label="Remove image" [outlined]="true" severity="danger" class="remove-photo" (onClick)="openPopUp($event)"></p-button> 
