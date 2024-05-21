@@ -434,6 +434,15 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')" class="progress-project-th">
                                 Progress
+                                <p-columnFilter field="projectProgress" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template pTemplate="filter" let-filter="filterCallback">
+                                        <p-slider [ngModel]="completedValues" [range]="true" min="0" max="1" (onSlideEnd)="filter($event.values)" styleClass="m-3" step="0.01"></p-slider>
+                                        <div class="flex align-items-center px-2">
+                                            <span>{{ roundValue(completedValues[0]*100) }} - </span>
+                                            <span>{{ roundValue(completedValues[1]*100) }}</span>
+                                        </div>
+                                    </ng-template>
+                                </p-columnFilter>
                             </th>                            
                         </ng-container>
                     </tr>
