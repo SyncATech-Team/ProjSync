@@ -230,7 +230,7 @@ namespace backAPI.Controllers
 
                 foreach (var issue in issues) {
                     var issueType = await _issueTypeRepository.GetIssueTypeById(issue.TypeId);
-                    var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.StatusId);
+                    var issuePriority = await _issuePriorityRepository.GetIssuePriorityById(issue.PriorityId);
                     var issueStatus = await _issueStatusRepository.GetIssueStatusById(issue.StatusId);
                     var issueGroup = await _issueGroupRepository.GetGroupAsync(issue.GroupId);
                     var issueOwner = await _usersRepository.GetUserById(issue.OwnerId);
