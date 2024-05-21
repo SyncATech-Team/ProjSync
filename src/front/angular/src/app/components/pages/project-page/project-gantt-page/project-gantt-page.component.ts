@@ -245,8 +245,6 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
-    // console.log(issueId);
-    // console.log(this.usersPhotos);
     this.ref1 = this._modalService.open(IssueModalComponent, {
       header: 'Issue - update',
       width: '65%',
@@ -264,6 +262,13 @@ openIssueModal(issueId : string){
         usersPhotos: this.usersPhotos
       }
     });
+
+    this.ref1.onClose.subscribe({
+        next: (data: String) => {
+          if(data !== "deleted-task") return;
+          this.refresh();
+        }
+      });
   }
 
 lineClick(event: GanttLineClickEvent) {
@@ -390,6 +395,7 @@ refresh() {
     this.fetchGroups();
     this.fetchIssues();
     this.fetchUsers();
+    this._projectService.getProject(this.projectName);
 }
 
 onDragDropped(event: GanttTableDragDroppedEvent) {

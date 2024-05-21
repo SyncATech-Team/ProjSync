@@ -227,6 +227,17 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         usersPhotos: this.usersPhotos
       }
     });
+
+    this.ref.onClose.subscribe({
+      next: (data: String) => {
+        if(data !== "deleted-task") return;
+        this.tasks = [];
+        this.tasksByGroup = [];
+        this.tasks_backup = [];
+        this.ngOnInit();
+        this.loadIssues(this.lastLazyLoadEvent);
+      }
+    });
   }
 
   showCreateTaskPopupTaskList() {

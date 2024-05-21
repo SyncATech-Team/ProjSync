@@ -22,7 +22,7 @@ export class IssueModalComponent implements OnInit {
   }
 
   closeModal() {
-    this._modal.close();
+    this._modal.close("deleted-task");
   }
 
 }
