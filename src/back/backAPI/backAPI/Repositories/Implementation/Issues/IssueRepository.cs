@@ -486,11 +486,11 @@ namespace backAPI.Repositories.Implementation.Issues
                             {
                                 if (filter.Field == "name")
                                 {
-                                    issues2 = issues.Where(i => i.Issue.Name.StartsWith((string)fieldFilter.Value));
+                                    issues2 = issues.Where(i => i.Issue.Name.ToLower().StartsWith((string)fieldFilter.Value));
                                 }
                                 else
                                 {
-                                    issues2 = issues.Where(i => i.Reporter.UserName.StartsWith((string)fieldFilter.Value));
+                                    issues2 = issues.Where(i => i.Reporter.UserName.ToLower().StartsWith((string)fieldFilter.Value));
                                 }
                             }
                             else
@@ -499,11 +499,11 @@ namespace backAPI.Repositories.Implementation.Issues
                                 {
                                     if (filter.Field == "name")
                                     {
-                                        issues2 = issues.Where(i => i.Issue.Name.Contains((string)fieldFilter.Value));
+                                        issues2 = issues.Where(i => i.Issue.Name.ToLower().Contains((string)fieldFilter.Value));
                                     }
                                     else
                                     {
-                                        issues2 = issues.Where(i => i.Reporter.UserName.Contains((string)fieldFilter.Value));
+                                        issues2 = issues.Where(i => i.Reporter.UserName.ToLower().Contains((string)fieldFilter.Value));
                                     }
                                 }
                                 else
@@ -512,11 +512,11 @@ namespace backAPI.Repositories.Implementation.Issues
                                     {
                                         if (filter.Field == "name")
                                         {
-                                            issues2 = issues.Where(i => !i.Issue.Name.Contains((string)fieldFilter.Value));
+                                            issues2 = issues.Where(i => !i.Issue.Name.ToLower().Contains((string)fieldFilter.Value));
                                         }
                                         else
                                         {
-                                            issues2 = issues.Where(i => !i.Reporter.UserName.Contains((string)fieldFilter.Value));
+                                            issues2 = issues.Where(i => !i.Reporter.UserName.ToLower().Contains((string)fieldFilter.Value));
                                         }
                                     }
                                     else
@@ -525,11 +525,11 @@ namespace backAPI.Repositories.Implementation.Issues
                                         {
                                             if (filter.Field == "name")
                                             {
-                                                issues2 = issues.Where(i => i.Issue.Name.EndsWith((string)fieldFilter.Value));
+                                                issues2 = issues.Where(i => i.Issue.Name.ToLower().EndsWith((string)fieldFilter.Value));
                                             }
                                             else
                                             {
-                                                issues2 = issues.Where(i => i.Reporter.UserName.EndsWith((string)fieldFilter.Value));
+                                                issues2 = issues.Where(i => i.Reporter.UserName.ToLower().EndsWith((string)fieldFilter.Value));
                                             }
                                         }
                                         else
@@ -538,11 +538,11 @@ namespace backAPI.Repositories.Implementation.Issues
                                             {
                                                 if (filter.Field == "name")
                                                 {
-                                                    issues2 = issues.Where(i => i.Issue.Name.Equals((string)fieldFilter.Value));
+                                                    issues2 = issues.Where(i => i.Issue.Name.ToLower().Equals((string)fieldFilter.Value));
                                                 }
                                                 else
                                                 {
-                                                    issues2 = issues.Where(i => i.Reporter.UserName.Equals((string)fieldFilter.Value));
+                                                    issues2 = issues.Where(i => i.Reporter.UserName.ToLower().Equals((string)fieldFilter.Value));
                                                 }
                                             }
                                             else
@@ -551,11 +551,11 @@ namespace backAPI.Repositories.Implementation.Issues
                                                 {
                                                     if (filter.Field == "name")
                                                     {
-                                                        issues2 = issues.Where(i => !i.Issue.Name.Equals((string)fieldFilter.Value));
+                                                        issues2 = issues.Where(i => !i.Issue.Name.ToLower().Equals((string)fieldFilter.Value));
                                                     }
                                                     else
                                                     {
-                                                        issues2 = issues.Where(i => !i.Reporter.UserName.Equals((string)fieldFilter.Value));
+                                                        issues2 = issues.Where(i => !i.Reporter.UserName.ToLower().Equals((string)fieldFilter.Value));
                                                     }
                                                 }
                                             }
