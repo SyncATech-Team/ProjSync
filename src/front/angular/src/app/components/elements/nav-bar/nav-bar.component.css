@@ -168,3 +168,14 @@
 #gear:hover {
     color: #5E5BF4;
 }
+
+#faq{
+    font-size: 24px;
+    color: black;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#faq:hover {
+    color: #5E5BF4;
+}
