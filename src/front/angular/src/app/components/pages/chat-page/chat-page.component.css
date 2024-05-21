@@ -110,7 +110,10 @@
 .newMessage {
     height: 10%;
     width: 100%;
-    background-color: lightgoldenrodyellow;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .newMessage textarea {
@@ -121,24 +124,56 @@
 
 .message {
     padding: 10px;
-    border: 1px solid black;
-    border-radius: 10px;
     margin-bottom: 5px;
     margin-top: 5px;
+    word-break: break-all;
+}
+
+.messageDate {
+    font-size: 12px;
+    color: gray;
+}
+
+.messageContent {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .msg-received {
-    width: 70%;
-    display: block;
+    width: 60%;
     float: left;
 }
 
+.msg-received .messageContent {
+    background-color: lightgray;
+}
+
+.msg-received .messageDate {
+    text-align: left;
+}
+
 .msg-sent {
-    width: 70%;
-    display: block;
+    width: 60%;
     float: right;
+}
+
+.msg-sent .messageContent {
+    background-color: lightgreen;
+}
+
+.msg-sent .messageDate {
+    text-align: right;
 }
 
 .name {
     font-weight: bold;
+}
+
+.fa-paper-plane {
+    padding: 20px;
+}
+
+#send-btn-div:hover {
+    cursor: pointer;
 }

@@ -6,6 +6,7 @@ namespace backAPI.Repositories.Interface {
 
         Task<IEnumerable<ChatPreviewDto>> GetUsersPreviousChats(int userId);
         Task<ChatMessageDto> SendMessage(ChatMessageDto message);
+        Task<IEnumerable<ChatMessageDto>> GetChatMessages(string loggedInUserUsername, string chatPartnerUsername);
 
     }
 }

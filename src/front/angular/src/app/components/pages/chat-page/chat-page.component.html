@@ -61,49 +61,48 @@
 
             <div class="chat-header">
                 <div class="chatter-info">
-                    <img src="../../../../assets/project-icon/image1.png" alt="">
-                    <span>Username</span>
+                    <img src="{{ getUserImagePath(selectedUser!.username, usersForChat ) }}">
+                    <span>
+                        {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}
+                    </span>
                 </div>
-                <div class="chatter-status">
-                    Online/Offline
+                <div class="username-online" *ngIf="(presenceService.onlineUsers$ | async)?.includes(selectedUser!.username)">
+                    <span>Online now</span>
+                </div>
+                <div class="username-offline" *ngIf="!(presenceService.onlineUsers$ | async)?.includes(selectedUser!.username)">
+                    <span>Offline</span>
                 </div>
             </div>
 
-            <div id="messages-div-id" #messagesDiv class="chat-messages">
-                <div class="message msg-received">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
+            <div id="messages-div-id" class="chat-messages">
+                
+                <div class="no-messages" *ngIf="messages.length === 0">
+                    <span>No messages yet</span>
                 </div>
-                <div class="message msg-sent">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-received">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-sent">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-received">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-sent">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-received">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-sent">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-received">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
-                </div>
-                <div class="message msg-sent">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
+                
+                <div 
+                    class="message"
+                    [ngClass]="{ 'msg-sent': message.senderUsername === loggedInUser!.username, 'msg-received': message.senderUsername !== loggedInUser!.username }"
+                    *ngFor="let message of messages"
+                >
+                    <div class="messageDate"> {{ message.dateSent | date:'short' }} </div>
+                    <div class="messageContent">
+                        {{ message.content }}
+                    </div>
                 </div>
             </div>
 
             <div class="newMessage">
-                <textarea  name="newMessage" id="newMessage" placeholder="Type your message here..."></textarea>
+                <textarea 
+                    name="newMessage"
+                    id="newMessageTextArea"
+                    placeholder="Type your message here..."
+                    [(ngModel)]="inputMessage"
+                    spellcheck="false"
+                    ></textarea>
+                <div id="send-btn-div" (click)="sendMessage()" [ariaDisabled]="inputMessage.length === 0">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
             </div>
 
         </div>

@@ -8,12 +8,17 @@ namespace backAPI.Repositories.Implementation {
     public class ChatRepository : IChatRepository {
 
         private readonly DataContext _dataContext;
+        private readonly IUsersRepository _usersRepository;
 
-        public ChatRepository(DataContext dataContext) {
+        public ChatRepository(
+            DataContext dataContext,
+            IUsersRepository usersRepository
+        ) {
             _dataContext = dataContext;
+            _usersRepository = usersRepository;
         }
 
-        
+
         /// <summary>
         /// Retrieves the previous chats of a user.
         /// </summary>
@@ -22,7 +27,7 @@ namespace backAPI.Repositories.Implementation {
         public async Task<IEnumerable<ChatPreviewDto>> GetUsersPreviousChats(int userId) {
             // select all chats where the user is the sender or receiver and get the last message
             var chats = await _dataContext.ChatMessages
-                .Where(c => (c.SenderId == userId && c.ReceiverId != userId) || (c.SenderId != userId && c.ReceiverId == userId))
+                .Where(c => (c.SenderId == userId && c.ReceiverId != userId) || (c.SenderId != userId && c.ReceiverId == userId) || (c.SenderId == userId && c.ReceiverId == userId))
                 .GroupBy(c => new { SenderId = Math.Min(c.SenderId, c.ReceiverId), ReceiverId = Math.Max(c.SenderId, c.ReceiverId) })
                 .Select(c => c.OrderByDescending(m => m.DateSent).FirstOrDefault())
                 .ToListAsync();
@@ -50,9 +55,15 @@ namespace backAPI.Repositories.Implementation {
         /// <param name="message">The chat message to send.</param>
         /// <returns>The sent chat message as a <see cref="ChatMessageDto"/>.</returns>
         public async Task<ChatMessageDto> SendMessage(ChatMessageDto message) {
+
+            var sender = await _usersRepository.GetUserByUsername(message.SenderUsername);
+            var receiver = await _usersRepository.GetUserByUsername(message.ReceiverUsername);
+
+            if(sender == null || receiver == null) return null;
+
             var chatMessage = new ChatMessage {
-                SenderId = message.SenderId,
-                ReceiverId = message.ReceiverId,
+                SenderId = sender.Id,
+                ReceiverId = receiver.Id,
                 Content = message.Content,
                 DateSent = DateTime.Now,
                 Status = message.Status
@@ -63,12 +74,40 @@ namespace backAPI.Repositories.Implementation {
 
             return new ChatMessageDto {
                 Id = chatMessage.Id,
-                SenderId = chatMessage.SenderId,
-                ReceiverId = chatMessage.ReceiverId,
+                SenderUsername = sender.UserName,
+                ReceiverUsername = receiver.UserName,
                 Content = chatMessage.Content,
                 DateSent = chatMessage.DateSent,
                 Status = chatMessage.Status
             };
+        }
+        
+        public async Task<IEnumerable<ChatMessageDto>> GetChatMessages(string loggedInUserUsername, string chatPartnerUsername) {
+            
+            var loggedInUser = await _usersRepository.GetUserByUsername(loggedInUserUsername);
+            var chatPartner = await _usersRepository.GetUserByUsername(chatPartnerUsername);
+
+            if(loggedInUser == null || chatPartner == null) return null;
+
+            var chatMessages = await _dataContext.ChatMessages
+                .Where(c => (c.SenderId == loggedInUser.Id && c.ReceiverId == chatPartner.Id) || (c.SenderId == chatPartner.Id && c.ReceiverId == loggedInUser.Id))
+                .OrderBy(c => c.DateSent)
+                .ToListAsync();
+
+            var chatMessageDtos = new List<ChatMessageDto>();
+            foreach(var chatMessage in chatMessages) {
+                chatMessageDtos.Add(new ChatMessageDto {
+                    Id = chatMessage.Id,
+                    SenderUsername = chatMessage.SenderId == loggedInUser.Id ? loggedInUser.UserName : chatPartner.UserName,
+                    ReceiverUsername = chatMessage.ReceiverId == loggedInUser.Id ? loggedInUser.UserName : chatPartner.UserName,
+                    Content = chatMessage.Content,
+                    DateSent = chatMessage.DateSent,
+                    Status = chatMessage.Status
+                });
+            }
+
+            return chatMessageDtos;
+
         }
 
     }
