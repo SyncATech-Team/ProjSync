@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { UserGetter } from '../../../_models/user-getter';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
@@ -8,13 +8,14 @@ import { ChatService } from '../../../_service/chat.service';
 import { AccountService } from '../../../_service/account.service';
 import { User } from '../../../_models/user';
 import { ChatPreview } from '../../../_models/chat-preview.model';
+import { ViewChild, ElementRef, OnChanges, SimpleChange } from '@angular/core';
 
 @Component({
   selector: 'app-chat-page',
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.css'
 })
-export class ChatPageComponent implements OnInit, AfterViewInit {
+export class ChatPageComponent implements OnInit, OnChanges {
 
   usersForChat: UserGetter[] = [];
   usersForChatPhotos: PhotoForUser[] = [];
@@ -24,6 +25,9 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   loggedInUser: User | null = null;
 
   previousChats: ChatPreview[] = [];
+
+  showChat: boolean = false;
+  @ViewChild('messagesDiv', { static: false }) private messagesDiv!: ElementRef;
 
   constructor(
     private userPictureService: UserProfilePicture,
@@ -39,8 +43,11 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.fetchUsersForChat();
   }
 
-  ngAfterViewInit() {
-    this.scrollToTheLatestMessage();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showChat'] && changes['showChat'].currentValue) {
+      console.log("Test");
+      this.scrollToTheLatestMessage();
+    }
   }
 
   setLoggedInUser() {
@@ -51,7 +58,6 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.chatService.getUsersPreviousChats("" + this.loggedInUser!.id).subscribe({
       next: response => {
         this.previousChats = response;
-        console.log(this.previousChats);
       },
       error: error => {
         console.log(error);
@@ -77,9 +83,19 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.filteredUsers = filtered;
   }
 
+  onUserSelected(event: any) {
+    console.log(event);
+    if(event == null) this.showChat = false;
+    else {
+      this.showChat = true;
+    }
+  }
+
   scrollToTheLatestMessage() {
-    let element = document.getElementById('messages-div-id') as HTMLElement;
-    element.scrollTop = element.scrollHeight;
+    if (this.messagesDiv) {
+      const element = this.messagesDiv.nativeElement;
+      element.scrollTop = element.scrollHeight;
+    }
   }
 
   getUserProfilePhotos(users: UserGetter[]) {

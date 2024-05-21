@@ -19,6 +19,7 @@
                     [placeholder]="'Type to search users...'"
                     class="custom-autocomplete"
                     [spellcheck]="false"
+                    (ngModelChange)="onUserSelected($event)"
                 >
                     <ng-template pTemplate="selectedItem">
                         <div class="user-div flex align-items-center gap-2" *ngIf="selectedUser">
@@ -56,7 +57,7 @@
             </div>
         </div>
 
-        <div id="right-container">
+        <div id="right-container" *ngIf="showChat" >
 
             <div class="chat-header">
                 <div class="chatter-info">
@@ -68,7 +69,7 @@
                 </div>
             </div>
 
-            <div id="messages-div-id" class="chat-messages">
+            <div id="messages-div-id" #messagesDiv class="chat-messages">
                 <div class="message msg-received">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, qui laborum nam sed quae ea ex labore vitae numquam deleniti quisquam iste mollitia omnis molestias nostrum optio perspiciatis cupiditate quidem!
                 </div>
