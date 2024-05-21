@@ -1,4 +1,4 @@
-<app-spinner></app-spinner>
+<!-- <app-spinner></app-spinner> -->
 
 <div id="page-wrapper">
     
@@ -37,7 +37,7 @@
             </div>
 
             <div id="previous-chats">
-                <div class="chat-card" *ngFor="let chat of previousChats">
+                <div class="chat-card" *ngFor="let chat of getPreviousChats">
                     <div class="image-info">
                         <img src="{{ getUserImagePath(chat.conversationPartnerUsername, usersForChat ) }}" alt="img">
                         

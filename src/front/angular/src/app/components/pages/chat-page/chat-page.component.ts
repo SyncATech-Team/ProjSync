@@ -19,15 +19,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ChatPageComponent implements OnInit {
 
-  usersForChat: UserGetter[] = [];
-  filteredUsers: UserGetter[] = [];
-  usersForChatPhotos: PhotoForUser[] = [];
+  private static _usersForChat: UserGetter[] = [];
   
-  loggedInUser: User | null = null;
-  selectedUser?: UserGetter = undefined;
-  selectedUserUsername: string = "";
+  filteredUsers: UserGetter[] = [];
+  private static _usersForChatPhotos: PhotoForUser[] = [];
+  
+  private static _loggedInUser: User | null = null;
+  
+  private static _selectedUser?: UserGetter | undefined = undefined;
+  
+  private static _selectedUserUsername: string = "";
 
-  previousChats: ChatPreview[] = [];
+  private static _previousChats: ChatPreview[] = [];
 
   inputMessage: string = "";
   message: MessageSendDto = {
@@ -38,9 +41,15 @@ export class ChatPageComponent implements OnInit {
     status: 0
   };
 
-  messages: MessageSendDto[] = [];
+  private static _messages: MessageSendDto[] = [];
 
-  showChat: boolean = false;
+  private static _showChat: boolean = false;
+
+
+  static staticAccountService: AccountService;
+  static staticChatService: ChatService;
+  static staticUsersService: UserService;
+  static staticUserPictureService: UserProfilePicture;
 
   constructor(
     // private router: Router,
@@ -51,13 +60,15 @@ export class ChatPageComponent implements OnInit {
     public presenceService: PresenceService,
     // private route: ActivatedRoute
   ) {
+    ChatPageComponent.staticAccountService = accountService;
+    ChatPageComponent.staticChatService = chatService;
+    ChatPageComponent.staticUsersService = userService;
+    ChatPageComponent.staticUserPictureService = userPictureService;
   }
 
   ngOnInit(): void {
 
-    this.setLoggedInUser();
-    this.setUsersPreviousChats();
-    this.fetchUsersForChat();
+    ChatPageComponent.initialize();
 
     // this.route.queryParams.pipe().subscribe(params => {
     //   let username = params['username'];
@@ -68,20 +79,31 @@ export class ChatPageComponent implements OnInit {
     // });
   }
 
+  public static initialize(message?: MessageSendDto) {
+    ChatPageComponent.setLoggedInUser();
+    ChatPageComponent.setUsersPreviousChats();
+    ChatPageComponent.fetchUsersForChat();
+
+    if(this._selectedUser != undefined) {
+      this.AddMessageToMessages(message!);
+    }
+
+  }
+
   /**
    * Sets the logged-in user by retrieving the current user from the account service.
    */
-  setLoggedInUser() {
-    this.loggedInUser = this.accountService.getCurrentUser();
+  public static setLoggedInUser() {
+    ChatPageComponent._loggedInUser = ChatPageComponent.staticAccountService.getCurrentUser();
   }
 
   /**
    * Sets the previous chats for the logged-in user.
    */
-  setUsersPreviousChats() {
-    this.chatService.getUsersPreviousChats("" + this.loggedInUser!.id).subscribe({
+  public static setUsersPreviousChats() {
+    ChatPageComponent.staticChatService.getUsersPreviousChats("" + ChatPageComponent._loggedInUser!.id).subscribe({
       next: response => {
-        this.previousChats = response.sort((a, b) => {
+        ChatPageComponent._previousChats = response.sort((a, b) => {
           if(a.dateCreated > b.dateCreated) return -1;
           if(a.dateCreated < b.dateCreated) return 1;
           return 0;
@@ -124,13 +146,12 @@ export class ChatPageComponent implements OnInit {
    * @param event - The event object containing the selected user information.
    */
   onUserSelected(event: any) {
-    console.log(event);
-    if(event == null) this.showChat = false;
+    if(event == null) ChatPageComponent._showChat = false;
     else {
-      if(this.usersForChatPhotos.filter(u => u.username == event.username).length != 0) {
-        this.showChat = true;
+      if(ChatPageComponent._usersForChatPhotos.filter(u => u.username == event.username).length != 0) {
+        ChatPageComponent._showChat = true;
         // this.router.navigate([], {queryParams: {username: event.username}});
-        this.setMessages(this.loggedInUser!.username, event.username);
+        ChatPageComponent.setMessages(ChatPageComponent._loggedInUser!.username, event.username);
       }
     }
   }
@@ -141,12 +162,13 @@ export class ChatPageComponent implements OnInit {
    * @param loggedInUserUsername - The username of the logged in user.
    * @param otherUserUsername - The username of the other user.
    */
-  setMessages(loggedInUserUsername: string, otherUserUsername: string) {
-    this.chatService.getMessages(loggedInUserUsername, otherUserUsername).subscribe({
+  public static setMessages(loggedInUserUsername: string, otherUserUsername: string) {
+    console.log("Setting messages for " + loggedInUserUsername + " and " + otherUserUsername);
+    ChatPageComponent.staticChatService.getMessages(loggedInUserUsername, otherUserUsername).subscribe({
       next: response => {
-        this.messages = response;
+        ChatPageComponent._messages = response;
         setTimeout(() => {
-          this.scrollToTheLatestMessage();
+          ChatPageComponent.scrollToTheLatestMessage();
         }, 0);
       },
       error: error => {
@@ -158,7 +180,7 @@ export class ChatPageComponent implements OnInit {
   /**
    * Scrolls to the latest message in the chat.
    */
-  scrollToTheLatestMessage() {
+  public static scrollToTheLatestMessage() {
     let element = document.getElementById('messages-div-id') as HTMLElement;
     element.scrollTop = element.scrollHeight;
   }
@@ -167,18 +189,18 @@ export class ChatPageComponent implements OnInit {
    * Retrieves user profile photos and adds them to the usersForChatPhotos array.
    * @param users - An array of UserGetter objects.
    */
-  getUserProfilePhotos(users: UserGetter[]) {
+  public static getUserProfilePhotos(users: UserGetter[]) {
     for(const user of users) {
       if(user.profilePhoto != null) {
-        this.userPictureService.getUserImage(user.username).subscribe({
+        ChatPageComponent.staticUserPictureService.getUserImage(user.username).subscribe({
           next: response => {
             let path = response['fileContents'];
-            path = this.userPictureService.decodeBase64Image(response['fileContents']);
+            path = ChatPageComponent.staticUserPictureService.decodeBase64Image(response['fileContents']);
             var ph: PhotoForUser = {
               username: user.username, 
               photoSource: path
             };
-            this.usersForChatPhotos.push(ph);
+            ChatPageComponent._usersForChatPhotos.push(ph);
           },
           error: error => {
             console.log(error);
@@ -190,7 +212,7 @@ export class ChatPageComponent implements OnInit {
           username: user.username,
           photoSource: "SLIKA_JE_NULL"
         }
-        this.usersForChatPhotos.push(ph);
+        ChatPageComponent._usersForChatPhotos.push(ph);
       }
     }
   }
@@ -198,17 +220,17 @@ export class ChatPageComponent implements OnInit {
   /**
    * Fetches users for chat and performs necessary operations based on the retrieved data.
    */
-  fetchUsersForChat() {
-    this.userService.getAllUsers().subscribe(users => {
-      this.usersForChat = users.filter(user => user.companyRoleName !== 'Administrator');
-      this.getUserProfilePhotos(this.usersForChat);
+  public static fetchUsersForChat() {
+    ChatPageComponent.staticUsersService.getAllUsers().subscribe(users => {
+      ChatPageComponent._usersForChat = users.filter(user => user.companyRoleName !== 'Administrator');
+      ChatPageComponent.getUserProfilePhotos(ChatPageComponent._usersForChat);
       
-      if(this.selectedUserUsername != "") {
-        let index = this.usersForChat.findIndex(u => u.username == this.selectedUserUsername);
+      if(ChatPageComponent._selectedUserUsername != "") {
+        let index = ChatPageComponent._usersForChat.findIndex(u => u.username == ChatPageComponent._selectedUserUsername);
         if(index != -1) {
-          this.selectedUser = this.usersForChat[index];
-          this.showChat = true;
-          this.setMessages(this.loggedInUser!.username, this.selectedUserUsername);
+          ChatPageComponent._selectedUser = ChatPageComponent._usersForChat[index];
+          ChatPageComponent._showChat = true;
+          this.setMessages(ChatPageComponent._loggedInUser!.username, ChatPageComponent._selectedUserUsername);
         }
       }
 
@@ -250,7 +272,7 @@ export class ChatPageComponent implements OnInit {
 
     if(this.inputMessage == "") return; // If the input message is empty, return.
 
-    this.message!.senderUsername = this.loggedInUser!.username;
+    this.message!.senderUsername = ChatPageComponent._loggedInUser!.username;
     this.message!.receiverUsername = this.selectedUser!.username;
     this.message!.content = this.inputMessage;
     this.message!.dateSent = new Date();
@@ -261,7 +283,7 @@ export class ChatPageComponent implements OnInit {
         this.messages.push(this.message!);  // Add the message to the messages array.
         this.inputMessage = "";             // Clear the input message.
         setTimeout(() => {                  // Scroll to the latest message.
-          this.scrollToTheLatestMessage();
+          ChatPageComponent.scrollToTheLatestMessage();
         }, 0);
       },
       error: error => {
@@ -269,6 +291,45 @@ export class ChatPageComponent implements OnInit {
       }
     });
 
+  }
+
+  private static AddMessageToMessages(message: MessageSendDto) {
+    ChatPageComponent._messages.push(message);
+    setTimeout(() => {                  // Scroll to the latest message.
+      ChatPageComponent.scrollToTheLatestMessage();
+    }, 0);
+  }
+
+  public get loggedInUser(): User | null {
+    return ChatPageComponent._loggedInUser;
+  }
+
+  public get previousChats(): ChatPreview[] {
+    return ChatPageComponent._previousChats;
+  }
+
+  public get usersForChat(): UserGetter[] {
+    return ChatPageComponent._usersForChat;
+  }
+
+  public get usersForChatPhotos(): PhotoForUser[] {
+    return ChatPageComponent._usersForChatPhotos;
+  }
+
+  public get selectedUser(): UserGetter | undefined {
+    return ChatPageComponent._selectedUser;
+  }
+
+  public set selectedUser(value: UserGetter | undefined) {
+    ChatPageComponent._selectedUser = value;
+  }
+
+  public get showChat(): boolean {
+    return ChatPageComponent._showChat;
+  }
+
+  public get messages(): MessageSendDto[] {
+    return ChatPageComponent._messages;
   }
 
 }

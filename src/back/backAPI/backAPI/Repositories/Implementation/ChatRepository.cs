@@ -2,6 +2,7 @@
 using backAPI.DTO.Chat;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
+using backAPI.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace backAPI.Repositories.Implementation {
@@ -9,13 +10,16 @@ namespace backAPI.Repositories.Implementation {
 
         private readonly DataContext _dataContext;
         private readonly IUsersRepository _usersRepository;
+        private readonly NotificationService _notificationService;
 
         public ChatRepository(
             DataContext dataContext,
-            IUsersRepository usersRepository
+            IUsersRepository usersRepository,
+            NotificationService notificationService
         ) {
             _dataContext = dataContext;
             _usersRepository = usersRepository;
+            _notificationService = notificationService;
         }
 
 
@@ -71,6 +75,9 @@ namespace backAPI.Repositories.Implementation {
 
             _dataContext.ChatMessages.Add(chatMessage);
             await _dataContext.SaveChangesAsync();
+
+            string[] users = { receiver.UserName };
+            await _notificationService.SendChatMessageNotification(users , message);
 
             return new ChatMessageDto {
                 Id = chatMessage.Id,

@@ -5,6 +5,8 @@ import { User } from "../_models/user";
 import { MessagePopupService } from "./message-popup.service";
 import { NotificationComponent } from "../components/elements/notification/notification.component";
 import { NotificationsPageComponent } from "../components/pages/notifications-page/notifications-page.component";
+import { ChatPageComponent } from "../components/pages/chat-page/chat-page.component";
+import { MessageSendDto } from "../_models/message-send.model";
 
 @Injectable({
     providedIn: 'root'
@@ -45,6 +47,12 @@ export class NotificationService {
             this.msgPopupService.showInfo("You have a new notification. Check it out.");
             NotificationComponent.increaseNumberOfUnreadMessages();
             NotificationsPageComponent.NewNotificationAdded();
+        });
+
+        this.hubConnection.on('ReceiveChatMessage', (data: MessageSendDto) => {
+            console.log("Message received");
+            console.log(data);
+            ChatPageComponent.initialize(data);
         });
 
         this.hubConnection.onreconnecting(() => {
