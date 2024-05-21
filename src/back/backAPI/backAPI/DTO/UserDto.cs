@@ -24,5 +24,6 @@
 
         public Boolean isActive { get; set; }
         public string[] IssueIds { get; set; }
+        public string PreferedTheme { get; set; }
     }
 }
