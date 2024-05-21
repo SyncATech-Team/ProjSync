@@ -1,17 +1,14 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, Subscription, debounce, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { IssueService } from '../../../../_service/issue.service';
 import { GroupInProject } from '../../../../_models/group-in-project';
 import { GroupService } from '../../../../_service/group.service';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IssueModalComponent } from '../../../elements/issues/issue-modal/issue-modal.component';
 import { ProjectQuery } from '../../../state/project/project.query';
 import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
 import {ProjectService} from "../../../state/project/project.service";
-import {untilDestroyed} from "@ngneat/until-destroy";
-import {JUser} from "../../../../_models/user-issues";
 import {JIssue} from "../../../../_models/issue";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
@@ -74,7 +71,6 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     private userOnProject : UserOnProjectService,
   ) {
     this.projectName = route.snapshot.paramMap.get('projectName');
-    this._projectService.getProject(this.projectName!);
     this.searchTermChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe(_ => this.loadIssues(this.lastLazyLoadEvent));
   }
 
@@ -82,6 +78,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.columns = ['Type','Status','Priority','Created Date','Updated Date','Due Date','Reporter','Group','Completed'];
     this.selectedColumns = ['Type','Priority','Due Date','Reporter','Completed','Group'];
     this.showColumns = ['Name',...this.selectedColumns];
+    this._projectService.getProject(this.projectName!);
+
     // this.tasksByGroup = this.getTasksByGroup();
     if(this.projectName) {
       // this.issueService.getAllIssuesForProject(this.projectName).subscribe({
