@@ -123,7 +123,8 @@ namespace backAPI.Controllers
                 PreferedLanguage = user.PreferedLanguage,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
-                isActive = user.IsActive
+                isActive = user.IsActive,
+                PreferedTheme = user.PreferedTheme
             });
         }
         /* *****************************************************************************
@@ -134,6 +135,19 @@ namespace backAPI.Controllers
             
             var updated = await _usersRepository.UpdateUser(username, request);
             if(updated != "OK") {
+                return BadRequest(updated);
+            }
+
+            return Ok();
+        }
+
+        [HttpPut("theme")]
+        public async Task<ActionResult<string>> UpdateUser(string username, string theme)
+        {
+
+            var updated = await _usersRepository.UpdateUserPreferedTheme(username, theme);
+            if (updated != "OK")
+            {
                 return BadRequest(updated);
             }
 

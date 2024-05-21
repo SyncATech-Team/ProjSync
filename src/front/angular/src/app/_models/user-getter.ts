@@ -13,4 +13,5 @@ export interface UserGetter {
     createdAt?: Date;
     updatedAt?: Date;
     isActive?: boolean;
+    preferedTheme?: string;
 }

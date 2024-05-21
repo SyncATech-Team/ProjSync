@@ -1,24 +1,37 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { UserService } from '../app/_service/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document,private userService: UserService) {}
 
-    switchTheme(isDark: boolean) {
+    switchTheme(theme: string) {
         let themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
-
+        console.log(theme);
         if (themeLink) {
-          if(isDark){
-            themeLink.href = 'lara-dark-blue.css';
-          }
-          else{
-            themeLink.href = 'lara-light-blue.css';
-          }
+          themeLink.href = theme + '.css';
         }
+    }
+
+    updateTheme(username: string,isDark: boolean){
+      if(isDark)
+        var theme='lara-dark-blue';
+      else
+        var theme='lara-light-blue';
+
+      this.userService.updateUserPreferedTheme(username,theme).subscribe({
+        next: (_)=>{
+          this.switchTheme(theme);
+        },
+        error: (error)=>{
+          console.log(error);
+        }
+      });
+      
     }
 
     getTheme(){
