@@ -45,10 +45,10 @@
         <div >
           <p-overlayPanel #settings>
               <ng-template pTemplate="content">
-                <div class="dropdown-div" id="dropdown-user-info">
-                  <div>
-                      <p> Dark mode: </p>
-                      <p-inputSwitch [(ngModel)]="isDarkTheme" (onChange)="changeTheme()" />
+                <div class="dropdown-div">
+                  <div style="display: flex; align-items: center;">
+                      <p style="margin-bottom: 8px;">Dark mode:&nbsp;</p>
+                      <p-inputSwitch [(ngModel)]="isDarkTheme" class="small_input_switch" (onChange)="changeTheme()" />
                   </div>
                 </div>
               </ng-template>

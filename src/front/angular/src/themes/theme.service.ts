@@ -11,7 +11,6 @@ export class ThemeService {
 
     switchTheme(theme: string) {
         let themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
-        console.log(theme);
         if (themeLink) {
           themeLink.href = theme + '.css';
         }
@@ -36,15 +35,14 @@ export class ThemeService {
 
     getTheme(){
       let themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
-      console.log(themeLink.href)
-        if (themeLink) {
-          if(themeLink.href.includes( 'lara-dark-blue.css')){
-            return true;
-          }
-          else{
-            return false;
-          }
+      if (themeLink) {
+        if(themeLink.href.includes( 'lara-dark-blue.css')){
+          return true;
         }
-        return false;
+        else{
+          return false;
+        }
+      }
+      return false;
     }
 }
