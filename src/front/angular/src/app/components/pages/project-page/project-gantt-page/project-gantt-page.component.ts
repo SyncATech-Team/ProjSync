@@ -264,8 +264,7 @@ openIssueModal(issueId : string){
     });
 
     this.ref1.onClose.subscribe({
-        next: (data: String) => {
-          if(data !== "deleted-task") return;
+        next: _ => {
           this.refresh();
         }
       });

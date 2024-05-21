@@ -59,7 +59,6 @@ import { BoardDndComponent } from './components/elements/board/board-dnd/board-d
 import { BoardDndListComponent } from './components/elements/board/board-dnd-list/board-dnd-list.component';
 import { SvgDefinitionsComponent } from './components/elements/shared/svg-definitions/svg-definitions.component';
 import { SvgIconComponent } from './components/elements/shared/svg-icon/svg-icon.component';
-import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { IssueModalComponent } from './components/elements/issues/issue-modal/issue-modal.component';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -162,7 +161,6 @@ import { InfoPageComponent } from './components/pages/info-page/info-page.compon
     BoardDndListComponent,
     SvgDefinitionsComponent,
     SvgIconComponent,
-    SamotestComponent,
     IssueModalComponent,
     IssueDetailComponent,
     IssueLoaderComponent,

@@ -229,8 +229,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     });
 
     this.ref.onClose.subscribe({
-      next: (data: String) => {
-        if(data !== "deleted-task") return;
+      next: _ => {
         this.tasks = [];
         this.tasksByGroup = [];
         this.tasks_backup = [];
