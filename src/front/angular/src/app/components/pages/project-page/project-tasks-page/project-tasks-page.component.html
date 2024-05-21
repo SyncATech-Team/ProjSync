@@ -259,14 +259,14 @@
                                 </td>
                                 <td *ngIf="column=='Completed' && selectedColumns.includes('Completed')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Completed</span>
-                                    <p-progressBar [value]=task.completed
+                                    <p-progressBar [value]="roundValue(task.completed)"
                                     [pTooltip]="tooltipTaskProgress"
                                     tooltipPosition="top"
                                     ></p-progressBar>
                                     <ng-template #tooltipTaskProgress>
                                         <div class="flex align-items-center">
                                             <i class="fa-solid fa-check"></i>   
-                                            <span> <b> {{ task.completed }}%</b> </span>
+                                            <span> <b> {{ roundValue(task.completed) }}%</b> </span>
                                         </div>
                                     </ng-template>
                                 </td>
