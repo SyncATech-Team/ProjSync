@@ -288,5 +288,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     if(current.length <= MAX_NUMBER_OF_CHARACTERS) return current;
     return current.substring(0, MAX_NUMBER_OF_CHARACTERS) + "...";
   }
-  
+
+  roundValue(value: number): number {
+    return Math.round(value);
+  }
 }
