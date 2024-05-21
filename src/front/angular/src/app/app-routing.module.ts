@@ -16,7 +16,6 @@ import { ProjectSettingsPageComponent } from './components/pages/project-page/pr
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { HomeGuard } from './_guards/home.guard';
 import { ProjectDocumentsPageComponent } from './components/pages/project-page/project-documents-page/project-documents-page.component';
-import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 import { loginGuard } from './_guards/login.guard';
@@ -30,7 +29,6 @@ const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
   { path: 'login', component: LoginPageComponent, canActivate: [loginGuard]},
   { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] },
-  { path: 'test', component: SamotestComponent },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },
   {
