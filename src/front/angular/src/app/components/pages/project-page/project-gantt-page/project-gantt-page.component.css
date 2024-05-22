@@ -38,12 +38,12 @@
 }
 
 :host ::ng-deep .btn-group-outline-default .active {
-    background-color: lightblue;
+    background-color: var(--surface-d);
 }
 
 :host ::ng-deep .thy-btn[thytype="primary"] {
-    background-color: lightblue;
-    color: black;
+    background-color: var(--surface-ground);
+    color: var(--text-color);
 }
 
 #tasks-header {
@@ -97,4 +97,52 @@
 
 :host ::ng-deep .gantt-table-scrollbar {
     opacity: 0;
+}
+
+thy-header thy-button{
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+}
+
+thy-content{
+    color: var(--text-color);
+    background-color: var(--surface-);
+}
+
+:host ::ng-deep .gantt-table {
+    background-color: var(--surface-card);
+    color: var(--text-color);
+}
+
+:host ::ng-deep .gantt-table-header {
+    background-color: var(--surface-card);
+    color: var(--text-color);
+}
+
+:host ::ng-deep .gantt-table-group {
+    background-color: var(--surface-d);
+}
+
+:host ::ng-deep .gantt-group.ng-star-inserted {
+    background-color: var(--surface-d);
+}
+
+:host ::ng-deep .gantt-main-container {
+    background-color: var(--surface-ground);
+    color: var(--text-color);
+}
+
+:host ::ng-deep .gantt-calendar-header svg {
+    background-color: var(--surface-card);
+}
+
+:host ::ng-deep .gantt-calendar-header svg g text{
+    fill: var(--text-color);
+}
+
+:host ::ng-deep .gantt-scrollbar {
+    background-color: var(--surface-card);
+}
+:host ::ng-deep .gantt-table-body .gantt-table-item:hover {
+    background-color: var(--surface-d);
 }

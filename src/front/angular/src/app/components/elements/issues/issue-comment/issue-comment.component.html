@@ -13,11 +13,11 @@
       </div>
 
       <div class="name-and-date" style="margin-left: 3px;">
-        <div class="d-inline-block mr-3 text-dark font-weight-bold">
+        <div class="d-inline-block mr-3 font-weight-bold">
           {{ comment.user.name }}
         </div>
         &nbsp;
-        <div *ngIf="!createMode" class="d-inline-block pb-2 text-dark text-sm">
+        <div *ngIf="!createMode" class="d-inline-block pb-2 text-sm">
           {{ comment.updatedAt | date:"medium" }}
         </div>
       </div>
@@ -35,7 +35,7 @@
         </textarea>
 
         <div *ngIf="!isEditing"
-             class="text-xs"><strong>Pro tip: </strong>press <span class="px-1 font-weight-bold bg-light">SHIFT + M</span> to
+             class="text-xs"><strong>Pro tip: </strong>press <span class="px-1 font-weight-bold">SHIFT + M</span> to
           comment
         </div>
 

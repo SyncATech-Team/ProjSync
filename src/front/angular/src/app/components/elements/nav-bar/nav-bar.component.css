@@ -1,12 +1,12 @@
-.navbar-custom-color {
-    --default-color: #263238;
-    --color-value-1: #d8dde6;
-    --color-value-2: #bcd0f5;
-}
+
 
 .nav_right_opt{
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.icon{
+    margin-left: 10px;
 }
 
 .navbar .logo{
@@ -158,6 +158,17 @@
 .dropdown-item:hover {
     cursor: pointer;
     background-color: #d8dde6;
+}
+
+#gear{
+    font-size: 24px;
+    color: black;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#gear:hover {
+    color: #5E5BF4;
 }
 
 .user-div {

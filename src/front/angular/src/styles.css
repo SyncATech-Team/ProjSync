@@ -5,10 +5,20 @@
 
 @import "@worktile/gantt/styles/index";
 
+@import "primeng/resources/primeng.min.css";
+@import "primeicons/primeicons.css";
+
+
+
 html, body {
     min-height: 100vh;  /* Ensures body fills minimum viewport height */
     margin: 0;         /* Remove default browser margins */
     overflow: hidden;
+}
+
+body {
+    background-color: var(--surface-ground);
+    color: var(--text-color);
 }
 
 ul{

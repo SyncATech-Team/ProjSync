@@ -66,7 +66,6 @@ export class ProjectSettingsPageComponent implements OnInit {
     private msgPopupService: MessagePopupService,
     private formBuilder: FormBuilder,
     private projectTypeService: ProjectTypeService,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private sideBarComponent: ProjectSidebarComponent,
     private userPictureService: UserProfilePicture,
@@ -163,21 +162,6 @@ export class ProjectSettingsPageComponent implements OnInit {
           }
         });
     }
-  }
-
-  openPopUp(event : any){
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Do you want to deactivate this project?',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: 'p-button-danger p-button-sm rounded',
-      accept: () => {
-          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Project deactivated', life: 3000 });
-      },
-      reject: () => {
-          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-      }
-    });
   }
 
   getUserProfilePhotos(users: UserGetter[]) {

@@ -192,18 +192,20 @@ namespace backAPI.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<ActionResult<ResetPasswordAfterEmailConfirmationDto>> ForgotPassword(ForgotPasswordDto forgotPassword)
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordDto forgotPassword)
         {
             var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
             if (user != null)
             {
-                var resetPassToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-                ResetPasswordAfterEmailConfirmationDto response = new ResetPasswordAfterEmailConfirmationDto
-                {
-                    Token = resetPassToken,
-                    Email = forgotPassword.Email
-                };
-                return response;
+                // kreiranje tokena za verifikaciju email-a
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                // Obavzeno enkodovati token!
+                var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
+                var conformationLink = $"http://localhost:4200/account/confirm-email?email={forgotPassword.Email}&token={encodedToken}";
+
+                // poslati registacioni mejl [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS]
+                _emailService.SendToConfirmEmail(user.Email, user.UserName, conformationLink);
+                return Ok();
             }
             else return BadRequest("User is not registered");
         }

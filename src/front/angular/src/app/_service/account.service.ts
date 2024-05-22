@@ -91,13 +91,9 @@ export class AccountService {
       );
   }
 
+  // zaboravljena lozinka - pozvati endpoint koji ce da posalje mejl korisniku ako postoji u bazi
   forgotPassword(model: ForgotPasswordModel) {
-    return this.http.post<ResetPasswordAfterEmailConformation>(this.baseUrl + `account/forgot-password`, model)
-      .pipe(
-        map((response: ResetPasswordAfterEmailConformation) => {
-          localStorage.setItem('pass-reset', JSON.stringify(response));
-        })
-      );
+    return this.http.post(this.baseUrl + `account/forgot-password`, model);
   }
 
   resetPassword(model: ResetPassword) {

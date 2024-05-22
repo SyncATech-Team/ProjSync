@@ -120,7 +120,7 @@ export class AdminEditProfileComponent implements OnInit {
 
   applyEditChanges() {
     this.editUser.isActive = this.user?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
-    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.editUser.contactPhone) || this.editUser.contactPhone == ''){//testira format broja telefona
+    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.editUser.contactPhone) || this.editUser.contactPhone == '' || this.editUser.contactPhone == null){//testira format broja telefona
       this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
         next: response => {
           this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully edited user info', life: 3000 });

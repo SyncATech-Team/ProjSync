@@ -1,10 +1,15 @@
 .detail-modal {
     width: 100%;
     height: auto;
+    color: var(--text-color);
+}
+
+button{
+    color: var(--text-color);
 }
 
 .upload-wrapper{
-    margin-right: 4rem;
+    width: 90%;
 }
 
 .list-of-uploaded{

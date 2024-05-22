@@ -30,8 +30,7 @@ export class IssueDetailComponent implements OnInit{
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     public projectQuery: ProjectQuery,
-    private _projectService: ProjectService,
-    private issueDocumentationService : IssueDocumentationService) {
+    private _projectService: ProjectService) {
   }
   ngOnInit(): void {
     var user = this.accoutService.getCurrentUser();
@@ -66,9 +65,4 @@ export class IssueDetailComponent implements OnInit{
       }
     });
   }
-
-  // openIssuePage() {
-  //   if (!this.issue) return;
-  //   this.onOpenIssue.emit(this.issue.id);
-  // }
 }

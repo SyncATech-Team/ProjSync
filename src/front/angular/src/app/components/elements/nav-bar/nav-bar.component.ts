@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../_service/user.service';
 import { UserGetter } from '../../../_models/user-getter';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
+import { ThemeService } from '../../../../themes/theme.service';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 
 @Component({
@@ -21,11 +22,14 @@ export class NavBarComponent implements OnInit {
 
   profilePicturePath: string = '';
 
+  isDarkTheme?: boolean;
+
   constructor(
       private accountService: AccountService,
       private router: Router,
       private userService: UserService,
-      private userPictureService: UserProfilePicture
+      private userPictureService: UserProfilePicture,
+      private themeService: ThemeService
     ) {
   }
 
@@ -49,11 +53,13 @@ export class NavBarComponent implements OnInit {
         else {
           this.setUserPicture("SLIKA_JE_NULL");
         }
+        this.themeService.switchTheme(this.user!.preferedTheme!);
+        this.isDarkTheme =  this.themeService.getTheme();
       },
       error: error => {
         console.log(error.error);
       }
-    })
+    });
   }
 
   onUserChange(event: any) {
@@ -62,6 +68,7 @@ export class NavBarComponent implements OnInit {
   
   logout() {
     this.accountService.logout();
+    this.themeService.switchTheme('lara-light-blue');
     this.router.navigateByUrl('/');
   }
 
@@ -123,6 +130,11 @@ export class NavBarComponent implements OnInit {
     this.router.navigate(['/home'], {
       queryParams: { showUserTasks }
     });
+  }
+
+  changeTheme(){
+    if(this.isDarkTheme !== undefined)
+      this.themeService.updateTheme(this.user!.username,this.isDarkTheme);
   }
 
 }

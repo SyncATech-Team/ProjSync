@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
-import { AdminPageComponent } from './components/pages/admin-page/admin-page.component';
-import { DashboardPageComponent } from './components/pages/admin-page/dashboard-page/dashboard-page.component';
 import { UserPageComponent } from './components/pages/admin-page/user-page/user-page.component';
 import { RolePageComponent } from './components/pages/admin-page/role-page/role-page.component';
 import { PasswordResetPageComponent } from './components/pages/password-reset-page/password-reset-page.component';
@@ -18,7 +16,6 @@ import { ProjectSettingsPageComponent } from './components/pages/project-page/pr
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { HomeGuard } from './_guards/home.guard';
 import { ProjectDocumentsPageComponent } from './components/pages/project-page/project-documents-page/project-documents-page.component';
-import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { ProjectGanttPageComponent } from './components/pages/project-page/project-gantt-page/project-gantt-page.component';
 import { ProjectKanbanPageComponent } from './components/pages/project-page/project-kanban-page/project-kanban-page.component';
 import { loginGuard } from './_guards/login.guard';
@@ -26,13 +23,13 @@ import { AdminEditProfileComponent } from './components/pages/admin-page/admin-e
 import { ProjectGuard } from './_guards/project.guard';
 import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
+import { InfoPageComponent } from './components/pages/info-page/info-page.component';
 import { ChatPageComponent } from './components/pages/chat-page/chat-page.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
   { path: 'login', component: LoginPageComponent, canActivate: [loginGuard]},
-  // { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] }, // TODO: uncomment this line when forgot password is ready
-  { path: 'test', component: SamotestComponent },
+  { path: 'forgotpass', component: PageForgotPasswordComponent, canActivate: [loginGuard] },
   { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account/password-reset', component: PasswordResetPageComponent },
   {
@@ -44,6 +41,7 @@ const routes: Routes = [
       { path: 'home/chat', component: ChatPageComponent, canActivate: [HomeGuard]},
       { path: 'home/notifications', component: NotificationsPageComponent, canActivate: [HomeGuard] },
       { path: 'home/edit-profile', component: EditProfilePageComponent, canActivate: [HomeGuard] },
+      { path: 'home/info-page', component: InfoPageComponent, canActivate: [HomeGuard] },
       { path: 'home/projects', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
       { path: 'home/projects/:projectName', component: ProjectTasksPageComponent, canActivate: [HomeGuard, ProjectGuard] },
       { path: 'home/projects/summary/:projectName', component: ProjectSummaryPageComponent, canActivate: [HomeGuard, ProjectGuard]},

@@ -18,13 +18,13 @@
 
                 <div id="change-view">
                     <div class="Viewbtn">
-                        <thy-button routerLink="/home/projects/tasks/{{projectName}}" id="Viewbtn">List</thy-button>
+                        <thy-button class="selected-button" id="Viewbtn">List</thy-button>
                     </div>
                     <div class="Viewbtn">
                         <thy-button routerLink="/home/projects/kanban/{{projectName}}" id="Viewbtn">Kanban</thy-button>
                     </div>
                     <div class="Viewbtn">
-                        <thy-button class="selected-button" id="Viewbtn">Gantt</thy-button>
+                        <thy-button routerLink="/home/projects/gantt/{{projectName}}" id="Viewbtn">Gantt</thy-button>
                     </div>
                 </div>
             </div>
@@ -259,14 +259,14 @@
                                 </td>
                                 <td *ngIf="column=='Completed' && selectedColumns.includes('Completed')" style="width: 16vh; ">
                                     <span class="p-column-title" style="font-weight: bold">Completed</span>
-                                    <p-progressBar [value]=task.completed
+                                    <p-progressBar [value]="roundValue(task.completed)"
                                     [pTooltip]="tooltipTaskProgress"
                                     tooltipPosition="top"
                                     ></p-progressBar>
                                     <ng-template #tooltipTaskProgress>
                                         <div class="flex align-items-center">
                                             <i class="fa-solid fa-check"></i>   
-                                            <span> <b> {{ task.completed }}%</b> </span>
+                                            <span> <b> {{ roundValue(task.completed) }}%</b> </span>
                                         </div>
                                     </ng-template>
                                 </td>

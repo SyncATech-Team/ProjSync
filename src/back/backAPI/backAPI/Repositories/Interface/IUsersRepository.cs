@@ -98,5 +98,6 @@ namespace backAPI.Repositories.Interface
         Task<IEnumerable<User>> GetUsersFromIDarray(string[] arr);
 
         Task<(IEnumerable<User> users, int numberOfRecords)> GetPaginationAllUsersAsync(Criteria criteria);
+        Task<string> UpdateUserPreferedTheme(string username, string theme);
     }
 }
