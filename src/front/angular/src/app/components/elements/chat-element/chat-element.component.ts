@@ -8,7 +8,7 @@ import { ChatService } from '../../../_service/chat.service';
 })
 export class ChatElementComponent implements OnInit {
 
-  private static unreadMessages: number = 0;
+  private static _unreadMessages: number = 0;
 
   constructor(
     private chatService: ChatService
@@ -17,39 +17,39 @@ export class ChatElementComponent implements OnInit {
   ngOnInit(): void {
     this.chatService.getUnreadMessages().subscribe({
       next: response => {
-        ChatElementComponent.unreadMessages = response;
-        ChatElementComponent.ChangeNumberOfUnreadMessagesUI(ChatElementComponent.unreadMessages);
+        ChatElementComponent._unreadMessages = response;
+        ChatElementComponent.ChangeNumberOfUnreadMessagesUI(ChatElementComponent._unreadMessages);
       },
       error: error => {
         console.log("ERROR: " + error.error);
-        ChatElementComponent.unreadMessages = 0;
-        ChatElementComponent.ChangeNumberOfUnreadMessagesUI(ChatElementComponent.unreadMessages);
+        ChatElementComponent._unreadMessages = 0;
+        ChatElementComponent.ChangeNumberOfUnreadMessagesUI(ChatElementComponent._unreadMessages);
       }
     })
   }
 
   public static increaseNumberOfUnreadMessages(): void {
-    this.unreadMessages = this.unreadMessages + 1;
-    this.ChangeNumberOfUnreadMessagesUI(this.unreadMessages);
+    this._unreadMessages = this._unreadMessages + 1;
+    this.ChangeNumberOfUnreadMessagesUI(this._unreadMessages);
   }
 
   public static decreaseNumberOfUnreadMessages(num?: number): void {
     if(num) {
-      this.unreadMessages = this.unreadMessages - num;
+      this._unreadMessages = this._unreadMessages - num;
     }
     else {
-      this.unreadMessages = this.unreadMessages - 1;
+      this._unreadMessages = this._unreadMessages - 1;
     }
-    this.ChangeNumberOfUnreadMessagesUI(this.unreadMessages);
+    this.ChangeNumberOfUnreadMessagesUI(this._unreadMessages);
   }
 
   public static resetoToZero(): void {
-    this.unreadMessages = 0;
-    this.ChangeNumberOfUnreadMessagesUI(this.unreadMessages);
+    this._unreadMessages = 0;
+    this.ChangeNumberOfUnreadMessagesUI(this._unreadMessages);
   }
 
   public static getNumberOfUnreadMessages(): number {
-    return this.unreadMessages;
+    return this._unreadMessages;
   }
 
   private static ChangeNumberOfUnreadMessagesUI(value: number) {
@@ -67,16 +67,23 @@ export class ChatElementComponent implements OnInit {
       if(badgeDiv!.classList.contains("badgecolor-yellow")) badgeDiv!.classList.remove("badgecolor-yellow");
       if(badgeDiv!.classList.contains("badgecolor-red")) badgeDiv!.classList.remove("badgecolor-red");
 
-      if(this.unreadMessages < 5) {
+      if(this._unreadMessages < 5) {
         badgeDiv!.classList.add("badgecolor-blue");
       }
-      else if(this.unreadMessages < 10) {
+      else if(this._unreadMessages < 10) {
         badgeDiv!.classList.add("badgecolor-yellow");
       }
       else {
         badgeDiv!.classList.add("badgecolor-red");
       }
     }
+  }
+
+  public get unreadMessages(): number {
+    return ChatElementComponent._unreadMessages;
+  }
+  public set unreadMessages(value: number) {
+    ChatElementComponent._unreadMessages = value;
   }
 
 }

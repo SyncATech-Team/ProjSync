@@ -100,6 +100,7 @@
                     placeholder="Type your message here..."
                     [(ngModel)]="inputMessage"
                     spellcheck="false"
+                    (keydown)="onKeydown($event)"
                     ></textarea>
                 <div id="send-btn-div" (click)="sendMessage()" [ariaDisabled]="inputMessage.length === 0">
                     <i class="fa-solid fa-paper-plane"></i>

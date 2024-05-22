@@ -302,6 +302,15 @@ export class ChatPageComponent implements OnInit {
 
   }
 
+  // define hotkey ctrl+enter to send message
+  
+  onKeydown(event: KeyboardEvent) {
+    if(event.ctrlKey && event.key == "Enter") {
+      this.sendMessage();
+    }
+  }
+
+
   private static AddMessageToMessages(message: MessageSendDto) {
     ChatPageComponent._messages.push(message);
     setTimeout(() => {                  // Scroll to the latest message.
