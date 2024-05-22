@@ -156,7 +156,7 @@ export class ChatPageComponent implements OnInit, OnDestroy {
         ChatPageComponent.setMessages(ChatPageComponent._loggedInUser!.username, event.username);
         ChatPageComponent.staticChatService.markMessagesAsRead(ChatPageComponent._loggedInUser!.username, event.username).subscribe({
           next: response => {
-            ChatElementComponent.decreaseNumberOfUnreadMessages(response);
+            if(response > 0) ChatElementComponent.decreaseNumberOfUnreadMessages(response);
           },
           error: error => {
             console.log(error);
@@ -244,7 +244,7 @@ export class ChatPageComponent implements OnInit, OnDestroy {
             ChatPageComponent.setMessages(ChatPageComponent._loggedInUser!.username, user.username);
             ChatPageComponent.staticChatService.markMessagesAsRead(ChatPageComponent._loggedInUser!.username, user.username).subscribe({
               next: response => {
-                ChatElementComponent.decreaseNumberOfUnreadMessages(response);
+                if(response > 0) ChatElementComponent.decreaseNumberOfUnreadMessages(response);
               },
               error: error => {
                 console.log(error);
