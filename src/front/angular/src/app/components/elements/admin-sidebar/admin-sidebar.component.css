@@ -1,14 +1,8 @@
-.sidenav {
-    --color-value-1: #c5d1e6;
-    --color-value-2: #d3d9e3;
-    --color-value-3: #b5c8e8;
-    --color-value-4: #d8dde6;
-    --color-value-initial: #263238;
-}
+
 
 .sidenav{
     /* background: #263238; */
-    background-color: var(--color-value-4);
+    background-color: var(--color-value-1);
     transition: all .5s ease;
     /* display: inline-block; */
     /* position: relative; */
@@ -30,7 +24,7 @@
 
 /* LOGO */
 .sidenav .logo-container .logo{
-    background: #fff;
+    background: var(--color-value-1);
     text-align: center;
     width: 3rem;
     min-width: 3rem;
@@ -47,7 +41,7 @@
     /* margin-left: 1.5rem; */
     font-size: 18px;
     font-weight: 700;
-    color: black;
+    color: var(--side-bar-link);
 
 }
 
@@ -96,7 +90,7 @@
     align-items: center;
     justify-content: left;
     height: 3rem;
-    color: black;
+    color: var(--side-bar-link);
     text-decoration: none;
     /* border-radius: 0.625rem; */
     transition: all .3s ease;

@@ -1,15 +1,15 @@
 ﻿using backAPI.DTO;
 using backAPI.DTO.Projects;
 using backAPI.Entities.Domain;
-using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using backAPI.SignalR;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class UserOnProjectController : BaseApiController
     {
         private readonly IUsersRepository _usersRepository;

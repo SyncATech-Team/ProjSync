@@ -1,6 +1,7 @@
 :host ::ng-deep .content-editor .ql-editor {
     height: 8rem;
     overflow-y: auto;
+
 }
 
 :host ::ng-deep .content-editor .ql-link,
@@ -11,4 +12,21 @@
 
 :host ::ng-deep .content-editor{
     font-weight: normal;
+}
+
+.modal-content{
+    background-color: var(--surface-card);
+}
+
+.modal-content input, select{
+    background-color: var(--surface-card);
+    color: var(--text-color);
+    border-color: var(--surface-d);
+}
+
+.form-floating label::after{
+    background-color: transparent !important;
+}
+.form-floating label{
+    color: var(--text-color);
 }

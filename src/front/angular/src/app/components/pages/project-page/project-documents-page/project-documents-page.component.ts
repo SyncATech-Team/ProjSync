@@ -9,6 +9,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProjectType } from '../../../../_models/project-type';
 import { ProjectDocumentService } from '../../../../_service/project-document.service'
 import { DocumentTitle } from '../../../../_models/document-title.model';
+import { AccountService } from '../../../../_service/account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,12 @@ export class ProjectDocumentsPageComponent implements OnInit{
   documentTitlesBackup: DocumentTitle[] = [];
   loading: boolean = false;
 
+  permission: any;
+
   searchTerm: string = "";
 
   constructor (
+    public accoutService: AccountService,
     private ProjectDocService: ProjectDocumentService,
     private route: ActivatedRoute,
     private projectService: ProjectService,
@@ -43,6 +47,12 @@ export class ProjectDocumentsPageComponent implements OnInit{
     };
 
   ngOnInit(): void {
+
+    var user = this.accoutService.getCurrentUser();
+    if(user?.permitions){
+      this.permission = user.permitions;
+    }
+
     this.ProjectDocService.getDocumentTitles(this.projectName).subscribe({
       next: response => {
         this.documentTitles = response.sort(this.sortFunc);

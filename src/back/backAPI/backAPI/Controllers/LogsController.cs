@@ -1,10 +1,11 @@
 ﻿using backAPI.DTO;
-using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers {
+    [Authorize]
     public class LogsController : BaseApiController {
         
         private readonly ILogsRepository _logsRepository;

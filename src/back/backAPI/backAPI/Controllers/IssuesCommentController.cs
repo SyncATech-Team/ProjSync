@@ -1,9 +1,11 @@
 ﻿using backAPI.DTO.Issues;
 using backAPI.Repositories.Interface.Issues;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class IssuesCommentController : BaseApiController
     {
         private readonly IIssueCommentRepository _issueCommentRepository;

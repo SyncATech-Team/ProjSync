@@ -2,6 +2,14 @@
     display: flex;
 }
 
+#change-view{
+    display: flex;
+}
+
+.Viewbtn{
+    margin-left: 5px;
+}
+
 #content {
     padding: 1%;
     overflow-y: auto;
@@ -51,7 +59,7 @@
 
 th{
     text-align: center;
-    border: 1px solid rgb(226, 232, 240);
+    border: 1px solid var(--surface-d);
     border-top: 0;
 }
 td{

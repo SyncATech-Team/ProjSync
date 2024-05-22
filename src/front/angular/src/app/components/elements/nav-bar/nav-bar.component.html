@@ -27,20 +27,45 @@
               </div>
             </ng-template>
           </p-overlayPanel>
-        </div>        
+        </div>      
       </ul>
 
       <div class="d-flex right--side">
-        <form class="d-flex nav_right_opt" role="search">
-          <input id="navbar-general-serach" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        </form>
+
+        <div class="nav_right_opt">
+          <app-chat-element></app-chat-element>
+        </div>
+
         <!-- <div class="notification-wrap"> -->
-          <div class=" nav_right_opt" >
+          <div class=" nav_right_opt icon" >
             <app-notification></app-notification>
           </div>
         <!-- </div> -->
-        <div class="nav_right_opt">
-          <i class="fa-solid fa-gear " style="color: black"></i>
+        
+        <div class="icon">
+          <p-overlayPanel #settings>
+              <ng-template pTemplate="content">
+                <div class="dropdown-div">
+                  <div style="display: flex; align-items: center;">
+                      <p style="margin-bottom: 8px;">Dark mode&nbsp;&nbsp;&nbsp;</p>
+                      <p-inputSwitch [(ngModel)]="isDarkTheme" class="small_input_switch" (onChange)="changeTheme()" />
+                  </div>
+                </div>
+              </ng-template>
+          </p-overlayPanel>
+          <div class="nav_right_op">
+            <i id="gear" class="fa-solid fa-gear " (click)="settings.toggle($event)" ></i>
+          </div>
+          
+          
+        </div>
+        <div class="icon">
+          <a routerLink="/home/info-page">
+            <i class="pi pi-question-circle"
+            style="color: black"
+            pTooltip="FAQ"
+            tooltipPosition="bottom"></i>
+          </a>
         </div>
         
         <!-- POPOVER -->

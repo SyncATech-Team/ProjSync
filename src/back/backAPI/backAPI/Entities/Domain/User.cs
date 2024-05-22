@@ -76,6 +76,9 @@ namespace backAPI.Entities.Domain
         /// </summary>
         public bool IsActive { get; set; } = true;
 
+
+        public string PreferedTheme { get; set; } = "lara-light-blue";
+
         [ForeignKey("CompanyRoleId")]
         public CompanyRole CompanyRole { get; set; }
     }

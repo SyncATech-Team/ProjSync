@@ -1,11 +1,12 @@
 ﻿using backAPI.DTO;
 using backAPI.Entities.Domain;
-using backAPI.Repositories.Implementation;
 using backAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class NotificationController : BaseApiController
     {
         private readonly INotificationsRepository _notificationsRepository;

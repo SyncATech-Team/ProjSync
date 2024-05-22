@@ -102,7 +102,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDes
     this.statisticsService.getIssuePrioritiesInProject(this.projectName!).subscribe({
       next: response => { 
         this.chartPriorityData = response;
-        this.createChartTaskPriority(response, 'pie'); 
+        this.createChartTaskPriority(response, 'bar'); 
       },
       error: error => { console.log(error.error); }
     })
@@ -111,7 +111,7 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDes
     this.statisticsService.getIssueStatusesInProject(this.projectName!).subscribe({
       next: response => { 
         this.chartStatusData = response;
-        this.createChartTaskStatus(response, 'pie'); 
+        this.createChartTaskStatus(response, 'doughnut'); 
       },
       error: error => { console.log(error.error); }
     })
