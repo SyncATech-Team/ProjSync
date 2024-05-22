@@ -180,7 +180,7 @@ export class ChatPageComponent implements OnInit, OnDestroy {
    * @param otherUserUsername - The username of the other user.
    */
   public static setMessages(loggedInUserUsername: string, otherUserUsername: string) {
-    console.log("Setting messages for " + loggedInUserUsername + " and " + otherUserUsername);
+    // console.log("Setting messages for " + loggedInUserUsername + " and " + otherUserUsername);
     ChatPageComponent.staticChatService.getMessages(loggedInUserUsername, otherUserUsername).subscribe({
       next: response => {
         ChatPageComponent._messages = response;
@@ -333,6 +333,10 @@ export class ChatPageComponent implements OnInit, OnDestroy {
     setTimeout(() => {                  // Scroll to the latest message.
       ChatPageComponent.scrollToTheLatestMessage();
     }, 0);
+  }
+
+  navigateToConversation(conversationPartnerUsername: string) {
+    this.router.navigate([], {queryParams: {username: conversationPartnerUsername}});
   }
 
   public get loggedInUser(): User | null {
