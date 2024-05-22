@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserGetter } from '../../../_models/user-getter';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
@@ -18,7 +18,7 @@ import { ChatElementComponent } from '../../elements/chat-element/chat-element.c
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.css'
 })
-export class ChatPageComponent implements OnInit {
+export class ChatPageComponent implements OnInit, OnDestroy {
 
   private static _usersForChat: UserGetter[] = [];
   
@@ -51,33 +51,34 @@ export class ChatPageComponent implements OnInit {
   static staticChatService: ChatService;
   static staticUsersService: UserService;
   static staticUserPictureService: UserProfilePicture;
+  static staticRoute: ActivatedRoute;
 
   constructor(
-    // private router: Router,
+    private router: Router,
     private userPictureService: UserProfilePicture,
     private userService: UserService,
     private chatService: ChatService,
     private accountService: AccountService,
     public presenceService: PresenceService,
-    // private route: ActivatedRoute
+    private route: ActivatedRoute
   ) {
     ChatPageComponent.staticAccountService = accountService;
     ChatPageComponent.staticChatService = chatService;
     ChatPageComponent.staticUsersService = userService;
     ChatPageComponent.staticUserPictureService = userPictureService;
+    ChatPageComponent.staticRoute = route;
   }
 
   ngOnInit(): void {
 
     ChatPageComponent.initialize();
+  
+  }
 
-    // this.route.queryParams.pipe().subscribe(params => {
-    //   let username = params['username'];
-    //   if(username != null) {
-    //     this.showChat = true;
-    //     this.selectedUserUsername = username;
-    //   }
-    // });
+  ngOnDestroy(): void {
+    ChatPageComponent._selectedUser = undefined;
+    ChatPageComponent._showChat = false;
+    ChatPageComponent._messages = [];
   }
 
   public static initialize(message?: MessageSendDto) {
@@ -151,7 +152,7 @@ export class ChatPageComponent implements OnInit {
     else {
       if(ChatPageComponent._usersForChatPhotos.filter(u => u.username == event.username).length != 0) {
         ChatPageComponent._showChat = true;
-        // this.router.navigate([], {queryParams: {username: event.username}});
+        this.router.navigate([], {queryParams: {username: event.username}});
         ChatPageComponent.setMessages(ChatPageComponent._loggedInUser!.username, event.username);
         ChatPageComponent.staticChatService.markMessagesAsRead(ChatPageComponent._loggedInUser!.username, event.username).subscribe({
           next: response => {
@@ -231,18 +232,27 @@ export class ChatPageComponent implements OnInit {
    */
   public static fetchUsersForChat() {
     ChatPageComponent.staticUsersService.getAllUsers().subscribe(users => {
-      ChatPageComponent._usersForChat = users.filter(user => user.companyRoleName !== 'Administrator');
+      ChatPageComponent._usersForChat = users.filter(user => user.companyRoleName !== 'Administrator' && user.username !== ChatPageComponent._loggedInUser!.username);
       ChatPageComponent.getUserProfilePhotos(ChatPageComponent._usersForChat);
       
-      if(ChatPageComponent._selectedUserUsername != "") {
-        let index = ChatPageComponent._usersForChat.findIndex(u => u.username == ChatPageComponent._selectedUserUsername);
-        if(index != -1) {
-          ChatPageComponent._selectedUser = ChatPageComponent._usersForChat[index];
-          ChatPageComponent._showChat = true;
-          this.setMessages(ChatPageComponent._loggedInUser!.username, ChatPageComponent._selectedUserUsername);
+      this.staticRoute.queryParams.subscribe(params => {
+        if(params["username"] != undefined) {
+          let user = ChatPageComponent._usersForChat.find(u => u.username == params["username"]);
+          if(user != undefined) {
+            ChatPageComponent._selectedUser = user;
+            ChatPageComponent._showChat = true;
+            ChatPageComponent.setMessages(ChatPageComponent._loggedInUser!.username, user.username);
+            ChatPageComponent.staticChatService.markMessagesAsRead(ChatPageComponent._loggedInUser!.username, user.username).subscribe({
+              next: response => {
+                ChatElementComponent.decreaseNumberOfUnreadMessages(response);
+              },
+              error: error => {
+                console.log(error);
+              }
+            });
+          }
         }
-      }
-
+      });
     });
   }
 
