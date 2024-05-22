@@ -21,13 +21,20 @@ export class IssueCommentsComponent implements OnInit, OnDestroy {
   constructor(public projectService: ProjectService, private accountService: AccountService) {
   }
 
+  
+
   ngOnInit(): void {
     this.user = this.accountService.getCurrentUser()!;
     this.projectService.createHubConnection(this.user, this.issue.id);
+    // this.issue.reversedComments = this.issue.comments;
   }
 
 
   ngOnDestroy(): void {
+    // if(this.isSorted==true){
+    //   this.reverseArray(this.issue.comments);
+    // }
     this.projectService.stopHubConnection();
   }
+
 }
