@@ -21,6 +21,7 @@
                     class="custom-autocomplete"
                     [spellcheck]="false"
                     (ngModelChange)="onUserSelected($event)"
+                    (onClear)="clearURLparameters()"
                 >
                     <ng-template pTemplate="selectedItem">
                         <div class="user-div flex align-items-center gap-2" *ngIf="selectedUser">

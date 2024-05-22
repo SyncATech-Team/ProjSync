@@ -93,6 +93,13 @@ export class ChatPageComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Clears the URL parameters and navigates to the current route.
+   */
+  clearURLparameters() {
+    this.router.navigate([]);
+  }
+
+  /**
    * Sets the logged-in user by retrieving the current user from the account service.
    */
   public static setLoggedInUser() {
