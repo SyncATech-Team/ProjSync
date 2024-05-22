@@ -1,10 +1,12 @@
 ﻿using backAPI.DTO.Issues;
 using backAPI.DTO.Projects;
 using backAPI.Repositories.Interface.Issues;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class IssueTypeController : BaseApiController
     {
         private readonly IIssueTypeRepository _issueTypeRepository;

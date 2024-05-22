@@ -2,10 +2,12 @@
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Implementation.Issues;
 using backAPI.Repositories.Interface.Issues;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class IssueDocumentationController : BaseApiController
     {
         private readonly IIssueDocumentationRepository docsRepository;

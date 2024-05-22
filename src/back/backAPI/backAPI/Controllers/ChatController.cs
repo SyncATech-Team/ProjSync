@@ -1,8 +1,10 @@
 ﻿using backAPI.DTO.Chat;
 using backAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers {
+    [Authorize]
     public class ChatController : BaseApiController {
 
         private readonly IChatRepository _chatRepository;

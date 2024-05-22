@@ -75,10 +75,10 @@ namespace backAPI.Controllers
             var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             // Obavzeno enkodovati token!
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
-            var conformationLink = $"http://localhost:4200/account/confirm-email?email={registerDto.Email}&token={encodedToken}";
+            var conformationLink = BaseFrontendUrl + $"/account/confirm-email?email={registerDto.Email}&token={encodedToken}";
 
             // poslati registacioni mejl [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS]
-            // _emailService.SendToConfirmEmail(registerDto.Email, registerDto.UserName, conformationLink);
+            _emailService.SendToConfirmEmail(registerDto.Email, registerDto.UserName, conformationLink);
 
             return Ok(new UserDto
             {
@@ -131,7 +131,7 @@ namespace backAPI.Controllers
             if (user == null) return Unauthorized("invalid credentials!");
             if (user.IsActive == false) return Unauthorized("User is not active");
 
-            if (true /*user.EmailConfirmed [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS] */)
+            if (user.EmailConfirmed /* [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS] */)
             {
                 var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
                 if (!result) return Unauthorized();
@@ -201,7 +201,7 @@ namespace backAPI.Controllers
                 var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 // Obavzeno enkodovati token!
                 var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
-                var conformationLink = $"http://localhost:4200/account/confirm-email?email={forgotPassword.Email}&token={encodedToken}";
+                var conformationLink = BaseFrontendUrl + $"/account/confirm-email?email={forgotPassword.Email}&token={encodedToken}";
 
                 // poslati registacioni mejl [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS]
                 _emailService.SendToConfirmEmail(user.Email, user.UserName, conformationLink);
@@ -227,10 +227,10 @@ namespace backAPI.Controllers
                     var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     // Obavzeno enkodovati token!
                     var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationToken));
-                    var conformationLink = $"http://localhost:4200/account/confirm-email?email={user.Email}&token={encodedToken}";
+                    var conformationLink = BaseFrontendUrl + $"/account/confirm-email?email={user.Email}&token={encodedToken}";
 
                     // poslati registacioni mejl [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS]
-                    // _emailService.SendToConfirmEmail(user.Email, user.UserName, conformationLink);
+                    _emailService.SendToConfirmEmail(user.Email, user.UserName, conformationLink);
 
                     return Ok();
                 } else return BadRequest("User cant be fetched from Database");

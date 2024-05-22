@@ -191,7 +191,8 @@ if (!context.Roles.Any(r => r.Name == "Admin"))
         FirstName = "Admin",
         LastName = "Admin",
         UserName = "admin",
-        CompanyRoleId = 1
+        CompanyRoleId = 1,
+        EmailConfirmed = true
     };
 
     await userManager.CreateAsync(admin, "Pa$$w0rd");

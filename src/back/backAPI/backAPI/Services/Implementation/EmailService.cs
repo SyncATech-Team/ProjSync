@@ -161,7 +161,7 @@ namespace backAPI.Services.Implementation {
 
                 // Replace [username] with the actual username and [login_link] with your login URL.
                 mailBody.Replace("[username]", username);
-                mailBody.Replace("[login_link]", "http://localhost:4200/login");
+                mailBody.Replace("[login_link]", _configuration["BaseURL"] + "/login");
 
                 message.Body = mailBody.ToString();
 

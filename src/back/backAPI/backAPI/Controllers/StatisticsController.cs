@@ -1,9 +1,10 @@
-﻿using backAPI.Data;
-using backAPI.Repositories.Interface;
+﻿using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers {
+    [Authorize]
     public class StatisticsController : BaseApiController {
 
         private readonly IProjectsRepository _projectsRepository;
