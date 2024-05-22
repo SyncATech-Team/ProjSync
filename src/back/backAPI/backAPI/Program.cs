@@ -58,6 +58,7 @@ builder.Services.AddScoped<IIssueCommentRepository, IssueCommentRepository>();
 builder.Services.AddScoped<INotificationsRepository, NotificationRepository>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddScoped<ILogsRepository, LogsRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddSignalR();
 // uzimamo singleton, necemo da se unisti u scope-u, nego da traje dok i aplikacija
 builder.Services.AddSingleton<PresenceTracker>();

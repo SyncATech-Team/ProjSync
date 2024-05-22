@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using backAPI.DTO.Chat;
+using Microsoft.AspNetCore.SignalR;
 
 namespace backAPI.SignalR {
     public class NotificationService {
@@ -53,6 +54,19 @@ namespace backAPI.SignalR {
                 if (!usernames.Contains(onlineUserUsername)) continue;
 
                 await _hubContext.Clients.Clients(onlineUserConnectionIds).SendAsync("ReceiveNotification", message);
+                Console.WriteLine(onlineUserUsername);
+            }
+        }
+
+        public async Task SendChatMessageNotification(string[] usernames, ChatMessageDto message) {
+            foreach (var onlineUser in ConnectedUsers) {
+                var onlineUserUsername = onlineUser.Key;
+                var onlineUserConnectionIds = onlineUser.Value;
+
+                // If the online user is not in the list of usernames, skip
+                if (!usernames.Contains(onlineUserUsername)) continue;
+
+                await _hubContext.Clients.Clients(onlineUserConnectionIds).SendAsync("ReceiveChatMessage", message);
                 Console.WriteLine(onlineUserUsername);
             }
         }
