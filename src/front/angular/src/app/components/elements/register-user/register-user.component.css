@@ -1,3 +1,16 @@
 .modal-content {
-    border: 5px solid lightblue;
+    background-color: var(--surface-card);
+}
+
+.modal-content input, select{
+    background-color: var(--surface-card);
+    color: var(--text-color);
+    border-color: var(--surface-d);
+}
+
+.form-floating label::after{
+    background-color: transparent !important;
+}
+.form-floating label{
+    color: var(--text-color);
 }

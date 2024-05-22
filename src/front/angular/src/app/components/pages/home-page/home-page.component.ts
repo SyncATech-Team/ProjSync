@@ -61,6 +61,8 @@ export class HomePageComponent implements OnInit {
   IssueStatus: any[] = ["Planning", "In progress", "Done"];
   IssuePrioritys: any[] = ["Lowest", "Low", "Medium", "High", "Highest"];
 
+  completedValues: number[] = [0,1]; 
+
   constructor(
     public accoutService: AccountService,
     private projectService:ProjectService,
@@ -147,9 +149,15 @@ export class HomePageComponent implements OnInit {
             project.dueDate = new Date(project.dueDate); 
 
             const completion = this.calculateProjectCompletionTime(project.creationDate, project.dueDate);
-            this.projectCompletioTimeMap.set(project.key, completion);
+            this.projectCompletioTimeMap.set(project.key, Math.floor(completion));
             this.projectCompletionMap.set(project.key, Math.floor(project.projectProgress! * 100));
           });
+
+          for(let i=this.projects.length-1;  i >= 0 ; i--){
+            if(this.projects[i].projectProgress === 1)
+                this.projects.push(this.projects.splice(i,1)[0]);
+          }
+
           this.filterProjects(this.visibilityFilter);
         },
         error: (error) => {
@@ -489,6 +497,10 @@ export class HomePageComponent implements OnInit {
 
   get tasksTabSelected() {
     return this.showUserTasks;
+  }
+
+  roundValue(value: number): number {
+    return Math.round(value);
   }
 
 }

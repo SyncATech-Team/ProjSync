@@ -2,6 +2,7 @@
     position: relative;
     min-height: 50px;
     cursor: pointer;
+    width: 90%;
 }
 .content-readonly .icon-edit {
     font-weight: 400;
@@ -34,6 +35,10 @@
 }
 .ql-editor ul {
     padding-left: 0.5rem;
+}
+
+.content-editor{
+    width: 90%;
 }
 
 .content-editor .ql-toolbar {

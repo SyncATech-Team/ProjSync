@@ -11,7 +11,7 @@
   border-radius: 3px;
   appearance: none;
   height: auto;
-  color: #718096;
+  color: var(--text-color);
 }
 .textarea-inline-control:hover:not(:focus) {
   background-color: lightgray;
@@ -35,6 +35,7 @@
 .info-user {
   display: flex;
   align-items: center;
+  color: var(--text-color);
 }
 
 .font-weight-bold {

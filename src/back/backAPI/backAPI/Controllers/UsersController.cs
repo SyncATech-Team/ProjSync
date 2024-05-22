@@ -3,11 +3,13 @@ using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
 using backAPI.SignalR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController {
         private readonly IUsersRepository _usersRepository;
         private readonly ICompanyRolesRepository _companyRolesRepository;
@@ -123,7 +125,8 @@ namespace backAPI.Controllers
                 PreferedLanguage = user.PreferedLanguage,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
-                isActive = user.IsActive
+                isActive = user.IsActive,
+                PreferedTheme = user.PreferedTheme
             });
         }
         /* *****************************************************************************
@@ -134,6 +137,19 @@ namespace backAPI.Controllers
             
             var updated = await _usersRepository.UpdateUser(username, request);
             if(updated != "OK") {
+                return BadRequest(updated);
+            }
+
+            return Ok();
+        }
+
+        [HttpPut("theme")]
+        public async Task<ActionResult<string>> UpdateUser(string username, string theme)
+        {
+
+            var updated = await _usersRepository.UpdateUserPreferedTheme(username, theme);
+            if (updated != "OK")
+            {
                 return BadRequest(updated);
             }
 

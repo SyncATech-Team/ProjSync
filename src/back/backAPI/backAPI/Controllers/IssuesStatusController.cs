@@ -1,8 +1,10 @@
 ﻿using backAPI.Repositories.Interface.Issues;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class IssuesStatusController : BaseApiController
     {
         private readonly IIssueStatusRepository _issueStatusRepository;

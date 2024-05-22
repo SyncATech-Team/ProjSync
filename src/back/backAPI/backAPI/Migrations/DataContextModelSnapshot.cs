@@ -148,6 +148,36 @@ namespace backAPI.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateSent")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.CompanyRole", b =>
                 {
                     b.Property<int>("Id")
@@ -612,6 +642,9 @@ namespace backAPI.Migrations
                     b.Property<string>("PreferedLanguage")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PreferedTheme")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("TEXT");
 
@@ -771,6 +804,25 @@ namespace backAPI.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.ChatMessage", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.User", "ReceiverUser")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.User", "UserSender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReceiverUser");
+
+                    b.Navigation("UserSender");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.Issue", b =>

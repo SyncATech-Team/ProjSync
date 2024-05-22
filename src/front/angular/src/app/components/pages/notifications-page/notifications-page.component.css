@@ -9,7 +9,7 @@
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--surface-c);
     border-radius: 10px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
@@ -28,7 +28,6 @@
 
 .unread-count {
     font-size: 16px;
-    color: #777;
 }
 
 .notifications {
@@ -39,7 +38,7 @@
 .notification {
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: var(--surface-e);
     border-left: 4px solid #007bff;
     border-radius: 5px;
     transition: border-left-color 0.3s;
@@ -60,7 +59,6 @@
 .date {
     margin: 0;
     font-size: 14px;
-    color: #777;
 }
 
 .mark-read {

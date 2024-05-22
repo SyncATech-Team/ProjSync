@@ -1,9 +1,11 @@
 ﻿using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class ImagesController : BaseApiController
     {
         private readonly IImageRepository _imageRepository;

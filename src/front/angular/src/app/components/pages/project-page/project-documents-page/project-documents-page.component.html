@@ -8,7 +8,9 @@
         <div class="content">
             
             <!-- Upload container -->
-            <app-upload-document [projectName]="projectName"></app-upload-document>
+            <div *ngIf="permission && permission.canUploadFiles === 'True'"  id="Doc-upload" >
+              <app-upload-document [projectName]="projectName"></app-upload-document>
+            </div>
 
             <div class="search">
               <span class="p-input-icon-right">

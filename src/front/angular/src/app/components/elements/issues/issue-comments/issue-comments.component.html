@@ -1,9 +1,10 @@
+<issue-comment *ngFor="let comment of this.issue.comments"
+[comment]="comment"
+[users]="users"
+[usersPhotos]="usersPhotos">
+</issue-comment>
+
 <issue-comment [createMode]="true"
                [issueId]="issue.id">
 
-</issue-comment>
-<issue-comment *ngFor="let comment of issue.comments"
-               [comment]="comment"
-               [users]="users"
-               [usersPhotos]="usersPhotos">
 </issue-comment>

@@ -1,12 +1,13 @@
 ﻿using backAPI.DTO;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
 
-    //[Authorize(Policy = "RequireAdminRole")]
+    [Authorize]
     public class CompanyrolesController : BaseApiController {
 
         private readonly ICompanyRolesRepository companyRolesRepository;

@@ -6,6 +6,6 @@ namespace backAPI.Controllers
     [Route("api/[controller]")]
     public class BaseApiController : ControllerBase
     {
-
+        public static string BaseFrontendUrl = "http://softeng.pmf.kg.ac.rs:10204/";
     }
 }

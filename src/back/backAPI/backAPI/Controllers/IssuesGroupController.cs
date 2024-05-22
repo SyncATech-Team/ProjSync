@@ -3,9 +3,11 @@ using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Projects;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class IssuesGroupController : BaseApiController {
     
         private readonly IIssueGroupRepository _taskGroupRepository;

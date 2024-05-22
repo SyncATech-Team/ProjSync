@@ -1,12 +1,14 @@
 ﻿using backAPI.DTO.Documentation;
 using backAPI.Entities.Domain;
 using backAPI.Repositories.Interface.Projects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
     [Route("api/")]
     [ApiController]
+    [Authorize]
     public class DocumentsController : ControllerBase {
 
         private readonly IProjectDocumentationRepository docsRepository;

@@ -11,8 +11,8 @@ using backAPI.Data;
 namespace backAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240507133108_MigrationIssueDocumentation")]
-    partial class MigrationIssueDocumentation
+    [Migration("20240522020413_MigrationMergeChatTheme")]
+    partial class MigrationMergeChatTheme
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,6 +149,36 @@ namespace backAPI.Migrations
                     b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("backAPI.Entities.Domain.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateSent")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChatMessages");
                 });
 
             modelBuilder.Entity("backAPI.Entities.Domain.CompanyRole", b =>
@@ -384,6 +414,28 @@ namespace backAPI.Migrations
                     b.ToTable("IssueType");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Logs");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -593,6 +645,9 @@ namespace backAPI.Migrations
                     b.Property<string>("PreferedLanguage")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PreferedTheme")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("TEXT");
 
@@ -754,6 +809,25 @@ namespace backAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.ChatMessage", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.User", "ReceiverUser")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backAPI.Entities.Domain.User", "UserSender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReceiverUser");
+
+                    b.Navigation("UserSender");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.Issue", b =>
                 {
                     b.HasOne("backAPI.Entities.Domain.IssueGroup", "IssueGroup")
@@ -857,6 +931,17 @@ namespace backAPI.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("backAPI.Entities.Domain.Log", b =>
+                {
+                    b.HasOne("backAPI.Entities.Domain.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("backAPI.Entities.Domain.Notification", b =>
                 {
                     b.HasOne("backAPI.Entities.Domain.User", "User")
@@ -929,7 +1014,7 @@ namespace backAPI.Migrations
                     b.HasOne("backAPI.Entities.Domain.Issue", "Issue")
                         .WithMany()
                         .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backAPI.Entities.Domain.User", "User")

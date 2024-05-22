@@ -7,6 +7,7 @@ import {ProjectService} from "../../../state/project/project.service";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
 import {IssueUtil} from "../../../utils/issue-util";
+import { AccountService } from '../../../../_service/account.service';
 
 @Component({
   selector: 'issue-comment',
@@ -24,8 +25,10 @@ export class IssueCommentComponent implements OnInit {
   commentControl!: FormControl;
   user!: JUser;
   isEditing!: boolean;
+  permission: any;
 
   constructor(
+    public accoutService: AccountService,
     private projectService: ProjectService,
     private userPictureService: UserProfilePicture
   ) {}
@@ -42,6 +45,11 @@ export class IssueCommentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var user = this.accoutService.getCurrentUser();
+    if(user?.permitions){
+      this.permission = user.permitions;
+    }      
+
     this.commentControl = new FormControl('');
     var storage = localStorage.getItem("user");
     this.user = JSON.parse(storage!);

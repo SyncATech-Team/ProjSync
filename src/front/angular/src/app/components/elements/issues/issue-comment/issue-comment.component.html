@@ -1,6 +1,7 @@
 <div class="mt-3" style="position: relative; font-size: 15px;">
   <div class="pl-10" *ngIf="comment">
     <div class="info-user">
+
       <div>
         <p-avatar
           *ngIf="!createMode"
@@ -10,35 +11,42 @@
           [pTooltip]="comment.user!.name">
         </p-avatar>
       </div>
+
       <div class="name-and-date" style="margin-left: 3px;">
-        <div class="d-inline-block mr-3 text-dark font-weight-bold">
+        <div class="d-inline-block mr-3 font-weight-bold">
           {{ comment.user.name }}
         </div>
         &nbsp;
-        <div *ngIf="!createMode" class="d-inline-block pb-2 text-dark text-sm">
+        <div *ngIf="!createMode" class="d-inline-block pb-2 text-sm">
           {{ comment.updatedAt | date:"medium" }}
         </div>
       </div>
     </div>
-    <div class="editing-area" *ngIf="createMode">
-      <textarea #commentBoxRef
-                class="textarea-inline-control textarea-border"
-                [formControl]="commentControl"
-                placeholder="Add a comment"
-                [rows]="2"
-                cdkTextareaAutosize
-                (click)="setCommentEdit(true)">
-      </textarea>
-      <div *ngIf="!isEditing"
-           class="text-xs"><strong>Pro tip: </strong>press <span class="px-1 font-weight-bold bg-light">SHIFT + M</span> to
-        comment
-      </div>
-      <div *ngIf="isEditing"
-           class="d-flex pt-2 pb-4 align-items-center">
-        <p-button label="Save" (click)="addComment()"></p-button>
-        <p-button label="Cancel" severity="warning" (click)="cancelAddComment()"></p-button>
+
+    <div *ngIf="permission && permission.canLeaveComments === 'True'" id="edit-area">
+      <div class="editing-area" *ngIf="createMode">
+        <textarea #commentBoxRef
+                  class="textarea-inline-control textarea-border"
+                  [formControl]="commentControl"
+                  placeholder="Add a comment"
+                  [rows]="2"
+                  cdkTextareaAutosize
+                  (click)="setCommentEdit(true)">
+        </textarea>
+
+        <div *ngIf="!isEditing"
+             class="text-xs"><strong>Pro tip: </strong>press <span class="px-1 font-weight-bold">SHIFT + M</span> to
+          comment
+        </div>
+
+        <div *ngIf="isEditing"
+             class="d-flex pt-2 pb-4 align-items-center">
+          <p-button label="Save" (click)="addComment()"></p-button>
+          <p-button label="Cancel" severity="warning" (click)="cancelAddComment()"></p-button>
+        </div>
       </div>
     </div>
+
     <div class="comment-space" *ngIf="!createMode" [innerHTML]="comment.body">
     </div>
   </div>
