@@ -7,6 +7,7 @@
         public string ConversationPartnerPhoto { get; set; }
         public string LastMessage { get; set; }
         public DateTime DateCreated { get; set; }
+        public int NumberOfUnreadMessages { get; set; }
 
     }
 }

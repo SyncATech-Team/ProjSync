@@ -43,13 +43,17 @@ namespace backAPI.Repositories.Implementation {
             foreach(var chat in chats) {
                 var conversationPartnerId = chat.SenderId == userId ? chat.ReceiverId : chat.SenderId;
                 var conversationPartner = await _dataContext.Users.FindAsync(conversationPartnerId);
+
+                int unreadMessages = await GetUnreadMessagesFromUser(userId, conversationPartnerId);
+
                 chatPreviewDtos.Add(new ChatPreviewDto {
                     ConversationPartnerId = conversationPartner.Id,
                     ConversationPartnerUsername = conversationPartner.UserName,
                     ConversationPartnerName = conversationPartner.FirstName + " " + conversationPartner.LastName,
                     ConversationPartnerPhoto = conversationPartner.ProfilePhoto,
                     LastMessage = chat.Content,
-                    DateCreated = chat.DateSent
+                    DateCreated = chat.DateSent,
+                    NumberOfUnreadMessages = unreadMessages
                 });
             }
 
@@ -128,6 +132,14 @@ namespace backAPI.Repositories.Implementation {
 
             var unreadMessages = await _dataContext.ChatMessages
                 .Where(c => c.ReceiverId == loggedInUser.Id && c.Status != MessageStatus.READ)
+                .CountAsync();
+
+            return unreadMessages;
+        }
+
+        public async Task<int> GetUnreadMessagesFromUser(int loggedInUserId, int chatPartnerId) {
+            var unreadMessages = await _dataContext.ChatMessages
+                .Where(c => c.SenderId == chatPartnerId && c.ReceiverId == loggedInUserId && c.Status != MessageStatus.READ)
                 .CountAsync();
 
             return unreadMessages;

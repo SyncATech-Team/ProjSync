@@ -5,4 +5,5 @@ export interface ChatPreview {
     conversationPartnerPhoto: string;
     lastMessage: string;
     dateCreated: Date;
+    numberOfUnreadMessages: number;
 }

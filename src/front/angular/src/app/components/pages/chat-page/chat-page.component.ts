@@ -181,6 +181,7 @@ export class ChatPageComponent implements OnInit, OnDestroy {
    */
   public static setMessages(loggedInUserUsername: string, otherUserUsername: string) {
     // console.log("Setting messages for " + loggedInUserUsername + " and " + otherUserUsername);
+    ChatPageComponent.clearNumberOfUnreadMessages("chat_" + otherUserUsername);
     ChatPageComponent.staticChatService.getMessages(loggedInUserUsername, otherUserUsername).subscribe({
       next: response => {
         ChatPageComponent._messages = response;
@@ -333,6 +334,14 @@ export class ChatPageComponent implements OnInit, OnDestroy {
     setTimeout(() => {                  // Scroll to the latest message.
       ChatPageComponent.scrollToTheLatestMessage();
     }, 0);
+  }
+
+  private static clearNumberOfUnreadMessages(htmlElementId: string) {
+    let element = document.getElementById(htmlElementId);
+    if(element != null) {
+      element.classList.remove("unread-notification-count");
+      element.innerHTML = "";
+    }
   }
 
   navigateToConversation(conversationPartnerUsername: string) {

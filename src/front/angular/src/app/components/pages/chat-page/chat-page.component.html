@@ -53,7 +53,14 @@
                         </div>
                     </div>
                     <div class="last-message-time">
-                        {{ chat.dateCreated | date:'short' }}
+                        <div>
+                            {{ chat.dateCreated | date:'short' }}
+                        </div>
+                        <div id="unread-messages-count">
+                            <span  [ngClass]="{'unread-notification-count': chat.numberOfUnreadMessages > 0}" id="chat_{{chat.conversationPartnerUsername}}">
+                                {{ chat.numberOfUnreadMessages > 0 ? chat.numberOfUnreadMessages : '' }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

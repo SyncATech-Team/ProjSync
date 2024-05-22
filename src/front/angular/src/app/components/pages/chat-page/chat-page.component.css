@@ -177,3 +177,19 @@
 #send-btn-div:hover {
     cursor: pointer;
 }
+
+.unread-notification-count {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #ff0000;
+    color: #ffffff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+}
+
+#unread-messages-count {
+    text-align: right;
+}
