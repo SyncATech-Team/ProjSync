@@ -3,7 +3,7 @@
 namespace backAPI.Entities.Domain {
 
     public enum MessageStatus {
-        SENT, READ
+        SENT, DELIVERED, READ
     };
 
     public class ChatMessage {

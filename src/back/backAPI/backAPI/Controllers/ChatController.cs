@@ -25,6 +25,20 @@ namespace backAPI.Controllers {
             return Ok(result);
         }
 
+        [HttpGet("chat/{loggedInUserUsername}/unread")]
+        public async Task<ActionResult<int>> GetUnreadMessages(string loggedInUserUsername) {
+            var numberOfMessages = await _chatRepository.GetUnreadMessages(loggedInUserUsername);
+            if (numberOfMessages == -1) return BadRequest(new { message = "Failed to retrieve unread messages." });
+            return Ok(numberOfMessages);
+        }
+
+        [HttpGet("chat/{loggedInUserUsername}/{chatPartnerUsername}/markread")]
+        public async Task<ActionResult<int>> MarkMessagesAsRead(string loggedInUserUsername, string chatPartnerUsername) {
+            var result = await _chatRepository.MarkMessagesAsRead(loggedInUserUsername, chatPartnerUsername);
+            if(result == -1) return BadRequest(new { message = "Failed to mark messages as read." });
+            return Ok(result);
+        }
+
         [HttpPost("send")]
         public async Task<ActionResult<ChatMessageDto>> SendMessage(ChatMessageDto message) {
             var result = await _chatRepository.SendMessage(message);

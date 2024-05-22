@@ -27,7 +27,7 @@
     white-space: nowrap;
   }
   
-  .chat.new-chat .badge-pulse {
+  .chat.new-chat .badge-pulse-chat {
     animation: pulse 2s ease-out;
     animation-iteration-count: infinite;
   }

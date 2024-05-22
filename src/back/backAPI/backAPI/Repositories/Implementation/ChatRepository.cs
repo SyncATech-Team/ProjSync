@@ -11,15 +11,18 @@ namespace backAPI.Repositories.Implementation {
         private readonly DataContext _dataContext;
         private readonly IUsersRepository _usersRepository;
         private readonly NotificationService _notificationService;
+        private readonly PresenceTracker _presenceTracker;
 
         public ChatRepository(
             DataContext dataContext,
             IUsersRepository usersRepository,
-            NotificationService notificationService
+            NotificationService notificationService,
+            PresenceTracker presenceTracker
         ) {
             _dataContext = dataContext;
             _usersRepository = usersRepository;
             _notificationService = notificationService;
+            _presenceTracker = presenceTracker;
         }
 
 
@@ -70,14 +73,16 @@ namespace backAPI.Repositories.Implementation {
                 ReceiverId = receiver.Id,
                 Content = message.Content,
                 DateSent = DateTime.Now,
-                Status = message.Status
+                Status = MessageStatus.SENT
             };
 
             _dataContext.ChatMessages.Add(chatMessage);
             await _dataContext.SaveChangesAsync();
 
-            string[] users = { receiver.UserName };
+            string[] users = { sender.UserName, receiver.UserName };
             await _notificationService.SendChatMessageNotification(users , message);
+
+            var onlineUsers = await _presenceTracker.GetOnlineUsers();
 
             return new ChatMessageDto {
                 Id = chatMessage.Id,
@@ -85,7 +90,7 @@ namespace backAPI.Repositories.Implementation {
                 ReceiverUsername = receiver.UserName,
                 Content = chatMessage.Content,
                 DateSent = chatMessage.DateSent,
-                Status = chatMessage.Status
+                Status = onlineUsers.Contains(receiver.UserName) ? MessageStatus.DELIVERED : MessageStatus.SENT
             };
         }
         
@@ -115,6 +120,36 @@ namespace backAPI.Repositories.Implementation {
 
             return chatMessageDtos;
 
+        }
+
+        public async Task<int> GetUnreadMessages(string loggedInUserUsername) {
+            var loggedInUser = await _usersRepository.GetUserByUsername(loggedInUserUsername);
+            if(loggedInUser == null) return -1;
+
+            var unreadMessages = await _dataContext.ChatMessages
+                .Where(c => c.ReceiverId == loggedInUser.Id && c.Status != MessageStatus.READ)
+                .CountAsync();
+
+            return unreadMessages;
+        }
+
+        public async Task<int> MarkMessagesAsRead(string loggedInUserUsername, string chatPartnerUsername) {
+            var loggedInUser = await _usersRepository.GetUserByUsername(loggedInUserUsername);
+            var chatPartner = await _usersRepository.GetUserByUsername(chatPartnerUsername);
+
+            if(loggedInUser == null || chatPartner == null) return -1;
+
+            var unreadMessages = await _dataContext.ChatMessages
+                .Where(c => c.SenderId == chatPartner.Id && c.ReceiverId == loggedInUser.Id && c.Status != MessageStatus.READ)
+                .ToListAsync();
+
+            foreach(var message in unreadMessages) {
+                message.Status = MessageStatus.READ;
+            }
+
+            await _dataContext.SaveChangesAsync();
+
+            return unreadMessages.Count();
         }
 
     }

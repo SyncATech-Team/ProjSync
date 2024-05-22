@@ -11,6 +11,7 @@ import { ChatPreview } from '../../../_models/chat-preview.model';
 import { PresenceService } from '../../../_service/presence.service';
 import { MessageSendDto } from '../../../_models/message-send.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChatElementComponent } from '../../elements/chat-element/chat-element.component';
 
 @Component({
   selector: 'app-chat-page',
@@ -152,6 +153,14 @@ export class ChatPageComponent implements OnInit {
         ChatPageComponent._showChat = true;
         // this.router.navigate([], {queryParams: {username: event.username}});
         ChatPageComponent.setMessages(ChatPageComponent._loggedInUser!.username, event.username);
+        ChatPageComponent.staticChatService.markMessagesAsRead(ChatPageComponent._loggedInUser!.username, event.username).subscribe({
+          next: response => {
+            ChatElementComponent.decreaseNumberOfUnreadMessages(response);
+          },
+          error: error => {
+            console.log(error);
+          }
+        });
       }
     }
   }
