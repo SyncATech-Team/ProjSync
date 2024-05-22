@@ -54,7 +54,6 @@ export interface JIssue {
   usersWithCompletion: UsersWithCompletion[];
   completed: number;
   comments: JComment[];
-  // reversedComments: JComment[];
   projectId: string;
   ownerUsername: string;
   projectName: string;

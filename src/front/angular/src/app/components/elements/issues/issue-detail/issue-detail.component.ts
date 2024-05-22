@@ -25,14 +25,6 @@ export class IssueDetailComponent implements OnInit{
   documentTitlesBackup: DocumentTitle[] = [];
   permission: any;
 
-  // sorted = true;
-
-  // sort(){
-  //   this.sorted = (!this.sorted);
-  //   console.log(this.sorted);
-  // }
-
-
   constructor(
     public accoutService: AccountService,
     private confirmationService: ConfirmationService,

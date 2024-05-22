@@ -1,27 +1,10 @@
+<issue-comment *ngFor="let comment of this.issue.comments"
+[comment]="comment"
+[users]="users"
+[usersPhotos]="usersPhotos">
+</issue-comment>
+
 <issue-comment [createMode]="true"
                [issueId]="issue.id">
 
 </issue-comment>
-
-<!-- Sort dropdown -->
-<p-dropdown 
-        [options]="sortOpt" 
-        [(ngModel)]="selectedOpt" 
-        placeholder="Order comments"
-        (onChange)="onChange($event)" />
-
-
-<div *ngIf="isSorted == false">
-    <issue-comment *ngFor="let comment of this.issue.comments"
-               [comment]="comment"
-               [users]="users"
-               [usersPhotos]="usersPhotos">
-    </issue-comment>
-</div>
-<div *ngIf="isSorted == true">
-    <issue-comment *ngFor="let comment of this.issue.comments"
-               [comment]="comment"
-               [users]="users"
-               [usersPhotos]="usersPhotos">
-    </issue-comment>
-</div>

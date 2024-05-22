@@ -37,22 +37,4 @@ export class IssueCommentsComponent implements OnInit, OnDestroy {
     this.projectService.stopHubConnection();
   }
 
-  // sort commets
-  isSorted = false; //false prikazuje najstarije prvo, true obrnuto
-  sortOpt = ["oldest", "newest"];
-  selectedOpt: string | undefined;
-  
-  onChange(event: any){
-    if(event.value == "oldest"){
-      this.isSorted = false;
-    }
-    else{
-      this.isSorted = true;
-      // this.reverseArray(this.issue.comments)
-    }
-  }
-
-  reverseArray(array: any){
-    this.issue.comments = array.slice().reverse();
-  }
 }

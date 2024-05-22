@@ -38,18 +38,13 @@
                     <app-list-of-issue-documents [issueID]="issue.id"></app-list-of-issue-documents>
                 </div>
             </div>
-            <!-- <div *ngIf="sorted==true"> -->
-                <div class="pt-4 pb-2 fs-5 fw-bold" >Comments</div>
-                <!-- <input type="button" (click)="sort()" > -->
-                <issue-comments [issue]="issue"
-                                [users]="projectQuery.users$ | async"
-                                [usersPhotos]="usersPhotos">
-                </issue-comments>
-            <!-- </div> -->
-
-            <!-- <div *ngIf="sorted==false">
-                rthrthtr
-            </div>       -->
+            
+            <div class="pt-4 pb-2 fs-5 fw-bold" >Comments</div>   
+            <issue-comments [issue]="issue"
+                            [users]="projectQuery.users$ | async"
+                              [usersPhotos]="usersPhotos">
+            </issue-comments>
+            
         </div>
     
             
