@@ -1,0 +1,115 @@
+<!-- <app-spinner></app-spinner> -->
+<p-toast></p-toast>
+
+<div id="page-wrapper">
+    
+    <app-nav-bar></app-nav-bar>
+
+    <div class="content">
+
+        <div id="left-container">
+
+            <div id="search-header">
+                <p-autoComplete
+                    [(ngModel)]="selectedUser"
+                    [dropdown]="true"
+                    [showClear]="true"
+                    [suggestions]="filteredUsers"
+                    (completeMethod)="searchUsers($event)"
+                    field="username"
+                    [placeholder]="'Type to search users...'"
+                    class="custom-autocomplete"
+                    [spellcheck]="false"
+                    (ngModelChange)="onUserSelected($event)"
+                    (onClear)="clearURLparameters()"
+                >
+                    <ng-template pTemplate="selectedItem">
+                        <div class="user-div flex align-items-center gap-2" *ngIf="selectedUser">
+                            <img src="{{ getUserImagePath(selectedUser.username, usersForChat ) }}" />
+                            <div>{{ selectedUser.username }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-user pTemplate="item">
+                        <div class="user-div flex align-items-center gap-2">
+                            <img src="{{ getUserImagePath(user.username, usersForChat ) }}" />
+                            <div>{{ user.username }}</div>
+                        </div>
+                    </ng-template>
+                </p-autoComplete>
+            </div>
+
+            <div id="previous-chats">
+                <div class="chat-card" *ngFor="let chat of getPreviousChats">
+                    <div class="image-info">
+                        <img src="{{ getUserImagePath(chat.conversationPartnerUsername, usersForChat ) }}" alt="img">
+                        
+                        <div class="name-and-last-message">
+                            <div class="name">
+                                {{ chat.conversationPartnerName }}
+                            </div>
+                            <div class="last-message" pTooltip="{{chat.lastMessage}}">
+                                {{ getTrimmedMessageContent(chat.lastMessage) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="last-message-time">
+                        {{ chat.dateCreated | date:'short' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="right-container" *ngIf="showChat" >
+
+            <div class="chat-header">
+                <div class="chatter-info">
+                    <img src="{{ getUserImagePath(selectedUser!.username, usersForChat ) }}">
+                    <span>
+                        {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}
+                    </span>
+                </div>
+                <div class="username-online" *ngIf="(presenceService.onlineUsers$ | async)?.includes(selectedUser!.username)">
+                    <span>Online now</span>
+                </div>
+                <div class="username-offline" *ngIf="!(presenceService.onlineUsers$ | async)?.includes(selectedUser!.username)">
+                    <span>Offline</span>
+                </div>
+            </div>
+
+            <div id="messages-div-id" class="chat-messages">
+                
+                <div class="no-messages" *ngIf="messages.length === 0">
+                    <span>No messages yet</span>
+                </div>
+                
+                <div 
+                    class="message"
+                    [ngClass]="{ 'msg-sent': message.senderUsername === loggedInUser!.username, 'msg-received': message.senderUsername !== loggedInUser!.username }"
+                    *ngFor="let message of messages"
+                >
+                    <div class="messageDate"> {{ message.dateSent | date:'short' }} </div>
+                    <div class="messageContent">
+                        {{ message.content }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="newMessage">
+                <textarea 
+                    name="newMessage"
+                    id="newMessageTextArea"
+                    placeholder="Type your message here..."
+                    [(ngModel)]="inputMessage"
+                    spellcheck="false"
+                    (keydown)="onKeydown($event)"
+                    ></textarea>
+                <div id="send-btn-div" (click)="sendMessage()" [ariaDisabled]="inputMessage.length === 0">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

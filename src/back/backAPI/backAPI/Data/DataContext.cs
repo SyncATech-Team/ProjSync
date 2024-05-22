@@ -205,6 +205,21 @@ namespace backAPI.Data
                 .HasForeignKey(t => t.TargetId)
                 .OnDelete(DeleteBehavior.Restrict); // zadatak se ne moze obrisati ako se koristi kao zavisnost izmedju drugih zadataka
 
+            /* **************************************************************************
+             * Strani kljucevi u tabeli >> ChatMessages <<
+             * ************************************************************************** */
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(t => t.UserSender)
+                .WithMany()
+                .HasForeignKey(t => t.SenderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(t => t.ReceiverUser)
+                .WithMany()
+                .HasForeignKey(t => t.ReceiverId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             /* *******************************************************************************************************************
              * *******************************************************************************************************************
              * *******************************************************************************************************************
@@ -285,5 +300,7 @@ namespace backAPI.Data
         // LOG
         public DbSet<Log> Logs { get; set; }
         public DbSet<IssueDocumentation> IssueDocumentation { get; set; }
+
+        public DbSet<ChatMessage> ChatMessages { get; set; }
     }
 }

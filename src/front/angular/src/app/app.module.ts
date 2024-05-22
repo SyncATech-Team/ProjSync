@@ -123,6 +123,9 @@ import { ListOfIssueDocumentsComponent } from './components/elements/list-of-iss
 import { ForgotPasswordComponent } from './components/elements/forgot-password/forgot-password.component';
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 import { InfoPageComponent } from './components/pages/info-page/info-page.component';
+import { ChatPageComponent } from './components/pages/chat-page/chat-page.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChatElementComponent } from './components/elements/chat-element/chat-element.component';
 
 @NgModule({
   declarations: [
@@ -185,7 +188,9 @@ import { InfoPageComponent } from './components/pages/info-page/info-page.compon
     LogsContainerComponent,
     ForgotPasswordComponent,
     PageForgotPasswordComponent,
-    InfoPageComponent
+    InfoPageComponent,
+    ChatPageComponent,
+    ChatElementComponent
   ],
     imports: [
         BrowserModule,
@@ -233,7 +238,8 @@ import { InfoPageComponent } from './components/pages/info-page/info-page.compon
         MeterGroupModule,
         BadgeModule,
         ScrollerModule,
-        AccordionModule
+        AccordionModule,
+        AutoCompleteModule
     ],
   providers: [
     CookieService,

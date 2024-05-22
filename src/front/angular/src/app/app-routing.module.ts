@@ -24,6 +24,7 @@ import { ProjectGuard } from './_guards/project.guard';
 import { NotificationsPageComponent } from './components/pages/notifications-page/notifications-page.component';
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 import { InfoPageComponent } from './components/pages/info-page/info-page.component';
+import { ChatPageComponent } from './components/pages/chat-page/chat-page.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
@@ -37,6 +38,7 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'home', component: HomePageComponent, canActivate: [HomeGuard] },
+      { path: 'home/chat', component: ChatPageComponent, canActivate: [HomeGuard]},
       { path: 'home/notifications', component: NotificationsPageComponent, canActivate: [HomeGuard] },
       { path: 'home/edit-profile', component: EditProfilePageComponent, canActivate: [HomeGuard] },
       { path: 'home/info-page', component: InfoPageComponent, canActivate: [HomeGuard] },
