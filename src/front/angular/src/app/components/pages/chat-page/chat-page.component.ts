@@ -25,7 +25,7 @@ export class ChatPageComponent implements OnInit, OnDestroy {
   filteredUsers: UserGetter[] = [];
   private static _usersForChatPhotos: PhotoForUser[] = [];
   
-  private static _loggedInUser: User | null = null;
+  public static _loggedInUser: User | null = null;
   
   private static _selectedUser?: UserGetter | undefined = undefined;
   

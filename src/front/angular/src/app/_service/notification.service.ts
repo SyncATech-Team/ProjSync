@@ -51,8 +51,10 @@ export class NotificationService {
         });
 
         this.hubConnection.on('ReceiveChatMessage', (data: MessageSendDto) => {
-            this.msgPopupService.showInfo("You have a new message. Check it out.");
-            ChatElementComponent.increaseNumberOfUnreadMessages();
+            if(data.senderUsername != ChatPageComponent._loggedInUser?.username) {
+                this.msgPopupService.showInfo("You have a new message. Check it out.");
+                ChatElementComponent.increaseNumberOfUnreadMessages();
+            }
             ChatPageComponent.initialize(data);
         });
 
