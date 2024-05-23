@@ -11,7 +11,7 @@
             
             <div class="header">
                 <h1>Notification Center</h1>
-                <button id="mark-all-read" (click)="makeAllNotificationsAsRead()">Mark All as Read</button>
+                <button id="mark-all-read" (click)="makeAllNotificationsAsRead()">Delete All</button>
             </div>
 
             <div class="unread-count">
@@ -24,7 +24,7 @@
                 <div class="notification" *ngFor="let notification of getNotifications">
                     <div class="notification-header">
                         <p class="date">{{ notification.dateCreated | date:'medium' }}</p>
-                        <button class="mark-read" (click)="markNotificationAsRead(notification.id)">Mark as Read</button>
+                        <button class="mark-read" (click)="markNotificationAsRead(notification.id)">Delete</button>
                     </div>
                     <div class="content" [innerHTML]="getSafeHTML(notification.message)"></div>
                 </div>

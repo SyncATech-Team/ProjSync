@@ -148,10 +148,6 @@
     border-radius: 6px;
 }
 
-:host ::ng-deep .wrapper .del{
-    background-color: rgba(240, 91, 91, 0.8);
-}
-
 @media screen and (max-width: 900px) {
     .content {
         display: flex;
@@ -209,4 +205,8 @@
 .row input{
     color: var(--text-color);
     background-color: var(--surface-ground);
+}
+
+:host ::ng-deep .p-button{
+    color: white;
 }

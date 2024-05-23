@@ -40,3 +40,7 @@
     gap: 6rem;
     margin-left: 3rem;
 }
+
+:host ::ng-deep .questions a{
+    color: var(--text-color);
+}
