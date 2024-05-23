@@ -22,4 +22,30 @@
             </p-overlayPanel>
         </div>
     </div>
+    
+    <p-divider></p-divider>
+
+    <div class="head">
+        <div>
+            <i class="fa-solid fa-diagram-predecessor"></i>
+            <span> Successors</span>
+        </div>
+
+        <div>
+            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op.toggle($event)"/>
+            <p-overlayPanel #op [style]="{'max-height':'300px','overflow-y':'auto'}">
+                <span class="op-title">Add su   ccessors</span>
+                
+                <p-divider></p-divider>
+
+                <div class="op-row">
+                    <div class="polje">
+                        <span>Task name</span>
+                    </div>
+                    <button class="opAddBtn">+</button>
+                </div>
+                
+            </p-overlayPanel>
+        </div>
+    </div>
 </div>
