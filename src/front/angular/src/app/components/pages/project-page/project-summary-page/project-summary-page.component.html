@@ -60,10 +60,10 @@
                         <div class="chart-options">
                             <div class="custom-select">
                                 <select (change)="changeChartType('priority', $event.target)">
-                                    <option value="bar">Bar Chart</option>
+                                    <option selected value="bar">Bar Chart</option>
                                     <option value="radar">Radar Chart</option>
                                     <option value="doughnut">Doughnut Chart</option>
-                                    <option selected value="pie">Pie Chart</option>
+                                    <option value="pie">Pie Chart</option>
                                     <option value="polarArea">Polar Area Chart</option>
                                 </select>
                             </div>
@@ -83,8 +83,8 @@
                                 <select (change)="changeChartType('status', $event.target)">
                                     <option value="bar">Bar Chart</option>
                                     <option value="radar">Radar Chart</option>
-                                    <option value="doughnut">Doughnut Chart</option>
-                                    <option selected value="pie">Pie Chart</option>
+                                    <option selected value="doughnut">Doughnut Chart</option>
+                                    <option value="pie">Pie Chart</option>
                                     <option value="polarArea">Polar Area Chart</option>
                                 </select>
                             </div>

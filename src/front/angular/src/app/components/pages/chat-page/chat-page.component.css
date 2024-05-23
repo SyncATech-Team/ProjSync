@@ -12,7 +12,7 @@
 
 #left-container {
     width: 30%;
-    background-color: white;
+    background-color: var(--surface-card);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
     overflow-y: scroll;
     padding: 10px;
@@ -20,7 +20,7 @@
 
 #right-container {
     width: 70%;
-    background-color: white;
+    background-color: var(--surface-card);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 
@@ -53,7 +53,7 @@
 }
 
 .chat-header {
-    background-color: lightblue;
+    background-color: var(--chat-header);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -80,7 +80,7 @@
 
 .chat-card:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
-    background-color: lightgray;
+    background-color: var(--surface-d);
     cursor: pointer;
 }
 
@@ -110,7 +110,7 @@
 .newMessage {
     height: 10%;
     width: 100%;
-    background-color: white;
+    background-color: var(--chat-header);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -146,7 +146,7 @@
 }
 
 .msg-received .messageContent {
-    background-color: lightgray;
+    background-color: var(--surface-d);
 }
 
 .msg-received .messageDate {
@@ -159,7 +159,7 @@
 }
 
 .msg-sent .messageContent {
-    background-color: lightgreen;
+    background-color: var(--sent-msg-background);
 }
 
 .msg-sent .messageDate {

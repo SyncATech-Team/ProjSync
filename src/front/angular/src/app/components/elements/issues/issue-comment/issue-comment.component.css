@@ -46,3 +46,7 @@
   width: 70%;
   overflow-wrap: break-word;
 }
+
+:host ::ng-deep .p-button{
+  color: white;
+}
