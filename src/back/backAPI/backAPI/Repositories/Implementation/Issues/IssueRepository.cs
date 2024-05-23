@@ -1001,5 +1001,30 @@ namespace backAPI.Repositories.Implementation.Issues
             return exists.Any();
         }
 
+        public async Task<String> GetProjectNameByIssueId(int issueId)
+        {
+            var issue = await _dataContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+
+            if (issue == null)
+            {
+                return null;
+            }
+
+            var group = await _dataContext.IssueGroups.FirstOrDefaultAsync(g => g.Id == issue.GroupId);
+
+            if (group == null)
+            {
+                return null;
+            }
+
+            var project = await _dataContext.Projects.FirstOrDefaultAsync(p => p.Id == group.ProjectId);
+
+            if (project == null)
+            {
+                return null;
+            }
+
+            return project.Name;
+        }
     }
 }

@@ -684,5 +684,18 @@ namespace backAPI.Controllers
             var changed = await _issueRepository.CreateOrDeleteDependency(model);
             return Ok();
         }
+
+        [HttpGet("{issueId}/ProjectName")]
+        public async Task<IActionResult> GetProjectName(int issueId)
+        {
+            var projectName = await _issueRepository.GetProjectNameByIssueId(issueId);
+
+            if (projectName == null)
+            {
+                return NotFound("Project name not found for the given issue ID.");
+            }
+
+            return Ok(projectName);
+        }
     }
 }
