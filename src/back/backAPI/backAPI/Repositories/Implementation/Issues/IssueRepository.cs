@@ -1001,7 +1001,7 @@ namespace backAPI.Repositories.Implementation.Issues
             return exists.Any();
         }
 
-        public async Task<String> GetProjectNameByIssueId(int issueId)
+        public async Task<string> GetProjectNameByIssueId(int issueId)
         {
             var issue = await _dataContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
 

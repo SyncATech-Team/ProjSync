@@ -37,6 +37,6 @@ namespace backAPI.Repositories.Interface.Issues
         Task<double> UpdateUsersOnIssue(int issueId, UsersOnIssueDto model);
         Task<bool> CreateOrDeleteDependency(IssueDependenciesUpdateDto model);
         Task<(IEnumerable<Issue> issues, int numberOfRecords)> GetPaginationIssuesForProject(int projectId,Criteria criteria);
-        Task<String> GetProjectNameByIssueId(int issueId);
+        Task<string> GetProjectNameByIssueId(int issueId);
     }
 }

@@ -686,16 +686,16 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("{issueId}/ProjectName")]
-        public async Task<IActionResult> GetProjectName(int issueId)
+        public async Task<ActionResult> GetAllIsuuesByProjectName(int issueId)
         {
             var projectName = await _issueRepository.GetProjectNameByIssueId(issueId);
 
-            if (projectName == null)
+            if (projectName == null || !projectName.Any())
             {
-                return NotFound("Project name not found for the given issue ID.");
+                return NotFound("No project name found for the given issue ID.");
             }
 
-            return Ok(projectName);
+            return Ok(new { projectName });
         }
     }
 }
