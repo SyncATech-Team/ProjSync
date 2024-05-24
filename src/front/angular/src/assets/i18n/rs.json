@@ -86,5 +86,11 @@
         "invalid-phone-format": "Neispravan format telefona. Validan format je 061 1234567",
         "invalid-password-pattern": "Nevalidan format lozinke",
         "pattern-info": "Lozinka mora sadržati najmanje 6 karaktera, jedno veliko slovo, jedno malo slovo i jedan broj"
+    },
+    "notifications-page": {
+        "title": "Obaveštenja",
+        "unread-notifications": "Nepročitanih obaveštenja",
+        "delete-all": "Obriši sve",
+        "delete": "Obriši"
     }
 }

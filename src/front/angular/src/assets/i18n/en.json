@@ -31,7 +31,9 @@
         "dark-mode": "Dark mode",
         "settings": "Settings",
         "edit-my-profile": "Edit My Profile",
-        "logout": "Logout"
+        "logout": "Logout",
+        "my-projects": "My Projects",
+        "my-tasks": "My Tasks"
     },
     "login": {
         "title": "Welcome, please login",
@@ -86,5 +88,11 @@
         "invalid-phone-format": "Not a valid phone format. Valid format 061 1234567",
         "invalid-password-pattern": "Invalid password pattern",
         "pattern-info": "Password must contain at least 6 characters, including UPPER/lowercase and numbers"
+    },
+    "notifications-page": {
+        "title": "Notifications Center",
+        "unread-notifications": "Unread Notifications",
+        "delete-all": "Delete All",
+        "delete": "Delete"
     }
 }
