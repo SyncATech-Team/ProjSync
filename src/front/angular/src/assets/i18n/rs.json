@@ -177,7 +177,12 @@
         "today": "Danas",
         "weak": "Slabo",
         "medium": "Srednje",
-        "strong": "Jako"
+        "strong": "Jako",
+        "monthNames": ["Januar","Februar","Mart","April","Maj","Jun","Jul","Avgust","Septembar","Oktobar","Novembar","Decembar"],
+        "monthNamesShort": ["Jan","Feb","Mar","Apr","Maj","Jun","Jul","Avg","Sep","Okt","Nov","Dec"],
+        "dayNames": ["Nedelja","Ponedeljak","Utorak","Sreda","Četvrtak","Petak","Subota"],
+        "dayNamesShort": ["Ned","Pon","Uto","Sre","Čet","Pet","Sub"],
+        "dayNamesMin": ["Ne","Po","Ut","Sr","Če","Pe","Su"]
     },
     "chat-page": {
         "search-for-users": "Pretraži korisnike...",
@@ -185,5 +190,10 @@
         "online": "Aktivan",
         "no-messages-yet": "Još uvek nema poruka",
         "type-a-message": "Unesite poruku..."
+    },
+    "issue-assignees": {
+        "assignees": "Dodeljeni",
+        "change-progress-info": "Kliknuti na progres traku kako bi izmenili procenat završetka",
+        "add-assignee": "Dodaj dodeljenog"
     }
 }
