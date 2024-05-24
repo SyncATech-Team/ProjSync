@@ -60,9 +60,9 @@
                             <p-multiSelect 
                             [options]="issueColumns" 
                             [(ngModel)]="selectedIssueColumns" 
-                            selectedItemsLabel="{0} columns selected" 
+                            [selectedItemsLabel]="'home-page.selected-columns' | translate"
                             [style]="{'width': '30vh'}" 
-                            placeholder="Choose Columns"
+                            [placeholder]="'home-page.choose-columns' | translate"
                             (onChange)="onSelectedIssueChange()" >
                             </p-multiSelect>
                             
@@ -101,7 +101,7 @@
                                             </div>
                                         </ng-template>
                                         <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                            <p-multiSelect [ngModel]="value" [options]="IssueTypes" placeholder="Any" (onChange)="filter($event.value)">
+                                            <p-multiSelect [ngModel]="value" [options]="IssueTypes" [placeholder]="'general.any' | translate " (onChange)="filter($event.value)">
                                                 <ng-template let-project let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
                                                         <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
@@ -123,7 +123,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                        <p-multiSelect [ngModel]="value" [options]="IssueStatus" placeholder="Any" (onChange)="filter($event.value)">
+                                        <p-multiSelect [ngModel]="value" [options]="IssueStatus" [placeholder]="'general.any' | translate " (onChange)="filter($event.value)">
                                             <ng-template let-project let-option pTemplate="item" >
                                                 <div class="inline-block vertical-align-middle">
                                                     <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
@@ -145,7 +145,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                        <p-multiSelect [ngModel]="value" [options]="IssuePrioritys" placeholder="Any" (onChange)="filter($event.value)">
+                                        <p-multiSelect [ngModel]="value" [options]="IssuePrioritys" [placeholder]="'general.any' | translate " (onChange)="filter($event.value)">
                                             <ng-template let-project let-option pTemplate="item" >
                                                 <div class="inline-block vertical-align-middle">
                                                     <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
@@ -309,9 +309,9 @@
                             <p-multiSelect 
                             [options]="columns" 
                             [(ngModel)]="selectedColumns" 
-                            selectedItemsLabel="{0} columns selected" 
+                            [selectedItemsLabel]="'home-page.selected-columns' | translate"
                             [style]="{'width': '30vh'}" 
-                            placeholder="Choose Columns"
+                            [placeholder]="'home-page.choose-columns' | translate"
                             (onChange)="onSelectedChange()" >
                             </p-multiSelect>
     
@@ -373,7 +373,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                        <p-multiSelect [ngModel]="value" [options]="Types" placeholder="Any" (onChange)="filter($event.value)">
+                                        <p-multiSelect [ngModel]="value" [options]="Types" [placeholder]="'general.any' | translate " (onChange)="filter($event.value)">
                                             <ng-template let-project let-option pTemplate="item" >
                                                 <div class="inline-block vertical-align-middle">
                                                     <span class="ml-1 mt-1">{{ option }}</span>

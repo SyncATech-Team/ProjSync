@@ -24,7 +24,8 @@
         "confirmed": "Confirmed",
         "rejected": "Rejected",
         "you-have-confirmed": "You have confirmed",
-        "you-have-rejected": "You have rejected"
+        "you-have-rejected": "You have rejected",
+        "any": "Any"
     },
     "navbar": {
         "work": "Work",
@@ -46,7 +47,7 @@
         "title-projects": "Projects",
         "my-projects": "My Projects",
         "my-tasks": "My Tasks",
-        "number-of-selected-columns": " columns selected",
+        "selected-columns": "{0} columns selected",
         "search-placeholder": "Search",
         "key": "Key",
         "name": "Name",

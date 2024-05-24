@@ -24,7 +24,8 @@
         "confirmed": "Potvrđeno",
         "rejected": "Odbijeno",
         "you-have-confirmed": "Prihvatili ste",
-        "you-have-rejected": "Odbili ste"
+        "you-have-rejected": "Odbili ste",
+        "any": "Bilo koji"
     },
     "navbar": {
         "work": "Rad",
@@ -46,7 +47,7 @@
         "title-projects": "Projekti",
         "my-projects": "Moji projekti",
         "my-tasks": "Moji zadaci",
-        "number-of-selected-columns": " izabrano kolona",
+        "selected-columns": "{0} izabranih kolona",
         "search-placeholder": "Pretraži",
         "key": "Ključ",
         "name": "Naziv",
@@ -153,7 +154,7 @@
         "completed": "Završeno",
         "emptyFilterMessage": "Nema rezultata",
         "searchMessage": "{0} rezultata",
-        "selectionMessage": "{0} izabrano",
+        "selectionMessage": "{0} opcija izabrano",
         "emptySelectionMessage": "Nema izabranih",
         "emptySearchMessage": "Nema rezultata",
         "chooseYear": "Izaberite godinu",
