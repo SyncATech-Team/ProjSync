@@ -155,6 +155,7 @@
         "searchMessage": "{0} rezultata",
         "selectionMessage": "{0} izabrano",
         "emptySelectionMessage": "Nema izabranih",
+        "emptySearchMessage": "Nema rezultata",
         "chooseYear": "Izaberite godinu",
         "chooseMonth": "Izaberite mesec",
         "chooseDate": "Izaberite datum",
@@ -176,5 +177,12 @@
         "weak": "Slabo",
         "medium": "Srednje",
         "strong": "Jako"
+    },
+    "chat-page": {
+        "search-for-users": "Pretraži korisnike...",
+        "offline": "Neaktivan",
+        "online": "Aktivan",
+        "no-messages-yet": "Još uvek nema poruka",
+        "type-a-message": "Unesite poruku..."
     }
 }

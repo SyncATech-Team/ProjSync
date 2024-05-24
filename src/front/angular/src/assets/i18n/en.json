@@ -155,6 +155,7 @@
         "searchMessage": "{0} results available",
         "selectionMessage": "{0} items selected",
         "emptySelectionMessage": "No selected items",
+        "emptySearchMessage": "No results found",
         "chooseYear": "Choose Year",
         "chooseMonth": "Choose Month",
         "chooseDate": "Choose Date",
@@ -176,5 +177,12 @@
         "weak": "Weak",
         "medium": "Medium",
         "strong": "Strong"
+    },
+    "chat-page": {
+        "search-for-users": "Type to search for users...",
+        "offline": "Offline",
+        "online": "Online",
+        "no-messages-yet": "No messages yet",
+        "type-a-message": "Type a message here"
     }
 }
