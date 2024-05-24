@@ -9,7 +9,7 @@
     <!-- Div container -->
     <div class="container" style="margin-top: 20px;">
         
-        <h1 style="color:#5E5BF4 ;"> Projects </h1>
+        <h1 style="color:#5E5BF4 ;"> {{ 'home-page.title-projects' | translate }} </h1>
         
         <!-- Vrste projekata -->
         <ul class="nav nav-tabs">
@@ -19,14 +19,14 @@
                     [routerLink]="['/home']"
                     [queryParams]="{ showUserTasks: false }"
                     routerLinkActive="router-link-active"
-                    [class.active-tab]="!tasksTabSelected">My projects</a>
+                    [class.active-tab]="!tasksTabSelected"> {{ 'home-page.my-projects' | translate }} </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link " data-bs-toggle="tab"
                     [routerLink]="['/home']"
                     [queryParams]="{ showUserTasks: true }"
                     routerLinkActive="router-link-active"
-                    [class.active-tab]="tasksTabSelected">My tasks</a>
+                    [class.active-tab]="tasksTabSelected"> {{ 'home-page.my-tasks' | translate }} </a>
             </li>
         </ul>
         <!-- End -->

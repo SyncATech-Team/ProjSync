@@ -6,6 +6,14 @@ import { UserGetter } from '../../../_models/user-getter';
 import { UserProfilePicture } from '../../../_service/userProfilePicture.service';
 import { ThemeService } from '../../../../themes/theme.service';
 import { PhotoForUser } from '../../../_models/photo-for-user';
+import { TranslateService } from '@ngx-translate/core';
+
+interface Language {
+
+  code: string;
+  name: string;
+
+}
 
 @Component({
   selector: 'app-nav-bar',
@@ -24,12 +32,20 @@ export class NavBarComponent implements OnInit {
 
   isDarkTheme?: boolean;
 
+  languages: Language[] = [
+    { code: 'en', name: 'English' },
+    { code: 'rs', name: 'Srpski' }
+  ];
+  selectedLanguage: string = "en";
+  
+
   constructor(
       private accountService: AccountService,
       private router: Router,
       private userService: UserService,
       private userPictureService: UserProfilePicture,
-      private themeService: ThemeService
+      private themeService: ThemeService,
+      private translateService: TranslateService
     ) {
   }
 
@@ -135,6 +151,10 @@ export class NavBarComponent implements OnInit {
   changeTheme(){
     if(this.isDarkTheme !== undefined)
       this.themeService.updateTheme(this.user!.username,this.isDarkTheme);
+  }
+
+  changeLanguage(event: any) {
+    this.translateService.use(event.value);
   }
 
 }
