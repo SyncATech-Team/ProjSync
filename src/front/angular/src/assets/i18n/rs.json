@@ -192,8 +192,45 @@
         "type-a-message": "Unesite poruku..."
     },
     "issue-assignees": {
-        "assignees": "Dodeljeni",
+        "assignees": "Učesnici",
         "change-progress-info": "Kliknuti na progres traku kako bi izmenili procenat završetka",
-        "add-assignee": "Dodaj dodeljenog"
+        "add-assignee": "Dodaj učesnika",
+        "remove-assignee": "Ukloni učesnika"
+    },
+    "issue-change-progress": {
+        "change-progress-for": "Izmeni progres za",
+        "change-progress": "Izmena progresa"
+    },
+    "issue-reporter": {
+        "reporter": "Reporter"
+    },
+    "issue-priority": {
+        "priority": "Prioritet"
+    },
+    "issue-status": {
+        "status": "Status"
+    },
+    "issue-comment": {
+        "pro-tip": "Savet",
+        "press": "pritisnite",
+        "to-comment": "da komentarišete",
+        "add-comment": "Dodaj komentar",
+        "save-comment": "Sačuvaj",
+        "cancel-comment": "Otkaži"
+    },
+    "issue-description": {
+        "save-description": "Sačuvaj",
+        "cancel-description": "Otkaži"
+    },
+    "issue-details": {
+        "description": "Opis",
+        "attachments": "Prilozi",
+        "comments": "Komentari",
+        "created": "Kreirano",
+        "updated": "Ažurirano"
+    },
+    "upload-issue-documents": {
+        "add-attachements": "Dodaj priloge",
+        "drag-files-or-click-to-upload": "Prevucite fajlove ili kliknite ovde da biste ih učitali"
     }
 }

@@ -194,6 +194,43 @@
     "issue-assignees": {
         "assignees": "Assignees",
         "change-progress-info": "Click on progress bar to change percent level of task completion.",
-        "add-assignee": "Add Assignee"
+        "add-assignee": "Add Assignee",
+        "remove-assignee": "Remove Assignee"
+    },
+    "issue-change-progress": {
+        "change-progress-for": "Change progress for",
+        "change-progress": "Progress change"
+    },
+    "issue-reporter": {
+        "reporter": "Reporter"
+    },
+    "issue-priority": {
+        "priority": "Priority"
+    },
+    "issue-status": {
+        "status": "Status"
+    },
+    "issue-comment": {
+        "pro-tip": "Pro Tip",
+        "press": "press",
+        "to-comment": "to comment",
+        "add-comment": "Add Comment",
+        "save-comment": "Save",
+        "cancel-comment": "Cancel"
+    },
+    "issue-description": {
+        "save-description": "Save",
+        "cancel-description": "Cancel"
+    },
+    "issue-details": {
+        "description": "Description",
+        "attachments": "Attachments",
+        "comments": "Comments",
+        "created": "Created",
+        "updated": "Updated"
+    },
+    "upload-issue-documents": {
+        "add-attachements": "Add Attachments",
+        "drag-files-or-click-to-upload": "Drag files or click to upload"
     }
 }
