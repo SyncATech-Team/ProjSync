@@ -34,6 +34,24 @@ After you're finished please remove all the comments and instructions!
 
 </div>
 
+# 🖥️ Testiranje 🖥️
+Uputstvo za testiranje možete pronaći na sledećem [linku](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/Uputstvo_Za_Testiranje.pdf).  
+Nalozi kojima je moguće prijavljivanje na aplikaciju su dati u uputstvu na strani 5 ali i u tabeli ispod. 
+<details>
+  <summary>Tabela sa kredencijalima</summary>
+
+|E-mail|Password|Role|
+|:----|:------|:--|
+|admin@gmail.com|Pa$$w0rd|Administrator|
+|lukagvozdenovic02@gmail.com|Ll12345|Administrator|
+|radovan.draskovic7321@gmail.com|Radovan123|Project Manager|
+|vlada.geroski@gmail.com|Password.123|Developer|
+|troveacc5565@gmail.com|Ll12345|Project Manager|
+|mihajlo.nikolic02@icloud.com|Mihajlo123|Developer|
+
+</details>
+
+
 <!-- TABLE OF CONTENTS -->
 
 # 📗 Sadržaj
