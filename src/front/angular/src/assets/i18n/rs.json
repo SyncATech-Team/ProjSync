@@ -232,5 +232,8 @@
     "upload-issue-documents": {
         "add-attachements": "Dodaj priloge",
         "drag-files-or-click-to-upload": "Prevucite fajlove ili kliknite ovde da biste ih učitali"
+    },
+    "issue": {
+        "issue-details": "Detalji zadatka"
     }
 }

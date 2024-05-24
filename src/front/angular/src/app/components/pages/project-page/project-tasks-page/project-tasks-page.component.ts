@@ -15,6 +15,7 @@ import {UserProfilePicture} from "../../../../_service/userProfilePicture.servic
 import {UserOnProjectService} from "../../../../_service/userOnProject.service";
 import {UserGetter} from "../../../../_models/user-getter";
 import { TableLazyLoadEvent } from 'primeng/table';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -69,6 +70,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     private _projectService: ProjectService,
     public userPictureService: UserProfilePicture,
     private userOnProject : UserOnProjectService,
+    private translateService: TranslateService
   ) {
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.searchTermChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe(_ => this.loadIssues(this.lastLazyLoadEvent));
@@ -210,32 +212,34 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   }
 
   openIssueModal(issueId : string){
-    this.ref = this._modalService.open(IssueModalComponent, {
-      header: 'Issue - update',
-      width: '65%',
-      modal:true,
-      closable: true,
-      maximizable: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      breakpoints: {
-          '960px': '75vw',
-          '640px': '90vw'
-      },
-      data: {
-        issue$: this._projectQuery.issueById$(issueId.toString()),
-        usersPhotos: this.usersPhotos
-      }
-    });
-
-    this.ref.onClose.subscribe({
-      next: _ => {
-        this.tasks = [];
-        this.tasksByGroup = [];
-        this.tasks_backup = [];
-        this.ngOnInit();
-        this.loadIssues(this.lastLazyLoadEvent);
-      }
+    this.translateService.get('issue.issue-details').subscribe((res: string) => {
+      this.ref = this._modalService.open(IssueModalComponent, {
+        header: res,
+        width: '65%',
+        modal:true,
+        closable: true,
+        maximizable: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        breakpoints: {
+            '960px': '75vw',
+            '640px': '90vw'
+        },
+        data: {
+          issue$: this._projectQuery.issueById$(issueId.toString()),
+          usersPhotos: this.usersPhotos
+        }
+      });
+  
+      this.ref.onClose.subscribe({
+        next: _ => {
+          this.tasks = [];
+          this.tasksByGroup = [];
+          this.tasks_backup = [];
+          this.ngOnInit();
+          this.loadIssues(this.lastLazyLoadEvent);
+        }
+      });
     });
   }
 

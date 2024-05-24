@@ -38,6 +38,7 @@ import { UserGetter } from '../../../../_models/user-getter';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { ProjectService } from '../../../state/project/project.service';
 import { DateService } from '../../../../_service/date.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -142,7 +143,8 @@ constructor(
     private _projectQuery: ProjectQuery,
     private userOnProject : UserOnProjectService,
     public userPictureService: UserProfilePicture,
-    private _projectService: ProjectService
+    private _projectService: ProjectService,
+    private translateService: TranslateService
 ) {}
 
 ngOnInit(): void {
@@ -245,29 +247,31 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
-    this.ref1 = this._modalService.open(IssueModalComponent, {
-      header: 'Issue - update',
-      width: '65%',
-      modal:true,
-      closable: true,
-      maximizable: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      breakpoints: {
-          '960px': '75vw',
-          '640px': '90vw'
-      },
-      data: {
-        issue$: this._projectQuery.issueById$(issueId.toString()),
-        usersPhotos: this.usersPhotos
-      }
-    });
+    this.translateService.get('issue.issue-details').subscribe((res: string) => {
+        this.ref1 = this._modalService.open(IssueModalComponent, {
+            header: res,
+            width: '65%',
+            modal:true,
+            closable: true,
+            maximizable: true,
+            dismissableMask: true,
+            closeOnEscape: true,
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            data: {
+                issue$: this._projectQuery.issueById$(issueId.toString()),
+                usersPhotos: this.usersPhotos
+            }
+        });
 
-    this.ref1.onClose.subscribe({
-        next: _ => {
-          this.refresh();
-        }
-      });
+        this.ref1.onClose.subscribe({
+            next: _ => {
+                this.refresh();
+            }
+        });
+    });
   }
 
 lineClick(event: GanttLineClickEvent) {

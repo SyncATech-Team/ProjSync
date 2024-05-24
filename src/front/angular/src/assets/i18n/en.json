@@ -232,5 +232,8 @@
     "upload-issue-documents": {
         "add-attachements": "Add Attachments",
         "drag-files-or-click-to-upload": "Drag files or click to upload"
+    },
+    "issue": {
+        "issue-details": "Issue details"
     }
 }
