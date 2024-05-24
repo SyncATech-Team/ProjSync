@@ -11,6 +11,7 @@ import { JIssue } from '../../../../_models/issue';
 export class IssueDependenciesComponent implements OnInit{
   @Input() issue!: JIssue;
   issues : JIssue[] = [];
+  predecessors: JIssue[] = [];
   projectName : string = "";
 
   constructor(
@@ -19,32 +20,39 @@ export class IssueDependenciesComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    console.log(this.issue.id);
+    console.log(this.issue);
     const issueId = Number(this.issue.id);
     this.issueService.getProjectNameByIssueId(issueId).subscribe({
-      next:(response)=>{
+      next: (response) => {
         this.projectName = response.projectName;
         console.log(this.projectName);
       },
-      error:(error)=>{
+      error: (error) => {
         console.log(error.error);
       }
     });
   }
 
-  funk(){
+  funk() {
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
-      next:(response)=>{
-        this.issues = response;
+      next: (response) => {
+        this.issues = response.filter((issue: JIssue) => issue.id !== this.issue.id);
         console.log(response);
       },
-      error:(error)=>{
+      error: (error) => {
         console.log(error.error);
       }
-    })
+    });
   }
 
   public get getIssues() : JIssue[]{
     return this.issues;
+  }
+
+  addPredecessor(issue: JIssue) {
+    if (!this.predecessors.some(pred => pred.id === issue.id)) {
+      this.predecessors.push(issue);
+      this.issues = this.issues.filter(i => i.id !== issue.id);
+    }
   }
 }

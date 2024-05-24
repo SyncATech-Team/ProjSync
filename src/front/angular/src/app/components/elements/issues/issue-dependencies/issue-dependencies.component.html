@@ -6,8 +6,8 @@
         </div>
 
         <div>
-            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op.toggle($event)" (onClick)="funk()"/>
-            <p-overlayPanel #op [style]="{'max-height':'300px','overflow-y':'auto'}">
+            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="funk()"/>
+            <p-overlayPanel #op1 [style]="{'max-height':'300px','overflow-y':'auto'}">
                 <span class="op-title">Add predecessors</span>
                 
                 <p-divider></p-divider>
@@ -16,11 +16,19 @@
                     <div class="polje">
                         <span>{{ issue.title }}</span>
                     </div>
-                    <button class="opAddBtn">+</button>
+                    <button class="opAddBtn" (click)="addPredecessor(issue)">+</button>
                 </div>
                 
             </p-overlayPanel>
+
         </div>
+
+    </div>
+
+    <div id="predecessors-list">
+        <ng-container *ngFor="let predecessor of predecessors">
+            <span class="predecessor-item">{{ predecessor.title }}</span>
+        </ng-container>
     </div>
     
     <p-divider></p-divider>
@@ -32,8 +40,8 @@
         </div>
 
         <div>
-            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op.toggle($event)" (onClick)="funk()"/>
-            <p-overlayPanel #op [style]="{'max-height':'300px','overflow-y':'auto'}">
+            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="funk()"/>
+            <p-overlayPanel #op2 [style]="{'max-height':'300px','overflow-y':'auto'}">
                 <span class="op-title">Add successors</span>
                 
                 <p-divider></p-divider>
