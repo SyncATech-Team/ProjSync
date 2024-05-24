@@ -7,6 +7,7 @@ import { UserProfilePicture } from '../../../_service/userProfilePicture.service
 import { ThemeService } from '../../../../themes/theme.service';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { TranslateService } from '@ngx-translate/core';
+import { PrimeNGConfig } from 'primeng/api';
 
 interface Language {
 
@@ -45,7 +46,8 @@ export class NavBarComponent implements OnInit {
       private userService: UserService,
       private userPictureService: UserProfilePicture,
       private themeService: ThemeService,
-      private translateService: TranslateService
+      private translateService: TranslateService,
+      private primengConfig: PrimeNGConfig
     ) {
   }
 
@@ -155,6 +157,114 @@ export class NavBarComponent implements OnInit {
 
   changeLanguage(event: any) {
     this.translateService.use(event.value);
+    this.translateService.get([
+      'primengConfig.startsWith',
+      'primengConfig.contains',
+      'primengConfig.notContains',
+      'primengConfig.endsWith',
+      'primengConfig.equals',
+      'primengConfig.notEquals',
+      'primengConfig.noFilter',
+      'primengConfig.lt',
+      'primengConfig.lte',
+      'primengConfig.gt',
+      'primengConfig.gte',
+      'primengConfig.dateIs',
+      'primengConfig.dateIsNot',
+      'primengConfig.dateBefore',
+      'primengConfig.dateAfter',
+      'primengConfig.clear',
+      'primengConfig.apply',
+      'primengConfig.matchAll',
+      'primengConfig.matchAny',
+      'primengConfig.addRule',
+      'primengConfig.removeRule',
+      'primengConfig.accept',
+      'primengConfig.reject',
+      'primengConfig.choose',
+      'primengConfig.upload',
+      'primengConfig.cancel',
+      'primengConfig.completed',
+      'primengConfig.emptyFilterMessage',
+      'primengConfig.searchMessage',
+      'primengConfig.selectionMessage',
+      'primengConfig.emptySelectionMessage',
+      'primengConfig.chooseYear',
+      'primengConfig.chooseMonth',
+      'primengConfig.chooseDate',
+      'primengConfig.prevDecade',
+      'primengConfig.nextDecade',
+      'primengConfig.prevYear',
+      'primengConfig.nextYear',
+      'primengConfig.prevMonth',
+      'primengConfig.nextMonth',
+      'primengConfig.prevHour',
+      'primengConfig.nextHour',
+      'primengConfig.prevMinute',
+      'primengConfig.nextMinute',
+      'primengConfig.prevSecond',
+      'primengConfig.nextSecond',
+      'primengConfig.am',
+      'primengConfig.pm',
+      'primengConfig.today',
+      'primengConfig.weak',
+      'primengConfig.medium',
+      'primengConfig.strong'
+    ]).subscribe((translations) => {
+      this.primengConfig.setTranslation({
+        startsWith: translations['primengConfig.startsWith'],
+        contains: translations['primengConfig.contains'],
+        notContains: translations['primengConfig.notContains'],
+        endsWith: translations['primengConfig.endsWith'],
+        equals: translations['primengConfig.equals'],
+        notEquals: translations['primengConfig.notEquals'],
+        noFilter: translations['primengConfig.noFilter'],
+        lt: translations['primengConfig.lt'],
+        lte: translations['primengConfig.lte'],
+        gt: translations['primengConfig.gt'],
+        gte: translations['primengConfig.gte'],
+        dateIs: translations['primengConfig.dateIs'],
+        dateIsNot: translations['primengConfig.dateIsNot'],
+        dateBefore: translations['primengConfig.dateBefore'],
+        dateAfter: translations['primengConfig.dateAfter'],
+        clear: translations['primengConfig.clear'],
+        apply: translations['primengConfig.apply'],
+        matchAll: translations['primengConfig.matchAll'],
+        matchAny: translations['primengConfig.matchAny'],
+        addRule: translations['primengConfig.addRule'],
+        removeRule: translations['primengConfig.removeRule'],
+        accept: translations['primengConfig.accept'],
+        reject: translations['primengConfig.reject'],
+        choose: translations['primengConfig.choose'],
+        upload: translations['primengConfig.upload'],
+        cancel: translations['primengConfig.cancel'],
+        emptyFilterMessage: translations['primengConfig.emptyFilterMessage'],
+        searchMessage: translations['primengConfig.searchMessage'],
+        selectionMessage: translations['primengConfig.selectionMessage'],
+        emptySelectionMessage: translations['primengConfig.emptySelectionMessage'],
+        chooseYear: translations['primengConfig.choseYear'],
+        chooseMonth: translations['primengConfig.choseMonth'],
+        chooseDate: translations['primengConfig.choseDate'],
+        prevDecade: translations['primengConfig.prevDecade'],
+        nextDecade: translations['primengConfig.nextDecade'],
+        prevYear: translations['primengConfig.prevYear'],
+        nextYear: translations['primengConfig.nextYear'],
+        prevMonth: translations['primengConfig.prevMonth'],
+        nextMonth: translations['primengConfig.nextMonth'],
+        prevHour: translations['primengConfig.prevHour'],
+        nextHour: translations['primengConfig.nextHour'],
+        prevMinute: translations['primengConfig.prevMinute'],
+        nextMinute: translations['primengConfig.nextMinute'],
+        prevSecond: translations['primengConfig.prevSecond'],
+        nextSecond: translations['primengConfig.nextSecond'],
+        am: translations['primengConfig.am'],
+        pm: translations['primengConfig.pm'],
+        today: translations['primengConfig.today'],
+        weak: translations['primengConfig.weak'],
+        medium: translations['primengConfig.medium'],
+        strong: translations['primengConfig.strong']
+      })
+    });
   }
 
 }

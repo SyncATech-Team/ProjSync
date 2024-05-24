@@ -69,7 +69,7 @@
                             <div class="p-input-icon-right input-search">
                                 <span class="p-input-icon-right">
                                     <i class="pi pi-search"></i>
-                                    <input type="text" (input)="searchIssuesTable()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+                                    <input type="text" (input)="searchIssuesTable()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'home-page.search-placeholder' | translate" autocomplete="off"/>
                                 </span>
                             </div>
                         </div>
@@ -85,19 +85,19 @@
                         <ng-container *ngFor="let column of issueColumns">
                             <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="title">
                                 <div class="flex align-items-center">
-                                Name
+                                {{ 'home-page.name' | translate }}
                                 <p-sortIcon field="title"></p-sortIcon>
                                 <p-columnFilter type="text" field="title" display="menu"></p-columnFilter>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" pSortableColumn="type">
                                 <div class="flex align-items-center">
-                                    Type
+                                    {{ 'home-page.type' | translate }}
                                     <p-sortIcon field="type"></p-sortIcon>
                                     <p-columnFilter field="type" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                         <ng-template pTemplate="header">
                                             <div class="px-3 pt-3 pb-0">
-                                                <span class="font-bold">Type</span>
+                                                <span class="font-bold">{{ 'home-page.type' | translate }}</span>
                                             </div>
                                         </ng-template>
                                         <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
@@ -114,12 +114,12 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" pSortableColumn="status">
                                 <div class="flex align-items-center">
-                                Status
+                                {{ 'home-page.status' | translate }}
                                 <p-sortIcon field="status"></p-sortIcon>
                                 <p-columnFilter field="status" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                     <ng-template pTemplate="header">
                                         <div class="px-3 pt-3 pb-0">
-                                            <span class="font-bold">Status</span>
+                                            <span class="font-bold">{{ 'home-page.status' | translate }}</span>
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
@@ -136,12 +136,12 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" pSortableColumn="priority">
                                 <div class="flex align-items-center">
-                                Priority
+                                {{ 'home-page.priority' | translate }}
                                 <p-sortIcon field="priority"></p-sortIcon>
                                 <p-columnFilter field="priority" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                     <ng-template pTemplate="header">
                                         <div class="px-3 pt-3 pb-0">
-                                            <span class="font-bold">Priority</span>
+                                            <span class="font-bold">{{ 'home-page.priority' | translate }}</span>
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
@@ -158,7 +158,7 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" pSortableColumn="createdAt">
                                 <div class="flex align-items-center">
-                                    Created date
+                                    {{ 'home-page.creation-date' | translate }}
                                     <p-sortIcon field="createdAt"></p-sortIcon>
                                     <p-columnFilter type="date" field="createdAt" display="menu">
                                         <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -169,7 +169,7 @@
                             </th> 
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" pSortableColumn="dueDate">
                                 <div class="flex align-items-center">
-                                Due Date
+                                {{ 'home-page.due-date' | translate }}
                                 <p-sortIcon field="dueDate"></p-sortIcon>
                                 <p-columnFilter type="date" field="dueDate" display="menu">
                                     <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -180,20 +180,20 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" pSortableColumn="reporterUsername">
                                 <div class="flex align-items-center">
-                                    Reporter
+                                    {{ 'home-page.reporter' | translate }}
                                     <p-sortIcon field="reporterUsername"></p-sortIcon>
                                     <p-columnFilter type="text" field="reporterUsername" display="menu"></p-columnFilter>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" pSortableColumn="completed">
                                 <div class="flex align-items-center">
-                                    Completed
+                                    {{ 'home-page.completed' | translate }}
                                     <p-sortIcon field="completed"></p-sortIcon>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" pSortableColumn="projectName">
                                 <div class="flex align-items-center">
-                                    Project name
+                                    {{ 'home-page.project-name' | translate }}
                                     <p-sortIcon field="projectName"></p-sortIcon>
                                     <p-columnFilter type="text" field="projectName" display="menu"></p-columnFilter>
                                 </div>
@@ -205,7 +205,8 @@
                 <ng-template pTemplate="body" let-issue let-columns="columns">
                     <tr>
                         <ng-container *ngFor="let column of columns">
-                            <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
+                            <td *ngIf="column=='Name'" style="width: 23vh; ">
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.name' | translate }} </span>
                                 <div id="name-cont">
                                     <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
                                     pTooltip="{{issue.title}}"
@@ -215,28 +216,31 @@
                                 </div>
                             </td>
                             <td *ngIf="column=='Type' && selectedIssueColumns.includes('Type')" style="width: 17vh; text-align: center;">
-                                <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.type' | translate }} </span>
                                 <p-tag class="p-tag-fill" [value]="issue.type" [severity]="getSeverity(issue.type)"></p-tag>
                             </td>
                             <td *ngIf="column=='Status' && selectedIssueColumns.includes('Status')" style="width: 17vh; text-align: center;">
-                                <span class="p-column-title" style="font-weight: bold;">Status</span>
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.status' | translate }} </span>
                                 <p-tag class="p-tag-fill" [value]="issue.status" [severity]="getSeverity(issue.status)"></p-tag>
                             </td>
                             <td *ngIf="column=='Priority' && selectedIssueColumns.includes('Priority')" style="width: 17vh; text-align: center; ">
-                                <span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.priority' | translate }} </span>
                                 <p-tag class="p-tag-fill" [value]="issue.priority" [severity]="getSeverity(issue.priority)"></p-tag>
                             </td>
-                            <td *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">CreatedDate</span>
+                            <td *ngIf="column=='CreatedDate' && selectedIssueColumns.includes('CreatedDate')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.creation-date' | translate }} </span>
                                 {{ issue.createdAt | date: 'dd/MM/yyyy' }}
                             </td>
-                            <td *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Due Date</span>
+                            <td *ngIf="column=='Due Date' && selectedIssueColumns.includes('Due Date')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.due-date' | translate }} </span>
                                 {{ issue.dueDate | date: 'dd/MM/yyyy' }}
                             </td>
-                            <td *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Reporter</span>
+                            <td *ngIf="column=='Reporter' && selectedIssueColumns.includes('Reporter')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.reporter' | translate }} </span>
                                 {{ issue.reporterUsername }}
                             </td>
                             <td *ngIf="column=='Completed' && selectedIssueColumns.includes('Completed')" style="width: 17vh; ">
-                                <span class="p-column-title" style="font-weight: bold;">Completed</span>
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.completed' | translate }} </span>
                                 <p-progressBar [value]=issue.completed
                                 [pTooltip]="myIssueProgressToolTip"
                                 tooltipPosition="top" 
@@ -249,7 +253,7 @@
                                 </ng-template>
                             </td>
                             <td *ngIf="column=='ProjectName' && selectedIssueColumns.includes('ProjectName')" style="width: 17vh; ">
-                                <span class="p-column-title" style="font-weight: bold;">Project name</span>
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.project-name' | translate }} </span>
                                 <div id="name-cont">
                                     <img 
                                         src={{getProjectImagePath(issue.projectName)}}
@@ -322,7 +326,7 @@
                             <div class="p-input-icon-right input-search">
                                 <span class="p-input-icon-right">
                                     <i class="pi pi-search"></i>
-                                    <input type="text" (input)="filterProjectsByName()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+                                    <input type="text" (input)="filterProjectsByName()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'home-page.search-placeholder' | translate" autocomplete="off"/>
                                 </span>
                             </div>
                         </div>
@@ -346,26 +350,26 @@
                         <ng-container *ngFor="let column of columns">
                             <th *ngIf="column=='Name'" pReorderableColumn pResizableColumn pSortableColumn="name">
                                 <div class="flex align-items-center">
-                                    Name
+                                    {{ 'home-page.name' | translate }}
                                     <p-sortIcon field="name"></p-sortIcon>
                                     <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Key' && selectedColumns.includes('Key')" pSortableColumn="key">
                                 <div class="flex align-items-center">
-                                Key
+                                {{ 'home-page.key' | translate }}
                                 <p-sortIcon field="key"></p-sortIcon>
                                 <p-columnFilter type="text" field="key" display="menu"></p-columnFilter>
                             </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedColumns.includes('Type')" pSortableColumn="typeName">
                                 <div class="flex align-items-center">
-                                Type
+                                {{ 'home-page.type' | translate }}
                                 <p-sortIcon field="typeName"></p-sortIcon>
                                 <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                     <ng-template pTemplate="header">
                                         <div class="px-3 pt-3 pb-0">
-                                            <span class="font-bold">Type</span>
+                                            <span class="font-bold"> {{ 'home-page.type' | translate }} </span>
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
@@ -382,16 +386,16 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Owner' && selectedColumns.includes('Owner')" pSortableColumn="ownerUsername">
                                 <div class="flex align-items-center">
-                                Owner
+                                {{ 'home-page.owner' | translate }}
                                 <p-sortIcon field="ownerUsername"></p-sortIcon>
                                 <p-columnFilter field="ownerUsername" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                     <ng-template pTemplate="header">
                                         <div class="px-3 pt-3 pb-0">
-                                            <span class="font-bold">Users</span>
+                                            <span class="font-bold"> {{'home-page.users' | translate }} </span>
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="filter" let-project let-value let-filter="filterCallback" >
-                                        <p-multiSelect [ngModel]="value" [options]="getUsersThatAreProjectOwners()" placeholder="Select project owners" (onChange)="filter($event.value)">
+                                        <p-multiSelect [ngModel]="value" [options]="getUsersThatAreProjectOwners()" [placeholder]="'home-page.select-project-owners' | translate" (onChange)="filter($event.value)">
                                             <ng-template let-project let-option pTemplate="item" >
                                                 <div class="inline-block vertical-align-middle">
                                                     <div class="profilecontent">
@@ -407,7 +411,7 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" pSortableColumn="creationDate">
                                 <div class="flex align-items-center">
-                                Creation Date
+                                {{ 'home-page.creation-date' | translate }}
                                 <p-sortIcon field="creationDate"></p-sortIcon>
                                 <p-columnFilter type="date" field="creationDate" display="menu">
                                     <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -418,7 +422,7 @@
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
                                 <div class="flex align-items-center">
-                                Due Date
+                                {{ 'home-page.due-date' | translate }}
                                 <p-sortIcon field="dueDate"></p-sortIcon>
                                 <p-columnFilter type="date" field="dueDate" display="menu">
                                     <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -428,12 +432,12 @@
                                 </div>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Budget' && selectedColumns.includes('Budget')" pSortableColumn="budget">
-                                Budget
+                                {{ 'home-page.budget' | translate }}
                                 <p-sortIcon field="budget"></p-sortIcon>
                                 <p-columnFilter type="numeric" field="budget" display="menu"></p-columnFilter>
                             </th>
                             <th pReorderableColumn pResizableColumn *ngIf="column=='Progress' && selectedColumns.includes('Progress')" class="progress-project-th">
-                                Progress
+                                {{ 'home-page.progress' | translate }}
                                 <p-columnFilter field="projectProgress" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                     <ng-template pTemplate="filter" let-filter="filterCallback">
                                         <p-slider [ngModel]="completedValues" [range]="true" min="0" max="1" (onSlideEnd)="filter($event.values)" styleClass="m-3" step="0.01"></p-slider>
@@ -451,7 +455,8 @@
                 <ng-template pTemplate="body" let-project let-columns="columns">
                     <tr>
                         <ng-container *ngFor="let column of columns">
-                            <td *ngIf="column=='Name'" style="width: 23vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
+                            <td *ngIf="column=='Name'" style="width: 23vh; ">
+                                <span class="p-column-title" style="font-weight: bold;">{{'home-page.name' | translate}}</span>
                                 <div id="name-cont">
                                     <img 
                                     src={{getProjectImagePath(project.name)}}
@@ -461,30 +466,31 @@
                                         title="{{project.name}}">{{ getProjectName(project.name) }}</a>
                                 </div>
                             </td>
-                            <td *ngIf="column=='Key' && selectedColumns.includes('Key')" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Key</span>
+                            <td *ngIf="column=='Key' && selectedColumns.includes('Key')" style="width: 17vh; ">
+                                <span class="p-column-title" style="font-weight: bold;">{{'home-page.key' | translate }}</span>
                                 {{ project.key }}
                             </td>
                             <td *ngIf="column=='Type' && selectedColumns.includes('Type')" style="width: 23vh;">
-                                <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.type' | translate }} </span>
                                 {{ project.typeName }}
                             </td>
                             <td *ngIf="column=='Owner' && selectedColumns.includes('Owner')" style="width: 20vh; ">
-                                <span class="p-column-title" style="font-weight: bold">Owner</span>
+                                <span class="p-column-title" style="font-weight: bold">{{'home-page.owner' | translate }}</span>
                                 <div class="profilecontent">
                                     <img id="image_{{project.ownerUsername}}" draggable="false" src={{getUserImagePath(project.ownerUsername,users)}} alt="user-default-image">
                                     <span style="margin-left: 7px;" class="fullName">{{ project.ownerUsername }}</span>
                                 </div>
                             </td>
                             <td *ngIf="column=='Creation Date' && selectedColumns.includes('Creation Date')" style="width: 25vh; ">
-                                <span class="p-column-title" style="font-weight: bold">Creation Date</span>
+                                <span class="p-column-title" style="font-weight: bold"> {{'home-page.creation-date' | translate }} </span>
                                 {{ project.creationDate | date: 'dd/MM/yyyy' }}
                             </td>
                             <td *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" style="width: 20vh; ">
-                                <span class="p-column-title" style="font-weight: bold">Due Date</span>
+                                <span class="p-column-title" style="font-weight: bold"> {{'home-page.due-date' | translate }} </span>
                                 {{ project.dueDate | date: 'dd/MM/yyyy'   }}
                             </td>
                             <td *ngIf="column=='Budget' && selectedColumns.includes('Budget')" style="width: 23vh;">
-                                <span class="p-column-title" style="font-weight: bold;">Budget</span>
+                                <span class="p-column-title" style="font-weight: bold;"> {{'home-page.budget' | translate }} </span>
                                 {{ project.budget }}
                             </td>
                             <td *ngIf="column=='Progress' && selectedColumns.includes('Progress')" style="width: 20vh;">
