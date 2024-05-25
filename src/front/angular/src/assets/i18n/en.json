@@ -284,5 +284,15 @@
         "assignees-placeholder": "Select assignees",
         "submit": "Create",
         "close": "Close"
+    },
+    "project-sidebar": {
+        "key": "Key",
+        "tasks": "Tasks",
+        "people": "People",
+        "summary": "Summary",
+        "documents": "Documents",
+        "settings": "Settings",
+        "gantt": "Gantt",
+        "kanban": "Kanban"
     }
 }

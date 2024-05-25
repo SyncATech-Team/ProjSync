@@ -284,5 +284,15 @@
         "assignees-placeholder": "Izaberite učesnike",
         "submit": "Kreiraj",
         "close": "Zatvori"
+    },
+    "project-sidebar": {
+        "key": "Ključ",
+        "tasks": "Zadaci",
+        "people": "Ljudi",
+        "summary": "Sumarno",
+        "documents": "Dokumenti",
+        "settings": "Podešavanja",
+        "gantt": "Gantogram",
+        "kanban": "Kanban"
     }
 }
