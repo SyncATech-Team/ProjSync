@@ -24,15 +24,17 @@
         class="text-textLight">
       </svg-icon>
     </div>
-    <p-divider layout="vertical"></p-divider>
+    <ng-container *ngIf="permitions && permitions.canUpdateTaskProgress === 'True'">
+      <p-divider layout="vertical"></p-divider>
 
-    <div class="progress-info">
-      <p-progressBar class="progress-bar"
-                     (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
-                     [value]="valueList[i].completionLevel"
-                     [pTooltip]="tooltipContent">
-      </p-progressBar>
-    </div>
+      <div class="progress-info">
+        <p-progressBar class="progress-bar"
+                      (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
+                      [value]="valueList[i].completionLevel"
+                      [pTooltip]="tooltipContent">
+        </p-progressBar>
+      </div>
+    </ng-container>
   </div>
 
 </div>
@@ -44,7 +46,7 @@
 </ng-template>
 
 <a class="add-more" (click)="op.toggle($event)"
-   style="font-size: 12.5px; cursor: pointer; display: flex; align-items: center; color: #0052cc;">
+   style="font-size: 12.5px; cursor: pointer; display: inline-block; align-items: center; color: #0052cc;">
   <i class="mr-1"></i>
   Add Assignee
 </a>
