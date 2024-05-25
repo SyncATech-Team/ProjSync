@@ -235,5 +235,24 @@
     },
     "issue": {
         "issue-details": "Issue details"
+    },
+    "project-tasks-page": {
+        "create-task": "Create Task",
+        "list-view": "List",
+        "kanban-view": "Kanban",
+        "gantt-view": "Gantt",
+        "search-placeholder": "Search",
+        "selected-columns": "{0} columns selected",
+        "choose-columns": "Choose columns",
+        "name": "Name",
+        "priority": "Priority",
+        "type": "Type",
+        "status": "Status",
+        "reporter": "Reporter",
+        "group": "Group",
+        "due-date": "Due Date",
+        "created-date": "Created Date",
+        "updated-date": "Updated Date",
+        "completed": "Completed"
     }
 }

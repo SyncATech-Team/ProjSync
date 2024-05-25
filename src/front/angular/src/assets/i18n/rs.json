@@ -235,5 +235,24 @@
     },
     "issue": {
         "issue-details": "Detalji zadatka"
+    },
+    "project-tasks-page": {
+        "create-task": "Kreiraj zadatak",
+        "list-view": "Lista",
+        "kanban-view": "Kanban",
+        "gantt-view": "Gantogram",
+        "search-placeholder": "Pretraži",
+        "selected-columns": "{0} izabranih kolona",
+        "choose-columns": "Izaberi kolone",
+        "name": "Naziv",
+        "priority": "Prioritet",
+        "type": "Tip",
+        "status": "Status",
+        "reporter": "Reporter",
+        "group": "Grupa",
+        "due-date": "Datum završetka",
+        "created-date": "Datum kreiranja",
+        "updated-date": "Datum ažuriranja",
+        "completed": "Završeno"
     }
 }

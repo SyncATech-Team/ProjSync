@@ -13,18 +13,18 @@
         <div id="content">
             <div id="tasks-header">
                 <div id="add-task-div">
-                    <button id="create-task-button" (click)="showCreateTaskPopupTaskList()">Create task</button>
+                    <button id="create-task-button" (click)="showCreateTaskPopupTaskList()"> {{'project-tasks-page.create-task' | translate }} </button>
                 </div>
 
                 <div id="change-view">
                     <div class="Viewbtn">
-                        <thy-button class="selected-button" id="Viewbtn">List</thy-button>
+                        <thy-button class="selected-button" id="Viewbtn">{{'project-tasks-page.list-view' | translate }}</thy-button>
                     </div>
                     <div class="Viewbtn">
-                        <thy-button routerLink="/home/projects/kanban/{{projectName}}" id="Viewbtn">Kanban</thy-button>
+                        <thy-button routerLink="/home/projects/kanban/{{projectName}}" id="Viewbtn">{{'project-tasks-page.kanban-view' | translate }}</thy-button>
                     </div>
                     <div class="Viewbtn">
-                        <thy-button routerLink="/home/projects/gantt/{{projectName}}" id="Viewbtn">Gantt</thy-button>
+                        <thy-button routerLink="/home/projects/gantt/{{projectName}}" id="Viewbtn">{{'project-tasks-page.gantt-view' | translate }}</thy-button>
                     </div>
                 </div>
             </div>
@@ -61,15 +61,15 @@
                             <div class="search">
                                 <span class="p-input-icon-right">
                                     <i class="pi pi-search"></i>
-                                    <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+                                    <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'project-tasks-page.search-placeholder' | translate" autocomplete="off"/>
                                 </span>
                             </div>
                             <p-multiSelect 
                             [options]="columns"
                             [(ngModel)]="selectedColumns" 
-                            selectedItemsLabel="{0} columns selected" 
+                            [selectedItemsLabel]="'project-tasks-page.selected-columns' | translate"
                             [style]="{'width': '30vh'}" 
-                            placeholder="Choose Columns"
+                            [placeholder]="'project-tasks-page.choose-columns' | translate"
                             (onChange)="onSelectedChange()"
                             ></p-multiSelect>
                         </div>
@@ -79,21 +79,21 @@
                         <tr class="first-row">
                             <ng-container *ngFor="let column of columns">
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Name'" pSortableColumn="name">
-                                    Name
+                                    {{'project-tasks-page.name' | translate }}
                                     <p-sortIcon field="name"></p-sortIcon>
                                     <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Priority' && selectedColumns.includes('Priority')" pSortableColumn="priorityName">
-                                    Priority
+                                    {{'project-tasks-page.priority' | translate }}
                                     <p-sortIcon field="priorityName"></p-sortIcon>
                                     <p-columnFilter field="priorityName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                         <ng-template pTemplate="header">
                                             <div class="px-3 pt-3 pb-0">
-                                                <span class="font-bold">Priority</span>
+                                                <span class="font-bold">{{'project-tasks-page.priority' | translate}}</span>
                                             </div>
                                         </ng-template>
                                         <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
-                                            <p-multiSelect [ngModel]="value" [options]="issuePriority" placeholder="Any" (onChange)="filter($event.value)">
+                                            <p-multiSelect [ngModel]="value" [options]="issuePriority" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                                 <ng-template let-task let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
                                                         <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
@@ -104,16 +104,16 @@
                                     </p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Type' && selectedColumns.includes('Type')" pSortableColumn="typeName">
-                                    Type
+                                    {{'project-tasks-page.type' | translate }}
                                     <p-sortIcon field="typeName"></p-sortIcon>
                                     <p-columnFilter field="typeName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                         <ng-template pTemplate="header">
                                             <div class="px-3 pt-3 pb-0">
-                                                <span class="font-bold">Type</span>
+                                                <span class="font-bold">{{'project-tasks-page.type' | translate }}</span>
                                             </div>
                                         </ng-template>
                                         <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
-                                            <p-multiSelect [ngModel]="value" [options]="issueType" placeholder="Any" (onChange)="filter($event.value)">
+                                            <p-multiSelect [ngModel]="value" [options]="issueType" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                                 <ng-template let-task let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
                                                         <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
@@ -124,16 +124,16 @@
                                     </p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedColumns.includes('Status')" pSortableColumn="statusName">
-                                    Status
+                                    {{'project-tasks-page.status' | translate }}
                                     <p-sortIcon field="statusName"></p-sortIcon>
                                     <p-columnFilter field="statusName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                         <ng-template pTemplate="header">
                                             <div class="px-3 pt-3 pb-0">
-                                                <span class="font-bold">Status</span>
+                                                <span class="font-bold">{{'project-tasks-page.status' | translate }}</span>
                                             </div>
                                         </ng-template>
                                         <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
-                                            <p-multiSelect [ngModel]="value" [options]="issueStatus" placeholder="Any" (onChange)="filter($event.value)">
+                                            <p-multiSelect [ngModel]="value" [options]="issueStatus" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                                 <ng-template let-task let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
                                                         <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
@@ -144,21 +144,21 @@
                                     </p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Reporter' && selectedColumns.includes('Reporter')" pSortableColumn="reporterUsername">
-                                    Reporter
+                                    {{'project-tasks-page.reporter' | translate }}
                                     <p-sortIcon field="reporterUsername"></p-sortIcon>
                                     <p-columnFilter type="text" field="reporterUsername" display="menu"></p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Group' && selectedColumns.includes('Group')" pSortableColumn="groupName">
-                                    Group
+                                    {{'project-tasks-page.group' | translate }}
                                     <p-sortIcon field="groupName"></p-sortIcon>
                                     <p-columnFilter field="groupName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                         <ng-template pTemplate="header">
                                             <div class="px-3 pt-3 pb-0">
-                                                <span class="font-bold">Group</span>
+                                                <span class="font-bold">{{'project-tasks-page.group' | translate }}</span>
                                             </div>
                                         </ng-template>
                                         <ng-template pTemplate="filter" let-task let-value let-filter="filterCallback" >
-                                            <p-multiSelect [ngModel]="value" [options]="groupNames" placeholder="Any" (onChange)="filter($event.value)">
+                                            <p-multiSelect [ngModel]="value" [options]="groupNames" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                                 <ng-template let-task let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
                                                         <span class="ml-1 mt-1">{{ option }}</span>
@@ -169,7 +169,7 @@
                                     </p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" pSortableColumn="dueDate">
-                                    Due Date
+                                    {{'project-tasks-page.due-date' | translate }}
                                     <p-sortIcon field="dueDate"></p-sortIcon>
                                     <p-columnFilter type="date" field="dueDate" display="menu">
                                         <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -178,7 +178,7 @@
                                     </p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Created Date' && selectedColumns.includes('Created Date')" pSortableColumn="createdDate">
-                                    Created Date
+                                    {{'project-tasks-page.created-date' | translate }}
                                     <p-sortIcon field="createdDate"></p-sortIcon>
                                     <p-columnFilter type="date" field="createdDate" display="menu">
                                         <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -187,7 +187,7 @@
                                     </p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Updated Date' && selectedColumns.includes('Updated Date')" pSortableColumn="updatedDate">
-                                    Updated Date
+                                    {{'project-tasks-page.updated-date' | translate }}
                                     <p-sortIcon field="updatedDate"></p-sortIcon>
                                     <p-columnFilter type="date" field="updatedDate" display="menu">
                                         <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -196,7 +196,7 @@
                                     </p-columnFilter>
                                 </th>
                                 <th pReorderableColumn pResizableColumn *ngIf="column=='Completed' && selectedColumns.includes('Completed')" pSortableColumn="completed">
-                                    Completed
+                                    {{'project-tasks-page.completed' | translate }}
                                     <p-sortIcon field="completed"></p-sortIcon>
                                     <p-columnFilter field="completed" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                         <ng-template pTemplate="filter" let-filter="filterCallback">
@@ -216,7 +216,8 @@
                     <ng-template pTemplate="body" let-task let-columns="columns">
                         <tr>
                             <ng-container *ngFor="let column of columns">
-                                <td *ngIf="column=='Name'" style="width: 17vh; "><span class="p-column-title" style="font-weight: bold;">Name</span>
+                                <td *ngIf="column=='Name'" style="width: 17vh; ">
+                                    <span class="p-column-title" style="font-weight: bold;">{{'project-tasks-page.name' | translate }}</span>
                                     
                                     <div class="alignt-text-left">
                                         <a style="text-decoration: none; color: #0d6efd; cursor: pointer;" 
@@ -226,27 +227,27 @@
                                     </div>
                                 </td>
                                 <td *ngIf="column=='Priority' && selectedColumns.includes('Priority')" style="width: 17vh; " class="fill-td">
-                                    <span class="p-column-title" style="font-weight: bold;">Priority</span>
+                                    <span class="p-column-title" style="font-weight: bold;">{{'project-tasks-page.priority' | translate }}</span>
                                     <p-tag class="p-tag-fill" [value]="task.priority" [severity]="getSeverity(task.priority)"></p-tag>
                                 </td>
                                 <td *ngIf="column=='Type' && selectedColumns.includes('Type')" style="width: 17vh; " class="fill-td">
-                                    <span class="p-column-title" style="font-weight: bold;">Type</span>
+                                    <span class="p-column-title" style="font-weight: bold;">{{'project-tasks-page.type' | translate }}</span>
                                     <p-tag class="p-tag-fill" [value]="task.type" [severity]="getSeverity(task.type)"></p-tag>
                                 </td>
                                 <td *ngIf="column=='Status' && selectedColumns.includes('Status')" style="width: 17vh; " class="fill-td">
-                                    <span class="p-column-title" style="font-weight: bold;">Status</span>
+                                    <span class="p-column-title" style="font-weight: bold;">{{'project-tasks-page.status' | translate }}</span>
                                     <p-tag class="p-tag-fill" [value]="task.status" [severity]="getSeverity(task.status)"></p-tag>
                                 </td>
                                 <td *ngIf="column=='Reporter' && selectedColumns.includes('Reporter')" style="width: 17vh; ">
-                                    <span class="p-column-title" style="font-weight: bold">Reporter</span>
+                                    <span class="p-column-title" style="font-weight: bold">{{'project-tasks-page.reporter' | translate }}</span>
                                     {{ task.reporterUsername }}
                                 </td>
                                 <td *ngIf="column=='Group' && selectedColumns.includes('Group')" style="width: 17vh; ">
-                                    <span class="p-column-title" style="font-weight: bold">Group</span>
+                                    <span class="p-column-title" style="font-weight: bold">{{'project-tasks-page.group' | translate }}</span>
                                     {{ task.groupName }}
                                 </td>
                                 <td *ngIf="column=='Due Date' && selectedColumns.includes('Due Date')" style="width: 16vh; ">
-                                    <span class="p-column-title" style="font-weight: bold">Due Date</span>
+                                    <span class="p-column-title" style="font-weight: bold">{{'project-tasks-page.due-date' | translate }}</span>
                                     {{ task.dueDate.split(' ',1)[0] }}
                                 </td>
                                 <td *ngIf="column=='Created Date' && selectedColumns.includes('Created Date')" style="width: 16vh; ">
@@ -254,11 +255,11 @@
                                     {{ task.createdAt.split(' ',1)[0] }}
                                 </td>
                                 <td *ngIf="column=='Updated Date' && selectedColumns.includes('Updated Date')" style="width: 16vh; ">
-                                    <span class="p-column-title" style="font-weight: bold">Updated Date</span>
+                                    <span class="p-column-title" style="font-weight: bold">{{'project-tasks-page.created-date' | translate }}</span>
                                     {{ task.updatedAt.split(' ',1)[0] }}
                                 </td>
                                 <td *ngIf="column=='Completed' && selectedColumns.includes('Completed')" style="width: 16vh; ">
-                                    <span class="p-column-title" style="font-weight: bold">Completed</span>
+                                    <span class="p-column-title" style="font-weight: bold">{{'project-tasks-page.completed' | translate }}</span>
                                     <p-progressBar [value]="roundValue(task.completed)"
                                     [pTooltip]="tooltipTaskProgress"
                                     tooltipPosition="top"
