@@ -24,17 +24,20 @@
         class="text-textLight">
       </svg-icon>
     </div>
-    <ng-container *ngIf="permitions && permitions.canUpdateTaskProgress === 'True'">
-      <p-divider layout="vertical"></p-divider>
+    <p-divider layout="vertical"></p-divider>
 
-      <div class="progress-info">
-        <p-progressBar class="progress-bar"
-                      (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
-                      [value]="valueList[i].completionLevel"
-                      [pTooltip]="tooltipContent">
-        </p-progressBar>
-      </div>
-    </ng-container>
+    <div class="progress-info">
+      <p-progressBar *ngIf="permitions && permitions.canUpdateTaskProgress === 'True'"
+                    class="progress-bar"
+                    (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
+                    [value]="valueList[i].completionLevel"
+                    [pTooltip]="tooltipContent">
+      </p-progressBar>
+      <p-progressBar *ngIf="!(permitions && permitions.canUpdateTaskProgress === 'True')"
+                     class="progress-bar"
+                    [value]="valueList[i].completionLevel">
+      </p-progressBar>
+    </div>
   </div>
 
 </div>
