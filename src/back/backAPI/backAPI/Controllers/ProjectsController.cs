@@ -218,7 +218,10 @@ namespace backAPI.Controllers
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                     var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                     var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
-                    
+
+                    var issuePredecessors = await _issueRepository.GetIssuePredecessors(issue.Id);
+                    var issueSuccessors = await _issueRepository.GetIssueSuccessors(issue.Id);
+
                     var project = projectByName;
 
                     List<string> assigneeIdsList = new List<string>();
@@ -269,7 +272,23 @@ namespace backAPI.Controllers
                         UserIds = assigneeIdsList,
                         UsersWithCompletion = assigneeeCompletionLevel.ToList(),
                         Completed = issue.Completed,
-                        Comments = commentDtos
+                        Comments = commentDtos,
+                        Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IsPredecessor = true,
+                            ProjectName = project.Name,
+                            GroupName = group.Name
+                        }).ToList(),
+                        Successors = issueSuccessors.Select(x => new IssueDependenciesGetter
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IsPredecessor = false,
+                            ProjectName = project.Name,
+                            GroupName = group.Name
+                        }).ToList()
                     };
 
                     issues.Add(issueDto);

@@ -6,7 +6,7 @@
         </div>
 
         <div>
-            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="funk()"/>
+            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="showOptionsPredecessor()"/>
             <p-overlayPanel #op1 [style]="{'max-height':'300px','overflow-y':'auto'}">
                 <span class="op-title">Add predecessors</span>
                 
@@ -26,8 +26,10 @@
     </div>
 
     <div id="predecessors-list">
-        <ng-container *ngFor="let predecessor of predecessors">
-            <span class="predecessor-item">{{ predecessor.title }}</span>
+        <ng-container>
+            <div *ngFor="let predecessor of issue.predecessors">
+                <span class="predecessor-item">{{ predecessor.name }}</span>
+            </div>
         </ng-container>
     </div>
     
@@ -40,20 +42,28 @@
         </div>
 
         <div>
-            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="funk()"/>
+            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="showOptionsSuccessor()"/>
             <p-overlayPanel #op2 [style]="{'max-height':'300px','overflow-y':'auto'}">
                 <span class="op-title">Add successors</span>
                 
                 <p-divider></p-divider>
 
-                <div class="op-row">
+                <div class="op-row" *ngFor="let issue of getIssues">
                     <div class="polje">
-                        <span>Task name</span>
+                        <span>{{ issue.title }}</span>
                     </div>
-                    <button class="opAddBtn">+</button>
+                    <button class="opAddBtn" (click)="addSuccessor(issue)">+</button>
                 </div>
                 
             </p-overlayPanel>
         </div>
+    </div>
+
+    <div id="successors-list">
+        <ng-container>
+            <div *ngFor="let successor of issue.successors">
+                <span class="predecessor-item">{{ successor.name }}</span>
+            </div>
+        </ng-container>
     </div>
 </div>

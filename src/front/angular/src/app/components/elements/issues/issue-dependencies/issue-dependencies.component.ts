@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IssueService } from '../../../../_service/issue.service';
 import { ProjectService } from '../../../../_service/project.service';
 import { JIssue } from '../../../../_models/issue';
+import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
 
 @Component({
   selector: 'app-issue-dependencies',
@@ -11,7 +12,6 @@ import { JIssue } from '../../../../_models/issue';
 export class IssueDependenciesComponent implements OnInit{
   @Input() issue!: JIssue;
   issues : JIssue[] = [];
-  predecessors: JIssue[] = [];
   projectName : string = "";
 
   constructor(
@@ -25,7 +25,6 @@ export class IssueDependenciesComponent implements OnInit{
     this.issueService.getProjectNameByIssueId(issueId).subscribe({
       next: (response) => {
         this.projectName = response.projectName;
-        console.log(this.projectName);
       },
       error: (error) => {
         console.log(error.error);
@@ -33,11 +32,23 @@ export class IssueDependenciesComponent implements OnInit{
     });
   }
 
-  funk() {
+  showOptionsPredecessor() {
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
       next: (response) => {
-        this.issues = response.filter((issue: JIssue) => issue.id !== this.issue.id);
-        console.log(response);
+        this.issues = response.filter((issue: JIssue) => issue.id !== this.issue.id
+        && this.issue.predecessors.findIndex(e=> "" + e.id == issue.id) == -1);
+      },
+      error: (error) => {
+        console.log(error.error);
+      }
+    });
+  }
+
+  showOptionsSuccessor() {
+    this.issueService.getAllIssuesForProject(this.projectName).subscribe({
+      next: (response) => {
+        this.issues = response.filter((issue: JIssue) => issue.id !== this.issue.id
+        && this.issue.successors.findIndex(e=>"" + e.id == issue.id) == -1);
       },
       error: (error) => {
         console.log(error.error);
@@ -50,9 +61,38 @@ export class IssueDependenciesComponent implements OnInit{
   }
 
   addPredecessor(issue: JIssue) {
-    if (!this.predecessors.some(pred => pred.id === issue.id)) {
-      this.predecessors.push(issue);
-      this.issues = this.issues.filter(i => i.id !== issue.id);
+    const originIssueId = Number(issue.id);
+    const targetIssueId = Number(this.issue.id);
+    let model: IssueDependencyUpdater = {
+      originId : originIssueId,
+      targetId : targetIssueId,
+      isDelete : false
     }
+    this.issueService.createOrDeleteIssueDependency(model).subscribe({
+      next:(response) =>{
+        this.ngOnInit();
+      },
+      error:(error) => {
+
+      }
+    });
+  }
+
+  addSuccessor(issue:JIssue){
+    const originIssueId = Number(this.issue.id);
+    const targetIssueId = Number(issue.id);
+    let model: IssueDependencyUpdater = {
+      originId : originIssueId,
+      targetId : targetIssueId,
+      isDelete : false
+    }
+    this.issueService.createOrDeleteIssueDependency(model).subscribe({
+      next:(response) =>{
+        this.ngOnInit();
+      },
+      error:(error) => {
+
+      }
+    });
   }
 }

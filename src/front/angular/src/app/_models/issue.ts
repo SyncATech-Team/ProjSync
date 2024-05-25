@@ -1,4 +1,5 @@
 import { JComment } from './comment';
+import { IssueDependenciesGetter } from './issueDependenciesGetter.model';
 import {UsersWithCompletion} from "./user-completion-level";
 
 export enum IssueType {
@@ -62,4 +63,6 @@ export interface JIssue {
   assigneeUsernames: string[];
   dependentOnIssues: string[];
   groupId: string;
+  predecessors: IssueDependenciesGetter[];
+  successors: IssueDependenciesGetter[];
 }

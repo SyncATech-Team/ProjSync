@@ -266,6 +266,28 @@ namespace backAPI.Repositories.Implementation.Issues
             return elements.Select(elem => elem.TargetId);
         }
 
+        public async Task<IEnumerable<Issue>> GetIssuePredecessors(int issueId)
+        {
+            var elements = await _dataContext.IssueDependencies
+                  .Where(elem => elem.TargetId == issueId)
+                  .ToListAsync();
+
+            return await _dataContext.Issues
+                .Where(issue => elements.Select(elem => elem.OriginId).Contains(issue.Id))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Issue>> GetIssueSuccessors(int issueId)
+        {
+            var elements = await _dataContext.IssueDependencies
+                .Where(elem => elem.OriginId == issueId)
+                .ToListAsync();
+
+            return await _dataContext.Issues
+                .Where(issue => elements.Select(elem => elem.TargetId).Contains(issue.Id))
+                .ToListAsync();
+        }
+
         public async Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model) {
             var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
             if(exists == null) {

@@ -30,7 +30,8 @@ namespace backAPI.Repositories.Interface.Issues
         Task<int> GetReporterId(int issueId);
 
         Task<IEnumerable<int>> GetDependentIssues(int issueId);
-
+        Task<IEnumerable<Issue>> GetIssuePredecessors(int issueId);
+        Task<IEnumerable<Issue>> GetIssueSuccessors(int issueId);
         Task<bool> AddIssueDependencies(IEnumerable<Tuple<int, int>> dependencies);
         Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model);
         Task<bool> UpdateIssue(int issueId, JIssueDto model);
