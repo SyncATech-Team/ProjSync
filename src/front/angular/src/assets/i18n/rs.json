@@ -254,5 +254,35 @@
         "created-date": "Datum kreiranja",
         "updated-date": "Datum ažuriranja",
         "completed": "Završeno"
+    },
+    "create-group": {
+        "title": "Kreiraj grupu",
+        "group-name": "Naziv grupe",
+        "name-placeholder": "Unesite naziv grupe",
+        "submit": "Kreiraj",
+        "close": "Zatvori"
+    },
+    "create-task": {
+        "task-group": "Grupa zadatka",
+        "task-group-placeholder": "Izaberite grupu zadatka",
+        "add-new-group": "Dodaj novu grupu",
+        "task-name": "Naziv zadatka",
+        "task-name-placeholder": "Unesite naziv zadatka",
+        "task-type": "Tip zadatka",
+        "task-type-placeholder": "Izaberite tip zadatka",
+        "task-priority": "Prioritet zadatka",
+        "task-priority-placeholder": "Izaberite prioritet zadatka",
+        "task-status": "Status zadatka",
+        "task-status-placeholder": "Izaberite status zadatka",
+        "task-description": "Opis zadatka",
+        "task-description-placeholder": "Unesite opis zadatka",
+        "start-date": "Datum početka",
+        "due-date": "Datum završetka",
+        "reporter": "Reporter",
+        "reporter-placeholder": "Izaberite reportera",
+        "assignees": "Učesnici",
+        "assignees-placeholder": "Izaberite učesnike",
+        "submit": "Kreiraj",
+        "close": "Zatvori"
     }
 }

@@ -254,5 +254,35 @@
         "created-date": "Created Date",
         "updated-date": "Updated Date",
         "completed": "Completed"
+    },
+    "create-group": {
+        "title": "Create Group",
+        "group-name": "Group Name",
+        "name-placeholder": "Enter group name",
+        "submit": "Create",
+        "close": "Close"
+    },
+    "create-task": {
+        "task-group": "Task Group",
+        "task-group-placeholder": "Select task group",
+        "add-new-group": "Add new group",
+        "task-name": "Task Name",
+        "task-name-placeholder": "Enter task name",
+        "task-type": "Task Type",
+        "task-type-placeholder": "Select task type",
+        "task-priority": "Task Priority",
+        "task-priority-placeholder": "Select task priority",
+        "task-status": "Task Status",
+        "task-status-placeholder": "Select task status",
+        "task-description": "Task Description",
+        "task-description-placeholder": "Enter task description",
+        "start-date": "Start Date",
+        "due-date": "Due Date",
+        "reporter": "Reporter",
+        "reporter-placeholder": "Select reporter",
+        "assignees": "Assignees",
+        "assignees-placeholder": "Select assignees",
+        "submit": "Create",
+        "close": "Close"
     }
 }

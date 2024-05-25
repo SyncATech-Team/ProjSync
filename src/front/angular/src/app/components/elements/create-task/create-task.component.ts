@@ -19,6 +19,7 @@ import { ProjectConst } from '../../config/const';
 import { CreateIssueModel } from '../../../_models/create-issue.model';
 import { IssueTypeWithIcon } from '../../../_models/issue-type-icon';
 import { DateService } from '../../../_service/date.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-task',
@@ -67,7 +68,8 @@ export class CreateTaskComponent implements OnInit {
     public dialogService: DialogService,
     private accountServis: AccountService,
     private groupService: GroupService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    private translateService: TranslateService
   ) {
     this.currentUser = this.accountServis.getCurrentUser()?.username;
     this.form = this.formBuilder.group({
@@ -224,29 +226,31 @@ export class CreateTaskComponent implements OnInit {
   }
 
   showCreateGroupPopUp(){
-    this.ref = this.dialogService.open(CreateGroupComponent, {
-      header: 'Create Group',
-      width: '30%',
-      contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
-      closable: true,
-      modal: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
-      },
-      data: {
-        projectName: this.projectName,
-      }
-    });
+    this.translateService.get('create-group.title').subscribe((res: string) => {
+      this.ref = this.dialogService.open(CreateGroupComponent, {
+        header: res,
+        width: '30%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+        },
+        data: {
+          projectName: this.projectName,
+        }
+      });
 
-    this.ref.onClose.subscribe((data: any) => {
-      if(data != "created-group") return;     // NE REFRESHUJ MODAL ZA KREIRANJE ZADATKA UKOLIKO NIJE DODATA GRUPA
-
-      // console.log("Refresh modal");
-      this.ngOnInit();
+      this.ref.onClose.subscribe((data: any) => {
+        if(data != "created-group") return;     // NE REFRESHUJ MODAL ZA KREIRANJE ZADATKA UKOLIKO NIJE DODATA GRUPA
+  
+        // console.log("Refresh modal");
+        this.ngOnInit();
+      });
     });
   }
 
