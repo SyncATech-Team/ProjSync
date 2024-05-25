@@ -32,17 +32,6 @@
 
       <div class="d-flex right--side">
 
-        <div class="language-picker">
-          <p-dropdown 
-            [options]="languages" 
-            [(ngModel)]="selectedLanguage" 
-            optionLabel="name" 
-            optionValue="code"
-            placeholder="Select a Language" 
-            (onChange)="changeLanguage($event)">
-          </p-dropdown>
-        </div>
-
         <div class="nav_right_opt">
           <app-chat-element></app-chat-element>
         </div>
@@ -60,6 +49,38 @@
                   <div style="display: flex; align-items: center;">
                       <p style="margin-bottom: 8px;"> {{'navbar.dark-mode' | translate }} &nbsp;&nbsp;&nbsp;</p>
                       <p-inputSwitch [(ngModel)]="isDarkTheme" class="small_input_switch" (onChange)="changeTheme()" />
+                  </div>
+                </div>
+                <div class="dropdown-div">
+                  <div style="display: flex; align-items: center; justify-content: center;">
+                    <p-dropdown 
+                      [options]="languages" 
+                      [(ngModel)]="selectedLanguage" 
+                      optionLabel="name" 
+                      optionValue="code"
+                      [placeholder]="'navbar.select-language' | translate" 
+                      (onChange)="changeLanguage($event)"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div class="flex align-items-center gap-2" *ngIf="selectedLanguage">
+                          <img 
+                            [src]="selectedLanguage.flag"
+                            style="width: 20px"
+                          />
+                          <div>{{ selectedLanguage.name }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-language pTemplate="item">
+                        <div class="flex align-items-center">
+                          <img
+                            class="flag" 
+                            [src]="language.flag"
+                            style="width: 20px"
+                          />
+                          <div>{{ language.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
                 </div>
               </ng-template>

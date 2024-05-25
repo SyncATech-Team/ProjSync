@@ -34,7 +34,8 @@
         "edit-my-profile": "Edit My Profile",
         "logout": "Logout",
         "my-projects": "My Projects",
-        "my-tasks": "My Tasks"
+        "my-tasks": "My Tasks",
+        "select-language": "Language"
     },
     "login": {
         "title": "Welcome, please login",

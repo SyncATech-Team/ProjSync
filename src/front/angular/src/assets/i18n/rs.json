@@ -34,7 +34,8 @@
         "edit-my-profile": "Izmeni moj profil",
         "logout": "Odjavi se",
         "my-projects": "Moji projekti",
-        "my-tasks": "Moji zadaci"
+        "my-tasks": "Moji zadaci",
+        "select-language": "Jezik"
     },
     "login": {
         "title": "Dobrodošli, molimo ulogujte se",

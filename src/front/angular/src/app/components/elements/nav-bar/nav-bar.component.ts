@@ -13,6 +13,7 @@ interface Language {
 
   code: string;
   name: string;
+  flag: string;
 
 }
 
@@ -34,10 +35,10 @@ export class NavBarComponent implements OnInit {
   isDarkTheme?: boolean;
 
   languages: Language[] = [
-    { code: 'en', name: 'English' },
-    { code: 'rs', name: 'Srpski' }
+    { code: 'en', name: 'English', flag: '../../../../assets/flags/en.png' },
+    { code: 'rs', name: 'Srpski', flag: '../../../../assets/flags/rs.png'}
   ];
-  selectedLanguage: string = "en";
+  selectedLanguage: Language = this.languages[0];
   
 
   constructor(
@@ -156,6 +157,9 @@ export class NavBarComponent implements OnInit {
   }
 
   changeLanguage(event: any) {
+    
+    this.selectedLanguage = this.languages.find(x => x.code === event.value)!;
+
     this.translateService.use(event.value);
     this.translateService.get([
       'primengConfig.startsWith',
