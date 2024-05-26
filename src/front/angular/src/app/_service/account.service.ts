@@ -117,6 +117,10 @@ export class AccountService {
     return this.http.post<string>(this.baseUrl + "Account/change-password-auth-user", model);
   }
 
+  chagePreferedLanguage(username: string, language: string) {
+    return this.http.post<string>(this.baseUrl + `Account/change-language/${username}/${language}`, {});
+  }
+
   logout() {
     // izbrisati iz lokalne memorije
     localStorage.removeItem('user');

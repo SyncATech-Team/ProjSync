@@ -74,6 +74,8 @@ export class NavBarComponent implements OnInit {
         }
         this.themeService.switchTheme(this.user!.preferedTheme!);
         this.isDarkTheme =  this.themeService.getTheme();
+
+        this.setLanguage(this.user!.preferedLanguage!);
       },
       error: error => {
         console.log(error.error);
@@ -156,11 +158,22 @@ export class NavBarComponent implements OnInit {
       this.themeService.updateTheme(this.user!.username,this.isDarkTheme);
   }
 
-  changeLanguage(event: any) {
-    
-    this.selectedLanguage = this.languages.find(x => x.code === event.value)!;
+  changeLanguageHandler(event: any) {
+    this.accountService.chagePreferedLanguage(this.user!.username, event.value).subscribe({
+      next: response => {
+        this.setLanguage(event.value);
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
 
-    this.translateService.use(event.value);
+  setLanguage(langCode: string) {
+    
+    this.selectedLanguage = this.languages.find(x => x.code === langCode)!;
+
+    this.translateService.use(langCode);
     this.translateService.get([
       'primengConfig.startsWith',
       'primengConfig.contains',
