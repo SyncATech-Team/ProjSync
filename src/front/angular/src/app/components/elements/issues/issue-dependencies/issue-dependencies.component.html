@@ -33,7 +33,7 @@
                         <span class="predecessor-item">{{ predecessor.name }}</span>
                     </div>
                     <div class="closeBtn">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i class="fa-solid fa-xmark" (click)="deletePredecessor(predecessor)"></i>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                         <span class="successor-item">{{ successor.name }}</span>
                     </div>
                     <div class="closeBtn">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i class="fa-solid fa-xmark" (click)="deleteSuccessor(successor)"></i>
                     </div>
                 </div>
             </div>

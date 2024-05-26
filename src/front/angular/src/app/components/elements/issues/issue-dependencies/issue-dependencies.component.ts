@@ -91,7 +91,45 @@ export class IssueDependenciesComponent implements OnInit{
         this.ngOnInit();
       },
       error:(error) => {
+        console.log(error.error)
+      }
+    });
+  }
 
+  deletePredecessor(predecessor : any) {
+    const originIssueId = Number(predecessor.id);
+    const targetIssueId = Number(this.issue.id);
+    let model: IssueDependencyUpdater = {
+      originId : originIssueId,
+      targetId : targetIssueId,
+      isDelete : true
+    }
+
+    this.issueService.createOrDeleteIssueDependency(model).subscribe({
+      next:(response) =>{
+        this.ngOnInit();
+      },
+      error:(error) => {
+        console.log(error.error)
+      }
+    });
+  }
+
+  deleteSuccessor(successor: any) {
+    const originIssueId = Number(this.issue.id);
+    const targetIssueId = Number(successor.id);
+    let model: IssueDependencyUpdater = {
+      originId : originIssueId,
+      targetId : targetIssueId,
+      isDelete : true
+    }
+
+    this.issueService.createOrDeleteIssueDependency(model).subscribe({
+      next: (response) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        console.log(error.error);
       }
     });
   }
