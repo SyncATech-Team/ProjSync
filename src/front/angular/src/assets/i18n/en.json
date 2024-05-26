@@ -27,7 +27,9 @@
         "you-have-rejected": "You have rejected",
         "any": "Any",
         "do-you-want-to-delete-this-record": "Do you want to delete this record?",
-        "delete-confirmation": "Delete Confirmation"
+        "delete-confirmation": "Delete Confirmation",
+        "new-notification": "You have a new notification. Check it out.",
+        "new-message": "You have a new message. Check it out."
     },
     "navbar": {
         "work": "Work",
@@ -388,7 +390,8 @@
         "user-not-removed": "User not removed from project",
         "do-you-want-to-remove-user": "Do you want to remove user from project?",
         "delete-confirmation": "Delete Confirmation",
-        "user-added": "User added to project successfully"
+        "user-added": "User added to project successfully",
+        "user-not-added-duplicate-names": "User not added to project, username or email already exists in project"
     },
     "project-documents-page": {
         "search-placeholder": "Search",

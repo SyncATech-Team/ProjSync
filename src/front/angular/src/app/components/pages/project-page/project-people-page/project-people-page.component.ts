@@ -237,7 +237,9 @@ export class ProjectPeoplePageComponent implements OnInit{
         });
       },
       error: (error) => {
-        this.msgPopupService.showError("Unable to add new user! Make sure there are no duplicate names.")
+        this.translateService.get('project-people-page.user-not-added-duplicate-names').subscribe((res: any) => {
+          this.msgPopupService.showError(res);
+        });
       }
     })
   }

@@ -8,6 +8,7 @@ import { NotificationsPageComponent } from "../components/pages/notifications-pa
 import { ChatPageComponent } from "../components/pages/chat-page/chat-page.component";
 import { MessageSendDto } from "../_models/message-send.model";
 import { ChatElementComponent } from "../components/elements/chat-element/chat-element.component";
+import { TranslateService } from "@ngx-translate/core";
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,8 @@ export class NotificationService {
     hubConnection?: signalR.HubConnection;
 
     constructor(
-        private msgPopupService: MessagePopupService
+        private msgPopupService: MessagePopupService,
+        private translateService: TranslateService
     ) { }
 
     /**
@@ -45,14 +47,18 @@ export class NotificationService {
             });
         
         this.hubConnection.on('ReceiveNotification', (data: string) => {
-            this.msgPopupService.showInfo("You have a new notification. Check it out.");
+            this.translateService.get('general.new-notification').subscribe((res: string) => {
+                this.msgPopupService.showInfo(res);
+            });
             NotificationComponent.increaseNumberOfUnreadMessages();
             NotificationsPageComponent.NewNotificationAdded();
         });
 
         this.hubConnection.on('ReceiveChatMessage', (data: MessageSendDto) => {
             if(data.senderUsername != ChatPageComponent._loggedInUser?.username) {
-                this.msgPopupService.showInfo("You have a new message. Check it out.");
+                this.translateService.get('general.new-message').subscribe((res: string) => {
+                    this.msgPopupService.showInfo(res);
+                });
                 ChatElementComponent.increaseNumberOfUnreadMessages();
             }
             ChatPageComponent.initialize(data);

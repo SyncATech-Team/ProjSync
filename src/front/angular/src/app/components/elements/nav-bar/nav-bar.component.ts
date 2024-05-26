@@ -214,7 +214,9 @@ export class NavBarComponent implements OnInit {
       'primengConfig.today',
       'primengConfig.weak',
       'primengConfig.medium',
-      'primengConfig.strong'
+      'primengConfig.strong',
+      'primengConfig.monthNames',
+      'primengConfig.dayNamesShort'
     ]).subscribe((translations) => {
       this.primengConfig.setTranslation({
         startsWith: translations['primengConfig.startsWith'],
@@ -268,7 +270,10 @@ export class NavBarComponent implements OnInit {
         today: translations['primengConfig.today'],
         weak: translations['primengConfig.weak'],
         medium: translations['primengConfig.medium'],
-        strong: translations['primengConfig.strong']
+        strong: translations['primengConfig.strong'],
+
+        monthNames: translations['primengConfig.monthNames'],
+        dayNamesMin: translations['primengConfig.dayNamesShort'],
       })
     });
   }
