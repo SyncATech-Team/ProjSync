@@ -295,5 +295,23 @@
         "settings": "Settings",
         "gantt": "Gantt",
         "kanban": "Kanban"
+    },
+    "project-gantt-page": {
+        "create-task": "Create Task",
+        "list": "List",
+        "kanban": "Kanban",
+        "gantt": "Gantt",
+        "refresh": "Refresh",
+        "today": "Today",
+        "collapse-groups": "Collapse Groups",
+        "name": "Name",
+        "start-date": "Start Date",
+        "due-date": "Due Date",
+        "reporter": "Reporter",
+        "day": "Day",
+        "week": "Week",
+        "month": "Month",
+        "quarter": "Quarter",
+        "year": "Year"
     }
 }

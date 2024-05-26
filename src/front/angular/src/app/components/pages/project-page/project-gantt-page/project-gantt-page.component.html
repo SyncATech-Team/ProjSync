@@ -13,18 +13,18 @@
 
         <div id="tasks-header">
             <div id="add-task-div">
-                <button id="create-task-button" (click)="showCreateTaskPopupTaskGantt()">Create task</button>
+                <button id="create-task-button" (click)="showCreateTaskPopupTaskGantt()"> {{'project-gantt-page.create-task' | translate}} </button>
             </div>
 
             <div id="change-view">
                 <div class="Viewbtn">
-                    <thy-button routerLink="/home/projects/tasks/{{projectName}}" id="Viewbtn">List</thy-button>
+                    <thy-button routerLink="/home/projects/tasks/{{projectName}}" id="Viewbtn">{{'project-gantt-page.list' | translate}}</thy-button>
                 </div>
                 <div class="Viewbtn">
-                    <thy-button routerLink="/home/projects/kanban/{{projectName}}" id="Viewbtn">Kanban</thy-button>
+                    <thy-button routerLink="/home/projects/kanban/{{projectName}}" id="Viewbtn">{{'project-gantt-page.kanban' | translate}}</thy-button>
                 </div>
                 <div class="Viewbtn">
-                    <thy-button class="selected-button" id="Viewbtn">Gantt</thy-button>
+                    <thy-button class="selected-button" id="Viewbtn">{{'project-gantt-page.gantt' | translate}}</thy-button>
                 </div>
             </div>
         </div>
@@ -38,11 +38,11 @@
                         </thy-button>
                     </thy-button-group>
                     &nbsp; &nbsp; &nbsp;
-                    <thy-button thyType="primary" thySize="sm" (click)="refresh()">Refresh</thy-button>
+                    <thy-button thyType="primary" thySize="sm" (click)="refresh()">{{'project-gantt-page.refresh' | translate}}</thy-button>
                     &nbsp; &nbsp; &nbsp;
-                    <thy-button thyType="primary" thySize="sm" (click)="scrollToToday()">Today</thy-button>
+                    <thy-button thyType="primary" thySize="sm" (click)="scrollToToday()">{{'project-gantt-page.today' | translate}}</thy-button>
                     &nbsp; &nbsp; &nbsp;
-                    <thy-button thyType="primary" thySize="sm" (click)="expandAllGroups()">Collapse groups</thy-button>
+                    <thy-button thyType="primary" thySize="sm" (click)="expandAllGroups()">{{'project-gantt-page.collapse-groups' | translate}}</thy-button>
                     <!-- Otkomentarisati za pokusaj printa -->
                     <!-- <thy-button thyType="primary" thySize="sm" (click)="print('gantt-example')"> ↓ 导出为图片 </thy-button> -->
                     <!-- &nbsp; &nbsp; &nbsp; -->
@@ -85,25 +85,25 @@
                         (dragStarted)="onDragStarted($event)"
                         (dragEnded)="onDragEnded($event)"
                     >
-                        <ngx-gantt-column name="Name" width="160px" [showExpandIcon]="true">
+                        <ngx-gantt-column [name]="'project-gantt-page.name' | translate" width="160px" [showExpandIcon]="true">
                             <ng-template #cell let-item="item"> 
                                 <div pTooltip="{{ item.title }}"> {{ item.title }} </div>
                             </ng-template>    
                         </ngx-gantt-column>
 
-                        <ngx-gantt-column name="Start date">
+                        <ngx-gantt-column [name]="'project-gantt-page.start-date' | translate">
                             <ng-template #cell let-item="item">
                                 <div pTooltip='{{item.start * 1000 | date: "dd.MM.yyyy"}}'> {{ item.start * 1000 | date : 'dd.MM.yyyy' }} </div>
                             </ng-template>
                         </ngx-gantt-column>
 
-                        <ngx-gantt-column name="Due date">
+                        <ngx-gantt-column [name]="'project-gantt-page.due-date' | translate">
                             <ng-template #cell let-item="item"> 
                                 <div pTooltip='{{item.end * 1000 | date: "dd.MM.yyyy"}}'> {{ item.end * 1000 | date : 'dd.MM.yyyy' }} </div>
                             </ng-template>
                         </ngx-gantt-column>
 
-                        <ngx-gantt-column name="Reporter">
+                        <ngx-gantt-column [name]="'project-gantt-page.reporter' | translate">
                             <ng-template #cell let-item="item">
                                 <div pTooltip="{{item.reporterUsername}}">{{ item.reporterUsername }}</div>
                             </ng-template>

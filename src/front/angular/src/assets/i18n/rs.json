@@ -295,5 +295,23 @@
         "settings": "Podešavanja",
         "gantt": "Gantogram",
         "kanban": "Kanban"
+    },
+    "project-gantt-page": {
+        "create-task": "Kreiraj zadatak",
+        "list": "Lista",
+        "kanban": "Kanban",
+        "gantt": "Gantogram",
+        "refresh": "Osveži",
+        "today": "Danas",
+        "collapse-groups": "Skupi grupe",
+        "name": "Naziv",
+        "start-date": "Datum početka",
+        "due-date": "Datum završetka",
+        "reporter": "Reporter",
+        "day": "Dan",
+        "week": "Nedelja",
+        "month": "Mesec",
+        "quarter": "Kvartal",
+        "year": "Godina"
     }
 }

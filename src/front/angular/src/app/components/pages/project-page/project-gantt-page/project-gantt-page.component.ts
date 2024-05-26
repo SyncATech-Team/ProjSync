@@ -148,6 +148,28 @@ constructor(
 ) {}
 
 ngOnInit(): void {
+
+    this.translateService.get([
+        'project-gantt-page.day',
+        'project-gantt-page.week',
+        'project-gantt-page.month',
+        'project-gantt-page.quarter',
+        'project-gantt-page.year'
+    ]).subscribe({
+        next: (res: any) => { // Explicitly define the type of 'res' as 'any'
+            this.views = [
+                { name: res['project-gantt-page.day'], value: GanttViewType.day },
+                { name: res['project-gantt-page.week'], value: GanttViewType.week },
+                { name: res['project-gantt-page.month'], value: GanttViewType.month },
+                { name: res['project-gantt-page.quarter'], value: GanttViewType.quarter },
+                { name: res['project-gantt-page.year'], value: GanttViewType.year }
+            ];
+
+            
+        }
+    
+    })
+
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     this._projectService.getProject(this.projectName);
 
