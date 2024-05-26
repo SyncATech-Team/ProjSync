@@ -313,5 +313,26 @@
         "month": "Mesec",
         "quarter": "Kvartal",
         "year": "Godina"
+    },
+    "settings-page": {
+        "title": "Podešavanja projekta",
+        "project-icon": "Ikonica projekta",
+        "choose-icon": "Izaberite ikonicu",
+        "name": "Naziv",
+        "category": "Kategorija",
+        "description": "Unesi opis",
+        "enter-description-placeholder": "Unesite opis",
+        "start-date": "Datum početka",
+        "due-date": "Datum završetka",
+        "submit": "Sačuvaj",
+        "transfer-and-leave": "Prebaci vlasništvo & napusti projekat",
+        "transfer-ownership-and-leave": "Prebaci vlasništvo i napusti projekat",
+        "transfer-description": "Prebaci vlasništvo i napusti ovaj projekat",
+        "transfer-ownership": "Prebaci vlasništvo",
+        "transfer-to": "Prebaci na",
+        "project-edited": "Projekat je izmenjen",
+        "project-not-edited": "Projekat nije izmenjen",
+        "due-date-before-start-date": "Nije moguće izmeniti projekat, datum završetka je pre datuma početka",
+        "due-date-before-today": "Nije moguće izmeniti projekat, datum završetka je pre današnjeg datuma"
     }
 }

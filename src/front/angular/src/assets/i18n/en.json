@@ -313,5 +313,26 @@
         "month": "Month",
         "quarter": "Quarter",
         "year": "Year"
+    },
+    "settings-page": {
+        "title": "Project Settings",
+        "project-icon": "Project Icon",
+        "choose-icon": "Choose Icon",
+        "name": "Name",
+        "category": "Category",
+        "description": "Description",
+        "enter-description-placeholder": "Enter description",
+        "start-date": "Start Date",
+        "due-date": "Due Date",
+        "submit": "Save",
+        "transfer-and-leave": "Transfer & Leave",
+        "transfer-ownership-and-leave": "Transfer ownership and leave project",
+        "transfer-description": "Transfer project ownership to another user and leave the project",
+        "transfer-ownership": "Transfer Ownership",
+        "transfer-to": "Transfer to",
+        "project-edited": "Project edited successfully",
+        "project-not-edited": "Project not edited",
+        "due-date-before-start-date": "Unable to edit project, due date is before start date",
+        "due-date-before-today": "Unable to edit project, due date is before today"
     }
 }
