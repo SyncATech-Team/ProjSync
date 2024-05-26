@@ -166,7 +166,7 @@ export class RolePageComponent implements OnInit {
         });
       },
       reject: () => {
-          this.msgPopupSevice.showError('You have rejected');
+          // this.msgPopupSevice.showError('You have rejected');
       }
     });
   }

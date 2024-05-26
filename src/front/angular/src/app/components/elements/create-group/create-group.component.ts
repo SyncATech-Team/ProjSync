@@ -5,6 +5,7 @@ import { GroupService } from '../../../_service/group.service';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { GroupInProjectSend } from '../../../_models/group-in-project-send';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-group',
@@ -27,7 +28,8 @@ export class CreateGroupComponent implements OnInit {
     private formBuilder : FormBuilder,
     private _dialogConfig : DynamicDialogConfig,
     private groupService : GroupService,
-    private msgPopUpService: MessagePopupService
+    private msgPopUpService: MessagePopupService,
+    private translateService: TranslateService
   ){
     this.form = this.formBuilder.group({
       'group-name' : []
@@ -45,7 +47,9 @@ export class CreateGroupComponent implements OnInit {
       // console.log(this.projectName);
       // console.log(this.form.controls['group-name'].value);
       if(this.form.controls['group-name'].value == null){
-        this.msgPopUpService.showError("Unable to create group. Group name can not be empty.");
+        this.translateService.get('create-group.group-name-empty').subscribe((res: string) => {
+          this.msgPopUpService.showError(res);
+        });
         return;
       }
       this.groupInProject.GroupName = this.form.controls['group-name'].value;
@@ -54,11 +58,17 @@ export class CreateGroupComponent implements OnInit {
       
       this.groupService.createGroup(this.groupInProject).subscribe({
         next : (response) => {
-          this.msgPopUpService.showSuccess("Group successfully created");
+          this.translateService.get('create-group.group-created').subscribe((res: string) => {
+            this.msgPopUpService.showSuccess(res);
+          });
           this.closeModal("created-group");        
         },
         error : (error) => {
-          this.msgPopUpService.showError(error.error.message);
+          if(error.error.message == "There is already a group with the same name in this project") {
+            this.translateService.get('create-group.group-name-exists-in-project').subscribe((res: string) => {
+              this.msgPopUpService.showError(res);
+            });
+          }
           // this.msgPopUpService.showError("Unable to create group. Duplicate name inside project!");
         }
       });

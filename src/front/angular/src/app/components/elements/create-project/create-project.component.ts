@@ -13,6 +13,7 @@ import { AccountService } from '../../../_service/account.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { NgForm } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -47,7 +48,9 @@ export class CreateProjectComponent implements OnInit{
 
   constructor(private projectVisibilityService: ProjectVisibilityService, private projectTypeService: ProjectTypeService, private userService: UserService,
     private homePage: HomePageComponent,private projectService: ProjectService, private accountServis: AccountService, private msgPopUpService: MessagePopupService,
-    private changeDetectorRef: ChangeDetectorRef) {}
+    private changeDetectorRef: ChangeDetectorRef,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
 
@@ -97,40 +100,61 @@ export class CreateProjectComponent implements OnInit{
     this.creationModel.ownerUsername = this.currentUser;
 
     if(this.creationModel.name == ""){
-      this.msgPopUpService.showError("Unable to create project, project name is empty");
+      this.translateService.get('create-project-notification.project-name-empty').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
       return; 
     }
-    else if(this.creationModel.typeName == ""){
-      this.msgPopUpService.showError("Unable to create project, project type is empty");
+    else if(this.creationModel.key == ""){
+      this.translateService.get('create-project-notification.project-key-empty').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
       return;
     }
-    else if(this.creationModel.visibilityName == ""){
-      this.msgPopUpService.showError("Unable to create project, visibility name is empty");
+    else if(this.creationModel.typeName == ""){
+      this.translateService.get('create-project-notification.project-type-empty').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
       return;
     }
     else if(this.creationModel.creationDate == null){
-      this.msgPopUpService.showError("Unable to create project, creation date is not set");
+      this.translateService.get('create-project-notification.project-start-date-empty').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
       return;
     }
     else if(this.creationModel.dueDate == null){
-      this.msgPopUpService.showError("Unable to create project, due date is not set");
+      this.translateService.get('create-project-notification.project-due-date-empty').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
       return;
     }
 
     if(this.creationModel.dueDate < this.creationModel.creationDate){
-      this.msgPopUpService.showError("Unable to create project, due date is before creation date");
+      this.translateService.get('create-project-notification.due-date-before-start-date').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
+      return;
     }
     else if(DueDateFormated < this.currentDate){
-      this.msgPopUpService.showError("Unable to create project, due date is before current date");
+      this.translateService.get('create-project-notification.due-date-before-today').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
+      return;
     }
     else if(this.currentUser == ''){
-      this.msgPopUpService.showError("Unable to create project, user not found");
+      this.translateService.get('create-project-notification.user-not-found').subscribe((res: string) => {
+        this.msgPopUpService.showError(res);
+      });
+      return;
     }
     else{
       this.projectService.createProject(this.creationModel).subscribe({
         next: (response)=>{
           this.homePage.initializeProjects();
-          this.msgPopUpService.showSuccess("Project successfully created");
+          this.translateService.get('create-project-notification.project-created').subscribe((res: string) => {
+            this.msgPopUpService.showSuccess(res);
+          });
           this.onSuccessfulCreation();
           // this.formCreateProject.reset();
         },

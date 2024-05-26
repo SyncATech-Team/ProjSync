@@ -145,14 +145,18 @@ export class CreateTaskComponent implements OnInit {
         this.issueCreator.name = this.form.controls['issue-name'].value;
         // PROVERA NAZIVA
         if(this.issueCreator.name == null || this.issueCreator.name == ""){
-          this.msgPopUpService.showError("Unable to create task, task name is empty");
+          this.translateService.get('create-task.task-name-empty').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }
 
         this.selectedIssueType = this.form.controls['issue-type'].value;
         // PROVERA TIPA
         if(this.selectedIssueType == null){
-          this.msgPopUpService.showError("Unable to create task, task type is empty");
+          this.translateService.get('create-task.task-type-empty').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }
         this.issueCreator.typeName = this.selectedIssueType.value;
@@ -160,37 +164,49 @@ export class CreateTaskComponent implements OnInit {
         this.selectedPriorityModel = this.form.controls['issue-priority'].value;
         // PROVERA PRIORITETA
         if(this.selectedPriorityModel == null){
-          this.msgPopUpService.showError("Unable to create task, task priority is empty");
+          this.translateService.get('create-task.task-priority-empty').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }
         this.issueCreator.priorityName = this.selectedPriorityModel.value;
 
         //PROVERA STATUSA
         if(this.form.controls['issue-status'].value == null){
-          this.msgPopUpService.showError("Unable to create task, task status is empty");
+          this.translateService.get('create-task.task-status-empty').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }  
         this.issueCreator.statusName = this.form.controls['issue-status'].value.name;      
         this.issueCreator.description = this.form.controls['issue-description'].value;
         if(this.form.controls['issue-create-date'].value == null){
-          this.msgPopUpService.showError("Unable to create task, start date is empty");
+          this.translateService.get('create-task.start-date-empty').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }
         this.issueCreator.createdDate = DateService.convertToUTC(this.form.controls['issue-create-date'].value);
         this.issueCreator.updatedDate = DateService.convertToUTC(new Date());
         if(this.form.controls['issue-due-date'].value == null){
-          this.msgPopUpService.showError("Unable to create task, due date is empty");
+          this.translateService.get('create-task.due-date-empty').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }
         this.issueCreator.dueDate = DateService.convertToUTC(this.form.controls['issue-due-date'].value);
         this.issueCreator.ownerUsername = this.currentUser!;
         if(this.form.controls['issue-reporter'].value == null){
-          this.msgPopUpService.showError("Unable to create task, reporter is not selected");
+          this.translateService.get('create-task.reporter-not-selected').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }
         this.issueCreator.reporterUsername = this.form.controls['issue-reporter'].value.username;
         if(this.form.controls['issue-assigner'].value == null){
-          this.msgPopUpService.showError("Unable to create task, assignee is not selected");
+          this.translateService.get('create-task.assignees-not-selected').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
           return;
         }
         this.issueCreator.assigneeUsernames = this.form.controls['issue-assigner'].value.map((user: UserGetter) => user.username);
@@ -199,24 +215,32 @@ export class CreateTaskComponent implements OnInit {
         this.issueCreator.groupName = this.form.controls['issue-group'].value.name;
 
         if(this.issueCreator.dueDate < this.issueCreator.createdDate){
-          this.msgPopUpService.showError("Unable to create task, due date is before creation date");
+          this.translateService.get('create-task.due-date-before-start-date').subscribe((res: string) => {
+            this.msgPopUpService.showError(res);
+          });
         }
         else{
           this._issueService.createIssue(this.issueCreator).subscribe({
             next : (response) => {
-              this.msgPopUpService.showSuccess("Task successfully created");
+              this.translateService.get('create-task.task-created').subscribe((res: string) => {
+                this.msgPopUpService.showSuccess(res);
+              });
               this.closeModal("created-task");
             },
             error : (error) => {
               if(error.error.message == "A task cannot be created because its creation date is before the project creation date"){
-                this.msgPopUpService.showError("A task cannot be created because its creation date is before the project creation date");
+                this.translateService.get('create-task.start-date-before-project-start-date').subscribe((res: string) => {
+                  this.msgPopUpService.showError(res);
+                });
               }
             }
           })
         }
       }
       catch(error) {
-        this.msgPopUpService.showError("Unable to create task!");
+        this.translateService.get('create-task.unable-to-create-task').subscribe((res: string) => {
+          this.msgPopUpService.showError(res);
+        });
       }
     }
   }

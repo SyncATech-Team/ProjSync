@@ -25,7 +25,9 @@
         "rejected": "Odbijeno",
         "you-have-confirmed": "Prihvatili ste",
         "you-have-rejected": "Odbili ste",
-        "any": "Bilo koji"
+        "any": "Bilo koji",
+        "do-you-want-to-delete-this-record": "Da li želite da obrišete ovaj zapis?",
+        "delete-confirmation": "Potvrda brisanja"
     },
     "navbar": {
         "work": "Rad",
@@ -35,7 +37,8 @@
         "logout": "Odjavi se",
         "my-projects": "Moji projekti",
         "my-tasks": "Moji zadaci",
-        "select-language": "Jezik"
+        "select-language": "Jezik",
+        "faq": "Često postavljana pitanja"
     },
     "login": {
         "title": "Dobrodošli, molimo ulogujte se",
@@ -267,7 +270,10 @@
         "group-name": "Naziv grupe",
         "name-placeholder": "Unesite naziv grupe",
         "submit": "Kreiraj",
-        "close": "Zatvori"
+        "close": "Zatvori",
+        "group-name-empty": "Nije moguće kreirati grupu, naziv grupe je prazan",
+        "group-created": "Grupa je uspešno kreirana",
+        "group-name-exists-in-project": "Naziv grupe već postoji u projektu"
     },
     "create-task": {
         "task-group": "Grupa zadatka",
@@ -290,7 +296,20 @@
         "assignees": "Učesnici",
         "assignees-placeholder": "Izaberite učesnike",
         "submit": "Kreiraj",
-        "close": "Zatvori"
+        "close": "Zatvori",
+        "task-name-empty": "Nije moguće kreirati zadatak, naziv zadatka je prazan",
+        "task-type-empty": "Nije moguće kreirati zadatak, tip zadatka je prazan",
+        "task-priority-empty": "Nije moguće kreirati zadatak, prioritet zadatka je prazan",
+        "task-status-empty": "Nije moguće kreirati zadatak, status zadatka je prazan",
+        "start-date-empty": "Nije moguće kreirati zadatak, datum početka je prazan",
+        "due-date-empty": "Nije moguće kreirati zadatak, datum završetka je prazan",
+        "reporter-not-selected": "Nije moguće kreirati zadatak, reporter nije izabran",
+        "assignees-not-selected": "Nije moguće kreirati zadatak, učesnici nisu izabrani",
+        "due-date-before-start-date": "Nije moguće kreirati zadatak, datum završetka je pre datuma početka",
+        "start-date-before-project-start-date": "Nije moguće kreirati zadatak, datum početka je pre datuma početka projekta",
+        "task-created": "Zadatak je uspešno kreiran",
+        "unable-to-create-task": "Nije moguće kreirati zadatak",
+        "task-has-a-dependency": "Zadatak ima zavisnost"
     },
     "project-sidebar": {
         "key": "Ključ",
@@ -424,5 +443,12 @@
         "unable-to-delete-selected-document": "Nije moguće obrisati izabrani dokument",
         "error-downloading-document": "Greška prilikom preuzimanja dokumenta",
         "error-previewing-document": "Greška prilikom pregleda dokumenta"
+    },
+    "user-profile": {
+        "member-since": "Član od",
+        "online-now": "Trenutno online",
+        "user-projects": "Projekti korisnika",
+        "due-date": "Datum završetka",
+        "title": "Profil korisnika"
     }
 }

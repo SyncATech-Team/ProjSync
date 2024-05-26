@@ -25,7 +25,9 @@
         "rejected": "Rejected",
         "you-have-confirmed": "You have confirmed",
         "you-have-rejected": "You have rejected",
-        "any": "Any"
+        "any": "Any",
+        "do-you-want-to-delete-this-record": "Do you want to delete this record?",
+        "delete-confirmation": "Delete Confirmation"
     },
     "navbar": {
         "work": "Work",
@@ -35,7 +37,8 @@
         "logout": "Logout",
         "my-projects": "My Projects",
         "my-tasks": "My Tasks",
-        "select-language": "Language"
+        "select-language": "Language",
+        "faq": "FAQ"
     },
     "login": {
         "title": "Welcome, please login",
@@ -267,7 +270,10 @@
         "group-name": "Group Name",
         "name-placeholder": "Enter group name",
         "submit": "Create",
-        "close": "Close"
+        "close": "Close",
+        "group-name-empty": "Unable to create group, group name is empty",
+        "group-created": "Group created successfully",
+        "group-name-exists-in-project": "Unable to create group, name already exists in project"
     },
     "create-task": {
         "task-group": "Task Group",
@@ -290,7 +296,20 @@
         "assignees": "Assignees",
         "assignees-placeholder": "Select assignees",
         "submit": "Create",
-        "close": "Close"
+        "close": "Close",
+        "task-name-empty": "Unable to create task, task name is empty",
+        "task-type-empty": "Unable to create task, task type is empty",
+        "task-priority-empty": "Unable to create task, task priority is empty",
+        "task-status-empty": "Unable to create task, task status is empty",
+        "start-date-empty": "Unable to create task, start date is empty",
+        "due-date-empty": "Unable to create task, due date is empty",
+        "reporter-not-selected": "Unable to create task, reporter not selected",
+        "assignees-not-selected": "Unable to create task, assignees not selected",
+        "due-date-before-start-date": "Unable to create task, due date is before start date",
+        "start-date-before-project-start-date": "Unable to create task, start date is before project start date",
+        "task-created": "Task created successfully",
+        "unable-to-create-task": "Unable to create task",
+        "task-has-a-dependency": "Task has a dependency"
     },
     "project-sidebar": {
         "key": "Key",
@@ -424,5 +443,12 @@
         "unable-to-delete-selected-document": "Unable to delete selected document",
         "error-downloading-document": "Error downloading document",
         "error-previewing-document": "Error previewing document"
+    },
+    "user-profile": {
+        "member-since": "Member since",
+        "online-now": "Online now",
+        "user-projects": "User Projects",
+        "due-date": "Due Date",
+        "title": "User Profile"
     }
 }

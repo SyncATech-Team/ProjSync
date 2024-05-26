@@ -259,28 +259,30 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
 
   showProfile(username : string){
-    this.ref = this.dialogService.open(UserProfileComponent, {
-      header : "User profile",
-      height : '60%',
-      width: window.innerWidth < 700 ? '80%' : '40%',
-      contentStyle: { 
-        overflow: 'auto',
-      },
-      baseZIndex: 10000,
-      closable: true,
-      modal: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      maximizable: true,
-      breakpoints: {
-        '1100px':'75vw',
-        '400px' : '90vw'
-      },
-      data: {
-        username: username,
-        usersPhotos: this.usersPhotos,
-        users: this.users
-      }
+    this.translateService.get('user-profile.title').subscribe((res: any) => {
+      this.ref = this.dialogService.open(UserProfileComponent, {
+        header : res,
+        height : '60%',
+        width: window.innerWidth < 700 ? '80%' : '40%',
+        contentStyle: { 
+          overflow: 'auto',
+        },
+        baseZIndex: 10000,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        maximizable: true,
+        breakpoints: {
+          '1100px':'75vw',
+          '400px' : '90vw'
+        },
+        data: {
+          username: username,
+          usersPhotos: this.usersPhotos,
+          users: this.users
+        }
+      });
     });
   }
 }
