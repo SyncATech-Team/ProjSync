@@ -28,7 +28,14 @@
     <div id="predecessors-list">
         <ng-container>
             <div *ngFor="let predecessor of issue.predecessors">
-                <span class="predecessor-item">{{ predecessor.name }}</span>
+                <div class="issue-row">
+                    <div class="polje">
+                        <span class="predecessor-item">{{ predecessor.name }}</span>
+                    </div>
+                    <div class="closeBtn">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
             </div>
         </ng-container>
     </div>
@@ -62,7 +69,14 @@
     <div id="successors-list">
         <ng-container>
             <div *ngFor="let successor of issue.successors">
-                <span class="predecessor-item">{{ successor.name }}</span>
+                <div class="issue-row">
+                    <div class="polje">
+                        <span class="successor-item">{{ successor.name }}</span>
+                    </div>
+                    <div class="closeBtn">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
             </div>
         </ng-container>
     </div>
