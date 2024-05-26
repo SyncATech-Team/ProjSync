@@ -46,7 +46,7 @@
             [first]="first"
             [rowsPerPageOptions]="[5, 10, 25, 50]"
             [showCurrentPageReport]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {{issuesShow.length}} entries"
+            [currentPageReportTemplate]="'home-page.showing-first-to-last-tasks' | translate"
             sortMode="multiple">
 
             <!--Default order
@@ -288,7 +288,7 @@
                 sortMode="multiple"
                 (onPage)="pageChange($event)"
                 [globalFilterFields]="['name','key','typeName','ownerUsername','creationDate','dueDate']"
-                currentPageReportTemplate="Showing {first} to {last} of {{projectsShow.length}} entries"
+                [currentPageReportTemplate]="'home-page.showing-first-to-last-projects' | translate"
                 [resizableColumns]="true"
                 [reorderableColumns]="true"
                 [columns]="showColumns" >

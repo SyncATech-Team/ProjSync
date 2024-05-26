@@ -297,42 +297,48 @@ openIssueModal(issueId : string){
   }
 
 lineClick(event: GanttLineClickEvent) {
-
-    this.confirmationService.confirm({
-        message: 'Do you want to delete this dependency?',
-        header: 'Delete Confirmation',
-        icon: 'pi pi-info-circle',
-        acceptButtonStyleClass:"p-button-danger p-button-text",
-        rejectButtonStyleClass:"p-button-text p-button-text",
-        acceptIcon:"none",
-        rejectIcon:"none",
-
-        accept: () => {
-            let source = event.source;
-            let target = event.target;
-            
-            let model: IssueDependencyUpdater = {
-                originId: source!.id as unknown as number,
-                targetId: target!.id as unknown as number,
-                isDelete: true
-            }
-
-            this.issueService.createOrDeleteIssueDependency(model).subscribe({
-                next: response => {
-                    this.msgPopupService.showInfo("Successfully deleted a dependency!");
-                    this.refresh();
-                },
-                error: error => {
-                    console.log("ERROR!!! " + error.error);
+    this.translateService.get([
+        'project-gantt-page.do-you-want-to-delete-this-dependency',
+        'project-gantt-page.delete-confirmation',
+        'project-gantt-page.dependency-deleted',
+        'general.delete'
+    ]).subscribe((res: any) => {
+        this.confirmationService.confirm({
+            message: res['project-gantt-page.do-you-want-to-delete-this-dependency'],
+            header: res['project-gantt-page.delete-confirmation'],
+            icon: 'pi pi-info-circle',
+            acceptButtonStyleClass:"p-button-danger p-button-text",
+            rejectButtonStyleClass:"p-button-text p-button-text",
+            acceptIcon:"none",
+            rejectIcon:"none",
+    
+            accept: () => {
+                let source = event.source;
+                let target = event.target;
+                
+                let model: IssueDependencyUpdater = {
+                    originId: source!.id as unknown as number,
+                    targetId: target!.id as unknown as number,
+                    isDelete: true
                 }
-            })
-            
-            this.items = [...this.items];
-        },
-        reject: () => {
-
-        }
-    })
+    
+                this.issueService.createOrDeleteIssueDependency(model).subscribe({
+                    next: response => {
+                        this.msgPopupService.showInfo(res['project-gantt-page.dependency-deleted']);
+                        this.refresh();
+                    },
+                    error: error => {
+                        console.log("ERROR!!! " + error.error);
+                    }
+                })
+                
+                this.items = [...this.items];
+            },
+            reject: () => {
+    
+            }
+        })
+    });
     // this.msgPopupService.showInfo(`Event: lineClick ${event.source.title} to ${event.target.title} line`)
 }
 
@@ -352,11 +358,15 @@ dragEnded(event: GanttDragEvent) {
     
     this.issueService.updateIssueStartEndDate(issueId, model).subscribe({
         next: response => {
-            this.msgPopupService.showInfo("Successfully changed timeline!");
+            this.translateService.get('project-gantt-page.task-dates-changed').subscribe((res: string) => {
+                this.msgPopupService.showInfo(res);
+            });
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
-            this.msgPopupService.showError("Task cannot start before project start date");
+            this.translateService.get('project-gantt-page.cannot-start-before-project-start-date').subscribe((res: string) => {
+                this.msgPopupService.showError(res);
+            });
             this.refresh();
         }
     });
@@ -384,7 +394,9 @@ linkDragEnded(event: GanttLinkDragEvent) {
 
     this.issueService.createOrDeleteIssueDependency(model).subscribe({
         next: response => {
-            this.msgPopupService.showInfo("Successfully created a dependency!");
+            this.translateService.get('project-gantt-page.dependency-created').subscribe((res: string) => {
+                this.msgPopupService.showInfo(res);
+            });
         },
         error: error => {
             console.log("ERROR!!! " + error.error);

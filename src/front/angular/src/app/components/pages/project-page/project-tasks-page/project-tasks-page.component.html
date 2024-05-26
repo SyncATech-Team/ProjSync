@@ -48,7 +48,7 @@
                     [rowsPerPageOptions]="[10, 50, 100, 200]"
                     [showCurrentPageReport]="true"
                     (onPage)="pageChange($event)"
-                    currentPageReportTemplate="Showing {first} to {last} of {{totalRecords}} entries"
+                    [currentPageReportTemplate]="'project-tasks-page.showing-first-to-last' | translate"
                     [resizableColumns]="true"
                     [reorderableColumns]="true"
                     [columns]="showColumns" 

@@ -65,7 +65,9 @@
         "priority": "Prioritet",
         "reporter": "Reporter",
         "completed": "Završeno",
-        "project-name": "Naziv projekta"
+        "project-name": "Naziv projekta",
+        "showing-first-to-last-projects": "Prikazano {first} do {last} od {totalRecords} projekata",
+        "showing-first-to-last-tasks": "Prikazano {first} do {last} od {totalRecords} zadataka"
     },
     "edit-profile-page": {
         "title": "Izmeni profil",
@@ -237,6 +239,9 @@
     "issue": {
         "issue-details": "Detalji zadatka"
     },
+    "issue-card": {
+        "task-completed": "Zadatak završen"
+    },
     "project-tasks-page": {
         "create-task": "Kreiraj zadatak",
         "list-view": "Lista",
@@ -254,7 +259,8 @@
         "due-date": "Datum završetka",
         "created-date": "Datum kreiranja",
         "updated-date": "Datum ažuriranja",
-        "completed": "Završeno"
+        "completed": "Završeno",
+        "showing-first-to-last": "Prikazano {first} do {last} od {totalRecords} zadatka"
     },
     "create-group": {
         "title": "Kreiraj grupu",
@@ -312,7 +318,13 @@
         "week": "Nedelja",
         "month": "Mesec",
         "quarter": "Kvartal",
-        "year": "Godina"
+        "year": "Godina",
+        "delete-confirmation": "Potvrda brisanja",
+        "do-you-want-to-delete-this-dependency": "Da li želite da obrišete ovu zavisnost?",
+        "dependency-deleted": "Zavisnost je uspešno obrisana",
+        "dependency-created": "Zavisnost je uspešno kreirana",
+        "task-dates-changed": "Datumi zadatka su uspešno izmenjeni",
+        "cannot-start-before-project-start-date": "Nije moguće započeti zadatak pre datuma početka projekta"
     },
     "settings-page": {
         "title": "Podešavanja projekta",
@@ -334,5 +346,83 @@
         "project-not-edited": "Projekat nije izmenjen",
         "due-date-before-start-date": "Nije moguće izmeniti projekat, datum završetka je pre datuma početka",
         "due-date-before-today": "Nije moguće izmeniti projekat, datum završetka je pre današnjeg datuma"
+    },
+    "project-people-page": {
+        "search-placeholder": "Pretraži",
+        "selected-columns": "{0} izabranih kolona",
+        "choose-columns": "Izaberi kolone",
+        "add-user": "Dodaj korisnika",
+        "username": "Korisničko ime",
+        "email-address": "Email adresa",
+        "firstname": "Ime",
+        "lastname": "Prezime",
+        "role": "Uloga",
+        "address": "Adresa",
+        "contact-phone": "Kontakt telefon",
+        "status": "Status",
+        "user-profile": "Profil korisnika",
+        "actions": "Akcije",
+        "showing-first-to-last": "Prikazano {first} do {last} od {totalRecords} korisnika",
+        "add-user-to-project": "Dodaj korisnika na projekat",
+        "color": "Boja",
+        "user-removed": "Korisnik je uspešno uklonjen",
+        "user-not-removed": "Korisnik nije uklonjen",
+        "do-you-want-to-remove-user": "Da li želite da uklonite korisnika?",
+        "delete-confirmation": "Potvrda brisanja",
+        "user-added": "Korisnik je uspešno dodat"
+    },
+    "project-documents-page": {
+        "search-placeholder": "Pretraži",
+        "drag-files-or-click-to-upload": "Prevucite fajlove ili kliknite ovde da biste ih učitali",
+        "preview": "Pregledaj",
+        "download": "Preuzmi",
+        "delete": "Obriši",
+        "show-older-versions": "Prikaži starije verzije",
+        "do-you-want-to-delete-document": "Da li želite da obrišete dokument?",
+        "selected-document-deleted-successfully": "Izabrani dokument je uspešno obrisan",
+        "unable-to-delete-selected-document": "Nije moguće obrisati izabrani dokument",
+        "error-downloading-document": "Greška prilikom preuzimanja dokumenta",
+        "error-previewing-document": "Greška prilikom pregleda dokumenta"
+    },
+    "files-uploader": {
+        "files-successfully-uploaded": "Fajlovi uspešno učitani",
+        "error-uploading-files": "Greška prilikom učitavanja fajlova"
+    },
+    "kanban-page": {
+        "create-task": "Kreiraj zadatak",
+        "list-view": "Lista",
+        "kanban-view": "Kanban",
+        "gantt-view": "Gantogram",
+        "only-my-tasks": "Samo moji zadaci",
+        "ignore-resolved": "Ignoriši rešene",
+        "clear-all": "Obriši sve"
+    },
+    "summary-page": {
+        "key": "Ključ",
+        "type": "Tip",
+        "owner": "Vlasnik",
+        "description": "Opis",
+        "logs": "Logovi",
+        "task-types": "Tipovi zadataka",
+        "task-priorities": "Prioriteti zadataka",
+        "task-statuses": "Statusi zadataka",
+        "task-groups": "Grupe zadataka",
+        "bar-chart": "Stubičasti grafikon",
+        "radar-chart": "Radar grafikon",
+        "pie-chart": "Pita grafikon",
+        "polar-area-chart": "Polarni grafikon",
+        "doughnut-chart": "Krofna grafikon",
+        "download-chart": "Preuzmi grafikon"
+    },
+    "issue-documents": {
+        "preview": "Pregledaj",
+        "download": "Preuzmi",
+        "delete": "Obriši",
+        "show-older-versions": "Prikaži starije verzije",
+        "do-you-want-to-delete-document": "Da li želite da obrišete dokument?",
+        "selected-document-deleted-successfully": "Izabrani dokument je uspešno obrisan",
+        "unable-to-delete-selected-document": "Nije moguće obrisati izabrani dokument",
+        "error-downloading-document": "Greška prilikom preuzimanja dokumenta",
+        "error-previewing-document": "Greška prilikom pregleda dokumenta"
     }
 }
