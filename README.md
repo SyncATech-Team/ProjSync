@@ -36,7 +36,7 @@ After you're finished please remove all the comments and instructions!
 
 # 🖥️ Testiranje 🖥️
 Uputstvo za testiranje možete pronaći na sledećem [linku](https://gitlab.pmf.kg.ac.rs/si2024/syncatech/-/blob/master/docs/Uputstvo_Za_Testiranje.pdf).  
-Link ka [Live demo sekciji](#live-demo)  
+Link ka [sekciji sa linkom ka aplikaciji](#live-demo)  
 Nalozi kojima je moguće prijavljivanje na aplikaciju su dati u uputstvu na strani 5 ali i u tabeli ispod. 
 <details>
   <summary>Tabela sa kredencijalima</summary>
@@ -61,7 +61,7 @@ Nalozi kojima je moguće prijavljivanje na aplikaciju su dati u uputstvu na stra
   - [🛠 Razvoj](#built-with)
     - [Tehnologije](#tech-stack)
     - [Glavne funkcionalnosti](#key-features)
-  - [🚀 Live Demo](#live-demo)
+  - [🚀 Link ka aplikaciji](#live-demo)
 - [💻 Pokretanje aplikacije](#getting-started)
   - [Setup](#setup)
   - [Korišćenje](#usage)
@@ -125,7 +125,7 @@ Aplikacija ProjSync je razvijena kao deo projekta za potrebe predmeta Uvod u sof
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Demo Link](http://softeng.pmf.kg.ac.rs:10204) - Frontend aplikacija
+- [Link](http://softeng.pmf.kg.ac.rs:10204) - Frontend aplikacija
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
