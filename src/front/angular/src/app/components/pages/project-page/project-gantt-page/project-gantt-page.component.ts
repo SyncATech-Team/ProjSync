@@ -164,7 +164,8 @@ fetchGroups() {
 
             for(let group of data) {
                 dataGroups.push({
-                    id: "" + group.id,
+                    // dodavanje nula za id da bi se razlikovali id-evi za task i grupe
+                    id: "0000" + group.id,
                     title: group.name,
                     expanded: this.expanded
                 })
@@ -178,6 +179,7 @@ fetchGroups() {
 }
 
 fetchIssues() {
+    console.log("fetchIssues");
     this.issueService.getAllIssuesForProject(this.projectName).subscribe({
         next: response => {
             let data = response;
@@ -196,7 +198,7 @@ fetchIssues() {
                     title: issue.title,
                     start: getUnixTime(startDate),
                     end: getUnixTime(endDate),
-                    group_id: "" + issue.groupId,
+                    group_id: "0000" + issue.groupId,
                     links: dependentOnList,
                     expandable: true,
                     draggable: true,
