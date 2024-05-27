@@ -22,6 +22,10 @@
     background-color: red;
 }
 
+.title{
+    font-weight: bold;
+}
+
 .op-title{
     font-weight: 800;
     font-size: 14px;
@@ -49,6 +53,11 @@
     border-radius: 4px;
 }
 
+.polje span{
+    font-size: 14px;
+    font-weight: bold;
+}
+
 .closeBtn{
     cursor: pointer;
 }
@@ -63,4 +72,9 @@
 
 .opAddBtn:hover{
     background-color: #bacef8;
+}
+
+.info-msg{
+    font-size: 14px;
+    font-weight: 500;
 }

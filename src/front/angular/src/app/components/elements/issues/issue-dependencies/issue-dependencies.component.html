@@ -2,7 +2,7 @@
     <div class="head">
         <div>
             <i class="fa-solid fa-diagram-predecessor"></i>
-            <span> Predecessors</span>
+            <span class="title"> Predecessors</span>
         </div>
 
         <div>
@@ -27,6 +27,9 @@
 
     <div id="predecessors-list">
         <ng-container>
+            <div *ngIf="issue.predecessors.length === 0">
+                <span class="info-msg">No predecessors added yet</span>
+            </div>
             <div *ngFor="let predecessor of issue.predecessors">
                 <div class="issue-row">
                     <div class="polje">
@@ -45,7 +48,7 @@
     <div class="head">
         <div>
             <i class="fa-solid fa-diagram-predecessor"></i>
-            <span> Successors</span>
+            <span class="title"> Successors</span>
         </div>
 
         <div>
@@ -68,6 +71,9 @@
 
     <div id="successors-list">
         <ng-container>
+            <div *ngIf="issue.successors.length === 0">
+                <span class="info-msg">No successors added yet</span>
+            </div>
             <div *ngFor="let successor of issue.successors">
                 <div class="issue-row">
                     <div class="polje">
