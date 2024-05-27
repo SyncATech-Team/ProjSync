@@ -61,5 +61,5 @@ export interface JIssue {
   reporterUsername: string;
   assigneeUsernames: string[];
   dependentOnIssues: string[];
-  groupId: string;
+  groupId: number;
 }
