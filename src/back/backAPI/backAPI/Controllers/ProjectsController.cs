@@ -157,7 +157,8 @@ namespace backAPI.Controllers
         }
 
         /// <summary>
-        /// Dohvatanje projekta sa svim zadacima
+        /// Dohvatanje projekta sa svim zadacima, 
+        /// zadaci sadrze i veze sa svojim prethodnicima i naslednicima
         /// </summary>
         /// <returns></returns>
         [HttpGet("{projectName}/all")]
@@ -165,6 +166,7 @@ namespace backAPI.Controllers
         {
             var projectByName = await _projectsRepository.GetProjectByName(projectName);
             var groups = await _issueRepository.GetAllGroupsForGivenProject(projectByName.Id);
+
 
             ProjectWithIssuesDto result = new ProjectWithIssuesDto();
             var type = await _projectTypesRepository.GetProjectTypeById(projectByName.TypeId);
@@ -216,9 +218,13 @@ namespace backAPI.Controllers
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                     var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                     var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
-                    
-                    var project = projectByName;
+                    var issueGroup = await _issueGroupRepository.GetGroupAsync(issue.GroupId);
+                    var issueOwner = await _usersRepository.GetUserById(issue.OwnerId);
+                    var reporterId = await _issueRepository.GetReporterId(issue.Id);
+                    var reporterUsername = await _usersRepository.GetUserById(reporterId);
+                    var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
 
+                    var project = projectByName;
                     List<string> assigneeIdsList = new List<string>();
                     foreach (var assigneeId in assigneeIds)
                     {
@@ -226,9 +232,11 @@ namespace backAPI.Controllers
                     }
 
                     List<JCommentDto> commentDtos = new List<JCommentDto>();
+                    List<string> assigneeUsernames = new List<string>();
                     foreach (var item in comments)
                     {
                         var user = await _usersRepository.GetUserById(item.UserId);
+                        assigneeUsernames.Add(user.UserName);
                         var userDto = new UserDto()
                         {
                             Name = user.FirstName + ' ' + user.LastName,
@@ -263,11 +271,19 @@ namespace backAPI.Controllers
                         UpdatedAt = issue.UpdatedDate.ToString(),
                         DueDate = issue.DueDate.ToString(),
                         ReporterId = issue.OwnerId.ToString(),
+                        // ReporterId = reporterId.ToString(),
                         ProjectId = project.Id.ToString(),
                         UserIds = assigneeIdsList,
                         UsersWithCompletion = assigneeeCompletionLevel.ToList(),
                         Completed = issue.Completed,
-                        Comments = commentDtos
+                        Comments = commentDtos,
+                        OwnerUsername = issueOwner.UserName,
+                        ProjectName = project.Name,
+                        GroupName = issueGroup.Name,
+                        ReporterUsername = reporterUsername.UserName,
+                        AssigneeUsernames = assigneeUsernames.ToArray(),
+                        DependentOnIssues = issueDependencies.ToArray(),
+                        GroupId = issueGroup.Id
                     };
 
                     issues.Add(issueDto);
