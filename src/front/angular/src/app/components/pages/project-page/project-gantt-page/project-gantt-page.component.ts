@@ -143,12 +143,12 @@ constructor(
     private userOnProject : UserOnProjectService,
     public userPictureService: UserProfilePicture,
     private _projectService: ProjectService
-) {}
-
-ngOnInit(): void {
+) {
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     this._projectService.getProject(this.projectName);
+}
 
+ngOnInit(): void {
     this.loading = true;
 
     this.fetchGroups();
@@ -180,7 +180,8 @@ fetchGroups() {
 
 fetchIssues() {
     console.log("fetchIssues");
-    this.issueService.getAllIssuesForProject(this.projectName).subscribe({
+    // issues$ Observable postoji, dobijen u konstruktoru i nalazi se u state-u
+    this._projectQuery.issues$.subscribe({
         next: response => {
             let data = response;
             const dataIssues = [];
@@ -217,6 +218,44 @@ fetchIssues() {
             console.log("Error fetching tasks: " + error.error);
         }
     });
+
+    // this.issueService.getAllIssuesForProject(this.projectName).subscribe({
+    //     next: response => {
+    //         let data = response;
+    //         const dataIssues = [];
+            
+    //         for(let issue of data) {
+    //             let startDate = new Date(issue.createdAt);
+    //             let endDate = new Date(issue.dueDate);
+                
+    //             let dependentOnList: string[] = [];
+    //             for(let issueId of issue.dependentOnIssues)
+    //                 dependentOnList.push("" + issueId);
+                
+    //             dataIssues.push({
+    //                 id: issue.id.toString(),
+    //                 title: issue.title,
+    //                 start: getUnixTime(startDate),
+    //                 end: getUnixTime(endDate),
+    //                 group_id: "0000" + issue.groupId,
+    //                 links: dependentOnList,
+    //                 expandable: true,
+    //                 draggable: true,
+    //                 progress: issue.completed/100,
+    //                 reporterUsername: issue.reporterUsername
+    //             });
+    //         }
+    //         this.items = dataIssues;
+            
+    //         this.viewType = GanttViewType.day;
+    //         this.selectedViewType = GanttViewType.day;
+    //         this.loading = false;
+            
+    //     },
+    //     error: error => {
+    //         console.log("Error fetching tasks: " + error.error);
+    //     }
+    // });
 }
 
 fetchUsers() {
