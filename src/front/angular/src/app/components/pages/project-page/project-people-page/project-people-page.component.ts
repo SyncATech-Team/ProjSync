@@ -156,7 +156,12 @@ export class ProjectPeoplePageComponent implements OnInit{
     }
   
     if (searchTerm) {
-      filteredUsers = filteredUsers.filter(user => user.username.toLowerCase().includes(searchTerm));
+      filteredUsers = filteredUsers.filter(user => user.username.toLowerCase().includes(searchTerm)
+      || user.firstName.toLowerCase().includes(searchTerm)
+      || user.lastName.toLowerCase().includes(searchTerm)
+      || user.companyRoleName.toLowerCase().includes(searchTerm)
+      || user.email.toLowerCase().includes(searchTerm)
+      );
     }
     
     this.users = filteredUsers;

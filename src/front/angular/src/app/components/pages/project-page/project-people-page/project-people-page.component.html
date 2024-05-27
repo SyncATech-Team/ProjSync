@@ -205,7 +205,7 @@
                         [(ngModel)]="userForAdd" 
                         optionLabel="username" 
                         [filter]="true" 
-                        filterBy="username" 
+                        [filterFields]="['firstName','lastName','username']"
                         [showClear]="true" 
                         [style]="{minWidth: '100%'}" 
                         name="userForAdd"
