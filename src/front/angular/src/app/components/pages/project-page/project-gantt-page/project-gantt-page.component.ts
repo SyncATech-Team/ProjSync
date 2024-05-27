@@ -194,7 +194,7 @@ fetchIssues() {
                     dependentOnList.push("" + issueId);
                 
                 dataIssues.push({
-                    id: "" + issue.id,
+                    id: issue.id.toString(),
                     title: issue.title,
                     start: getUnixTime(startDate),
                     end: getUnixTime(endDate),
