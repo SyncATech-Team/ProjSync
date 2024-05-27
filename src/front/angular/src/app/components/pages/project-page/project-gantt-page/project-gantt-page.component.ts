@@ -157,7 +157,8 @@ ngOnInit(): void {
 }
 
 fetchGroups() {
-    this.groupService.getAllGroups(this.projectName).subscribe({
+    // groups$ Observable postoji, dobijen u konstruktoru i nalazi se u state-u
+    this._projectQuery.groups$.subscribe({
         next: response => {
             let data = response;
             const dataGroups = [];
@@ -171,11 +172,29 @@ fetchGroups() {
                 })
             }
             this.groups = dataGroups;
-        },
-        error: error => {
-            console.log("ERROR!!!");
-        } 
+        }
     });
+
+    // [NAPOMENA]: Ukoliko ne radi kod iznad, otkomentarisati stari poziv
+    // 
+    // this.groupService.getAllGroups(this.projectName).subscribe({
+    //     next: response => {
+    //         let data = response;
+    //         const dataGroups = [];
+    //         for(let group of data) {
+    //             dataGroups.push({
+    //                 // dodavanje nula za id da bi se razlikovali id-evi za task i grupe
+    //                 id: "0000" + group.id,
+    //                 title: group.name,
+    //                 expanded: this.expanded
+    //             })
+    //         }
+    //         this.groups = dataGroups;
+    //     },
+    //     error: error => {
+    //         console.log("ERROR!!!");
+    //     } 
+    // });
 }
 
 fetchIssues() {
@@ -208,30 +227,24 @@ fetchIssues() {
                 });
             }
             this.items = dataIssues;
-            
             this.viewType = GanttViewType.day;
             this.selectedViewType = GanttViewType.day;
             this.loading = false;
-            
-        },
-        error: error => {
-            console.log("Error fetching tasks: " + error.error);
         }
     });
 
+    // [NAPOMENA]: Ukoliko ne radi kod iznad, otkomentarisati stari poziv
+    // 
     // this.issueService.getAllIssuesForProject(this.projectName).subscribe({
     //     next: response => {
     //         let data = response;
     //         const dataIssues = [];
-            
     //         for(let issue of data) {
     //             let startDate = new Date(issue.createdAt);
     //             let endDate = new Date(issue.dueDate);
-                
     //             let dependentOnList: string[] = [];
     //             for(let issueId of issue.dependentOnIssues)
     //                 dependentOnList.push("" + issueId);
-                
     //             dataIssues.push({
     //                 id: issue.id.toString(),
     //                 title: issue.title,
@@ -246,11 +259,9 @@ fetchIssues() {
     //             });
     //         }
     //         this.items = dataIssues;
-            
     //         this.viewType = GanttViewType.day;
     //         this.selectedViewType = GanttViewType.day;
     //         this.loading = false;
-            
     //     },
     //     error: error => {
     //         console.log("Error fetching tasks: " + error.error);

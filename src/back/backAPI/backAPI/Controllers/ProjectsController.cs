@@ -206,9 +206,17 @@ namespace backAPI.Controllers
                 users.Add(userDto);
             }
 
+            List<IssueGroupResponseDto> groupsDTO = new List<IssueGroupResponseDto>();
             foreach (var group in groups)
             {
                 var issuesInGroup = await _issueRepository.GetAllIssuesForGivenGroup(group.Id);
+
+                // dodavanje group DTO za gant
+                groupsDTO.Add(new IssueGroupResponseDto
+                {
+                    Id = group.Id,
+                    Name = group.Name,
+                });
 
                 foreach (var issue in issuesInGroup)
                 {
@@ -292,6 +300,7 @@ namespace backAPI.Controllers
 
             result.issues = issues.ToArray();
             result.users = users.ToArray();
+            result.Groups = groupsDTO.ToArray();
 
             return Ok(result);
         }

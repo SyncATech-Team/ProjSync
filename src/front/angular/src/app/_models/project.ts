@@ -1,3 +1,4 @@
+import { GroupInProject } from "./group-in-project";
 import { JIssue } from "./issue";
 import { JUser } from "./user-issues";
 
@@ -11,6 +12,7 @@ export interface JProject {
     updateAt: string;
     issues: JIssue[];
     users: JUser[];
+    groups: GroupInProject[];
 }
 
 export enum ProjectCategory {
