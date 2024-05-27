@@ -31,12 +31,6 @@ export class ProjectQuery extends Query<ProjectState> {
       .sort((a, b) => a.listPosition - b.listPosition))
   );
 
-  issueByGroupsSorted$ = (group_id: number): Observable<JIssue[]> => this.issues$.pipe(
-    map((issues) => issues
-      .filter((x) => x.groupId === group_id)
-      .sort((a, b) => a.listPosition - b.listPosition))
-  );
-
   issueById$(issueId: string){
     return this.issues$.pipe(
       delay(500),
