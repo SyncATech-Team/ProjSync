@@ -7,7 +7,8 @@ export type ProjectState = JProject;
 function createInitialState(): ProjectState {
   return {
     "issues": [],
-    "users": []
+    "users": [],
+    "groups": []
   } as unknown as ProjectState;
 }
 

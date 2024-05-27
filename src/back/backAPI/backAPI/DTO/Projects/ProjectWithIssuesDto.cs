@@ -15,5 +15,6 @@ namespace backAPI.DTO.Projects
 
         public JIssueDto[] issues { get; set; }
         public UserDto[] users { get; set; }
+        public IssueGroupResponseDto[] Groups { get; set; }
     }
 }
