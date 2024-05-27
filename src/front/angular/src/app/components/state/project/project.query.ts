@@ -13,6 +13,7 @@ export class ProjectQuery extends Query<ProjectState> {
   all$ = this.select();
   issues$ = this.select('issues');
   users$ = this.select('users');
+  groups$ = this.select('groups');
 
   constructor(protected override store: ProjectStore) {
     super(store);
@@ -27,6 +28,12 @@ export class ProjectQuery extends Query<ProjectState> {
   issueByStatusSorted$ = (status: IssueStatus): Observable<JIssue[]> => this.issues$.pipe(
     map((issues) => issues
       .filter((x) => x.status === status)
+      .sort((a, b) => a.listPosition - b.listPosition))
+  );
+
+  issueByGroupsSorted$ = (group_id: number): Observable<JIssue[]> => this.issues$.pipe(
+    map((issues) => issues
+      .filter((x) => x.groupId === group_id)
       .sort((a, b) => a.listPosition - b.listPosition))
   );
 
