@@ -95,6 +95,10 @@ th {
     border-radius: 20%;
 }
 
+.exportFileOptions button:first-child{
+    margin-right: 8px;
+}
+
 #search-role{
     padding: 4px 34px;
     border-radius: 6px;
