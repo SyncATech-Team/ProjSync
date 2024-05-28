@@ -430,10 +430,16 @@ namespace backAPI.Repositories.Implementation.Issues
                     .ExecuteDeleteAsync();
             }
             else {
-                await _dataContext.IssueDependencies.AddAsync(new IssueDependencies {
-                    OriginId = model.OriginId,
-                    TargetId = model.TargetId
-                });
+                bool exists = await _dataContext.IssueDependencies.AnyAsync(
+                    elem => elem.OriginId == model.OriginId && elem.TargetId == model.TargetId
+                );
+
+                if(!exists) {
+                    await _dataContext.IssueDependencies.AddAsync(new IssueDependencies {
+                        OriginId = model.OriginId,
+                        TargetId = model.TargetId
+                    });
+                }
             }
 
             await _dataContext.SaveChangesAsync();

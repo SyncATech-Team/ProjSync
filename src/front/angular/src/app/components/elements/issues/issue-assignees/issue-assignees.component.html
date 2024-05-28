@@ -27,10 +27,15 @@
     <p-divider layout="vertical"></p-divider>
 
     <div class="progress-info">
-      <p-progressBar class="progress-bar"
-                     (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
-                     [value]="valueList[i].completionLevel"
-                     [pTooltip]="tooltipContent">
+      <p-progressBar *ngIf="permitions && permitions.canUpdateTaskProgress === 'True'"
+                    class="progress-bar"
+                    (click)="show(assignee?.id, assignee?.name ,valueList[i].completionLevel)"
+                    [value]="valueList[i].completionLevel"
+                    [pTooltip]="tooltipContent">
+      </p-progressBar>
+      <p-progressBar *ngIf="!(permitions && permitions.canUpdateTaskProgress === 'True')"
+                     class="progress-bar"
+                    [value]="valueList[i].completionLevel">
       </p-progressBar>
     </div>
   </div>
@@ -44,7 +49,7 @@
 </ng-template>
 
 <a class="add-more" (click)="op.toggle($event)"
-   style="font-size: 12.5px; cursor: pointer; display: flex; align-items: center; color: #0052cc;">
+   style="font-size: 12.5px; cursor: pointer; display: inline-block; align-items: center; color: #0052cc;">
   <i class="mr-1"></i>
   {{ 'issue-assignees.add-assignee' | translate }}
 </a>
