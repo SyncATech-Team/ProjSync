@@ -40,6 +40,7 @@ export class NavBarComponent implements OnInit {
     { code: 'es', name: 'Español', flag: '../../../../assets/flags/es.png'},
     { code: 'fr', name: 'Français', flag: '../../../../assets/flags/fr.png'},
     { code: 'cn', name: '中文', flag: '../../../../assets/flags/cn.png'},
+    { code: 'kr', name: '한국어', flag: '../../../../assets/flags/kr.png'},
     { code: 'ru', name: 'Русский', flag: '../../../../assets/flags/ru.png'}
   ];
   selectedLanguage: Language = this.languages[0];
