@@ -245,36 +245,40 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   showCreateTaskPopupTaskList() {
     this.clickedModalForCreatingTask = true;
-    this.ref = this._modalService.open(CreateTaskComponent, {
-      header: 'Create task',
-        width: '50%',
-        contentStyle: { overflow: 'auto' },
-        baseZIndex: 10000,
-        maximizable: true,
-        closable: true,
-        modal: true,
-        dismissableMask: true,
-        closeOnEscape: true,
-        breakpoints: {
-          '960px': '75vw',
-          '640px': '94vw'
-        },
-        data: {
-          projectName: this.projectName
-        }
-    });
+    this.translateService.get('project-tasks-page.create-task').subscribe((res: string) => {
+      
+      this.ref = this._modalService.open(CreateTaskComponent, {
+        header: res,
+          width: '50%',
+          contentStyle: { overflow: 'auto' },
+          baseZIndex: 10000,
+          maximizable: true,
+          closable: true,
+          modal: true,
+          dismissableMask: true,
+          closeOnEscape: true,
+          breakpoints: {
+            '960px': '75vw',
+            '640px': '94vw'
+          },
+          data: {
+            projectName: this.projectName
+          }
+      });
 
-    this.ref.onClose.subscribe((data: any) => {
-      this.clickedModalForCreatingTask = false;
+      this.ref.onClose.subscribe((data: any) => {
+        this.clickedModalForCreatingTask = false;
+  
+        if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+  
+        // console.log("Response: " + data + " . Refreshing tasks...");
+        this.tasks = [];
+        this.tasksByGroup = [];
+        this.tasks_backup = [];
+        this.ngOnInit();
+        this.loadIssues(this.lastLazyLoadEvent);
+      });
 
-      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
-
-      // console.log("Response: " + data + " . Refreshing tasks...");
-      this.tasks = [];
-      this.tasksByGroup = [];
-      this.tasks_backup = [];
-      this.ngOnInit();
-      this.loadIssues(this.lastLazyLoadEvent);
     });
 
   }

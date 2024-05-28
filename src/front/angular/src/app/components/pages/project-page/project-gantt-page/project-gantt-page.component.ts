@@ -522,26 +522,30 @@ expandAllGroups() {
 }
 
 showCreateTaskPopupTaskGantt() {
-    this.ref = this._modalService.open(CreateTaskComponent, {
-      header: 'Create task',
-        width: '50%',
-        contentStyle: { overflow: 'auto' },
-        baseZIndex: 10000,
-        maximizable: true,
-        closable: true,
-        modal: true,
-        dismissableMask: true,
-        closeOnEscape: true,
-        data: {
-          projectName: this.projectName
-        }
-    });
+    this.translateService.get('project-gantt-page.create-task').subscribe((res: string) => {
+    
+        this.ref = this._modalService.open(CreateTaskComponent, {
+            header: res,
+              width: '50%',
+              contentStyle: { overflow: 'auto' },
+              baseZIndex: 10000,
+              maximizable: true,
+              closable: true,
+              modal: true,
+              dismissableMask: true,
+              closeOnEscape: true,
+              data: {
+                projectName: this.projectName
+              }
+          });
+      
+          this.ref.onClose.subscribe((data: any) => {
+            if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+      
+          //   console.log("Response: " + data + " . Refreshing tasks...");
+            this.refresh();
+          });
 
-    this.ref.onClose.subscribe((data: any) => {
-      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
-
-    //   console.log("Response: " + data + " . Refreshing tasks...");
-      this.refresh();
     });
 
   }
