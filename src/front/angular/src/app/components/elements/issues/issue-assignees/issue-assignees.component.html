@@ -1,5 +1,5 @@
 <div class="mt-6 mb-1 text-uppercase font-weight-bold">
-  Assignees
+  {{ 'issue-assignees.assignees' | translate }}
 </div>
 
 <div *ngFor="let assignee of assignees; let i = index">
@@ -18,7 +18,7 @@
         <i class="pi pi-user"></i>
       </span>
       <svg-icon (click)="removeUser(assignee?.id)"
-        title="Remove user"
+        [title]=" 'issue-assignees.remove-assignee' | translate "
         [size]="20"
         [name]="'times'"
         class="text-textLight">
@@ -44,14 +44,14 @@
 
 <ng-template #tooltipContent>
   <div class="flex align-items-center">
-    <span> Click on progress bar to change percent level of task completion. </span>
+    <span> {{ 'issue-assignees.change-progress-info' | translate }} </span>
   </div>
 </ng-template>
 
 <a class="add-more" (click)="op.toggle($event)"
    style="font-size: 12.5px; cursor: pointer; display: inline-block; align-items: center; color: #0052cc;">
   <i class="mr-1"></i>
-  Add Assignee
+  {{ 'issue-assignees.add-assignee' | translate }}
 </a>
 
 <p-overlayPanel #op>

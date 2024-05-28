@@ -260,7 +260,7 @@ export class UserPageComponent implements OnInit {
         });
       },
       reject: () => {
-          this.msgPopupService.showError('You have rejected');
+          // this.msgPopupService.showError('You have rejected');
       }
     });
   }

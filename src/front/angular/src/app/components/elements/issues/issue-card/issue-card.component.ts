@@ -9,6 +9,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ProjectQuery } from "../../../state/project/project.query";
 import { PhotoForUser } from "../../../../_models/photo-for-user";
 import { UserProfilePicture } from "../../../../_service/userProfilePicture.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
@@ -25,7 +26,12 @@ export class IssueCardComponent implements OnChanges, OnInit {
 
   ref: DynamicDialogRef | undefined;
 
-  constructor(private _projectQuery: ProjectQuery,  private userPictureService: UserProfilePicture, private _modalService: DialogService) { }
+  constructor(
+    private _projectQuery: ProjectQuery,  
+    private userPictureService: UserProfilePicture, 
+    private _modalService: DialogService,
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit(): void {
     this._projectQuery.users$.pipe(untilDestroyed(this)).subscribe((users) => {
@@ -42,22 +48,24 @@ export class IssueCardComponent implements OnChanges, OnInit {
   }
 
   openIssueModal(issueId: string) {
-    this.ref = this._modalService.open(IssueModalComponent, {
-      header: 'Issue - update',
-      width: '65%',
-      modal:true,
-      maximizable: true,
-      closable: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      breakpoints: {
-          '960px': '75vw',
-          '640px': '90vw'
-      },
-      data: {
-        issue$: this._projectQuery.issueById$(issueId),
-        usersPhotos: this.usersPhotos
-      }
+    this.translateService.get('issue.issue-details').subscribe((res: string) => {
+      this.ref = this._modalService.open(IssueModalComponent, {
+        header: res,
+        width: '65%',
+        modal:true,
+        maximizable: true,
+        closable: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        breakpoints: {
+            '960px': '75vw',
+            '640px': '90vw'
+        },
+        data: {
+          issue$: this._projectQuery.issueById$(issueId),
+          usersPhotos: this.usersPhotos
+        }
+      });
     });
   }
 
