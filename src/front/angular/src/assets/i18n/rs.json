@@ -29,7 +29,8 @@
         "do-you-want-to-delete-this-record": "Da li želite da obrišete ovaj zapis?",
         "delete-confirmation": "Potvrda brisanja",
         "new-notification": "Imate novo obaveštenje. Pogledajte ga.",
-        "new-message": "Imate novu poruku. Pogledajte je."
+        "new-message": "Imate novu poruku. Pogledajte je.",
+        "more": "Još"
     },
     "navbar": {
         "work": "Rad",

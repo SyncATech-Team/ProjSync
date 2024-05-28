@@ -29,7 +29,8 @@
         "do-you-want-to-delete-this-record": "Do you want to delete this record?",
         "delete-confirmation": "Delete Confirmation",
         "new-notification": "You have a new notification. Check it out.",
-        "new-message": "You have a new message. Check it out."
+        "new-message": "You have a new message. Check it out.",
+        "more": "More"
     },
     "navbar": {
         "work": "Work",

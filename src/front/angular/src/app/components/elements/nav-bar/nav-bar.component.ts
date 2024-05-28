@@ -36,7 +36,11 @@ export class NavBarComponent implements OnInit {
 
   languages: Language[] = [
     { code: 'en', name: 'English', flag: '../../../../assets/flags/en.png' },
-    { code: 'rs', name: 'Srpski', flag: '../../../../assets/flags/rs.png'}
+    { code: 'rs', name: 'Srpski', flag: '../../../../assets/flags/rs.png'},
+    { code: 'es', name: 'Español', flag: '../../../../assets/flags/es.png'},
+    { code: 'fr', name: 'Français', flag: '../../../../assets/flags/fr.png'},
+    { code: 'cn', name: '中文', flag: '../../../../assets/flags/cn.png'},
+    { code: 'ru', name: 'Русский', flag: '../../../../assets/flags/ru.png'}
   ];
   selectedLanguage: Language = this.languages[0];
   
@@ -229,6 +233,7 @@ export class NavBarComponent implements OnInit {
       'primengConfig.medium',
       'primengConfig.strong',
       'primengConfig.monthNames',
+      'primengConfig.monthNamesShort',
       'primengConfig.dayNamesShort'
     ]).subscribe((translations) => {
       this.primengConfig.setTranslation({
@@ -286,6 +291,7 @@ export class NavBarComponent implements OnInit {
         strong: translations['primengConfig.strong'],
 
         monthNames: translations['primengConfig.monthNames'],
+        monthNamesShort: translations['primengConfig.monthNamesShort'],
         dayNamesMin: translations['primengConfig.dayNamesShort'],
       })
     });

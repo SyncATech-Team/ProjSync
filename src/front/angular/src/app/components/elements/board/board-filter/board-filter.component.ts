@@ -9,6 +9,7 @@ import {JUser} from "../../../../_models/user-issues";
 import {AccountService} from "../../../../_service/account.service";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'board-filter',
@@ -31,6 +32,7 @@ export class BoardFilterComponent implements OnInit {
     public filterService: FilterService,
     private accountService: AccountService,
     private userPictureService: UserProfilePicture,
+    private translateService: TranslateService
   ) {
     this.userIds = [];
   }
@@ -88,7 +90,11 @@ export class BoardFilterComponent implements OnInit {
   }
 
   getGroupTooltip(users: any[]): string {
-    return '+' + users.length + ' more';
+    let tooltip = '+' + users.length;
+    this.translateService.get('general.more').subscribe((res: string) => {
+      tooltip += " " + res;
+    });
+    return  tooltip;
   }
   
   getGroupAvatarImage(users: any[]): string {
