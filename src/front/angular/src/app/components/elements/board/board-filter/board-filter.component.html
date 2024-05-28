@@ -68,14 +68,14 @@
 
   <p-button
     class="ml-3 btn-empty"
-    label="Only My Issues"
+    [label]="'kanban-page.only-my-tasks' | translate"
     [text]="true"
     (click)="onlyMyIssueChanged()">
   </p-button>
 
   <p-button
     class="ml-3 btn-empty"
-    label="Ignore Resolved"
+    [label]="'kanban-page.ignore-resolved' | translate"
     [text]="true"
     (click)="ignoreResolvedChanged()">
   </p-button>
@@ -85,7 +85,7 @@
     <div class="mr-3 border-right bg-secondary" style="width: 1px;"></div>
     <p-button
       class="btn-secondary"
-      label="Clear all"
+      [label]="'kanban-page.clear-all' | translate"
       [text]="true"
       (click)="resetAll()">
     </p-button>

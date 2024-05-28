@@ -177,3 +177,15 @@
     justify-content: flex-start;
     gap: auto;
 }
+
+.flag {
+    margin-right: 5px;
+}
+
+.flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}

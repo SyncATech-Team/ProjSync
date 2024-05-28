@@ -7,6 +7,7 @@ import {PhotoForUser} from "../../../../_models/photo-for-user";
 import { DocumentTitle } from '../../../../_models/document-title.model';
 import { IssueDocumentationService } from '../../../../_service/issue-documentation.service';
 import { AccountService } from '../../../../_service/account.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'issue-detail',
@@ -30,7 +31,9 @@ export class IssueDetailComponent implements OnInit{
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     public projectQuery: ProjectQuery,
-    private _projectService: ProjectService) {
+    private _projectService: ProjectService,
+    private translateService: TranslateService
+  ) {
   }
   ngOnInit(): void {
     var user = this.accoutService.getCurrentUser();
@@ -45,24 +48,29 @@ export class IssueDetailComponent implements OnInit{
 
   // dialog za brisanje
   confirmDelete(event: Event) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: "p-button-danger p-button-text",
-      rejectButtonStyleClass: "p-button-text p-button-text",
-      acceptIcon: "none",
-      rejectIcon: "none",
-
-      accept: () => {
-        if (!this.issue) return;
-        this._projectService.deleteIssue(this.issue.id);
-        this.closeModal();
-      },
-      reject: () => {
-        this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
-      }
+    this.translateService.get([
+      'general.do-you-want-to-delete-this-record',
+      'general.delete-confirmation'
+    ]).subscribe((res: any) => {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: res['general.do-you-want-to-delete-this-record'],
+        header: res['general.delete-confirmation'],
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: "p-button-danger p-button-text",
+        rejectButtonStyleClass: "p-button-text p-button-text",
+        acceptIcon: "none",
+        rejectIcon: "none",
+  
+        accept: () => {
+          if (!this.issue) return;
+          this._projectService.deleteIssue(this.issue.id);
+          this.closeModal();
+        },
+        reject: () => {
+          // this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+        }
+      });
     });
   }
 }

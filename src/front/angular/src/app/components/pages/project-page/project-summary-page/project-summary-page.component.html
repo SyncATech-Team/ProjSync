@@ -17,16 +17,22 @@
                     <h4>{{project.name}}</h4>
                 </div>
                 <div class="container">
-                    <span class="span-bold">Key: </span> {{project.key}}
+                    <span class="span-bold">
+                        {{'summary-page.key' | translate}}
+                        : </span> {{project.key}}
                 </div>
-                <div class="container">
+                <!-- <div class="container">
                     <span class="span-bold">Visibility:</span> {{project.visibilityName}}
+                </div> -->
+                <div class="container">
+                    <span class="span-bold">
+                        {{'summary-page.type' | translate}}
+                        : </span> {{project.typeName}}
                 </div>
                 <div class="container">
-                    <span class="span-bold">Type: </span> {{project.typeName}}
-                </div>
-                <div class="container">
-                    <span class="span-bold">Owner: </span> {{project.ownerUsername}}
+                    <span class="span-bold">
+                        {{'summary-page.owner' | translate}}
+                        : </span> {{project.ownerUsername}}
                 </div>
             </div>
 
@@ -35,18 +41,30 @@
                 <div class="content-box">
                     <div>
                         <canvas id="task-types-canvas" #issueTypes></canvas>
-                        <div class="div-caption">Task types</div>
+                        <div class="div-caption">
+                            {{'summary-page.task-types' | translate}}
+                        </div>
                         <div class="chart-options">
                             <div class="custom-select">
                                 <select (change)="changeChartType('type', $event.target)">
-                                    <option value="bar">Bar Chart</option>
-                                    <option value="radar">Radar Chart</option>
-                                    <option value="doughnut">Doughnut Chart</option>
-                                    <option selected value="pie">Pie Chart</option>
-                                    <option value="polarArea">Polar Area Chart</option>
+                                    <option value="bar">
+                                        {{'summary-page.bar-chart' | translate}}
+                                    </option>
+                                    <option value="radar">
+                                        {{'summary-page.radar-chart' | translate}}
+                                    </option>
+                                    <option value="doughnut">
+                                        {{'summary-page.doughnut-chart' | translate}}
+                                    </option>
+                                    <option selected value="pie">
+                                        {{'summary-page.pie-chart' | translate}}
+                                    </option>
+                                    <option value="polarArea">
+                                        {{'summary-page.polar-area-chart' | translate}}
+                                    </option>
                                 </select>
                             </div>
-                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-types-canvas')">
+                            <button [pTooltip]="'summary-page.download-chart' | translate" class="download-button" (click)="downloadChart('task-types-canvas')">
                                 <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
                             </button>
                         </div>
@@ -56,18 +74,30 @@
                 <div class="content-box">
                     <div>
                         <canvas id="task-priorities-canvas" #issuePriorities></canvas>
-                        <div class="div-caption">Task priorities</div>
+                        <div class="div-caption">
+                            {{'summary-page.task-priorities' | translate}}
+                        </div>
                         <div class="chart-options">
                             <div class="custom-select">
                                 <select (change)="changeChartType('priority', $event.target)">
-                                    <option selected value="bar">Bar Chart</option>
-                                    <option value="radar">Radar Chart</option>
-                                    <option value="doughnut">Doughnut Chart</option>
-                                    <option value="pie">Pie Chart</option>
-                                    <option value="polarArea">Polar Area Chart</option>
+                                    <option selected value="bar">
+                                        {{'summary-page.bar-chart' | translate}}
+                                    </option>
+                                    <option value="radar">
+                                        {{'summary-page.radar-chart' | translate}}
+                                    </option>
+                                    <option value="doughnut">
+                                        {{'summary-page.doughnut-chart' | translate}}
+                                    </option>
+                                    <option value="pie">
+                                        {{'summary-page.pie-chart' | translate}}
+                                    </option>
+                                    <option value="polarArea">
+                                        {{'summary-page.polar-area-chart' | translate}}
+                                    </option>
                                 </select>
                             </div>
-                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-priorities-canvas')">
+                            <button [pTooltip]="'summary-page.download-chart' | translate" class="download-button" (click)="downloadChart('task-priorities-canvas')">
                                 <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
                             </button>
                         </div>
@@ -77,18 +107,30 @@
                 <div class="content-box">
                     <div>
                         <canvas id="task-statuses-canvas" #issueStatuses></canvas>
-                        <div class="div-caption">Task statuses</div>
+                        <div class="div-caption">
+                            {{'summary-page.task-statuses' | translate}}
+                        </div>
                         <div class="chart-options">
                             <div class="custom-select">
                                 <select (change)="changeChartType('status', $event.target)">
-                                    <option value="bar">Bar Chart</option>
-                                    <option value="radar">Radar Chart</option>
-                                    <option selected value="doughnut">Doughnut Chart</option>
-                                    <option value="pie">Pie Chart</option>
-                                    <option value="polarArea">Polar Area Chart</option>
+                                    <option value="bar">
+                                        {{'summary-page.bar-chart' | translate}}
+                                    </option>
+                                    <option value="radar">
+                                        {{'summary-page.radar-chart' | translate}}
+                                    </option>
+                                    <option selected value="doughnut">
+                                        {{'summary-page.doughnut-chart' | translate}}
+                                    </option>
+                                    <option value="pie">
+                                        {{'summary-page.pie-chart' | translate}}
+                                    </option>
+                                    <option value="polarArea">
+                                        {{'summary-page.polar-area-chart' | translate}}
+                                    </option>
                                 </select>
                             </div>
-                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-statuses-canvas')">
+                            <button [pTooltip]="'summary-page.download-chart' | translate" class="download-button" (click)="downloadChart('task-statuses-canvas')">
                                 <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
                             </button>
                         </div>
@@ -98,18 +140,30 @@
                 <div class="content-box">
                     <div>
                         <canvas id="task-groups-canvas" #issueGroups></canvas>
-                        <div class="div-caption">Task groups</div>
+                        <div class="div-caption">
+                            {{'summary-page.task-groups' | translate}}
+                        </div>
                         <div class="chart-options">
                             <div class="custom-select">
                                 <select (change)="changeChartType('group', $event.target)">
-                                    <option value="bar">Bar Chart</option>
-                                    <option value="radar">Radar Chart</option>
-                                    <option value="doughnut">Doughnut Chart</option>
-                                    <option selected value="pie">Pie Chart</option>
-                                    <option value="polarArea">Polar Area Chart</option>
+                                    <option value="bar">
+                                        {{'summary-page.bar-chart' | translate}}
+                                    </option>
+                                    <option value="radar">
+                                        {{'summary-page.radar-chart' | translate}}
+                                    </option>
+                                    <option value="doughnut">
+                                        {{'summary-page.doughnut-chart' | translate}}
+                                    </option>
+                                    <option selected value="pie">
+                                        {{'summary-page.pie-chart' | translate}}
+                                    </option>
+                                    <option value="polarArea">
+                                        {{'summary-page.polar-area-chart' | translate}}
+                                    </option>
                                 </select>
                             </div>
-                            <button pTooltip="Download Chart" class="download-button" (click)="downloadChart('task-groups-canvas')">
+                            <button [pTooltip]="'summary-page.download-chart' | translate" class="download-button" (click)="downloadChart('task-groups-canvas')">
                                 <i class="fas fa-download"></i> <!-- Font Awesome download icon -->
                             </button>
                         </div>
@@ -121,11 +175,15 @@
 
         <div class="row custom-margin-top">
             <div class="col-sm-5 wrapper-box custom-margin-right">
-                <h4>Description</h4>
+                <h4>
+                    {{'summary-page.description' | translate}}
+                </h4>
                 <div id="description" [innerHTML]= "safeDescription"></div>
             </div>
             <div class="col-sm-6 wrapper-box logs-box">
-                <h4>Logs</h4>
+                <h4>
+                    {{'summary-page.logs' | translate}}
+                </h4>
                 <app-logs-container [projectName]="projectName!"></app-logs-container>
             </div>
         </div>

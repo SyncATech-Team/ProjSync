@@ -238,5 +238,18 @@ namespace backAPI.Controllers
             }
             else return BadRequest("Username is not registered");
         }
+
+        [HttpPost("change-language/{username}/{language}")]
+        public async Task<ActionResult> ChangeLanguage(string username, string language)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return BadRequest(new { message = "There is no user with given username" });    // unlikely
+
+            user.PreferedLanguage = language;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return BadRequest(new { message = "Failed to change language" });
+
+            return Ok(new { message = "Language changed" });
+        }
     }
 }

@@ -38,6 +38,7 @@ import { UserGetter } from '../../../../_models/user-getter';
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { ProjectService } from '../../../state/project/project.service';
 import { DateService } from '../../../../_service/date.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -142,8 +143,31 @@ constructor(
     private _projectQuery: ProjectQuery,
     private userOnProject : UserOnProjectService,
     public userPictureService: UserProfilePicture,
-    private _projectService: ProjectService
+    private _projectService: ProjectService,
+    private translateService: TranslateService
 ) {
+
+    this.translateService.get([
+        'project-gantt-page.day',
+        'project-gantt-page.week',
+        'project-gantt-page.month',
+        'project-gantt-page.quarter',
+        'project-gantt-page.year'
+    ]).subscribe({
+        next: (res: any) => { // Explicitly define the type of 'res' as 'any'
+            this.views = [
+                { name: res['project-gantt-page.day'], value: GanttViewType.day },
+                { name: res['project-gantt-page.week'], value: GanttViewType.week },
+                { name: res['project-gantt-page.month'], value: GanttViewType.month },
+                { name: res['project-gantt-page.quarter'], value: GanttViewType.quarter },
+                { name: res['project-gantt-page.year'], value: GanttViewType.year }
+            ];
+
+            
+        }
+    
+    })
+
     this.projectName = this.route.snapshot.paramMap.get('projectName')!;
     this._projectService.getProject(this.projectName);
 }
@@ -297,68 +321,76 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
-    this.ref1 = this._modalService.open(IssueModalComponent, {
-      header: 'Issue - update',
-      width: '65%',
-      modal:true,
-      closable: true,
-      maximizable: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      breakpoints: {
-          '960px': '75vw',
-          '640px': '90vw'
-      },
-      data: {
-        issue$: this._projectQuery.issueById$(issueId.toString()),
-        usersPhotos: this.usersPhotos
-      }
-    });
+    this.translateService.get('issue.issue-details').subscribe((res: string) => {
+        this.ref1 = this._modalService.open(IssueModalComponent, {
+            header: res,
+            width: '65%',
+            modal:true,
+            closable: true,
+            maximizable: true,
+            dismissableMask: true,
+            closeOnEscape: true,
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            data: {
+                issue$: this._projectQuery.issueById$(issueId.toString()),
+                usersPhotos: this.usersPhotos
+            }
+        });
 
-    this.ref1.onClose.subscribe({
-        next: _ => {
-          this.refresh();
-        }
-      });
+        this.ref1.onClose.subscribe({
+            next: _ => {
+                this.refresh();
+            }
+        });
+    });
   }
 
 lineClick(event: GanttLineClickEvent) {
-
-    this.confirmationService.confirm({
-        message: 'Do you want to delete this dependency?',
-        header: 'Delete Confirmation',
-        icon: 'pi pi-info-circle',
-        acceptButtonStyleClass:"p-button-danger p-button-text",
-        rejectButtonStyleClass:"p-button-text p-button-text",
-        acceptIcon:"none",
-        rejectIcon:"none",
-
-        accept: () => {
-            let source = event.source;
-            let target = event.target;
-            
-            let model: IssueDependencyUpdater = {
-                originId: source!.id as unknown as number,
-                targetId: target!.id as unknown as number,
-                isDelete: true
-            }
-
-            this.issueService.createOrDeleteIssueDependency(model).subscribe({
-                next: response => {
-                    this.msgPopupService.showInfo("Successfully deleted a dependency!");
-                    this.refresh();
-                },
-                error: error => {
-                    console.log("ERROR!!! " + error.error);
+    this.translateService.get([
+        'project-gantt-page.do-you-want-to-delete-this-dependency',
+        'project-gantt-page.delete-confirmation',
+        'project-gantt-page.dependency-deleted',
+        'general.delete'
+    ]).subscribe((res: any) => {
+        this.confirmationService.confirm({
+            message: res['project-gantt-page.do-you-want-to-delete-this-dependency'],
+            header: res['project-gantt-page.delete-confirmation'],
+            icon: 'pi pi-info-circle',
+            acceptButtonStyleClass:"p-button-danger p-button-text",
+            rejectButtonStyleClass:"p-button-text p-button-text",
+            acceptIcon:"none",
+            rejectIcon:"none",
+    
+            accept: () => {
+                let source = event.source;
+                let target = event.target;
+                
+                let model: IssueDependencyUpdater = {
+                    originId: source!.id as unknown as number,
+                    targetId: target!.id as unknown as number,
+                    isDelete: true
                 }
-            })
-            
-            this.items = [...this.items];
-        },
-        reject: () => {
-
-        }
-    })
+    
+                this.issueService.createOrDeleteIssueDependency(model).subscribe({
+                    next: response => {
+                        this.msgPopupService.showInfo(res['project-gantt-page.dependency-deleted']);
+                        this.refresh();
+                    },
+                    error: error => {
+                        console.log("ERROR!!! " + error.error);
+                    }
+                })
+                
+                this.items = [...this.items];
+            },
+            reject: () => {
+    
+            }
+        })
+    });
     // this.msgPopupService.showInfo(`Event: lineClick ${event.source.title} to ${event.target.title} line`)
 }
 
@@ -378,11 +410,15 @@ dragEnded(event: GanttDragEvent) {
     
     this.issueService.updateIssueStartEndDate(issueId, model).subscribe({
         next: response => {
-            this.msgPopupService.showInfo("Successfully changed timeline!");
+            this.translateService.get('project-gantt-page.task-dates-changed').subscribe((res: string) => {
+                this.msgPopupService.showInfo(res);
+            });
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
-            this.msgPopupService.showError("Task cannot start before project start date");
+            this.translateService.get('project-gantt-page.cannot-start-before-project-start-date').subscribe((res: string) => {
+                this.msgPopupService.showError(res);
+            });
             this.refresh();
         }
     });
@@ -410,7 +446,9 @@ linkDragEnded(event: GanttLinkDragEvent) {
 
     this.issueService.createOrDeleteIssueDependency(model).subscribe({
         next: response => {
-            this.msgPopupService.showInfo("Successfully created a dependency!");
+            this.translateService.get('project-gantt-page.dependency-created').subscribe((res: string) => {
+                this.msgPopupService.showInfo(res);
+            });
         },
         error: error => {
             console.log("ERROR!!! " + error.error);
@@ -484,26 +522,30 @@ expandAllGroups() {
 }
 
 showCreateTaskPopupTaskGantt() {
-    this.ref = this._modalService.open(CreateTaskComponent, {
-      header: 'Create task',
-        width: '50%',
-        contentStyle: { overflow: 'auto' },
-        baseZIndex: 10000,
-        maximizable: true,
-        closable: true,
-        modal: true,
-        dismissableMask: true,
-        closeOnEscape: true,
-        data: {
-          projectName: this.projectName
-        }
-    });
+    this.translateService.get('project-gantt-page.create-task').subscribe((res: string) => {
+    
+        this.ref = this._modalService.open(CreateTaskComponent, {
+            header: res,
+              width: '50%',
+              contentStyle: { overflow: 'auto' },
+              baseZIndex: 10000,
+              maximizable: true,
+              closable: true,
+              modal: true,
+              dismissableMask: true,
+              closeOnEscape: true,
+              data: {
+                projectName: this.projectName
+              }
+          });
+      
+          this.ref.onClose.subscribe((data: any) => {
+            if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+      
+          //   console.log("Response: " + data + " . Refreshing tasks...");
+            this.refresh();
+          });
 
-    this.ref.onClose.subscribe((data: any) => {
-      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
-
-    //   console.log("Response: " + data + " . Refreshing tasks...");
-      this.refresh();
     });
 
   }

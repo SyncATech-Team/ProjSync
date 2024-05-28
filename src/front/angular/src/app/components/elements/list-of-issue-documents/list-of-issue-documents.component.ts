@@ -5,6 +5,7 @@ import { MessagePopupService } from '../../../_service/message-popup.service';
 import { ConfirmationService } from 'primeng/api';
 import { DocumentRefreshService } from '../../../_service/documentRefreshService.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-of-issue-documents',
@@ -23,7 +24,8 @@ export class ListOfIssueDocumentsComponent implements OnInit, OnDestroy {
     private issueDocumentationService: IssueDocumentationService,
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
-    private docsRefreshService: DocumentRefreshService
+    private docsRefreshService: DocumentRefreshService,
+    private translateService: TranslateService
   ){
     this.subscription = this.docsRefreshService.refreshDocumentList.subscribe(() => { // kreiraj subscription na eventEmiter za upload dokumenata
       this.refresh();
@@ -102,7 +104,9 @@ export class ListOfIssueDocumentsComponent implements OnInit, OnDestroy {
     }, error => {
       // Handle error
       console.error('Error downloading document:', error);
-      this.msgPopupService.showError('Error downloading document');
+      this.translateService.get('issue-documents.error-downloading-document').subscribe((res: string) => {
+        this.msgPopupService.showError(res);
+      });
     });
   }
 
@@ -132,7 +136,9 @@ export class ListOfIssueDocumentsComponent implements OnInit, OnDestroy {
     }, error => {
       // Handle error
       console.error('Error previewing document:', error);
-      this.msgPopupService.showError('Error previewing document');
+      this.translateService.get('issue-documents.error-previewing-document').subscribe((res: string) => {
+        this.msgPopupService.showError(res);
+      });
     });
   }
 
@@ -143,30 +149,36 @@ export class ListOfIssueDocumentsComponent implements OnInit, OnDestroy {
   }
 
   deleteDocument(id: number, docName: string) {
-    
-    this.confirmationService.confirm({
-      message: 'Do you want to delete this document?',
-      header: 'Delete: ' + docName + "?",
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass:"p-button-danger p-button-text",
-      rejectButtonStyleClass:"p-button-text p-button-text",
-      acceptIcon:"none",
-      rejectIcon:"none",
-
-      accept: () => {
-        this.issueDocumentationService.deleteDocument(id).subscribe({
-          next: _ => {
-            this.msgPopupService.showSuccess("Selected document deleted successfully");
-            this.ngOnInit();
-          },
-          error: error => {
-            this.msgPopupService.showError("Unable to delete choosen document");
-          }
-        });
-      },
-      reject: () => {
-
-      }
+    this.translateService.get([
+      'issue-documents.do-you-want-to-delete-document',
+      'issue-documents.selected-document-deleted-successfully',
+      'issue-documents.unable-to-delete-selected-document',
+      'general.delete'
+    ]).subscribe((res: any) => {
+      this.confirmationService.confirm({
+        message: res['issue-documents.do-you-want-to-delete-document'],
+        header: res['general.delete'] + ": " + docName + "?",
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass:"p-button-danger p-button-text",
+        rejectButtonStyleClass:"p-button-text p-button-text",
+        acceptIcon:"none",
+        rejectIcon:"none",
+  
+        accept: () => {
+          this.issueDocumentationService.deleteDocument(id).subscribe({
+            next: _ => {
+              this.msgPopupService.showSuccess(res['issue-documents.selected-document-deleted-successfully']);
+              this.ngOnInit();
+            },
+            error: error => {
+              this.msgPopupService.showError(res['issue-documents.unable-to-delete-selected-document']);
+            }
+          });
+        },
+        reject: () => {
+  
+        }
+      });
     });
   }
 

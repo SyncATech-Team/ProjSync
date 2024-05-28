@@ -16,6 +16,7 @@ import { error } from 'console';
 import { AccountService } from '../../../../_service/account.service';
 import { User } from '../../../../_models/user';
 import { DatePipe } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-settings-page',
@@ -71,7 +72,9 @@ export class ProjectSettingsPageComponent implements OnInit {
     private userPictureService: UserProfilePicture,
     private usersOnProject: UserOnProjectService,
     private datePipe: DatePipe,
-    private accountService: AccountService){
+    private accountService: AccountService,
+    private translateService: TranslateService
+  ){
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.form = this.formBuilder.group({
       name: [''],
@@ -135,13 +138,17 @@ export class ProjectSettingsPageComponent implements OnInit {
     ){
 
       if(this.form.value.startDate > this.form.value.dueDate){
-        this.msgPopupService.showError("Due date can\'t be before starting date");
+        this.translateService.get('settings-page.due-date-before-start-date').subscribe((translation) => {
+          this.msgPopupService.showError(translation);
+        });
         return;
       }
       var DueDateFormated = new Date(this.form.value.dueDate); //radi provere da li je due date pre danasnjeg dana
       var currentDate = new Date(); //isto
       if(DueDateFormated < currentDate){
-        this.msgPopupService.showError("Due date can\'t be before today");
+        this.translateService.get('settings-page.due-date-before-today').subscribe((translation) => {
+          this.msgPopupService.showError(translation);
+        });
         return;
       }
       
@@ -150,17 +157,22 @@ export class ProjectSettingsPageComponent implements OnInit {
       this.project.creationDate = this.form.value.startDate;
       this.project.dueDate = this.form.value.dueDate;
       // console.log("uspesno")
-      this.projectService.updateProject(this.projectName!,this.project).subscribe({
-        next:(response)=>{
-            this.router.navigate(["home/projects/settings/"+this.project.name]);
-            this.projectName=this.project.name;
-            this.msgPopupService.showSuccess("Project edited");
-          },
-          error: (error)=>{
-            console.log(error);
-            this.msgPopupService.showError("Project name failed to update");
-          }
-        });
+      this.translateService.get([
+        'settings-page.project-edited',
+        'settings-page.project-not-edited'
+      ]).subscribe((translations) => {
+        this.projectService.updateProject(this.projectName!,this.project).subscribe({
+          next:(response)=>{
+              this.router.navigate(["home/projects/settings/"+this.project.name]);
+              this.projectName=this.project.name;
+              this.msgPopupService.showSuccess(translations['settings-page.project-edited']);
+            },
+            error: (error)=>{
+              console.log(error);
+              this.msgPopupService.showError(translations['settings-page.project-not-edited']);
+            }
+          });
+      });
     }
   }
 
