@@ -57,9 +57,10 @@
                       [options]="languages" 
                       [(ngModel)]="selectedLanguage" 
                       optionLabel="name" 
-                      optionValue="code"
                       [placeholder]="'navbar.select-language' | translate" 
                       (onChange)="changeLanguageHandler($event)"
+                      filter="true"
+                      filterBy="name"
                     >
                       <ng-template pTemplate="selectedItem" *ngIf="selectedLanguage != null">
                         <div class="flex align-items-center gap-2">

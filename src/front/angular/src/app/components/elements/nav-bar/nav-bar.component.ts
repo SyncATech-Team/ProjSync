@@ -164,9 +164,9 @@ export class NavBarComponent implements OnInit {
   }
 
   changeLanguageHandler(event: any) {
-    this.accountService.chagePreferedLanguage(this.user!.username, event.value).subscribe({
+    this.accountService.chagePreferedLanguage(this.user!.username, event.value.code).subscribe({
       next: response => {
-        this.setLanguage(event.value);
+        this.setLanguage(event.value.code);
       },
       error: error => {
         console.log(error);
