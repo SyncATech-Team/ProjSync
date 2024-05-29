@@ -33,5 +33,8 @@ namespace backAPI.DTO.Issues
         public string[] AssigneeUsernames { get; set; }
         public int[] DependentOnIssues { get; set; }
         public int GroupId { get; set; }
+
+        public List<IssueDependenciesGetter> Predecessors { get; set; }
+        public List<IssueDependenciesGetter> Successors { get; set; }
     }
 }
