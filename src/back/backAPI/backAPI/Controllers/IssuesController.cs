@@ -782,7 +782,7 @@ namespace backAPI.Controllers
         }
 
         [HttpGet("{issueId}/ProjectName")]
-        public async Task<ActionResult> GetAllIsuuesByProjectName(int issueId)
+        public async Task<ActionResult> GetProjectNameFromIssueId(int issueId)
         {
             var projectName = await _issueRepository.GetProjectNameByIssueId(issueId);
 
