@@ -20,6 +20,7 @@ import { CreateIssueModel } from '../../../_models/create-issue.model';
 import { IssueTypeWithIcon } from '../../../_models/issue-type-icon';
 import { DateService } from '../../../_service/date.service';
 import { TranslateService } from '@ngx-translate/core';
+import { quillConfiguration } from '../../config/editor';
 
 @Component({
   selector: 'app-create-task',
@@ -38,6 +39,7 @@ export class CreateTaskComponent implements OnInit {
   issueStatus : IssueStatus[] = [];
   usersPhotos: PhotoForUser[] = [];
   currentUser? : string;
+  editorOptions = quillConfiguration;
 
   issueCreator : CreateIssueModel = {
     name: "",
