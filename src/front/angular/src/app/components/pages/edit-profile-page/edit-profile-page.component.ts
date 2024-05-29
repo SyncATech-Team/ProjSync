@@ -9,6 +9,7 @@ import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
 import { AuthUserChangePassword } from '../../../_models/change-passowrd-auth-user';
 import { AccountService } from '../../../_service/account.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LocalService } from '../../../_service/local.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -61,7 +62,8 @@ export class EditProfilePageComponent implements OnInit {
     private navBarComponent: NavBarComponent,
     private confirmationService: ConfirmationService,
     private accountService: AccountService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private localService: LocalService
   ) {}
 
 
@@ -105,7 +107,7 @@ export class EditProfilePageComponent implements OnInit {
   }
 
   getUsername() {
-    let x = localStorage.getItem("user");
+    let x = this.localService.getData('user');
     if(x == null) return "";
 
     return JSON.parse(x)['username'];

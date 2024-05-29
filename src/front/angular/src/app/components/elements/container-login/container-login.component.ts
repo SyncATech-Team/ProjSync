@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { EmailValidationService } from '../../../_service/email_validator.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from "primeng/api";
+import { LocalService } from '../../../_service/local.service';
 
 @Component({
   selector: 'container-login',
@@ -24,7 +25,8 @@ export class ContainerLoginComponent implements OnInit {
     private router: Router,
     private mailValidationService: EmailValidationService,
     private cookieService: CookieService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private localService: LocalService
   ) { }
 
   ngOnInit(): void {
@@ -70,7 +72,7 @@ export class ContainerLoginComponent implements OnInit {
   }
 
   hasAdminRole() {
-    const userString = localStorage.getItem('user');
+    const userString = this.localService.getData('user');
     if (!userString) return false;
 
     const user = JSON.parse(userString);
