@@ -208,8 +208,7 @@ namespace backAPI.Controllers
                     });
                 }
 
-                JIssueDto issueDto = new JIssueDto
-                {
+                JIssueDto issueDto = new JIssueDto {
                     Id = issue.Id.ToString(),
                     Title = issue.Name,
                     Type = issueType.Name,
@@ -233,16 +232,14 @@ namespace backAPI.Controllers
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
                     GroupId = issueGroup.Id,
-                    Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
-                    {
+                    Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter {
                         Id = x.Id,
                         Name = x.Name,
                         IsPredecessor = true,
                         ProjectName = project.Name,
                         GroupName = issueGroup.Name
                     }).ToList(),
-                    Successors = issueSuccessors.Select(x => new IssueDependenciesGetter
-                    {
+                    Successors = issueSuccessors.Select(x => new IssueDependenciesGetter {
                         Id = x.Id,
                         Name = x.Name,
                         IsPredecessor = false,

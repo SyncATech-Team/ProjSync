@@ -295,8 +295,7 @@ namespace backAPI.Controllers
                         ReporterUsername = reporterUsername.UserName,
                         AssigneeUsernames = assigneeUsernames.ToArray(),
                         DependentOnIssues = issueDependencies.ToArray(),
-                        GroupId = issueGroup.Id
-                        Comments = commentDtos,
+                        GroupId = issueGroup.Id,
                         Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
                         {
                             Id = x.Id,
