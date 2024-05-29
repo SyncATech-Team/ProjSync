@@ -16,6 +16,8 @@ import {User} from "../../../_models/user";
 import { IssueService } from '../../../_service/issue.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { TranslateService } from '@ngx-translate/core';
+import { IssueDependencyUpdater } from '../../../_models/issue-dependency-create-delete';
+import { IssueDependenciesGetter } from '../../../_models/issueDependenciesGetter.model';
 
 
 @Injectable({
@@ -164,6 +166,62 @@ export class ProjectService {
 
     });
   }
+
+  addPredecessorOrSuccessor(issue: JIssue, model: IssueDependenciesGetter, modelUpdater: IssueDependencyUpdater) {
+
+    if (model.isPredecessor) {
+      const predecessors = arrayUpsert(issue.predecessors ?? [], model.id, model);
+      issue = {...issue, predecessors};
+
+    } else {
+      const successors = arrayUpsert(issue.successors ?? [], model.id, model);
+      issue = {...issue, successors};
+    }
+    
+
+    return this._http.put<boolean>(`${this.baseUrl}Issues/`, modelUpdater).subscribe({
+
+      next: _ => {
+
+        this._store.update((state) => {
+          const issues = arrayUpsert(state.issues, issue.id, issue);
+          return {
+            ...state,
+            issues
+          };
+        });
+
+      }
+    });
+  }
+
+  removePredecessorOrSuccessor(issue: JIssue, model: IssueDependenciesGetter, modelUpdater: IssueDependencyUpdater) {
+
+    if (model.isPredecessor) {
+      const predecessors = arrayRemove(issue.predecessors ?? [], model.id);
+      issue = {...issue, predecessors};
+      
+    } else {
+      const successors = arrayRemove(issue.successors ?? [], model.id);
+      issue = {...issue, successors};
+    }
+
+    return this._http.put<boolean>(`${this.baseUrl}Issues/`, modelUpdater).subscribe({
+
+      next: _ => {
+
+        this._store.update((state) => {
+          const issues = arrayUpsert(state.issues, issue.id, issue);
+          return {
+            ...state,
+            issues
+          };
+        });
+
+      }
+    });
+  }
+
 
   deleteIssue(issueId: string) {
     this._issueService.deleteIssue(issueId).subscribe({

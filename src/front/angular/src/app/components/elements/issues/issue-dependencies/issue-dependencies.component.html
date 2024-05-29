@@ -16,7 +16,7 @@
                     <div class="polje">
                         <span>{{ issue.title }}</span>
                     </div>
-                    <button class="opAddBtn" (click)="addPredecessor(issue)">+</button>
+                    <button class="opAddBtn" (click)="addPredecessor(issue, op1)">+</button>
                 </div>
                 
             </p-overlayPanel>
@@ -62,7 +62,7 @@
                     <div class="polje">
                         <span>{{ issue.title }}</span>
                     </div>
-                    <button class="opAddBtn" (click)="addSuccessor(issue)">+</button>
+                    <button class="opAddBtn" (click)="addSuccessor(issue, op2)">+</button>
                 </div>
                 
             </p-overlayPanel>

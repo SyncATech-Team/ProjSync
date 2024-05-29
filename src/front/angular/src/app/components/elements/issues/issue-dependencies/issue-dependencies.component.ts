@@ -1,8 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { IssueService } from '../../../../_service/issue.service';
-import { ProjectService } from '../../../../_service/project.service';
 import { JIssue } from '../../../../_models/issue';
 import { IssueDependencyUpdater } from '../../../../_models/issue-dependency-create-delete';
+import { ProjectQuery } from '../../../state/project/project.query';
+import { ProjectService } from '../../../state/project/project.service';
+import { IssueDependenciesGetter } from '../../../../_models/issueDependenciesGetter.model';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-issue-dependencies',
@@ -16,10 +19,13 @@ export class IssueDependenciesComponent implements OnInit{
 
   constructor(
     private issueService: IssueService,
-    private _projectService: ProjectService
+    private _projectService: ProjectService,
+    private projectQuery: ProjectQuery,
+    private cdr: ChangeDetectorRef,
   ){}
 
   ngOnInit(): void {
+    this.cdr.markForCheck();
     console.log(this.issue);
     const issueId = Number(this.issue.id);
     this.issueService.getProjectNameByIssueId(issueId).subscribe({
@@ -33,104 +39,108 @@ export class IssueDependenciesComponent implements OnInit{
   }
 
   showOptionsPredecessor() {
-    this.issueService.getAllIssuesForProject(this.projectName).subscribe({
+    this.projectQuery.issues$.subscribe({
       next: (response) => {
         this.issues = response.filter((issue: JIssue) => issue.id !== this.issue.id
         && this.issue.predecessors.findIndex(e=> "" + e.id == issue.id) == -1);
-      },
-      error: (error) => {
-        console.log(error.error);
       }
-    });
+    })
   }
 
   showOptionsSuccessor() {
-    this.issueService.getAllIssuesForProject(this.projectName).subscribe({
+
+    this.projectQuery.issues$.subscribe({
       next: (response) => {
         this.issues = response.filter((issue: JIssue) => issue.id !== this.issue.id
         && this.issue.successors.findIndex(e=>"" + e.id == issue.id) == -1);
-      },
-      error: (error) => {
-        console.log(error.error);
       }
-    });
+    })
   }
 
   public get getIssues() : JIssue[]{
     return this.issues;
   }
 
-  addPredecessor(issue: JIssue) {
-    const originIssueId = Number(issue.id);
+  addPredecessor(issueSelected: JIssue, op: OverlayPanel) {
+    const originIssueId = Number(issueSelected.id);
     const targetIssueId = Number(this.issue.id);
-    let model: IssueDependencyUpdater = {
+    let modelGetter: IssueDependenciesGetter = {
+      id: Number(issueSelected.id),
+      name: issueSelected.title,
+      isPredecessor: true,
+      projectName: issueSelected.projectName,
+      groupName: issueSelected.groupName
+    }
+
+    let modelUpdater: IssueDependencyUpdater = {
       originId : originIssueId,
       targetId : targetIssueId,
       isDelete : false
     }
-    this.issueService.createOrDeleteIssueDependency(model).subscribe({
-      next:(response) =>{
-        this.ngOnInit();
-      },
-      error:(error) => {
 
-      }
-    });
+    this._projectService.addPredecessorOrSuccessor(this.issue, modelGetter, modelUpdater);
+    op.hide();
   }
 
-  addSuccessor(issue:JIssue){
+  addSuccessor(issueSelected:JIssue, op: OverlayPanel){
     const originIssueId = Number(this.issue.id);
-    const targetIssueId = Number(issue.id);
-    let model: IssueDependencyUpdater = {
+    const targetIssueId = Number(issueSelected.id);
+
+    let modelGetter: IssueDependenciesGetter = {
+      id: Number(issueSelected.id),
+      name: issueSelected.title,
+      isPredecessor: false,
+      projectName: issueSelected.projectName,
+      groupName: issueSelected.groupName
+    }
+
+    let modelUpdater: IssueDependencyUpdater = {
       originId : originIssueId,
       targetId : targetIssueId,
       isDelete : false
     }
-    this.issueService.createOrDeleteIssueDependency(model).subscribe({
-      next:(response) =>{
-        this.ngOnInit();
-      },
-      error:(error) => {
-        console.log(error.error)
-      }
-    });
+
+    this._projectService.addPredecessorOrSuccessor(this.issue, modelGetter, modelUpdater);
+    op.hide();
   }
 
   deletePredecessor(predecessor : any) {
     const originIssueId = Number(predecessor.id);
     const targetIssueId = Number(this.issue.id);
-    let model: IssueDependencyUpdater = {
+    let modelUpdater: IssueDependencyUpdater = {
       originId : originIssueId,
       targetId : targetIssueId,
       isDelete : true
     }
 
-    this.issueService.createOrDeleteIssueDependency(model).subscribe({
-      next:(response) =>{
-        this.ngOnInit();
-      },
-      error:(error) => {
-        console.log(error.error)
-      }
-    });
+    let modelGetter: IssueDependenciesGetter = {
+      id: Number(predecessor.id),
+      name: predecessor.title,
+      isPredecessor: true,
+      projectName: predecessor.projectName,
+      groupName: predecessor.groupName
+    }
+
+    this._projectService.removePredecessorOrSuccessor(this.issue, modelGetter, modelUpdater);
   }
 
   deleteSuccessor(successor: any) {
     const originIssueId = Number(this.issue.id);
     const targetIssueId = Number(successor.id);
-    let model: IssueDependencyUpdater = {
+    let modelUpdater: IssueDependencyUpdater = {
       originId : originIssueId,
       targetId : targetIssueId,
       isDelete : true
     }
 
-    this.issueService.createOrDeleteIssueDependency(model).subscribe({
-      next: (response) => {
-        this.ngOnInit();
-      },
-      error: (error) => {
-        console.log(error.error);
-      }
-    });
+    let modelGetter: IssueDependenciesGetter = {
+      id: Number(successor.id),
+      name: successor.title,
+      isPredecessor: false,
+      projectName: successor.projectName,
+      groupName: successor.groupName
+    }
+
+    this._projectService.removePredecessorOrSuccessor(this.issue, modelGetter, modelUpdater);
   }
 }
