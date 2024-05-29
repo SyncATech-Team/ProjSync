@@ -11,6 +11,7 @@ import { AuthUserChangePassword } from '../_models/change-passowrd-auth-user';
 import { PresenceService } from './presence.service';
 import { NotificationService } from './notification.service';
 import { ForgotPasswordModel } from '../_models/forgot-password';
+import { LocalService } from './local.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class AccountService {
   constructor(
     private http: HttpClient,
     private presenceService: PresenceService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private localService: LocalService
   ) { }
 
   login(model: any) {
@@ -52,7 +54,7 @@ export class AccountService {
       return null; // localStorage is not available, return null
     }
 
-    var storage = localStorage.getItem("user");
+    var storage = this.localService.getData('user'); //localStorage.getItem("user");
     if(!storage) return null;
 
     var user = JSON.parse(storage);
@@ -73,7 +75,7 @@ export class AccountService {
     // korisnik moze da ima jednu ili vise uloga, zato pravimo niz
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     user.permitions = permitions;
-    localStorage.setItem('user', JSON.stringify(user));
+    this.localService.saveData('user', JSON.stringify(user));
   }
 
   register(model: RegisterModel) {
@@ -123,7 +125,7 @@ export class AccountService {
 
   logout() {
     // izbrisati iz lokalne memorije
-    localStorage.removeItem('user');
+    this.localService.removeData('user');
     this.presenceService.stopHubConnection();
     this.notificationService.stopHubConnection();
   }
