@@ -14,28 +14,28 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 left--menu">
         <!-- Ovde su bili linkovi za dropdown opcije -->
         <div class="navbar-item work-link" (click)="word.toggle($event)">
-          <span class="navbar-text">Work</span>
+          <span class="navbar-text"> {{'navbar.work' | translate }} </span>
           <p-overlayPanel #word [dismissable]="true" appendTo="body">
             <ng-template pTemplate="content">
               <div class="dropdown-div">
                 <div class="dropdown-item" (click)="navigateToDesiredTab('false')">
-                  My Projects
+                  {{ 'navbar.my-projects' | translate }}
                 </div>
                 <div class="dropdown-item" (click)="navigateToDesiredTab('true')">
-                  My Tasks
+                  {{ 'navbar.my-tasks' | translate }}
                 </div>
               </div>
             </ng-template>
           </p-overlayPanel>
-        </div>        
+        </div>      
       </ul>
 
       <div class="d-flex right--side">
-        
 
-        <form class="d-flex nav_right_opt" role="search">
-          <input type="text" class="p-inputttext-sm" pInputText [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
-        </form>
+        <div class="nav_right_opt">
+          <app-chat-element></app-chat-element>
+        </div>
+
         <!-- <div class="notification-wrap"> -->
           <div class=" nav_right_opt icon" >
             <app-notification></app-notification>
@@ -45,10 +45,42 @@
         <div class="icon">
           <p-overlayPanel #settings>
               <ng-template pTemplate="content">
-                <div class="dropdown-div" id="dropdown-user-info">
-                  <div>
-                      <p> Dark mode: </p>
-                      <p-inputSwitch [(ngModel)]="isDarkTheme" (onChange)="changeTheme()" />
+                <div class="dropdown-div">
+                  <div style="display: flex; align-items: center;">
+                      <p style="margin-bottom: 8px;"> {{'navbar.dark-mode' | translate }} &nbsp;&nbsp;&nbsp;</p>
+                      <p-inputSwitch [(ngModel)]="isDarkTheme" class="small_input_switch" (onChange)="changeTheme()" />
+                  </div>
+                </div>
+                <div class="dropdown-div">
+                  <div style="display: flex; align-items: center; justify-content: center;">
+                    <p-dropdown 
+                      [options]="languages" 
+                      [(ngModel)]="selectedLanguage" 
+                      optionLabel="name" 
+                      (onChange)="changeLanguageHandler($event)"
+                      filter="true"
+                      filterBy="name"
+                    >
+                      <ng-template pTemplate="selectedItem" *ngIf="selectedLanguage != null">
+                        <div class="flex align-items-center gap-2">
+                          <img 
+                            [src]="selectedLanguage.flag"
+                            style="width: 20px"
+                          />
+                          <div>{{ selectedLanguage.name }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-language pTemplate="item">
+                        <div class="flex align-items-center">
+                          <img
+                            class="flag" 
+                            [src]="language.flag"
+                            style="width: 20px"
+                          />
+                          <div>{{ language.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
                 </div>
               </ng-template>
@@ -61,7 +93,10 @@
         </div>
         <div class="icon">
           <a routerLink="/home/info-page">
-            <i id="faq" class="pi pi-question-circle"></i>
+            <i class="pi pi-question-circle"
+            style="color: black"
+            [pTooltip]="'navbar.faq' | translate"
+            tooltipPosition="bottom"></i>
           </a>
         </div>
         
@@ -81,12 +116,12 @@
                 </div>
                 <hr>
                 <div class="dropdown-div">
-                  <div style="font-weight: bold;">Settings</div>
+                  <div style="font-weight: bold;"> {{'navbar.settings' | translate }} </div>
                   <div>
-                    <span class="clickable" routerLink="/home/edit-profile">Edit My Profile</span>
+                    <span class="clickable" routerLink="/home/edit-profile"> {{ 'navbar.edit-my-profile' | translate }} </span>
                   </div>
                   <div>
-                    <span class="clickable" (click)="logout()">Logout</span>
+                    <span class="clickable" (click)="logout()"> {{ 'navbar.logout' | translate }} </span>
                   </div>
                 </div>
                 

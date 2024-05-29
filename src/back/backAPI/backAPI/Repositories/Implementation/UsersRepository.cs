@@ -2,9 +2,6 @@
 using backAPI.DTO;
 using backAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using backAPI.Entities.Domain;
 using backAPI.Other.Helpers;
@@ -182,7 +179,7 @@ namespace backAPI.Repositories.Implementation
         }
 
         public async Task<IEnumerable<User>> GetUsersFromIDarray(string[] arr) {
-            return dataContext.Users.Where(u => arr.Contains(u.UserName));
+            return await dataContext.Users.Where(u => arr.Contains(u.UserName)).ToListAsync();
         }
 
         /* ****************************************************************************************************************************** */
@@ -190,25 +187,6 @@ namespace backAPI.Repositories.Implementation
         /* ********************************************** PRIVATE HELPER METHODS ******************************************************** */
         /* ****************************************************************************************************************************** */
         /* ****************************************************************************************************************************** */
-
-        /* **********************************************************************************
-         * Create email token
-         * ********************************************************************************** */
-        private string CreateEmailToken(string username, int expiretime) {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim("username",username),
-            };
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings2:Token").Value));
-
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(expiretime),
-                signingCredentials: cred);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
-        }
 
         public async Task UpdateUserProfilePhoto(string username, string photoURL)
         {

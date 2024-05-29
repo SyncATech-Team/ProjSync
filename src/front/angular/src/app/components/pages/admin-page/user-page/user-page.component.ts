@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserGetter } from '../../../../_models/user-getter';
 import { UserService } from '../../../../_service/user.service';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
-import * as FileSaver from 'file-saver';
+import fileSaver from 'file-saver';
 import { ConfirmationService } from 'primeng/api';
 import { MessagePopupService } from '../../../../_service/message-popup.service';
 import { CompanyroleService } from '../../../../_service/companyrole.service';
@@ -260,7 +260,7 @@ export class UserPageComponent implements OnInit {
         });
       },
       reject: () => {
-          this.msgPopupService.showError('You have rejected');
+          // this.msgPopupService.showError('You have rejected');
       }
     });
   }
@@ -346,12 +346,19 @@ export class UserPageComponent implements OnInit {
    * Metod za eksportovanje PDF-a koji sadrzi nazive uloga u kompaniji
    */
   exportPdf() {
-    import('jspdf').then((jsPDF) => {
-        import('jspdf-autotable').then((x) => {
-            const doc = new jsPDF.default('p', 'px', 'a4');
-            (doc as any).autoTable(this.exportColumns, this.users);
-            doc.save('users.pdf');
+    this.userService.getAllUsers().subscribe({
+      next: (response)=>{
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then((x) => {
+                const doc = new jsPDF.default('p', 'px', 'a4');
+                (doc as any).autoTable(this.exportColumns, response);
+                doc.save('users.pdf');
+            });
         });
+      },
+      error: (error)=>{
+        console.log(error);
+      }
     });
   }
 
@@ -359,12 +366,20 @@ export class UserPageComponent implements OnInit {
    * Metod za eksportovanje Excel fajla koji sadrzi nazive uloga u kompaniji
    */
   exportExcel() {
-    import('xlsx').then((xlsx) => {
-        const worksheet = xlsx.utils.json_to_sheet(this.users);
-        const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-        const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-        this.saveAsExcelFile(excelBuffer, 'users');
+    this.userService.getAllUsers().subscribe({
+      next: (response)=>{
+        import('xlsx').then((xlsx) => {
+            const worksheet = xlsx.utils.json_to_sheet(response);
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+            const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+            this.saveAsExcelFile(excelBuffer, 'users');
+        });
+      },
+      error: (error)=>{
+        console.log(error);
+      }
     });
+
   }
 
   saveAsExcelFile(buffer: any, fileName: string): void {
@@ -373,7 +388,7 @@ export class UserPageComponent implements OnInit {
     const data: Blob = new Blob([buffer], {
         type: EXCEL_TYPE
     });
-    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+    fileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
   /**
    * Metod koji dinamicki popunjava podatke modala za izmenu korisnickih podataka u odnosu na to o kom

@@ -15,6 +15,7 @@ import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {User} from "../../../_models/user";
 import { IssueService } from '../../../_service/issue.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Injectable({
@@ -32,7 +33,8 @@ export class ProjectService {
     private _http: HttpClient, 
     private _store: ProjectStore,
     private _issueService: IssueService,
-    private _msgPopupService: MessagePopupService
+    private _msgPopupService: MessagePopupService,
+    private _translateService: TranslateService
   ) {
     this.baseUrl = environment.apiUrl;
   }
@@ -176,7 +178,11 @@ export class ProjectService {
       },
       error: error => {
         console.log(error.error);
-        this._msgPopupService.showError(error.error.message);
+        if(error.error.message == "Issue has a dependency") {
+          this._translateService.get('create-task.task-has-a-dependency').subscribe((res: string) => {
+            this._msgPopupService.showError(res);
+          });
+        }
       }
     });
   }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
 import { ContainerLoginComponent } from './components/elements/container-login/container-login.component';
 import { FormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NavBarComponent } from './components/elements/nav-bar/nav-bar.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
@@ -59,7 +59,6 @@ import { BoardDndComponent } from './components/elements/board/board-dnd/board-d
 import { BoardDndListComponent } from './components/elements/board/board-dnd-list/board-dnd-list.component';
 import { SvgDefinitionsComponent } from './components/elements/shared/svg-definitions/svg-definitions.component';
 import { SvgIconComponent } from './components/elements/shared/svg-icon/svg-icon.component';
-import { SamotestComponent } from './components/pages/samotest/samotest.component';
 import { IssueModalComponent } from './components/elements/issues/issue-modal/issue-modal.component';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -124,6 +123,16 @@ import { ListOfIssueDocumentsComponent } from './components/elements/list-of-iss
 import { ForgotPasswordComponent } from './components/elements/forgot-password/forgot-password.component';
 import { PageForgotPasswordComponent } from './components/pages/page-forgot-password/page-forgot-password.component';
 import { InfoPageComponent } from './components/pages/info-page/info-page.component';
+import { ChatPageComponent } from './components/pages/chat-page/chat-page.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChatElementComponent } from './components/elements/chat-element/chat-element.component';
+
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 import { IssueDependenciesComponent } from './components/elements/issues/issue-dependencies/issue-dependencies.component';
 
 @NgModule({
@@ -163,7 +172,6 @@ import { IssueDependenciesComponent } from './components/elements/issues/issue-d
     BoardDndListComponent,
     SvgDefinitionsComponent,
     SvgIconComponent,
-    SamotestComponent,
     IssueModalComponent,
     IssueDetailComponent,
     IssueLoaderComponent,
@@ -189,6 +197,8 @@ import { IssueDependenciesComponent } from './components/elements/issues/issue-d
     ForgotPasswordComponent,
     PageForgotPasswordComponent,
     InfoPageComponent,
+    ChatPageComponent,
+    ChatElementComponent,
     IssueDependenciesComponent
   ],
     imports: [
@@ -237,7 +247,16 @@ import { IssueDependenciesComponent } from './components/elements/issues/issue-d
         MeterGroupModule,
         BadgeModule,
         ScrollerModule,
-        AccordionModule
+        AccordionModule,
+        AutoCompleteModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })
     ],
   providers: [
     CookieService,
@@ -248,6 +267,7 @@ import { IssueDependenciesComponent } from './components/elements/issues/issue-d
     ConfirmationService,
     DialogService,
     DatePipe,
+    HttpClient,
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
     ],
   bootstrap: [AppComponent]

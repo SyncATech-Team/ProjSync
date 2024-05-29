@@ -57,7 +57,7 @@ namespace backAPI.Entities.Domain
         /// <summary>
         /// Jezik koji korisnik preferira za koriscenje aplikacije
         /// </summary>
-        public string PreferedLanguage { get; set; } = "engish";
+        public string PreferedLanguage { get; set; } = "en";
 
         /// <summary>
         /// Datum kada je kreiran nalog

@@ -4,16 +4,15 @@ using backAPI.Repositories.Interface;
 using backAPI.Repositories.Interface.Projects;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using backAPI.Other.Helpers;
 using Newtonsoft.Json;
 using backAPI.SignalR;
 using backAPI.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class IssuesController : BaseApiController 
     {
 

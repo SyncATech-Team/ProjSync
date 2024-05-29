@@ -10,7 +10,9 @@
       [value]="Math.trunc(issue.completed)"
       [style]="{'height': '15px', 'margin-top': '10px'}">
     </p-progressBar>
-    <div style="margin-bottom: 10px">Task completed {{Math.trunc(issue.completed)}} %</div>
+    <div style="margin-bottom: 10px">
+      {{ 'issue-card.task-completed' | translate }}
+      {{Math.trunc(issue.completed)}} %</div>
 
     <div class="d-flex align-items-center justify-content-between">
 

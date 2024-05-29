@@ -3,11 +3,13 @@ using backAPI.Other.Helpers;
 using backAPI.Repositories.Interface;
 using backAPI.Services.Interface;
 using backAPI.SignalR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController {
         private readonly IUsersRepository _usersRepository;
         private readonly ICompanyRolesRepository _companyRolesRepository;

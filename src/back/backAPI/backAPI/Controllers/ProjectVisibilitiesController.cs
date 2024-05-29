@@ -1,9 +1,11 @@
 ﻿using backAPI.DTO.Projects;
 using backAPI.Repositories.Interface.Projects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backAPI.Controllers
 {
+    [Authorize]
     public class ProjectVisibilitiesController : BaseApiController
     {
         private readonly IProjectVisibilitiesRepository _projectVisibilitiesRepository;

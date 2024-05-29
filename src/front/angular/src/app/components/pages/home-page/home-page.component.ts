@@ -16,6 +16,7 @@ import { ProjectService as ProjectService2 } from '../../state/project/project.s
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { StatisticsService } from '../../../_service/statistics.service';
 import { JIssue } from '../../../_models/issue';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home-page',
@@ -61,6 +62,8 @@ export class HomePageComponent implements OnInit {
   IssueStatus: any[] = ["Planning", "In progress", "Done"];
   IssuePrioritys: any[] = ["Lowest", "Low", "Medium", "High", "Highest"];
 
+  completedValues: number[] = [0,1]; 
+
   constructor(
     public accoutService: AccountService,
     private projectService:ProjectService,
@@ -73,7 +76,8 @@ export class HomePageComponent implements OnInit {
     private _projectService: ProjectService2,
     private route: ActivatedRoute,
     private router: Router,
-    private statisticService: StatisticsService
+    private statisticService: StatisticsService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -150,6 +154,12 @@ export class HomePageComponent implements OnInit {
             this.projectCompletioTimeMap.set(project.key, Math.floor(completion));
             this.projectCompletionMap.set(project.key, Math.floor(project.projectProgress! * 100));
           });
+
+          for(let i=this.projects.length-1;  i >= 0 ; i--){
+            if(this.projects[i].projectProgress === 1)
+                this.projects.push(this.projects.splice(i,1)[0]);
+          }
+
           this.filterProjects(this.visibilityFilter);
         },
         error: (error) => {
@@ -468,27 +478,33 @@ export class HomePageComponent implements OnInit {
   openIssueModal(issueId : string, projectName: string){
     // console.log(issueId);
     this._projectService.getProject(projectName);
-    this.ref = this._modalService.open(IssueModalComponent, {
-      header: 'Issue - update',
-      width: '65%',
-      modal:true,
-      closable: true,
-      maximizable: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      breakpoints: {
-          '960px': '75vw',
-          '640px': '90vw'
-      },
-      data: {
-        issue$: this._projectQuery.issueById$(issueId.toString()),
-        usersPhotos: this.usersPhotos
-      }
+    this.translateService.get('issue.issue-details').subscribe((res: string) => {
+      this.ref = this._modalService.open(IssueModalComponent, {
+        header: res,
+        width: '65%',
+        modal:true,
+        closable: true,
+        maximizable: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        breakpoints: {
+            '960px': '75vw',
+            '640px': '90vw'
+        },
+        data: {
+          issue$: this._projectQuery.issueById$(issueId.toString()),
+          usersPhotos: this.usersPhotos
+        }
+      });
     });
   }
 
   get tasksTabSelected() {
     return this.showUserTasks;
+  }
+
+  roundValue(value: number): number {
+    return Math.round(value);
   }
 
 }

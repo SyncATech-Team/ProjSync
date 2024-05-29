@@ -2,19 +2,19 @@
 
 <div id="container-wrapper" class="container">
     <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <p>Issue group</p>
+        <p> {{'create-task.task-group' | translate}} </p>
         <div class="issue-group-wrapper">
-            <p-dropdown [options]="groupsOnProject" optionLabel="name" formControlName="issue-group" placeholder="Select issue group" class="input-size dropdown-groups" [showClear]="true"></p-dropdown>
+            <p-dropdown [options]="groupsOnProject" optionLabel="name" formControlName="issue-group" [placeholder]="'create-task.task-group-placeholder' | translate" class="input-size dropdown-groups" [showClear]="true"></p-dropdown>
 
-            <p-button label="Add new group" [outlined]="true" severity="success" class="add-new-group" (onClick)="showCreateGroupPopUp()"></p-button>
+            <p-button [label]="'create-task.add-new-group' | translate" [outlined]="true" severity="success" class="add-new-group" (onClick)="showCreateGroupPopUp()"></p-button>
         </div>
 
-        <p>Issue name</p>
-        <input type="text" formControlName="issue-name" pInputText class="input-size" placeholder="Enter issue name" spellcheck="false"/>
+        <p>{{'create-task.task-name' | translate}}</p>
+        <input type="text" formControlName="issue-name" pInputText class="input-size" [placeholder]="'create-task.task-name-placeholder' | translate" spellcheck="false"/>
 
 
-        <p>Issue type</p>
-        <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="value" placeholder="Select issue type" class="input-size" [showClear]="true">
+        <p>{{'create-task.task-type' | translate}}</p>
+        <p-dropdown formControlName="issue-type" [options]="issueTypes" optionLabel="value" [placeholder]="'create-task.task-type-placeholder' | translate" class="input-size" [showClear]="true">
         <ng-template let-type pTemplate="selectedItem">
             <svg-icon [name]="type.icon"
                     [size]="20"
@@ -31,8 +31,8 @@
         </ng-template>
         </p-dropdown>
 
-        <p>Issue priority</p>
-        <p-dropdown [options]="priorities"  optionLabel="value" formControlName="issue-priority" placeholder="Select issue priority" class="input-size" [showClear]="true">
+        <p>{{'create-task.task-priority' | translate}}</p>
+        <p-dropdown [options]="priorities"  optionLabel="value" formControlName="issue-priority" [placeholder]="'create-task.task-priority-placeholder' | translate" class="input-size" [showClear]="true">
             <ng-template let-priority pTemplate="selectedItem">
                 <svg-icon [name]="priority.icon"
                         [size]="20"
@@ -50,35 +50,35 @@
             </ng-template>
         </p-dropdown>
 
-        <p>Issue status</p>
-        <p-dropdown formControlName="issue-status" optionLabel="name" [options]="issueStatus" placeholder="Select issue status" class="input-size" [showClear]="true"></p-dropdown>
+        <p>{{'create-task.task-status' | translate}}</p>
+        <p-dropdown formControlName="issue-status" optionLabel="name" [options]="issueStatus" [placeholder]="'create-task.task-status-placeholder' | translate" class="input-size" [showClear]="true"></p-dropdown>
 
-        <p>Description</p>
+        <p>{{'create-task.task-description' | translate}}</p>
         <ng-container *ngIf="true">
             <quill-editor class="content-editor"
                           formControlName="issue-description"
-                          [placeholder]="'Enter description'"
+                          [placeholder]="'create-task.task-description-placeholder' | translate"
                           >
             </quill-editor>
         </ng-container>
 
         <div class="calendar-wrapper">
             <div class="created-date">
-                <p>Started Date</p>
+                <p>{{'create-task.start-date' | translate}}</p>
                 <p-calendar  formControlName= "issue-create-date" [showIcon]="true" class="date1" placeholder="dd/mm/yyyy" ></p-calendar>
             </div>
 
             <div class="due-date">
-                <p>Due Date</p>
+                <p>{{'create-task.due-date' | translate}}</p>
                 <p-calendar formControlName= "issue-due-date" [showIcon]="true" class="date2" placeholder="dd/mm/yyyy"></p-calendar>
             </div>
         </div>
 
-        <p>Reporter</p>
+        <p>{{'create-task.reporter' | translate}}</p>
         <p-dropdown
             formControlName="issue-reporter"
             [options]="users" optionLabel="username"
-            placeholder="Select reporter"
+            [placeholder]="'create-task.reporter-placeholder' | translate"
             class="input-size"
             [showClear]="true">
             <ng-template let-user pTemplate="selectedItem">
@@ -95,8 +95,8 @@
             </ng-template>
         </p-dropdown>
 
-        <p>Assigned</p>
-        <p-multiSelect [options]="users" formControlName="issue-assigner" placeholder="Select a assignee" optionLabel="username" class="multi-select-dropdown">
+        <p>{{'create-task.assignees' | translate}}</p>
+        <p-multiSelect [options]="users" formControlName="issue-assigner" [placeholder]="'create-task.assignees-placeholder' | translate" optionLabel="username" class="multi-select-dropdown">
             <ng-template let-user pTemplate="item">
                 <div class="profilecontent">
                     <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
@@ -106,8 +106,8 @@
         </p-multiSelect>
 
         <div class="btns">
-            <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
-            <p-button label="Close" severity="secondary" (click)="closeModal('exited')"></p-button>
+            <button type="submit" pButton pRipple [label]="'create-task.submit' | translate" class="p-button-primary"></button>
+            <p-button [label]="'create-task.close' | translate" severity="secondary" (click)="closeModal('exited')"></p-button>
         </div>
     </form>
 </div>
