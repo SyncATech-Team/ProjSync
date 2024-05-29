@@ -13,8 +13,12 @@ export const loginGuard : CanActivateFn  = (route, state) => {
     const user = accountService.getCurrentUser();
 
     if (user) {
-
-        router.navigate(['home']);
+        if(user.roles.includes('Admin')) {
+            router.navigate(['admin/user']);
+        }
+        else {
+            router.navigate(['home']);
+        }
         return false;
     }
     return true;
