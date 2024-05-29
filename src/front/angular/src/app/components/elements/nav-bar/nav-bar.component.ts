@@ -8,6 +8,7 @@ import { ThemeService } from '../../../../themes/theme.service';
 import { PhotoForUser } from '../../../_models/photo-for-user';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { LocalService } from '../../../_service/local.service';
 
 interface Language {
 
@@ -53,7 +54,8 @@ export class NavBarComponent implements OnInit {
       private userPictureService: UserProfilePicture,
       private themeService: ThemeService,
       private translateService: TranslateService,
-      private primengConfig: PrimeNGConfig
+      private primengConfig: PrimeNGConfig,
+      private localService: LocalService
     ) {
   }
 
@@ -106,7 +108,7 @@ export class NavBarComponent implements OnInit {
     if(typeof localStorage === "undefined") {
       return null;
     }
-    let x = localStorage.getItem("user");
+    let x = this.localService.getData('user');
     if(x == null) return "";
 
     return JSON.parse(x)['username'];

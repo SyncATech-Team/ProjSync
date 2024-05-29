@@ -7,6 +7,7 @@ import { MessagePopupService } from '../../../../_service/message-popup.service'
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { AuthUserChangePassword } from '../../../../_models/change-passowrd-auth-user';
 import { AccountService } from '../../../../_service/account.service';
+import { LocalService } from '../../../../_service/local.service';
 @Component({
   selector: 'app-admin-edit-profile',
   templateUrl: './admin-edit-profile.component.html',
@@ -50,7 +51,9 @@ export class AdminEditProfileComponent implements OnInit {
     private msgPopupService: MessagePopupService,
     private userProfilePhoto: UserProfilePicture,
     private confirmationService: ConfirmationService,
-    private accountService: AccountService) {}
+    private accountService: AccountService,
+    private localService: LocalService
+  ) {}
 
 
   ngOnInit(): void {
@@ -87,7 +90,7 @@ export class AdminEditProfileComponent implements OnInit {
   }
 
   getUsername() {
-    let x = localStorage.getItem("user");
+    let x = this.localService.getData('user');
     if(x == null) return "";
 
     return JSON.parse(x)['username'];

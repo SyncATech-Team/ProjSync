@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LocalService } from '../../../_service/local.service';
 
 @Component({
   selector: 'app-not-found-page',
@@ -8,9 +9,12 @@ import { Component } from '@angular/core';
 export class NotFoundPageComponent {
   path:string='';
   page:string='';
-  constructor(){
+
+  constructor(private localService: LocalService){
+
     if (typeof localStorage != 'undefined') {
-      var storage = localStorage.getItem("user");
+
+      var storage = this.localService.getData('user');
       if(storage) {
         var user = JSON.parse(storage);
         if (user['token']) {
