@@ -454,5 +454,28 @@
         "user-projects": "User Projects",
         "due-date": "Due Date",
         "title": "User Profile"
+    },
+    "faq-page": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Here are some of the most common questions we get asked. If you can't find what you're looking for, please contact us.",
+        "how-to-create-project": "How do I create a project?",
+        "hdicp1": "To start off, in order to create a project, you need to be logged in and have the necessary permissions. The specific permission required is",
+        "hdicp2": "'Can Manage Projects'.",
+        "hdicp3": "If you don't have this permission, you won't be able to create a project and you need to contact your administrator.",
+        "hdicp4": "To create a project, click on the ",
+        "hdicp5": "'Create Project' ",
+        "hdicp6": "button on the application's home page. A pop-up menu will open where you need to enter the information for your project. Here's what every new project needs:",
+        "hdicp7": "Mandatory fields",
+        "hdicp8": "Optional fields",
+        "hdicp9": "Project Name",
+        "hdicp10": "Project Key",
+        "hdicp11": "Project Type",
+        "hdicp12": "Start Date",
+        "hdicp13": "Due Date",
+        "hdicp14": "Budget",
+        "hdicp15": "Description",
+        "hdicp16": "After you've filled in all the necessary information, click on the ",
+        "hdicp17": "'Create' ",
+        "hdicp18": "button and your project will be created."
     }
 }

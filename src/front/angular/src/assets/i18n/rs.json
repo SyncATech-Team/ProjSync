@@ -454,5 +454,28 @@
         "user-projects": "Projekti korisnika",
         "due-date": "Datum završetka",
         "title": "Profil korisnika"
+    },
+    "faq-page": {
+        "title": "Često postavljana pitanja",
+        "subtitle": "Ovde su neka od najčešćih pitanja koja nam postavljaju. Ako ne možete pronaći ono što tražite, molimo vas da nas kontaktirate.",
+        "how-to-create-project": "Kako da kreiram projekat?",
+        "hdicp1": "Da biste započeli, kako biste kreirali projekat, morate biti prijavljeni i imati odgovarajuće dozvole. Konkretna dozvola koja je potrebna je",
+        "hdicp2": "'Može upravljati projektima'.",
+        "hdicp3": "Ako nemate ovu dozvolu, nećete moći da kreirate projekat i trebate kontaktirati svog administratora.",
+        "hdicp4": "Da biste kreirali projekat, kliknite na ",
+        "hdicp5": "'Kreiraj projekat' ",
+        "hdicp6": "dugme na početnoj stranici aplikacije. Otvara se padajući meni gde trebate uneti informacije za svoj projekat. Evo šta svaki novi projekat treba:",
+        "hdicp7": "Obavezna polja",
+        "hdicp8": "Opciona polja",
+        "hdicp9": "Naziv projekta",
+        "hdicp10": "Ključ projekta",
+        "hdicp11": "Tip projekta",
+        "hdicp12": "Datum početka",
+        "hdicp13": "Datum završetka",
+        "hdicp14": "Budžet",
+        "hdicp15": "Opis",
+        "hdicp16": "Kada popunite sve potrebne informacije, kliknite na ",
+        "hdicp17": "'Kreiraj' ",
+        "hdicp18": "dugme i vaš projekat će biti kreiran."
     }
 }

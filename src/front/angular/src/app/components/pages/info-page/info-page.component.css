@@ -44,3 +44,7 @@
 :host ::ng-deep .questions a{
     color: var(--text-color);
 }
+
+.bold {
+    font-weight: bold;
+}

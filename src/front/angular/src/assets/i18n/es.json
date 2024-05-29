@@ -454,5 +454,28 @@
         "user-projects": "Proyectos del Usuario",
         "due-date": "Fecha de Vencimiento",
         "title": "Perfil de Usuario"
+    },
+    "faq-page": {
+        "title": "Preguntas Frecuentes",
+        "subtitle": "Aquí están algunas de las preguntas más comunes que nos hacen. Si no puedes encontrar lo que estás buscando, por favor contáctanos.",
+        "how-to-create-project": "¿Cómo creo un proyecto?",
+        "hdicp1": "Para comenzar, para crear un proyecto, debes estar conectado y tener los permisos necesarios. El permiso específico requerido es",
+        "hdicp2": "'Puede Administrar Proyectos'.",
+        "hdicp3": "Si no tienes este permiso, no podrás crear un proyecto y debes contactar a tu administrador.",
+        "hdicp4": "Para crear un proyecto, haz clic en el botón ",
+        "hdicp5": "'Crear Proyecto' ",
+        "hdicp6": "en la página de inicio de la aplicación. Se abrirá un menú emergente donde debes ingresar la información de tu proyecto. Esto es lo que necesita cada nuevo proyecto:",
+        "hdicp7": "Campos obligatorios",
+        "hdicp8": "Campos opcionales",
+        "hdicp9": "Nombre del Proyecto",
+        "hdicp10": "Clave del Proyecto",
+        "hdicp11": "Tipo de Proyecto",
+        "hdicp12": "Fecha de Inicio",
+        "hdicp13": "Fecha de Vencimiento",
+        "hdicp14": "Presupuesto",
+        "hdicp15": "Descripción",
+        "hdicp16": "Después de completar toda la información necesaria, haz clic en el botón ",
+        "hdicp17": "'Crear' ",
+        "hdicp18": "y tu proyecto será creado."
     }
 }
