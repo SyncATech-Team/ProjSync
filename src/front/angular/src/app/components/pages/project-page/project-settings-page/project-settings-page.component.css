@@ -22,7 +22,12 @@
 }
 
 #left-side{
-    margin : 2rem;
+    margin-left : 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-right: 0;
+    padding-right: 2rem;
+    border-right: 1px solid rgb(188, 185, 185);
 }
 
 .titleUpload{
@@ -106,7 +111,7 @@
 
 /* Deskripcija quill */
 :host ::ng-deep .content-editor .ql-editor {
-    height: 6rem;
+    height: 14rem;
     overflow-y: auto;
 }
 
@@ -120,7 +125,6 @@
     padding: 2rem;
     margin: 2rem 0;
     /* height: 100vh; */
-    border-left: 1px solid rgb(188, 185, 185);
     color: var(--text-color);
 }
 
@@ -159,8 +163,8 @@
         margin: 0;
     }
     
-    #right-side{
-        border-left: none;  
+    #left-side{
+        border-right: none;  
     }
 }
 
