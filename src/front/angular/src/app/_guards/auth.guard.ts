@@ -10,7 +10,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     return false; // localStorage is not available, return null
   }
   
-  var storage = localService.getData('user'); //localStorage.getItem("user");
+  var storage = localService.getData('user');
     if(!storage) {
       router.navigate(['login']);
       return false;

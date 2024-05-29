@@ -53,7 +53,7 @@ export class IssueCommentComponent implements OnInit {
     }      
 
     this.commentControl = new FormControl('');
-    var storage = this.localService.getData('user'); //localStorage.getItem("user");
+    var storage = this.localService.getData('user');
     this.user = JSON.parse(storage!);
     if (this.createMode) {
       this.comment = new JComment(this.issueId, this.user);

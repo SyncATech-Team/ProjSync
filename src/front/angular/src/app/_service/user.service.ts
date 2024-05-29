@@ -4,13 +4,11 @@ import { environment } from '../../environments/environment';
 import { UserGetter } from '../_models/user-getter';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { UserGetterLazyLoad } from '../_models/user-getter-lazy-load';
-import { BehaviorSubject, Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
   baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }

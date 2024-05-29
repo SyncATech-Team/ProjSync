@@ -76,7 +76,6 @@ export class AccountService {
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     user.permitions = permitions;
     this.localService.saveData('user', JSON.stringify(user));
-    // localStorage.setItem('user', JSON.stringify(user));
   }
 
   register(model: RegisterModel) {
