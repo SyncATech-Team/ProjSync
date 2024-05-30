@@ -145,3 +145,33 @@ canvas {
 .logs-box {
     height: max-content;
 }
+
+:host ::ng-deep #description .ql-align-left {
+    text-align: left;
+}
+
+:host ::ng-deep #description .ql-align-right {
+    text-align: right;
+}
+
+:host ::ng-deep #description .ql-align-center{
+    text-align: center;
+}
+
+:host ::ng-deep #description .ql-align-justify{
+    text-align: justify;
+}
+
+:host ::ng-deep #description pre[data-language="plain"] {
+    background-color: #333;
+    border: 1px solid #333; 
+    padding: 10px;           
+    font-family: monospace;  
+    font-size: 14px;         
+    color: #f5f5f5;            
+    white-space: pre-wrap;   
+}
+
+:host ::ng-deep #description ul{
+    padding-left: 30px;
+}

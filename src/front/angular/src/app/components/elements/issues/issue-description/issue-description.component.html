@@ -17,7 +17,7 @@
     <div class="ql-snow content-readonly"
          *ngIf="!isEditing"
          (click)="setEditMode(true)">
-        <div class="ql-editor"
+        <div id="description" class="ql-editor"
              [innerHTML]="getSanitizedHTML(issue.description) || 'Click to add description'">
         </div>
     </div>
