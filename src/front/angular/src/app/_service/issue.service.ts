@@ -84,4 +84,8 @@ export class IssueService {
   deleteIssue(id: string) {
     return this.http.delete<void>(`${this.baseUrl}Issues/delete-issue/${id}`);
   }
+
+  getProjectNameByIssueId(issueId: number){
+    return this.http.get<any>(`${this.baseUrl}Issues/${issueId}/ProjectName`);
+  }
 }

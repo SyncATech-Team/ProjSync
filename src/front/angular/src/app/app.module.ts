@@ -133,6 +133,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+import { IssueDependenciesComponent } from './components/elements/issues/issue-dependencies/issue-dependencies.component';
 
 @NgModule({
   declarations: [
@@ -197,7 +198,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PageForgotPasswordComponent,
     InfoPageComponent,
     ChatPageComponent,
-    ChatElementComponent
+    ChatElementComponent,
+    IssueDependenciesComponent
   ],
     imports: [
         BrowserModule,
