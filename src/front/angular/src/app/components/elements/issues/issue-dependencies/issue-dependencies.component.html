@@ -14,7 +14,7 @@
 
                 <div class="op-row" *ngFor="let issue of getIssues">
                     <div class="polje">
-                        <span>{{ issue.title }}</span>
+                        <span pTooltip="{{ issue.title }}">{{ getTrimmedTitle(issue.title, 0) }}</span>
                     </div>
                     <button class="opAddBtn" (click)="addPredecessor(issue, op1)">+</button>
                 </div>
@@ -33,7 +33,7 @@
             <div *ngFor="let predecessor of issue.predecessors">
                 <div class="issue-row">
                     <div class="polje">
-                        <span class="predecessor-item">{{ predecessor.name }}</span>
+                        <span class="predecessor-item" pTooltip="{{ predecessor.name }}">{{ getTrimmedTitle(predecessor.name, 1) }}</span>
                     </div>
                     <div class="closeBtn">
                         <i class="fa-solid fa-xmark" (click)="deletePredecessor(predecessor)"></i>
@@ -60,7 +60,7 @@
 
                 <div class="op-row" *ngFor="let issue of getIssues">
                     <div class="polje">
-                        <span>{{ issue.title }}</span>
+                        <span pTooltip="{{ issue.title }}">{{ getTrimmedTitle(issue.title, 0) }}</span>
                     </div>
                     <button class="opAddBtn" (click)="addSuccessor(issue, op2)">+</button>
                 </div>
@@ -77,7 +77,7 @@
             <div *ngFor="let successor of issue.successors">
                 <div class="issue-row">
                     <div class="polje">
-                        <span class="successor-item">{{ successor.name }}</span>
+                        <span class="successor-item" pTooltip="{{ successor.name }}">{{ getTrimmedTitle(successor.name, 1) }}</span>
                     </div>
                     <div class="closeBtn">
                         <i class="fa-solid fa-xmark" (click)="deleteSuccessor(successor)"></i>

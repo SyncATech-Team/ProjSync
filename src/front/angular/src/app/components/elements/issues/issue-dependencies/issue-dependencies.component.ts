@@ -143,4 +143,22 @@ export class IssueDependenciesComponent implements OnInit{
 
     this._projectService.removePredecessorOrSuccessor(this.issue, modelGetter, modelUpdater);
   }
+
+  getTrimmedTitle(current: string, flag : number) {
+    let MAX_NUMBER_OF_CHARACTERS;
+
+    if(flag == 1){
+      MAX_NUMBER_OF_CHARACTERS = 19;
+    }
+    else{
+      MAX_NUMBER_OF_CHARACTERS = 8;
+    }
+    
+    if(current.length <= MAX_NUMBER_OF_CHARACTERS)
+    {
+      return current;
+    }
+
+    return current.substring(0, MAX_NUMBER_OF_CHARACTERS) + "...";
+  }
 }
