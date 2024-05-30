@@ -477,5 +477,13 @@
         "hdicp16": "필요한 정보를 모두 입력한 후, ",
         "hdicp17": "'생성' ",
         "hdicp18": "버튼을 클릭하면 프로젝트가 생성됩니다."
+    },
+    "issue-dependencies": {
+        "predecessors": "선행 작업",
+        "successors": "후행 작업",
+        "add-predecessor": "선행 작업 추가",
+        "add-successor": "후행 작업 추가",
+        "no-predecessors-added": "선행 작업이 추가되지 않았습니다",
+        "no-successors-added": "후행 작업이 추가되지 않았습니다"
     }
 }

@@ -477,5 +477,13 @@
         "hdicp16": "填写所有必要信息后，点击",
         "hdicp17": "“创建”",
         "hdicp18": "按钮，您的项目将被创建。"
+    },
+    "issue-dependencies": {
+        "predecessors": "前置任务",
+        "successors": "后续任务",
+        "add-predecessor": "添加前置任务",
+        "add-successor": "添加后续任务",
+        "no-predecessors-added": "没有添加前置任务",
+        "no-successors-added": "没有添加后续任务"
     }
 }

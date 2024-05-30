@@ -477,5 +477,13 @@
         "hdicp16": "After you've filled in all the necessary information, click on the ",
         "hdicp17": "'Create' ",
         "hdicp18": "button and your project will be created."
+    },
+    "issue-dependencies": {
+        "predecessors": "Predecessors",
+        "successors": "Successors",
+        "add-predecessor": "Add Predecessor",
+        "add-successor": "Add Successor",
+        "no-predecessors-added": "No predecessors added",
+        "no-successors-added": "No successors added"
     }
 }

@@ -477,5 +477,13 @@
         "hdicp16": "Después de completar toda la información necesaria, haz clic en el botón ",
         "hdicp17": "'Crear' ",
         "hdicp18": "y tu proyecto será creado."
+    },
+    "issue-dependencies": {
+        "predecessors": "Predecesores",
+        "successors": "Sucesores",
+        "add-predecessor": "Agregar predecesor",
+        "add-successor": "Agregar sucesor",
+        "no-predecessors-added": "No se han agregado predecesores",
+        "no-successors-added": "No se han agregado sucesores"
     }
 }

@@ -2,13 +2,13 @@
     <div class="head">
         <div>
             <i class="fa-solid fa-diagram-predecessor"></i>
-            <span class="title"> Predecessors</span>
+            <span class="title"> {{'issue-dependencies.predecessors' | translate}} </span>
         </div>
 
         <div>
-            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="showOptionsPredecessor()"/>
+            <p-button class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="showOptionsPredecessor()"/>
             <p-overlayPanel #op1 [style]="{'max-height':'300px','overflow-y':'auto'}">
-                <span class="op-title">Add predecessors</span>
+                <span class="op-title"> {{'issue-dependencies.add-predecessor' | translate}} </span>
                 
                 <p-divider></p-divider>
 
@@ -28,7 +28,7 @@
     <div id="predecessors-list">
         <ng-container>
             <div *ngIf="issue.predecessors.length === 0">
-                <span class="info-msg">No predecessors added yet</span>
+                <span class="info-msg"> {{'issue-dependencies.no-predecessors-added' | translate}} </span>
             </div>
             <div *ngFor="let predecessor of issue.predecessors">
                 <div class="issue-row">
@@ -48,13 +48,13 @@
     <div class="head">
         <div>
             <i class="fa-solid fa-diagram-predecessor"></i>
-            <span class="title"> Successors</span>
+            <span class="title"> {{'issue-dependencies.successors' | translate}} </span>
         </div>
 
         <div>
-            <p-button class="addBtn" label="Add" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="showOptionsSuccessor()"/>
+            <p-button class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="showOptionsSuccessor()"/>
             <p-overlayPanel #op2 [style]="{'max-height':'300px','overflow-y':'auto'}">
-                <span class="op-title">Add successors</span>
+                <span class="op-title"> {{'issue-dependencies.add-successor' | translate}} </span>
                 
                 <p-divider></p-divider>
 
@@ -72,7 +72,7 @@
     <div id="successors-list">
         <ng-container>
             <div *ngIf="issue.successors.length === 0">
-                <span class="info-msg">No successors added yet</span>
+                <span class="info-msg"> {{'issue-dependencies.no-successors-added' | translate}} </span>
             </div>
             <div *ngFor="let successor of issue.successors">
                 <div class="issue-row">

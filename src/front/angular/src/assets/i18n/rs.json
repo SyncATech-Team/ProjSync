@@ -477,5 +477,13 @@
         "hdicp16": "Kada popunite sve potrebne informacije, kliknite na ",
         "hdicp17": "'Kreiraj' ",
         "hdicp18": "dugme i vaš projekat će biti kreiran."
+    },
+    "issue-dependencies": {
+        "predecessors": "Prethodnici",
+        "successors": "Sledbenici",
+        "add-predecessor": "Dodaj prethodnika",
+        "add-successor": "Dodaj sledbenika",
+        "no-predecessors-added": "Nema dodatih prethodnika",
+        "no-successors-added": "Nema dodatih sledbenika"
     }
 }
