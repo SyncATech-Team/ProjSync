@@ -9,6 +9,7 @@ import { ChatPageComponent } from "../components/pages/chat-page/chat-page.compo
 import { MessageSendDto } from "../_models/message-send.model";
 import { ChatElementComponent } from "../components/elements/chat-element/chat-element.component";
 import { TranslateService } from "@ngx-translate/core";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +21,8 @@ export class NotificationService {
 
     constructor(
         private msgPopupService: MessagePopupService,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private router: Router
     ) { }
 
     /**
@@ -56,9 +58,11 @@ export class NotificationService {
 
         this.hubConnection.on('ReceiveChatMessage', (data: MessageSendDto) => {
             if(data.senderUsername != ChatPageComponent._loggedInUser?.username) {
-                this.translateService.get('general.new-message').subscribe((res: string) => {
-                    this.msgPopupService.showInfo(res);
-                });
+                if(this.router.url.includes("chat?username=") == false) {
+                    this.translateService.get('general.new-message').subscribe((res: string) => {
+                        this.msgPopupService.showInfo(res);
+                    });
+                }
                 ChatElementComponent.increaseNumberOfUnreadMessages();
             }
             ChatPageComponent.initialize(data);
