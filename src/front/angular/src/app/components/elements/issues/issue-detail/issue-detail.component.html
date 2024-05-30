@@ -58,7 +58,13 @@
             </issue-assignees>
             <p-divider></p-divider>
             <issue-priority [issue]="issue"></issue-priority>
+            
             <p-divider></p-divider>
+            <div>
+                <app-issue-dependencies [issue]="issue"></app-issue-dependencies>
+            </div>
+            <p-divider></p-divider>
+
             <div class="mt-3 pt-3 text-medium" style="font-size: 13px;">
 
                 <div>

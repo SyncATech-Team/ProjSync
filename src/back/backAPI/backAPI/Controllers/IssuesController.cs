@@ -72,6 +72,10 @@ namespace backAPI.Controllers
             var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
             var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
             var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+
+            var issuePredecessors = await _issueRepository.GetIssuePredecessors(issue.Id);
+            var issueSuccessors = await _issueRepository.GetIssueSuccessors(issue.Id);
+
             var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
             var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
 
@@ -128,7 +132,23 @@ namespace backAPI.Controllers
                 ReporterUsername = reporterUsername.UserName,
                 AssigneeUsernames = assigneeUsernames.ToArray(),
                 DependentOnIssues = issueDependencies.ToArray(),
-                GroupId = issueGroup.Id
+                GroupId = issueGroup.Id,
+                Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    IsPredecessor = true,
+                    ProjectName = project.Name,
+                    GroupName = issueGroup.Name
+                }).ToList(),
+                Successors = issueSuccessors.Select(x => new IssueDependenciesGetter
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    IsPredecessor = false,
+                    ProjectName = project.Name,
+                    GroupName = issueGroup.Name
+                }).ToList()
             };
             
             return issueDto;
@@ -152,6 +172,10 @@ namespace backAPI.Controllers
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
                 var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+
+                var issuePredecessors = await _issueRepository.GetIssuePredecessors(issue.Id);
+                var issueSuccessors = await _issueRepository.GetIssueSuccessors(issue.Id);
+
                 var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                 var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
                 Console.WriteLine(issueDependencies);
@@ -184,8 +208,7 @@ namespace backAPI.Controllers
                     });
                 }
 
-                JIssueDto issueDto = new JIssueDto
-                {
+                JIssueDto issueDto = new JIssueDto {
                     Id = issue.Id.ToString(),
                     Title = issue.Name,
                     Type = issueType.Name,
@@ -208,7 +231,21 @@ namespace backAPI.Controllers
                     ReporterUsername = reporterUsername.UserName,
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
-                    GroupId = issueGroup.Id
+                    GroupId = issueGroup.Id,
+                    Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsPredecessor = true,
+                        ProjectName = project.Name,
+                        GroupName = issueGroup.Name
+                    }).ToList(),
+                    Successors = issueSuccessors.Select(x => new IssueDependenciesGetter {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsPredecessor = false,
+                        ProjectName = project.Name,
+                        GroupName = issueGroup.Name
+                    }).ToList()
                 };
                 result.Add(issueDto);
             }
@@ -238,6 +275,10 @@ namespace backAPI.Controllers
                     var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                     var project = projectByName;
                     var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+
+                    var issuePredecessors = await _issueRepository.GetIssuePredecessors(issue.Id);
+                    var issueSuccessors = await _issueRepository.GetIssueSuccessors(issue.Id);
+
                     var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                     var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
 
@@ -292,7 +333,23 @@ namespace backAPI.Controllers
                         ReporterUsername = reporterUsername.UserName,
                         AssigneeUsernames = assigneeUsernames.ToArray(),
                         DependentOnIssues = issueDependencies.ToArray(),
-                        GroupId = issueGroup.Id
+                        GroupId = issueGroup.Id,
+                        Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IsPredecessor = true,
+                            ProjectName = project.Name,
+                            GroupName = issueGroup.Name
+                        }).ToList(),
+                        Successors = issueSuccessors.Select(x => new IssueDependenciesGetter
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IsPredecessor = false,
+                            ProjectName = project.Name,
+                            GroupName = issueGroup.Name
+                        }).ToList()
                     };
                     result.Add(issueDto);
                 }
@@ -325,6 +382,10 @@ namespace backAPI.Controllers
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
                 var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+
+                var issuePredecessors = await _issueRepository.GetIssuePredecessors(issue.Id);
+                var issueSuccessors = await _issueRepository.GetIssueSuccessors(issue.Id);
+
                 var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                 var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
 
@@ -381,7 +442,23 @@ namespace backAPI.Controllers
                     ReporterUsername = reporterUsername.UserName,
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
-                    GroupId = issueGroup.Id
+                    GroupId = issueGroup.Id,
+                    Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsPredecessor = true,
+                        ProjectName = project.Name,
+                        GroupName = issueGroup.Name
+                    }).ToList(),
+                    Successors = issueSuccessors.Select(x => new IssueDependenciesGetter
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsPredecessor = false,
+                        ProjectName = project.Name,
+                        GroupName = issueGroup.Name
+                    }).ToList()
                 };
                 result.Add(issueDto);
             }
@@ -413,6 +490,10 @@ namespace backAPI.Controllers
                 var assigneeIds = await _issueRepository.GetAssigneeIds(issue.Id);
                 var project = await _projectsRepository.GetProjectById(issueGroup.ProjectId);
                 var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
+
+                var issuePredecessors = await _issueRepository.GetIssuePredecessors(issue.Id);
+                var issueSuccessors = await _issueRepository.GetIssueSuccessors(issue.Id);
+
                 var assigneeeCompletionLevel = await _issueRepository.GetAssigneeCompletionLevel(issue.Id);
                 var comments = await _issueCommentRepository.GetCommentsForIssue(issue.Id);
                 Console.WriteLine(issueDependencies);
@@ -470,7 +551,23 @@ namespace backAPI.Controllers
                     ReporterUsername = reporterUsername.UserName,
                     AssigneeUsernames = assigneeUsernames.ToArray(),
                     DependentOnIssues = issueDependencies.ToArray(),
-                    GroupId = issueGroup.Id
+                    GroupId = issueGroup.Id,
+                    Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsPredecessor = true,
+                        ProjectName = project.Name,
+                        GroupName = issueGroup.Name
+                    }).ToList(),
+                    Successors = issueSuccessors.Select(x => new IssueDependenciesGetter
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsPredecessor = false,
+                        ProjectName = project.Name,
+                        GroupName = issueGroup.Name
+                    }).ToList()
                 };
                 issueDtos.Add(issueDto);
             }
@@ -682,6 +779,19 @@ namespace backAPI.Controllers
         public async Task<IActionResult> CreateOrDeleteDependency(IssueDependenciesUpdateDto model) {
             var changed = await _issueRepository.CreateOrDeleteDependency(model);
             return Ok();
+        }
+
+        [HttpGet("{issueId}/ProjectName")]
+        public async Task<ActionResult> GetProjectNameFromIssueId(int issueId)
+        {
+            var projectName = await _issueRepository.GetProjectNameByIssueId(issueId);
+
+            if (projectName == null || !projectName.Any())
+            {
+                return NotFound("No project name found for the given issue ID.");
+            }
+
+            return Ok(new { projectName });
         }
     }
 }

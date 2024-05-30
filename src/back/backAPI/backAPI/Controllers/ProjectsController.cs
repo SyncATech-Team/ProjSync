@@ -232,6 +232,10 @@ namespace backAPI.Controllers
                     var reporterUsername = await _usersRepository.GetUserById(reporterId);
                     var issueDependencies = await _issueRepository.GetDependentIssues(issue.Id);
 
+
+                    var issuePredecessors = await _issueRepository.GetIssuePredecessors(issue.Id);
+                    var issueSuccessors = await _issueRepository.GetIssueSuccessors(issue.Id);
+
                     var project = projectByName;
                     List<string> assigneeIdsList = new List<string>();
                     foreach (var assigneeId in assigneeIds)
@@ -291,7 +295,23 @@ namespace backAPI.Controllers
                         ReporterUsername = reporterUsername.UserName,
                         AssigneeUsernames = assigneeUsernames.ToArray(),
                         DependentOnIssues = issueDependencies.ToArray(),
-                        GroupId = issueGroup.Id
+                        GroupId = issueGroup.Id,
+                        Predecessors = issuePredecessors.Select(x => new IssueDependenciesGetter
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IsPredecessor = true,
+                            ProjectName = project.Name,
+                            GroupName = group.Name
+                        }).ToList(),
+                        Successors = issueSuccessors.Select(x => new IssueDependenciesGetter
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IsPredecessor = false,
+                            ProjectName = project.Name,
+                            GroupName = group.Name
+                        }).ToList()
                     };
 
                     issues.Add(issueDto);

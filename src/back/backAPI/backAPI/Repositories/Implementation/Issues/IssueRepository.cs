@@ -266,6 +266,28 @@ namespace backAPI.Repositories.Implementation.Issues
             return elements.Select(elem => elem.TargetId);
         }
 
+        public async Task<IEnumerable<Issue>> GetIssuePredecessors(int issueId)
+        {
+            var elements = await _dataContext.IssueDependencies
+                  .Where(elem => elem.TargetId == issueId)
+                  .ToListAsync();
+
+            return await _dataContext.Issues
+                .Where(issue => elements.Select(elem => elem.OriginId).Contains(issue.Id))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Issue>> GetIssueSuccessors(int issueId)
+        {
+            var elements = await _dataContext.IssueDependencies
+                .Where(elem => elem.OriginId == issueId)
+                .ToListAsync();
+
+            return await _dataContext.Issues
+                .Where(issue => elements.Select(elem => elem.TargetId).Contains(issue.Id))
+                .ToListAsync();
+        }
+
         public async Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model) {
             var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
             if(exists == null) {
@@ -1007,5 +1029,30 @@ namespace backAPI.Repositories.Implementation.Issues
             return exists.Any();
         }
 
+        public async Task<string> GetProjectNameByIssueId(int issueId)
+        {
+            var issue = await _dataContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+
+            if (issue == null)
+            {
+                return null;
+            }
+
+            var group = await _dataContext.IssueGroups.FirstOrDefaultAsync(g => g.Id == issue.GroupId);
+
+            if (group == null)
+            {
+                return null;
+            }
+
+            var project = await _dataContext.Projects.FirstOrDefaultAsync(p => p.Id == group.ProjectId);
+
+            if (project == null)
+            {
+                return null;
+            }
+
+            return project.Name;
+        }
     }
 }
