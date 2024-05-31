@@ -39,25 +39,60 @@
                 </div>
                 <p> {{'faq-page.hdicp16' | translate}} <span class="bold">{{'faq-page.hdicp17' | translate}}</span> {{'faq-page.hdicp18' | translate}}</p>
             </p-accordionTab>
-            <p-accordionTab header="How to create a task">
+            <p-accordionTab header="Kako da kreiram zadatak?">
+                <p>Da biste započeli, kako biste kreirali zadatak, morate biti prijavljeni i imati odgovarajuće dozvole. Konkretna dozvola koja je potrebna je <span class="bold">'Može upravljati zadacima'</span>. Ako nemate ovu dozvolu, nećete moći da kreirate zadatak.
+                </p>
                 <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
+                Prvo morate otvoriti stranicu projekta u kome želite kreirati zadacima, klikom na ime projekta u tabeli na početnoj strani. Klikom na dugme <span class="bold">'Kreiraj zadatak'</span> otvara se modal gde trebate uneti informacije o zadatku. Evo šta svaki novi zadatak treba:    
+                </p>
+                <div class="project-create-info">
+                    <div class="required">
+                        <h6>Obavezna polja</h6>
+                        <ul>
+                            <li>Grupa zadatka</li>
+                            <li>Naziv zadatka</li>
+                            <li>Tip zadatka</li>
+                            <li>Prioritet zadatka</li>
+                            <li>Status zadatka</li>
+                            <li>Datum početka</li>
+                            <li>Datum završetka</li>
+                            <li>Reporter</li>
+                            <li>Učesnici</li>
+                        </ul>
+                    </div>
+                    <div class="optional">
+                        <h6>Opciona polja</h6>
+                        <ul>
+                            <li>Opis zadatka</li>
+                        </ul>
+                    </div>
+                </div>
+                <p>Ukoliko ne postoji nijedna grupa u projektu, možete kreirati novu grupu klikom na dugme <span class="bold">'Dodaj novu grupu'</span>, za novu grupu je potrebno uneti samo naziv.  </p> 
+                <p>Kada popunite sve potrebne informacije, kliknite na <span class="bold">'Kreiraj'</span> dugme i zadatka će biti kreiran.</p>        
+            </p-accordionTab>
+            <p-accordionTab header="Kako se računa progres završenog posla za projekta?">
+                <p>
+                    Progres završenog posla za projekta se računa na sledeći način:
                 </p>
             </p-accordionTab>
-            <p-accordionTab header="How to calculate project progress">
-                <p>
-                    At vero eos et accusamus et iusto odio dignissimos...
+            <p-accordionTab header="Kako dodati korisnika na projekat?">
+                <p>Da biste započeli, kako biste dodali korisnika na projekat, morate biti prijavljeni i imati odgovarajuće dozvole. Konkretna dozvola koja je potrebna je <span class="bold">'Može upravljati projektima'</span>. Ako nemate ovu dozvolu, nećete moći da dodate korisnika na projekat.
                 </p>
+                <p>
+                Prvo morate otvoriti stranicu projekta na kom želite da dodate korisnika, klikom na ime projekta u tabeli na početnoj strani. Zatim na stranici <span class="bold">'Ljudi'</span> možete naći dugme <span class="bold">'Dodaj korisnika'</span>, klikom na ovo dugme se otvara modal u kome možete izabrati korisnika i klikom na dugme <span class="bold">'Dodaj korisnika'</span> dodajete tog korisnika na projekat.
+                </p>     
             </p-accordionTab>
-            <p-accordionTab header="How to add a user to project">
+            <p-accordionTab header="Kako se računa vremenski progres projekta?">
                 <p>
-                    At vero eos et accusamus et iusto odio dignissimos...
+                    Vremenski progres projekta se računa na sledeći način:
                 </p>
-            </p-accordionTab>
-            <p-accordionTab header="How to calculate the time progress of a project">
-                <p>
-                    At vero eos et accusamus et iusto odio dignissimos...
-                </p>
+                <span class="bold">vremenski progres =</span>  
+                <div class="fraction">
+                    <span class="fup bold">broj dana od početka projekta do danas</span>
+                    <span class="bar bold">/</span>
+                    <span class="fdn bold">ukupan broj dana od početka do završetka projekta</span>
+                </div>
+                <span class="bold"> * 100</span>  
             </p-accordionTab>
         </p-accordion>
     </div>
