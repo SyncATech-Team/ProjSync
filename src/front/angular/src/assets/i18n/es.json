@@ -100,7 +100,7 @@
         "profile-photo-not-added": "Tu foto de perfil no ha sido agregada",
         "user-info-edited": "Tu información de usuario ha sido editada",
         "user-info-not-edited": "Tu información de usuario no ha sido editada",
-        "invalid-phone-format": "Formato de teléfono no válido. Formato válido: 061 1234567",
+        "invalid-phone-format": "Formato de teléfono no válido.",
         "invalid-password-pattern": "Patrón de contraseña no válido",
         "pattern-info": "La contraseña debe contener al menos 6 caracteres, incluyendo mayúsculas/minúsculas y números"
     },

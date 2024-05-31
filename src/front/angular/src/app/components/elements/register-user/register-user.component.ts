@@ -40,7 +40,8 @@ export class RegisterUserComponent implements OnInit {
   @Output() userCreated = new EventEmitter<UserGetter>();
 
   register() {
-    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.registrationModel.contactPhone) 
+    if (/^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)?[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})?$/
+    .test(this.registrationModel.contactPhone) 
       || this.registrationModel.contactPhone == '' 
       || this.registrationModel.contactPhone == null)//testira format broja telefona
     {

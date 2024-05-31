@@ -100,7 +100,7 @@
         "profile-photo-not-added": "Vaša profilna slika nije dodata",
         "user-info-edited": "Vaše korisničke informacije su izmenjene",
         "user-info-not-edited": "Vaše korisničke informacije nisu izmenjene",
-        "invalid-phone-format": "Neispravan format telefona. Validan format je 061 1234567",
+        "invalid-phone-format": "Neispravan format telefona.",
         "invalid-password-pattern": "Nevalidan format lozinke",
         "pattern-info": "Lozinka mora sadržati najmanje 6 karaktera, jedno veliko slovo, jedno malo slovo i jedan broj"
     },

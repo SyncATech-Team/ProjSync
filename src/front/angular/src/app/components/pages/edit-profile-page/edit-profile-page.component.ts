@@ -139,7 +139,8 @@ export class EditProfilePageComponent implements OnInit {
 
   applyEditChanges() {
     this.editUser.isActive = this.user?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
-    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.editUser.contactPhone) || this.editUser.contactPhone == '' || this.editUser.contactPhone == null){//testira format broja telefona
+    if(/^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)?[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})?$/
+    .test(this.editUser.contactPhone) || this.editUser.contactPhone == '' || this.editUser.contactPhone == null){//testira format broja telefona
       this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
         next: response => {
           this.translateService.get([
