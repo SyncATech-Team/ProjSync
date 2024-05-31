@@ -55,8 +55,7 @@ export class IssueService {
     criteriaObj.filters = criteriaObj.filters.filter(item => item.fieldfilters[0].value!=null);
 
     var criteria = encodeURIComponent( JSON.stringify(criteriaObj));
-    // console.log(criteriaObj);
-   
+
     return this.http.get<IssueModelLazyLoad>(`${this.baseUrl}Issues/pagination/projectName?projectName=${projectName}&criteria=${criteria}`);
     
   }

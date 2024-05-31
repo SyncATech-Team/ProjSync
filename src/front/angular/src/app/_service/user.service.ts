@@ -35,7 +35,7 @@ export class UserService {
     criteriaObj.filters = criteriaObj.filters.filter(item => item.fieldfilters[0].value!=null);
 
     var criteria = encodeURIComponent( JSON.stringify(criteriaObj));
-    // console.log(criteriaObj);
+
    
     return this.http.get<UserGetterLazyLoad>(this.baseUrl + `Users/pagination?&criteria=${criteria}`);
   }

@@ -40,7 +40,6 @@ export class RegisterUserComponent implements OnInit {
   @Output() userCreated = new EventEmitter<UserGetter>();
 
   register() {
-    console.log(this.registrationModel.contactPhone);
     if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.registrationModel.contactPhone) 
       || this.registrationModel.contactPhone == '' 
       || this.registrationModel.contactPhone == null)//testira format broja telefona

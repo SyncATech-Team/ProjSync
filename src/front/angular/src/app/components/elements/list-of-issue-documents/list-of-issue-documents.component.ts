@@ -62,7 +62,6 @@ export class ListOfIssueDocumentsComponent implements OnInit, OnDestroy {
   }
 
   get getAllTitles(){
-    console.log("POZIVVV");
     return this.documentTitles;
   }
 

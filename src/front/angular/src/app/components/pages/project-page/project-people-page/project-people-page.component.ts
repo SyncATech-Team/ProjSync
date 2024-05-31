@@ -75,8 +75,6 @@ export class ProjectPeoplePageComponent implements OnInit{
         
         this.users = response.filter(user => user.isActive == true);
         this.users_backup = response;
-        // console.log(this.usersPhotos);
-        // this.userRole = this.users_backup.map(user => user.companyRoleName);
         const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
         this.userRole = Array.from(uniqueRoles);
         this.userService.getAllUsers().subscribe({
@@ -227,7 +225,6 @@ export class ProjectPeoplePageComponent implements OnInit{
         this.allUsers = this.allUsers.filter(user => user.username !== (this.userForAdd as any).username);
         this.userForAdd = "";
 
-        // console.log(this.color);
         this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
           next: (response) => {
             this.users = response;
