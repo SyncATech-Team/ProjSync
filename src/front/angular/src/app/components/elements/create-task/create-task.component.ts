@@ -120,15 +120,6 @@ export class CreateTaskComponent implements OnInit {
         }
       });
 
-      // this._issueService.getAllIssueTypes().subscribe({
-      //   next: (response) => {
-      //     this.issueTypes = response;
-      //   },
-      //   error: (error) => {
-      //     console.log(error);
-      //   }
-      // });
-
       this._issueService.getAllIssueStatus().subscribe({
         next: (response) => {
           this.issueStatus = response;
@@ -140,7 +131,6 @@ export class CreateTaskComponent implements OnInit {
   }
 
   onSubmit() {
-    // console.log(this.form.controls['issue-status'].value.name);
     if(this.projectName){
 
       try {
@@ -273,8 +263,7 @@ export class CreateTaskComponent implements OnInit {
 
       this.ref.onClose.subscribe((data: any) => {
         if(data != "created-group") return;     // NE REFRESHUJ MODAL ZA KREIRANJE ZADATKA UKOLIKO NIJE DODATA GRUPA
-  
-        // console.log("Refresh modal");
+
         this.ngOnInit();
       });
     });

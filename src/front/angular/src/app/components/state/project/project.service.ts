@@ -104,7 +104,6 @@ export class ProjectService {
    * kao sto je uradjeno sa naslovom.
    */
   updateIssue(issue: JIssue, oldTitle: string | null = null) {
-    console.log(oldTitle)
 
     this._http
       .put(`${this.baseUrl}Issues/kb/${issue.id}`, issue).subscribe({

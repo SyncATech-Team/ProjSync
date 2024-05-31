@@ -82,24 +82,12 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.showColumns = ['Name',...this.selectedColumns];
     this._projectService.getProject(this.projectName!);
 
-    // this.tasksByGroup = this.getTasksByGroup();
     if(this.projectName) {
-      // this.issueService.getAllIssuesForProject(this.projectName).subscribe({
-      //   next: (response) =>{
-      //     this.tasks = response;
-      //     this.tasks_backup = this.tasks;
-      //   },
-      //   error: (err) => {
-      //     console.log(err);
-      //   }
-      // })
       
       this.groupService.getAllGroups(this.projectName).subscribe({
         next: (response) => {
           this.groupsInProject = response;
           this.groupNames = this.groupsInProject.map(group => group.name);
-          //this.tasksByGroup = this.getTasksByGroup();
-          // console.log(this.tasks);
         },
         error: (error) => {
           console.log(error);
@@ -119,30 +107,6 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
 
   }
 
-  // getTasksByGroup(): any{
-  //   // var groups = new Set(this.tasks.map(item => item.groupName));
-  //   var result: any[] = [];
-  //   this.groupsInProject.forEach(group => {
-  //     this.issueService.getAllIssuesInGroup(group.id).subscribe({
-  //       next: (response) =>{
-  //         for(let element of response){
-  //           this.tasks.push(element);
-  //         }
-  //         this.issuesInGroup = response;
-  //         this.tasks_backup = this.issuesInGroup;
-  //         result.push({
-  //           group: group.name,
-  //           tasks: this.issuesInGroup
-  //         });
-  //       },
-  //       error: (error) => {
-  //         console.log(error);
-  //       }
-  //     });
-  //   });
-  //   return result;
-  // }
-
   ngOnDestroy(): void {
   }
 
@@ -151,17 +115,6 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     this.rows = event.rows;
   }
 
-  // changeView():void {
-  //   if(this.groupView){
-  //     this.dataKey = 'group';
-  //   }
-  //   else{
-  //     this.dataKey = 'name';
-  //   }
-
-  //   this.visible = false;
-  //   setTimeout(() => this.visible = true, 0);
-  // }
 
   getSeverity(status: string) {
     switch (status.toLowerCase()) {
@@ -271,7 +224,6 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   
         if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
   
-        // console.log("Response: " + data + " . Refreshing tasks...");
         this.tasks = [];
         this.tasksByGroup = [];
         this.tasks_backup = [];

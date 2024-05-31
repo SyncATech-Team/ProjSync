@@ -129,10 +129,7 @@ export class ProjectSettingsPageComponent implements OnInit {
 
   onSubmit() {
     this.project.name = this.form.value.name;
-    // this.project.typeName = this.form.value.category.name;
-    
-    // console.log(this.form.value.category.name);
-    // console.log(this.project.typeName);
+
     if(this.projectName!=this.project.name || this.form.value.description != this.project.description || this.form.value.category.name != this.project.typeName
        || this.form.value.startDate != this.project.creationDate || this.form.value.dueDate != this.project.dueDate 
     ){
@@ -156,7 +153,6 @@ export class ProjectSettingsPageComponent implements OnInit {
       this.project.typeName = this.form.value.category.name;
       this.project.creationDate = this.form.value.startDate;
       this.project.dueDate = this.form.value.dueDate;
-      // console.log("uspesno")
       this.translateService.get([
         'settings-page.project-edited',
         'settings-page.project-not-edited'
@@ -240,7 +236,6 @@ export class ProjectSettingsPageComponent implements OnInit {
     const relativeImageUrl = imageUrl.substring(imageUrl.indexOf('/assets'));
     this.projectImageSource = relativeImageUrl;
     this.project.icon = this.projectImageSource;
-    // console.log(this.project);  
 
     if(this.projectName){
       this.projectService.updateProject(this.projectName, this.project).subscribe({
