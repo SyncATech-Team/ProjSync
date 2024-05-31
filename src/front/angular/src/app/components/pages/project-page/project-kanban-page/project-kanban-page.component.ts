@@ -69,7 +69,7 @@ export class ProjectKanbanPageComponent implements OnInit {
       this.ref.onClose.subscribe((data: any) => {
         if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
   
-        // console.log("Response: " + data + " . Refreshing tasks...");
+
         this.ngOnInit();
       });
 

@@ -222,7 +222,6 @@ fetchGroups() {
 }
 
 fetchIssues() {
-    console.log("fetchIssues");
     // issues$ Observable postoji, dobijen u konstruktoru i nalazi se u state-u
     this._projectQuery.issues$.subscribe({
         next: response => {
@@ -504,11 +503,11 @@ onDragDropped(event: GanttTableDragDroppedEvent) {
 }
 
 onDragStarted(event: GanttTableDragStartedEvent) {
-    // console.log('Drag started', event);
+
 }
 
 onDragEnded(event: GanttTableDragEndedEvent) {
-    // console.log('Drag ended', event);
+
 }
 
 expandAllGroups() {
@@ -542,7 +541,7 @@ showCreateTaskPopupTaskGantt() {
           this.ref.onClose.subscribe((data: any) => {
             if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
       
-          //   console.log("Response: " + data + " . Refreshing tasks...");
+
             this.refresh();
           });
 

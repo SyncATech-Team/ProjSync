@@ -21,7 +21,7 @@ export class ChatElementComponent implements OnInit {
         ChatElementComponent.ChangeNumberOfUnreadMessagesUI(ChatElementComponent._unreadMessages);
       },
       error: error => {
-        console.log("ERROR: " + error.error);
+
         ChatElementComponent._unreadMessages = 0;
         ChatElementComponent.ChangeNumberOfUnreadMessagesUI(ChatElementComponent._unreadMessages);
       }

@@ -69,13 +69,13 @@ export class NotificationService {
         });
 
         this.hubConnection.onreconnecting(() => {
-            console.log("Reconnecting to the notification hub...");
+
         })
 
     }
 
     stopHubConnection() {
-        console.log("Notifications hub: Stopping hub connection...");
+
         this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
     }
 
@@ -86,7 +86,7 @@ export class NotificationService {
             this.createHubConnection(user);
         }
         else {
-            // console.log("NotificationHub Connection State: " + this.hubConnection.state);
+
         }
     }
 

@@ -26,7 +26,6 @@ export class IssueDependenciesComponent implements OnInit{
 
   ngOnInit(): void {
     this.cdr.markForCheck();
-    console.log(this.issue);
     const issueId = Number(this.issue.id);
     this.issueService.getProjectNameByIssueId(issueId).subscribe({
       next: (response) => {

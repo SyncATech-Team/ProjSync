@@ -34,7 +34,6 @@ export class CreateGroupComponent implements OnInit {
     this.form = this.formBuilder.group({
       'group-name' : []
     });
-    // console.log(this.form.controls['group-name'])
   }
 
   ngOnInit(){
@@ -43,9 +42,6 @@ export class CreateGroupComponent implements OnInit {
 
   onSubmit(){
     if(this.projectName){
-      // console.log(this.form.controls['group-name'].value);
-      // console.log(this.projectName);
-      // console.log(this.form.controls['group-name'].value);
       if(this.form.controls['group-name'].value == null){
         this.translateService.get('create-group.group-name-empty').subscribe((res: string) => {
           this.msgPopUpService.showError(res);
@@ -54,7 +50,6 @@ export class CreateGroupComponent implements OnInit {
       }
       this.groupInProject.GroupName = this.form.controls['group-name'].value;
       this.groupInProject.ProjectName = this.projectName;
-      // console.log(this.groupInProject);
       
       this.groupService.createGroup(this.groupInProject).subscribe({
         next : (response) => {

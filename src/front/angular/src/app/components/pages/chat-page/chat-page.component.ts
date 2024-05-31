@@ -180,7 +180,6 @@ export class ChatPageComponent implements OnInit, OnDestroy {
    * @param otherUserUsername - The username of the other user.
    */
   public static setMessages(loggedInUserUsername: string, otherUserUsername: string) {
-    // console.log("Setting messages for " + loggedInUserUsername + " and " + otherUserUsername);
     ChatPageComponent.clearNumberOfUnreadMessages("chat_" + otherUserUsername);
     ChatPageComponent.staticChatService.getMessages(loggedInUserUsername, otherUserUsername).subscribe({
       next: response => {
