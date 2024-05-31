@@ -54,7 +54,9 @@ h4{
     border-radius: 10px;
     padding: 1% 1% 1% 1%;
     overflow-y: scroll;
-    height: fit-content;
+    word-wrap: break-word;
+    overflow-x: hidden;   
+    height: 10vh;
 }
 
 canvas {
