@@ -1,6 +1,5 @@
 ﻿using backAPI.DTO.Documentation;
 using backAPI.Entities.Domain;
-using backAPI.Repositories.Implementation.Issues;
 using backAPI.Repositories.Interface.Issues;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
