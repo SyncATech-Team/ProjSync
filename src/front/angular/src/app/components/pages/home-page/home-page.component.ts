@@ -88,7 +88,7 @@ export class HomePageComponent implements OnInit {
     });
 
     this.columns = ['Key','Type','Owner','Creation Date','Due Date','Budget','Progress'];
-    this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
+    this.selectedColumns = ['Key','Type','Owner','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
 
     this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'CreatedDate'];

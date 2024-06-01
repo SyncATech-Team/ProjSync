@@ -498,7 +498,12 @@
                                     <!-- Time progress -->
                                     <div style="display: flex;">
                                         <div style="margin-right: 5px;">
-                                            <i class="pi pi-clock"></i>
+                                            <i [pTooltip]="tooltipContentProgressOfTime" tooltipPosition="top" class="pi pi-clock"></i>
+                                            <ng-template #tooltipContentProgressOfTime>
+                                                <div class="flex align-items-center">
+                                                    <span> <b> Time progress </b> </span>
+                                                </div>
+                                            </ng-template>
                                         </div>
                                         <div class="progress-bar-wrapper">
                                             <p-progressBar 
@@ -520,7 +525,12 @@
                                     <!-- Work progress -->
                                     <div style="display: flex;">
                                         <div style="margin-right: 5px;">
-                                            <i class="pi pi-pencil"></i>
+                                            <i [pTooltip]="tooltipContentProgressOfWork" tooltipPosition="top" class="pi pi-pencil"></i>
+                                            <ng-template #tooltipContentProgressOfWork>
+                                                <div class="flex align-items-center">
+                                                    <span> <b> Work progress </b> </span>
+                                                </div>
+                                            </ng-template>
                                         </div>
                                         <div class="progress-bar-wrapper">
                                             <p-progressBar #content
