@@ -48,3 +48,22 @@
 .bold {
     font-weight: bold;
 }
+
+.fraction {
+    display: inline-block;
+    vertical-align: middle; 
+    margin: 0 0.2em 0.4ex;
+    text-align: center;
+    & > span{
+      display: block;
+      padding-top: 0.15em;
+    }
+    & span{
+      &.fdn{
+        border-top: thin solid var(--text-color);
+      }
+      &.bar{
+        display: none;
+      }
+    }
+  }
