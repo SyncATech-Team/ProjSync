@@ -72,8 +72,25 @@
             </p-accordionTab>
             <p-accordionTab header="Kako se računa progres završenog posla za projekta?">
                 <p>
-                    Progres završenog posla za projekta se računa na sledeći način:
+                    Prvo je za sve grupe potrebno izračunati sledeće vrednosti:
                 </p>
+                <span class="bold">progres svih zadataka u grupi =</span>  
+                <div class="fraction">
+                    <span class="fup bold">zbir progresa svih zadataka u grupi</span>
+                    <span class="bar bold">/</span>
+                    <span class="fdn bold">ukupan broj dana od početka do završetka svih zadataka</span>
+                </div>
+                <br><br><br><p><span class="bold">trajanje grupe = broj dana od početka prvog zadatka do završetka poslednjeg zadatka u grupi</span></p>  
+                <br><p><span class="bold">progres grupe = progres svih zadataka u grupi * trajanje grupe</span></p>
+                <p>
+                    Zatim progres završenog posla za projekat se računa na sledeći način:
+                </p>
+                <span class="bold">progres projekta =</span>  
+                <div class="fraction">
+                    <span class="fup bold">ukupan progres svih grupa</span>
+                    <span class="bar bold">/</span>
+                    <span class="fdn bold">ukupan broj dana od početka do završetka svih grupa</span>
+                </div>
             </p-accordionTab>
             <p-accordionTab header="Kako dodati korisnika na projekat?">
                 <p>Da biste započeli, kako biste dodali korisnika na projekat, morate biti prijavljeni i imati odgovarajuće dozvole. Konkretna dozvola koja je potrebna je <span class="bold">'Može upravljati projektima'</span>. Ako nemate ovu dozvolu, nećete moći da dodate korisnika na projekat.
