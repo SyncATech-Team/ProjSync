@@ -37,7 +37,9 @@
     </div>
 
     <div class="pr-5 py-7 pl-10 h-100 w-100 d-flex flex-column kan-board">
-      <board-filter [usersPhotos]="usersPhotos"></board-filter>
+      <div class="kanban-filter">
+        <board-filter [usersPhotos]="usersPhotos"></board-filter>
+      </div>
       <board-dnd [usersPhotos]="usersPhotos"></board-dnd>
     </div>
   </div>

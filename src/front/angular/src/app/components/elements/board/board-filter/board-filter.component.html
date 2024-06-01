@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center mt-6">
-  <form class="w-40 mr-4">
+  <form class="w-40 mr-4 kanban-search">
     <span class="p-input-icon-left">
     <i class="pi pi-search"></i>
     <input
@@ -8,7 +8,7 @@
     </span>
   </form>
 
-  <div class="d-flex flex-row mr-3">
+  <div class="d-flex flex-row mr-3 kanban-user-filter">
     <p-avatarGroup>
       <ng-container *ngIf="(projectQuery.users$ | async) as users">
         <div *ngFor="let user of users.slice(0, MAX_NUMBER_OF_USERS_TO_SHOW); let i = index"

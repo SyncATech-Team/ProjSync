@@ -24,3 +24,11 @@
 .custom-cursor-pointer {
   cursor: default;
 }
+
+.kanban-search{
+  margin-right: 12px;
+}
+
+.kanban-user-filter{
+  margin-right: 8px;
+}
