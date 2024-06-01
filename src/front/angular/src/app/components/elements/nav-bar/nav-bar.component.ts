@@ -89,10 +89,6 @@ export class NavBarComponent implements OnInit {
       }
     });
   }
-
-  onUserChange(event: any) {
-    console.log(event);
-  }
   
   logout() {
     this.accountService.logout();

@@ -109,19 +109,6 @@ export class UserPageComponent implements OnInit {
    * 2. Poziva se kada se komponenta ponovo kreira, npr. ako je promenjena ruta
    */
   ngOnInit(): void {
-      // Dovuci registrovane korisnike iz baze putem servisa
-      // this.userService.getAllUsers().subscribe({
-      //   next: response => {
-      //     this.users = response;
-      //     this.users_backup = response;
-      //     this.getUserProfilePhotos();
-      //     this.showDeactivated(false);
-      //     // console.log(this.users);
-      //   },
-      //   error: error => {
-      //     console.log("ERROR: " + error.error);
-      //   }
-      // });
 
       // IMPROVE - Potrebno doraditi - koristi se kako bi se exportovala tabela u nekom od formata
       this.cols = [
@@ -284,7 +271,6 @@ export class UserPageComponent implements OnInit {
       tekst = event.target.value;
     }
 
-    // console.log(tekst);
   }
 
   /**
@@ -478,7 +464,6 @@ export class UserPageComponent implements OnInit {
    * @param email 
    */
   emailFormatCheck(email: string) {
-    // console.log("Checking: " + email);
     let isValid: boolean = this.emailValidationService.isValidEmailAddress(email);
     let mailInput: HTMLInputElement = document.getElementsByClassName("email")[0] as HTMLInputElement;
     

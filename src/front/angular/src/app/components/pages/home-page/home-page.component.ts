@@ -88,7 +88,7 @@ export class HomePageComponent implements OnInit {
     });
 
     this.columns = ['Key','Type','Owner','Creation Date','Due Date','Budget','Progress'];
-    this.selectedColumns = ['Key','Type','Owner','Creation Date','Due Date','Progress'];
+    this.selectedColumns = ['Key','Type','Owner','Due Date','Progress'];
     this.showColumns = ['Name',...this.selectedColumns];
 
     this.issueColumns = ['Type','Status','Priority', 'Due Date', 'Reporter', 'Completed', 'CreatedDate'];
@@ -110,7 +110,6 @@ export class HomePageComponent implements OnInit {
       next: (response) => {
         this.users = response.filter(user => user.username !== 'admin' && user.isActive == true);
         this.Users = this.users.map(item => item.username);
-        // console.log(this.users);
         this.getUserProfilePhotos(this.users);
       }
     });
@@ -143,7 +142,6 @@ export class HomePageComponent implements OnInit {
       this.projectService.getAllProjectsForUser(user.username).subscribe({
         next: (response) => {
           this.projects = response;
-          // console.log(this.projects);
           this.projects.forEach((project)=>{ 
             project.isExtanded = false;
             project.isFavorite = false;
@@ -170,7 +168,6 @@ export class HomePageComponent implements OnInit {
   }
 
   getUserProfilePhotos(users: UserGetter[]) {
-    // console.log("1");
     for(const user of users) {
       if(user.profilePhoto != null) {
         this.userPictureService.getUserImage(user.username).subscribe({
@@ -182,7 +179,6 @@ export class HomePageComponent implements OnInit {
               photoSource: path
             };
             this.usersPhotos.push(ph);
-            // console.log(this.usersPhotos);
           },
           error: error => {
             console.log(error);
@@ -222,9 +218,9 @@ export class HomePageComponent implements OnInit {
     }
 
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)); // Ukupan broj dana planiran za trajanje projekta
-    // console.log(totalDays);
+
     const remainingDays = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24)); // Broj preostalih dana do kraja projekta
-    // console.log("Preostalo " + remainingDays);
+
     const completedDays = totalDays - remainingDays; // Broj dana koji su već prošli
     
 
@@ -286,7 +282,7 @@ export class HomePageComponent implements OnInit {
             issue.updatedAt = new Date(issue.updatedAt);
           });
 
-          // console.log(this.userIssues);
+
         },
         error: (error) => {
           console.log(error.error);
@@ -397,7 +393,7 @@ export class HomePageComponent implements OnInit {
   }
 
   test(tst : any){
-    // console.log(tst);
+
   }
 
   MAX_PROJECT_NAME_LENGTH_DISPLAY = 20;
@@ -476,7 +472,7 @@ export class HomePageComponent implements OnInit {
 
   // Otvaranje modala za edit issue edit
   openIssueModal(issueId : string, projectName: string){
-    // console.log(issueId);
+
     this._projectService.getProject(projectName);
     this.translateService.get('issue.issue-details').subscribe((res: string) => {
       this.ref = this._modalService.open(IssueModalComponent, {

@@ -60,7 +60,6 @@ export class PresenceService {
   }
 
   stopHubConnection() {
-    console.log("Presence hub: Stopping hub connection...");
     this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
   }
 
@@ -69,7 +68,6 @@ export class PresenceService {
       this.createHubConnection(user);
     }
     else {
-      // console.log("PresenceHub Connection State: " + this.hubConnection.state);
     }
   }
 

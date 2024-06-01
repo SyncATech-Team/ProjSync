@@ -340,11 +340,16 @@ namespace backAPI.Repositories.Implementation.Issues
                 return false;
             }
 
+            var owner = await _usersRepository.GetUserByUsername(model.OwnerUsername);
+            if (owner == null) {
+                return false;
+            }
+
             exists.UpdatedDate = DateTime.Now;
             exists.Description = model.Description;
             exists.Name = model.Title;
             exists.ListPosition = model.ListPosition;
-            exists.OwnerId = Int32.Parse(model.ReporterId);
+            exists.OwnerId = owner.Id;
             IssueStatus issueStatus = await _dataContext.IssueStatuses.Where(type => type.Name == model.Status).FirstAsync();
             IssuePriority issuePriority = await _dataContext.IssuePriority.Where(type => type.Name == model.Priority).FirstAsync();
             IssueType issueType = await _dataContext.IssueTypes.Where(type => type.Name == model.Type).FirstAsync();

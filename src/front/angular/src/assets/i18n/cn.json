@@ -100,7 +100,7 @@
         "profile-photo-not-added": "您的个人照片未添加",
         "user-info-edited": "您的用户信息已编辑",
         "user-info-not-edited": "您的用户信息未编辑",
-        "invalid-phone-format": "电话格式无效。有效格式为 061 1234567",
+        "invalid-phone-format": "电话格式无效。",
         "invalid-password-pattern": "密码模式无效",
         "pattern-info": "密码必须包含至少6个字符，包括大写/小写字母和数字"
     },

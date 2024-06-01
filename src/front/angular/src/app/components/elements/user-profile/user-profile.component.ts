@@ -59,7 +59,6 @@ export class UserProfileComponent implements OnInit{
 
     const filteredUsers = this.users.filter(u => u.username === this.username);
     this.user = filteredUsers[0];
-    // console.log(this.user);
 
     if(this.username)
     this.userOnProjectService.getAllProjectsByUser(this.username).subscribe({
