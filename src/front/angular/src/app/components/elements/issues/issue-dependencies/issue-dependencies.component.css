@@ -50,6 +50,7 @@
     padding-right: 10px;
     border: 1px solid #7cdaf6;
     background-color: #C9EFFB;
+    color: var(--surface-d);
     border-radius: 4px;
 }
 
@@ -63,6 +64,7 @@
 }
 
 .opAddBtn{
+    color: var(--surface-d);
     background-color: #EDF3FF;
     color: #6798fb;
     border: none;
