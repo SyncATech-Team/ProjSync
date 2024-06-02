@@ -99,6 +99,10 @@
     justify-content: space-between;
 }
 
+.info{
+    margin-left: 6px;
+}
+
 .clickable {
     font-size: 14px;
 }
