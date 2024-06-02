@@ -70,44 +70,44 @@
                 <p>{{'faq-page.hdict21' | translate}} <span class="bold">{{'faq-page.hdict22' | translate}}</span>{{'faq-page.hdict23' | translate}}  </p> 
                 <p>{{'faq-page.hdict24' | translate}} <span class="bold">{{'faq-page.hdict25' | translate}}</span> {{'faq-page.hdict26' | translate}}</p>        
             </p-accordionTab>
-            <p-accordionTab header="Kako se računa progres završenog posla za projekta?">
+            <p-accordionTab [header]="'faq-page.ptp01' | translate">
                 <p>
-                    Prvo je za sve grupe potrebno izračunati sledeće vrednosti:
+                    {{'faq-page.ptp02' | translate}}
                 </p>
-                <span class="bold">progres svih zadataka u grupi =</span>  
+                <span class="bold">{{'faq-page.ptp03' | translate}}</span>  
                 <div class="fraction">
-                    <span class="fup bold">zbir progresa svih zadataka u grupi</span>
+                    <span class="fup bold">{{'faq-page.ptp04' | translate}}</span>
                     <span class="bar bold">/</span>
-                    <span class="fdn bold">ukupan broj dana od početka do završetka svih zadataka</span>
+                    <span class="fdn bold">{{'faq-page.ptp05' | translate}}</span>
                 </div>
-                <br><br><br><p><span class="bold">trajanje grupe = broj dana od početka prvog zadatka do završetka poslednjeg zadatka u grupi</span></p>  
-                <br><p><span class="bold">progres grupe = progres svih zadataka u grupi * trajanje grupe</span></p>
+                <br><br><br><p><span class="bold">{{'faq-page.ptp06' | translate}}</span></p>  
+                <br><p><span class="bold">{{'faq-page.ptp07' | translate}}</span></p>
                 <p>
-                    Zatim progres završenog posla za projekat se računa na sledeći način:
+                    {{'faq-page.ptp08' | translate}}
                 </p>
-                <span class="bold">progres projekta =</span>  
+                <span class="bold">{{'faq-page.ptp09' | translate}}</span>  
                 <div class="fraction">
-                    <span class="fup bold">ukupan progres svih grupa</span>
+                    <span class="fup bold">{{'faq-page.ptp10' | translate}}</span>
                     <span class="bar bold">/</span>
-                    <span class="fdn bold">ukupan broj dana od početka do završetka svih grupa</span>
+                    <span class="fdn bold">{{'faq-page.ptp11' | translate}}</span>
                 </div>
             </p-accordionTab>
-            <p-accordionTab header="Kako dodati korisnika na projekat?">
-                <p>Da biste započeli, kako biste dodali korisnika na projekat, morate biti prijavljeni i imati odgovarajuće dozvole. Konkretna dozvola koja je potrebna je <span class="bold">'Može upravljati projektima'</span>. Ako nemate ovu dozvolu, nećete moći da dodate korisnika na projekat.
+            <p-accordionTab [header]="'faq-page.htapop01' | translate">
+                <p> {{'faq-page.htapop02' | translate}} <span class="bold">{{'faq-page.htapop03' | translate}}</span>. {{'faq-page.htapop04' | translate}}
                 </p>
                 <p>
-                Prvo morate otvoriti stranicu projekta na kom želite da dodate korisnika, klikom na ime projekta u tabeli na početnoj strani. Zatim na stranici <span class="bold">'Ljudi'</span> možete naći dugme <span class="bold">'Dodaj korisnika'</span>, klikom na ovo dugme se otvara modal u kome možete izabrati korisnika i klikom na dugme <span class="bold">'Dodaj korisnika'</span> dodajete tog korisnika na projekat.
+                    {{'faq-page.htapop05' | translate}} <span class="bold">{{'faq-page.htapop06' | translate}}</span> {{'faq-page.htapop07' | translate}} <span class="bold">{{'faq-page.htapop08' | translate}}</span>{{'faq-page.htapop09' | translate}} <span class="bold">{{'faq-page.htapop10' | translate}}</span> {{'faq-page.htapop11' | translate}}.
                 </p>     
             </p-accordionTab>
-            <p-accordionTab header="Kako se računa vremenski progres projekta?">
+            <p-accordionTab [header]="'faq-page.pp01' | translate">
                 <p>
-                    Vremenski progres projekta se računa na sledeći način:
+                    {{'faq-page.pp02' | translate}}
                 </p>
-                <span class="bold">vremenski progres =</span>  
+                <span class="bold"> {{'faq-page.pp03' | translate}} </span>  
                 <div class="fraction">
-                    <span class="fup bold">broj dana od početka projekta do danas</span>
+                    <span class="fup bold"> {{'faq-page.pp04' | translate}} </span>
                     <span class="bar bold">/</span>
-                    <span class="fdn bold">ukupan broj dana od početka do završetka projekta</span>
+                    <span class="fdn bold"> {{'faq-page.pp05' | translate}} </span>
                 </div>
                 <span class="bold"> * 100</span>  
             </p-accordionTab>
