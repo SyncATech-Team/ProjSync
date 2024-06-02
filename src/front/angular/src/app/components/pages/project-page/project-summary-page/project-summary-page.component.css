@@ -53,10 +53,10 @@ h4{
     background-color: var(--surface-d);
     border-radius: 10px;
     padding: 1% 1% 1% 1%;
-    overflow-y: scroll;
+    overflow-y: hidden;
     word-wrap: break-word;
-    overflow-x: hidden;   
-    height: 10vh;
+    overflow-x: scroll;   
+    /* height: 10vh; */
 }
 
 canvas {
