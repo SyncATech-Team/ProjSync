@@ -246,7 +246,8 @@ fetchIssues() {
                     expandable: true,
                     draggable: true,
                     progress: issue.completed/100,
-                    reporterUsername: issue.reporterUsername
+                    reporterUsername: issue.reporterUsername,
+                    color: issue.completed === 100 ? 'lightgreen' : ''
                 });
             }
             this.items = dataIssues;

@@ -69,7 +69,7 @@
                             <div class="p-input-icon-right input-search">
                                 <span class="p-input-icon-right">
                                     <i class="pi pi-search"></i>
-                                    <input type="text" (input)="searchIssuesTable()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'home-page.search-placeholder' | translate" autocomplete="off"/>
+                                    <input type="text" (input)="searchIssuesTable()" spellcheck="false" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'home-page.search-placeholder' | translate" autocomplete="off"/>
                                 </span>
                             </div>
                         </div>
@@ -326,7 +326,7 @@
                             <div class="p-input-icon-right input-search">
                                 <span class="p-input-icon-right">
                                     <i class="pi pi-search"></i>
-                                    <input type="text" (input)="filterProjectsByName()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'home-page.search-placeholder' | translate" autocomplete="off"/>
+                                    <input type="text" (input)="filterProjectsByName()" spellcheck="false" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'home-page.search-placeholder' | translate" autocomplete="off"/>
                                 </span>
                             </div>
                         </div>

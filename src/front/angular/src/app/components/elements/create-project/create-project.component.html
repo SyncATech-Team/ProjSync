@@ -24,6 +24,7 @@
                             [(ngModel)]="creationModel.name"
                             required
                             autocomplete="off"
+                            spellcheck="false"
                             >
                             <label for="name" class="form-label"> {{ 'create-project-modal.name' | translate }} </label>
                         </div>
@@ -39,6 +40,7 @@
                             placeholder="TC"
                             [(ngModel)]="creationModel.key"
                             required
+                            spellcheck="false"
                             >
                             <label for="key" class="form-label"> {{ 'create-project-modal.key' | translate }} </label>
                         </div>
@@ -59,6 +61,7 @@
                         name="description"
                         [placeholder]="'create-project-modal.description-placeholder' | translate"
                         [(ngModel)]="creationModel.description"
+                        spellcheck="false"
                         >
                         </quill-editor>
                     </div>
