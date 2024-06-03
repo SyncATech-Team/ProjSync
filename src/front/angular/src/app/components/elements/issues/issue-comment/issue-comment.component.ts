@@ -8,6 +8,7 @@ import {PhotoForUser} from "../../../../_models/photo-for-user";
 import {UserProfilePicture} from "../../../../_service/userProfilePicture.service";
 import {IssueUtil} from "../../../utils/issue-util";
 import { AccountService } from '../../../../_service/account.service';
+import { LocalService } from '../../../../_service/local.service';
 
 @Component({
   selector: 'issue-comment',
@@ -30,7 +31,8 @@ export class IssueCommentComponent implements OnInit {
   constructor(
     public accoutService: AccountService,
     private projectService: ProjectService,
-    private userPictureService: UserProfilePicture
+    private userPictureService: UserProfilePicture,
+    private localService: LocalService
   ) {}
 
   @HostListener('window:keyup', ['$event'])
@@ -51,7 +53,7 @@ export class IssueCommentComponent implements OnInit {
     }      
 
     this.commentControl = new FormControl('');
-    var storage = localStorage.getItem("user");
+    var storage = this.localService.getData('user');
     this.user = JSON.parse(storage!);
     if (this.createMode) {
       this.comment = new JComment(this.issueId, this.user);
@@ -71,7 +73,6 @@ export class IssueCommentComponent implements OnInit {
       updatedAt: now.toISOString(),
       body: this.commentControl.value
     }).then( () => {
-      this.commentBoxRef.nativeElement.reset();
     });
     this.cancelAddComment();
   }

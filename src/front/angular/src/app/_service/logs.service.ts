@@ -37,12 +37,12 @@ export class LogsService {
             });
 
         this.hubConnection.onclose(() => {
-            console.log("Connection to LogsHub closed");
+
         })
     }
 
     stopHubConnection() {
-        console.log("Logs hub: Stopping hub connection...");
+
         this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
     }
 
@@ -51,7 +51,6 @@ export class LogsService {
             this.createHubConnection(user);
         }
         else {
-            // console.log("LogsHub Connection State: " + this.hubConnection.state);
         }
     }
 

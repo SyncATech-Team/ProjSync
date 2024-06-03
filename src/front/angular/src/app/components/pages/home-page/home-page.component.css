@@ -81,7 +81,7 @@ th{
     margin-bottom: 1px;
 }
 
-.nav-tabs .nav-item .nav-link.active{
+.nav-tabs .nav-item .nav-link.active-tab{
     background-color: var(--surface-e);
     border-top-color: var(--text-color-secondary);
     border-left-color: var(--text-color-secondary);

@@ -10,6 +10,8 @@ import {UsersWithCompletion} from "../../../../_models/user-completion-level";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {IssueChangeProgressComponent} from "../issue-change-progress/issue-change-progress.component";
 import {PresenceService} from "../../../../_service/presence.service";
+import { AccountService } from '../../../../_service/account.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'issue-assignees',
@@ -25,12 +27,16 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   valueList!: UsersWithCompletion[];
 
   ref: DynamicDialogRef | undefined;
+  permitions: any;
 
   constructor(private _projectService: ProjectService,
               private userPictureService: UserProfilePicture,
               private cdr: ChangeDetectorRef,
               public dialogService: DialogService,
-              public presenceService: PresenceService) {}
+              public presenceService: PresenceService,
+              private accoutService: AccountService,
+              private translationService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.cdr.markForCheck();
@@ -39,6 +45,9 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
       this.valueList = this.issue.usersWithCompletion;
     }
+    var user = this.accoutService.getCurrentUser();
+    if(user?.permitions)
+      this.permitions = user.permitions;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -61,14 +70,16 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   }
 
   show(userId: string | undefined, userName: string | undefined, completionLevel: number) {
-    this.ref = this.dialogService.open(IssueChangeProgressComponent, {
-      data: {
-        issueId: this.issue.id,
-        userId: userId,
-        userName: userName,
-        currentCompletionLevel: completionLevel
-      },
-      header: 'Change Progress'
+    this.translationService.get('issue-change-progress.change-progress').subscribe((res: string) => {
+      this.ref = this.dialogService.open(IssueChangeProgressComponent, {
+        data: {
+          issueId: this.issue.id,
+          userId: userId,
+          userName: userName,
+          currentCompletionLevel: completionLevel
+        },
+        header: res
+      });
     });
   }
 

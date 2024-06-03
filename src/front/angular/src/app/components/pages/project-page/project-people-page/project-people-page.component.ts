@@ -13,6 +13,7 @@ import { UserProfilePicture } from '../../../../_service/userProfilePicture.serv
 import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserProfileComponent } from '../../../elements/user-profile/user-profile.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-people-page',
@@ -56,7 +57,8 @@ export class ProjectPeoplePageComponent implements OnInit{
     private userService: UserService,
     private projectService: ProjectService,
     private userPictureService: UserProfilePicture,
-    private dialogService : DialogService
+    private dialogService : DialogService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -73,8 +75,6 @@ export class ProjectPeoplePageComponent implements OnInit{
         
         this.users = response.filter(user => user.isActive == true);
         this.users_backup = response;
-        // console.log(this.usersPhotos);
-        // this.userRole = this.users_backup.map(user => user.companyRoleName);
         const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
         this.userRole = Array.from(uniqueRoles);
         this.userService.getAllUsers().subscribe({
@@ -156,7 +156,12 @@ export class ProjectPeoplePageComponent implements OnInit{
     }
   
     if (searchTerm) {
-      filteredUsers = filteredUsers.filter(user => user.username.toLowerCase().includes(searchTerm));
+      filteredUsers = filteredUsers.filter(user => user.username.toLowerCase().includes(searchTerm)
+      || user.firstName.toLowerCase().includes(searchTerm)
+      || user.lastName.toLowerCase().includes(searchTerm)
+      || user.companyRoleName.toLowerCase().includes(searchTerm)
+      || user.email.toLowerCase().includes(searchTerm)
+      );
     }
     
     this.users = filteredUsers;
@@ -164,54 +169,62 @@ export class ProjectPeoplePageComponent implements OnInit{
   
   deleteUserFromProject(event: Event, username: string) {
 
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass:"p-button-danger p-button-text",
-      rejectButtonStyleClass:"p-button-text p-button-text",
-      acceptIcon:"none",
-      rejectIcon:"none",
-
-      accept: (input: string) => {
-        this.userOnProjectService.removeUserFromProject(this.projectName, username).subscribe({
-          next: _ => {
-            const indexToRemove = this.users.findIndex(user => user.username === username);
-            if (indexToRemove !== -1) {
-              this.allUsers.push(this.users[indexToRemove]);
-              this.users.splice(indexToRemove, 1);
+    this.translateService.get([
+      'project-people-page.user-removed',
+      'project-people-page.user-not-removed',
+      'project-people-page.do-you-want-to-remove-user',
+      'project-people-page.delete-confirmation'
+    ]).subscribe((res: any) => {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: res['project-people-page.do-you-want-to-remove-user'],
+        header: res['project-people-page.delete-confirmation'],
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass:"p-button-danger p-button-text",
+        rejectButtonStyleClass:"p-button-text p-button-text",
+        acceptIcon:"none",
+        rejectIcon:"none",
+  
+        accept: (input: string) => {
+          this.userOnProjectService.removeUserFromProject(this.projectName, username).subscribe({
+            next: _ => {
+              const indexToRemove = this.users.findIndex(user => user.username === username);
+              if (indexToRemove !== -1) {
+                this.allUsers.push(this.users[indexToRemove]);
+                this.users.splice(indexToRemove, 1);
+              }
+      
+              const indexToRemoveBackup = this.users_backup.findIndex(user => user.username === username);
+              if(indexToRemoveBackup !== -1) {
+                this.users_backup.splice(indexToRemoveBackup, 1);
+              }
+              // this.userRole = this.users_backup.map(user => user.companyRoleName);
+              const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
+              this.userRole = Array.from(uniqueRoles);
+              this.msgPopupService.showSuccess(res['project-people-page.user-removed']);
+            },
+            error: error => {
+              this.msgPopupService.showError(res['project-people-page.user-not-removed']);
+              console.log(error);
             }
-    
-            const indexToRemoveBackup = this.users_backup.findIndex(user => user.username === username);
-            if(indexToRemoveBackup !== -1) {
-              this.users_backup.splice(indexToRemoveBackup, 1);
-            }
-            // this.userRole = this.users_backup.map(user => user.companyRoleName);
-            const uniqueRoles = new Set(this.users.map(user => user.companyRoleName));
-            this.userRole = Array.from(uniqueRoles);
-            this.msgPopupService.showSuccess("User removed from project successfully.");
-          },
-          error: error => {
-            this.msgPopupService.showError("Unable to delete choosen user.");
-            console.log(error);
-          }
-        });
-      },
-      reject: () => {
-          this.msgPopupService.showError('You have rejected');
-      }
+          });
+        },
+        reject: () => {
+            // this.msgPopupService.showError('You have rejected');
+        }
+      });
     });
   }
 
   addUser() {
     this.userOnProjectService.addUserOnProject(this.projectName, (this.userForAdd as any).username, this.color).subscribe({
       next: (response) => {
-        this.msgPopupService.showSuccess("Successfully added new user!");
+        this.translateService.get('project-people-page.user-added').subscribe((res: any) => {
+          this.msgPopupService.showSuccess(res);
+        });
         this.allUsers = this.allUsers.filter(user => user.username !== (this.userForAdd as any).username);
         this.userForAdd = "";
 
-        // console.log(this.color);
         this.userOnProjectService.getAllUsersOnProject(this.projectName).subscribe({
           next: (response) => {
             this.users = response;
@@ -226,7 +239,9 @@ export class ProjectPeoplePageComponent implements OnInit{
         });
       },
       error: (error) => {
-        this.msgPopupService.showError("Unable to add new user! Make sure there are no duplicate names.")
+        this.translateService.get('project-people-page.user-not-added-duplicate-names').subscribe((res: any) => {
+          this.msgPopupService.showError(res);
+        });
       }
     })
   }
@@ -248,28 +263,30 @@ export class ProjectPeoplePageComponent implements OnInit{
   }
 
   showProfile(username : string){
-    this.ref = this.dialogService.open(UserProfileComponent, {
-      header : "User profile",
-      height : '60%',
-      width: window.innerWidth < 700 ? '80%' : '40%',
-      contentStyle: { 
-        overflow: 'auto',
-      },
-      baseZIndex: 10000,
-      closable: true,
-      modal: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      maximizable: true,
-      breakpoints: {
-        '1100px':'75vw',
-        '400px' : '90vw'
-      },
-      data: {
-        username: username,
-        usersPhotos: this.usersPhotos,
-        users: this.users
-      }
+    this.translateService.get('user-profile.title').subscribe((res: any) => {
+      this.ref = this.dialogService.open(UserProfileComponent, {
+        header : res,
+        height : '60%',
+        width: window.innerWidth < 700 ? '80%' : '40%',
+        contentStyle: { 
+          overflow: 'auto',
+        },
+        baseZIndex: 10000,
+        closable: true,
+        modal: true,
+        dismissableMask: true,
+        closeOnEscape: true,
+        maximizable: true,
+        breakpoints: {
+          '1100px':'75vw',
+          '400px' : '90vw'
+        },
+        data: {
+          username: username,
+          usersPhotos: this.usersPhotos,
+          users: this.users
+        }
+      });
     });
   }
 }

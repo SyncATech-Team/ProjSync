@@ -7,7 +7,7 @@
             [src]="projectImageSource != null ? projectImageSource : defaultImagePath">
             <div class="logo-header" *ngIf="collapsed">
                 <span class="logo-text">{{ getProjectName() }}</span><br>
-                <span>Key: {{ projectKey }}</span>
+                <span> {{'project-sidebar.key' | translate }}: {{ projectKey }}</span>
             </div>
         </div>
         <button class="button-close" *ngIf="collapsed" (click)="closeSidenav()">
@@ -17,15 +17,90 @@
 
     <!-- Linkovi -->
     <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" 
-               [routerLink]="data.label === 'Create task' ? null : [data.routeLink + projectName]"
-               routerLinkActive="active"
-               [routerLinkActiveOptions]="{exact:true}"
-               (click)="handleNavigation(data.label)" style="cursor: pointer;">
-                <i [class]="data.icon" class="sidenav-link-icon"></i>
-                <span class="sidenav-link-text" *ngIf="collapsed">{{ data.label }}</span>
+        
+        <li class="sidenav-nav-item">
+            <a  class="sidenav-nav-link"
+                [routerLink]="['/home/projects/tasks/' + projectName]"
+                routerLinkActive="active"
+                (click)="handleNavigation('Tasks')"
+                style="cursor: pointer;"
+            >
+                <i class="fa-solid fa-tasks sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed"> {{'project-sidebar.tasks' | translate}} </span>
             </a>
         </li>
+
+        <li class="sidenav-nav-item">
+            <a  class="sidenav-nav-link"
+                [routerLink]="['/home/projects/people/' + projectName]"
+                routerLinkActive="active"
+                (click)="handleNavigation('People')"
+                style="cursor: pointer;"
+            >
+                <i class="fa-solid fa-people-group sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{'project-sidebar.people' | translate}}</span>
+            </a>
+        </li>
+
+        <li class="sidenav-nav-item">
+            <a  class="sidenav-nav-link"
+                [routerLink]="['/home/projects/summary/' + projectName]"
+                routerLinkActive="active"
+                (click)="handleNavigation('Summary')"
+                style="cursor: pointer;"
+            >
+                <i class="fa-solid fa-clipboard-list sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{'project-sidebar.summary' | translate}}</span>
+            </a>
+        </li>
+
+        <li class="sidenav-nav-item">
+            <a  class="sidenav-nav-link"
+                [routerLink]="['/home/projects/documents/' + projectName]"
+                routerLinkActive="active"
+                (click)="handleNavigation('Documents')"
+                style="cursor: pointer;"
+            >
+                <i class="fa-solid fa-file sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{'project-sidebar.documents' | translate}}</span>
+            </a>
+        </li>
+
+        <li class="sidenav-nav-item">
+            <a  class="sidenav-nav-link"
+                [routerLink]="['/home/projects/settings/' + projectName]"
+                routerLinkActive="active"
+                (click)="handleNavigation('Project settings')"
+                style="cursor: pointer;"
+            >
+                <i class="fa-solid fa-wrench sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{'project-sidebar.settings' | translate}}</span>
+            </a>
+        </li>
+
+        <li class="sidenav-nav-item">
+            <a  class="sidenav-nav-link"
+                [routerLink]="['/home/projects/gantt/' + projectName]"
+                routerLinkActive="active"
+                (click)="handleNavigation('Gantt')"
+                style="cursor: pointer;"
+            >
+                <i class="fa-solid fa-chart-gantt sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{'project-sidebar.gantt' | translate}}</span>
+            </a>
+        </li>
+
+        <li class="sidenav-nav-item">
+            <a  class="sidenav-nav-link"
+                [routerLink]="['/home/projects/kanban/' + projectName]"
+                routerLinkActive="active"
+                (click)="handleNavigation('Kanban')"
+                style="cursor: pointer;"
+            >
+                <i class="fa-solid fa-chart-simple fa-rotate-180 sidenav-link-icon"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{'project-sidebar.kanban' | translate}}</span>
+            </a>
+        </li>
+
     </ul>    
 </div>

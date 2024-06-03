@@ -8,6 +8,8 @@ import { UserProfilePicture } from '../../../_service/userProfilePicture.service
 import { NavBarComponent } from '../../elements/nav-bar/nav-bar.component';
 import { AuthUserChangePassword } from '../../../_models/change-passowrd-auth-user';
 import { AccountService } from '../../../_service/account.service';
+import { TranslateService } from '@ngx-translate/core';
+import { LocalService } from '../../../_service/local.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -59,7 +61,10 @@ export class EditProfilePageComponent implements OnInit {
     private userProfilePhoto: UserProfilePicture,
     private navBarComponent: NavBarComponent,
     private confirmationService: ConfirmationService,
-    private accountService: AccountService) {}
+    private accountService: AccountService,
+    private translateService: TranslateService,
+    private localService: LocalService
+  ) {}
 
 
   ngOnInit(): void {
@@ -68,7 +73,6 @@ export class EditProfilePageComponent implements OnInit {
         this.user = response;
         this.username = this.user.username;
         this.editUser = response;
-        // console.log(this.user);
         if(this.user.profilePhoto != null) {
           this.userProfilePhoto.getUserImage(this.user.username).subscribe({
             next: response => {
@@ -93,11 +97,16 @@ export class EditProfilePageComponent implements OnInit {
   }
 
   onBasicUploadAuto(event: FileUploadEvent) {
-    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Auto Mode' });
+    this.translateService.get([
+      'general.success',
+      'edit-profile-page.file-uploaded-with-auto-mode'
+    ]).subscribe(translations => {
+      this.messageService.add({ severity: 'info', summary: translations['general.success'], detail: translations['edit-profile-page.file-uploaded-with-auto-mode'] });
+    });
   }
 
   getUsername() {
-    let x = localStorage.getItem("user");
+    let x = this.localService.getData('user');
     if(x == null) return "";
 
     return JSON.parse(x)['username'];
@@ -130,33 +139,56 @@ export class EditProfilePageComponent implements OnInit {
 
   applyEditChanges() {
     this.editUser.isActive = this.user?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
-    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.editUser.contactPhone) || this.editUser.contactPhone == '' || this.editUser.contactPhone == null){//testira format broja telefona
+    if(/^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)?[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})?$/
+    .test(this.editUser.contactPhone) || this.editUser.contactPhone == '' || this.editUser.contactPhone == null){//testira format broja telefona
       this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
         next: response => {
-          this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully edited user info', life: 3000 });
+          this.translateService.get([
+            'general.success',
+            'edit-profile-page.user-info-edited'
+          ]).subscribe(translations => {
+            this.messageService.add({ severity: 'success', summary: translations['general.success'], detail: translations['edit-profile-page.user-info-edited'], life: 3000 });
+          });
           this.ngOnInit();
         },
         error: error => {
-          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Unable to edit user info', life: 3000 });
+          this.translateService.get([
+            'general.error',
+            'edit-profile-page.user-info-not-edited'
+          ]).subscribe(translations => {
+            this.messageService.add({ severity: 'error', summary: translations['general.error'], detail: translations['edit-profile-page.user-info-not-edited'], life: 3000 });
+          });
         }
       });
     }
     else{
-      this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Not a valid phone format. Valid format 061 1234567', life: 3000 });// los format telefona
+      this.translateService.get([
+        'general.error',
+        'edit-profile-page.invalid-phone-format'
+      ]).subscribe(translations => {
+        this.messageService.add({ severity: 'error', summary: translations['general.error'], detail: translations['edit-profile-page.invalid-phone-format'], life: 3000 });
+      });
     }
   } 
 
   changePassword() {
     this.changePasswordFields.username = this.user!.username;
-    this.accountService.changePasswordForAuthorizedUser(this.changePasswordFields).subscribe({
-      next: response => {
-        this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: "Password changed", life: 3000 });
-        this.ngOnInit();
-      },
-      error: error => {
-        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: "Password not changed", life: 3000 });
-      }
-    })
+    this.translateService.get([
+      'edit-profile-page.password-changed',
+      'edit-profile-page.password-not-changed',
+      'general.confirmed',
+      'general.error'
+    ]).subscribe(translations => {
+      this.accountService.changePasswordForAuthorizedUser(this.changePasswordFields).subscribe({
+        next: response => {
+          this.messageService.add({ severity: 'success', summary: translations['general.confirmed'], detail: translations['edit-profile-page.password-changed'], life: 3000 });
+          this.ngOnInit();
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: translations['general.error'], detail: translations['edit-profile-page.password-not-changed'], life: 3000 });
+        }
+      })
+    });
   }
 
   onFileSelected(event: any){
@@ -167,7 +199,11 @@ export class EditProfilePageComponent implements OnInit {
       const fileSize = selectedFile.size;
 
       if (fileSize > 5000000) { // 5MB u bajtovima
-        this.msgPopupService.showError("File size exceeds 5MB limit");
+        this.translateService.get([
+          'edit-profile-page.file-size-exceeds-limit'
+        ]).subscribe(translations => {
+          this.msgPopupService.showError(translations['edit-profile-page.file-size-exceeds-limit']);
+        });
         return;
       }
 
@@ -179,10 +215,20 @@ export class EditProfilePageComponent implements OnInit {
             this.fileInputRef.nativeElement.value = '';
           }
           this.imageLoading = false;
-          this.messageService.add({ severity: 'success', summary: 'Successfully', detail: 'Profile photo added', life: 3000 });
+          this.translateService.get([
+            'general.success',
+            'edit-profile-page.profile-photo-added'
+          ]).subscribe(translations => {
+            this.messageService.add({ severity: 'success', summary: translations['general.success'], detail: translations['edit-profile-page.profile-photo-added'], life: 3000 });
+          });
         },
         error: error => {
-          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Image not added', life: 3000 });
+          this.translateService.get([
+            'general.error',
+            'edit-profile-page.profile-photo-not-added'
+          ]).subscribe(translations => {
+            this.messageService.add({ severity: 'error', summary: translations['general.error'], detail: translations['edit-profile-page.profile-photo-not-added'], life: 3000 });
+          });
           this.imageLoading = false;
         }
       });
@@ -228,18 +274,31 @@ export class EditProfilePageComponent implements OnInit {
 
   openPopUp(event : any){
     if(this.user && this.user.profilePhoto != null){
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Do you want to remove your profile photo?',
-        icon: 'pi pi-info-circle',
-        acceptButtonStyleClass: 'p-button-danger p-button-sm rounded',
-        accept: () => {
-            this.removePhoto();
-            this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Profile photo removed', life: 3000 });
-        },
-        reject: () => {
-            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-        }
+      this.translateService.get([
+        'edit-profile-page.remove-photo-confirm',
+        'general.yes',
+        'general.no',
+        'general.confirmed',
+        'general.rejected',
+        'general.you-have-confirmed',
+        'general.you-have-rejected',
+        'edit-profile-page.photo-removed'
+      ]).subscribe(translations => {
+        this.confirmationService.confirm({
+          target: event.target as EventTarget,
+          message: translations['edit-profile-page.remove-photo-confirm'],
+          "acceptLabel": translations['general.yes'],
+          "rejectLabel": translations['general.no'],
+          icon: 'pi pi-info-circle',
+          acceptButtonStyleClass: 'p-button-danger p-button-sm rounded',
+          accept: () => {
+              this.removePhoto();
+              this.messageService.add({ severity: 'success', summary: translations['general.confirmed'], detail: translations['edit-profile-page.photo-removed'], life: 3000 });
+          },
+          reject: () => {
+              this.messageService.add({ severity: 'error', summary: translations['general.rejected'],  detail: translations['general.you-have-rejected'], life: 3000 });
+          }
+        });
       });
     }
   }
@@ -259,13 +318,16 @@ export class EditProfilePageComponent implements OnInit {
     if(check == false || this.changePasswordFields.currentPassword == "") return false;
 
     if(!this.pattern.test(this.changePasswordFields.newPassword)) {
-      document.getElementById("error-display-span")!.innerHTML = `
-      Invalid password pattern  
-      <i 
-          class="pi pi-question-circle"
-          style="color: black"
-          title="Password needs to be at least 6 characters long and have one upper letter and one digit"></i>
-      `;
+      this.translateService.get([
+        'edit-profile-page.invalid-password-pattern',
+        'edit-profile-page.pattern-info'
+      ]).subscribe(translations => {
+        document.getElementById("error-display-span")!.innerHTML = `${translations['edit-profile-page.invalid-password-pattern']}  
+        <i 
+            class="pi pi-question-circle"
+            style="color: black"
+            title="${translations['edit-profile-page.pattern-info']}"></i>`;
+      });
     }
     else {
       document.getElementById("error-display-span")!.innerHTML = "";

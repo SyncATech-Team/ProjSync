@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ProjectDocumentService } from '../../../_service/project-document.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { ProjectDocumentsPageComponent } from '../../pages/project-page/project-documents-page/project-documents-page.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-upload-document',
@@ -17,7 +18,8 @@ export class UploadDocumentComponent {
   constructor(
     private projectDocService: ProjectDocumentService,
     private msgPopupService: MessagePopupService,
-    private docsPage: ProjectDocumentsPageComponent
+    private docsPage: ProjectDocumentsPageComponent,
+    private translateService: TranslateService
   ) { }
 
   onFileSelected(event: any){
@@ -28,13 +30,17 @@ export class UploadDocumentComponent {
     this.projectDocService.uploadDocument(this.projectName!, filesArray).subscribe({
       next: response => {
         this.showUploadProgressBar = false;
-        this.msgPopupService.showSuccess("Files successfully uploaded.");
+        this.translateService.get('files-uploader.files-successfully-uploaded').subscribe((res: string) => {
+          this.msgPopupService.showSuccess(res);
+        });
         this.docsPage.ngOnInit();
         event.target.value = "";
       },
       error: error => {
         this.showUploadProgressBar = false;
-        this.msgPopupService.showError("Files not uploaded. Try again.");
+        this.translateService.get('files-uploader.error-uploading-files').subscribe((res: string) => {
+          this.msgPopupService.showError(res);
+        });
         event.target.value = "";
       }
     });

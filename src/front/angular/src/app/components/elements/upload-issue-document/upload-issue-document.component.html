@@ -1,10 +1,10 @@
-<div class="pt-4 pb-2 fs-5 fw-bold">Add Attachements</div>
+<div class="pt-4 pb-2 fs-5 fw-bold"> {{'upload-issue-documents.add-attachements' | translate}} </div>
 <div class="upload-container">
     <div class="dropzone">
         <input type="file" #fileDropRef id="fileDropRef" multiple 
             (change)="onFileSelected($event)"
             accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .jpg, .jpeg, .png, .giff, .bmp, .svg">
-        <span>Drag files or click to upload</span>
+        <span>{{'upload-issue-documents.drag-files-or-click-to-upload' | translate}}</span>
     </div>
 </div>
 <!-- End of upload container -->

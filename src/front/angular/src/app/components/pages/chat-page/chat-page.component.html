@@ -17,7 +17,7 @@
                     [suggestions]="filteredUsers"
                     (completeMethod)="searchUsers($event)"
                     field="username"
-                    [placeholder]="'Type to search users...'"
+                    [placeholder]="'chat-page.search-for-users' | translate"
                     class="custom-autocomplete"
                     [spellcheck]="false"
                     (ngModelChange)="onUserSelected($event)"
@@ -76,17 +76,17 @@
                     </span>
                 </div>
                 <div class="username-online" *ngIf="(presenceService.onlineUsers$ | async)?.includes(selectedUser!.username)">
-                    <span>Online now</span>
+                    <span> {{'chat-page.online' | translate }} </span>
                 </div>
                 <div class="username-offline" *ngIf="!(presenceService.onlineUsers$ | async)?.includes(selectedUser!.username)">
-                    <span>Offline</span>
+                    <span> {{ 'chat-page.offline' | translate }} </span>
                 </div>
             </div>
 
             <div id="messages-div-id" class="chat-messages">
                 
                 <div class="no-messages" *ngIf="messages.length === 0">
-                    <span>No messages yet</span>
+                    <span> {{'chat-page.no-messages-yet' | translate }} </span>
                 </div>
                 
                 <div 
@@ -105,14 +105,26 @@
                 <textarea 
                     name="newMessage"
                     id="newMessageTextArea"
-                    placeholder="Type your message here..."
+                    [placeholder]="'chat-page.type-a-message' | translate"
                     [(ngModel)]="inputMessage"
                     spellcheck="false"
                     (keydown)="onKeydown($event)"
                     ></textarea>
-                <div id="send-btn-div" (click)="sendMessage()" [ariaDisabled]="inputMessage.length === 0">
+                <div 
+                id="send-btn-div"
+                (click)="sendMessage()"
+                [ariaDisabled]="inputMessage.length === 0"
+                [pTooltip]="tooltipContentProgress"
+                tooltipPosition="left">
                     <i class="fa-solid fa-paper-plane"></i>
                 </div>
+                <ng-template #tooltipContentProgress>
+                    <div class="flex align-items-center">
+                        <span>
+                            <b> {{'chat-page.pro-tip' | translate}}: </b>  {{'chat-page.send-shortcut' | translate}}
+                        </span>
+                    </div>
+                </ng-template>
             </div>
 
         </div>

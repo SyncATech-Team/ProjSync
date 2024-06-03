@@ -99,6 +99,10 @@
     justify-content: space-between;
 }
 
+.info{
+    margin-left: 6px;
+}
+
 .clickable {
     font-size: 14px;
 }
@@ -157,7 +161,8 @@
 
 .dropdown-item:hover {
     cursor: pointer;
-    background-color: #d8dde6;
+    background-color: var(--surface-ground);
+    border-radius: 4px;
 }
 
 #gear{
@@ -176,4 +181,27 @@
     align-items: center;
     justify-content: flex-start;
     gap: auto;
+}
+
+.flag {
+    margin-right: 5px;
+}
+
+.flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+#faq{
+    font-size: 24px;
+    color: black;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#faq:hover {
+    color: #5E5BF4;
 }
