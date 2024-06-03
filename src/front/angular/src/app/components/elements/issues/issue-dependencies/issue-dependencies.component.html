@@ -1,0 +1,89 @@
+<div class="content">
+    <div class="head">
+        <div>
+            <i class="fa-solid fa-diagram-predecessor"></i>
+            <span class="title"> {{'issue-dependencies.predecessors' | translate}} </span>
+        </div>
+
+        <div>
+            <p-button class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="showOptionsPredecessor()"/>
+            <p-overlayPanel #op1 [style]="{'max-height':'300px','overflow-y':'auto'}">
+                <span class="op-title"> {{'issue-dependencies.add-predecessor' | translate}} </span>
+                
+                <p-divider></p-divider>
+
+                <div class="op-row" *ngFor="let issue of getIssues">
+                    <div class="polje">
+                        <span pTooltip="{{ issue.title }}">{{ getTrimmedTitle(issue.title, 0) }}</span>
+                    </div>
+                    <button class="opAddBtn" (click)="addPredecessor(issue, op1)">+</button>
+                </div>
+                
+            </p-overlayPanel>
+
+        </div>
+
+    </div>
+
+    <div id="predecessors-list">
+        <ng-container>
+            <div *ngIf="issue.predecessors.length === 0">
+                <span class="info-msg"> {{'issue-dependencies.no-predecessors-added' | translate}} </span>
+            </div>
+            <div *ngFor="let predecessor of issue.predecessors">
+                <div class="issue-row">
+                    <div class="polje">
+                        <span class="predecessor-item" pTooltip="{{ predecessor.name }}">{{ getTrimmedTitle(predecessor.name, 1) }}</span>
+                    </div>
+                    <div class="closeBtn">
+                        <i class="fa-solid fa-xmark" (click)="deletePredecessor(predecessor)"></i>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    
+    <p-divider></p-divider>
+
+    <div class="head">
+        <div>
+            <i class="fa-solid fa-diagram-predecessor"></i>
+            <span class="title"> {{'issue-dependencies.successors' | translate}} </span>
+        </div>
+
+        <div>
+            <p-button class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="showOptionsSuccessor()"/>
+            <p-overlayPanel #op2 [style]="{'max-height':'300px','overflow-y':'auto'}">
+                <span class="op-title"> {{'issue-dependencies.add-successor' | translate}} </span>
+                
+                <p-divider></p-divider>
+
+                <div class="op-row" *ngFor="let issue of getIssues">
+                    <div class="polje">
+                        <span pTooltip="{{ issue.title }}">{{ getTrimmedTitle(issue.title, 0) }}</span>
+                    </div>
+                    <button class="opAddBtn" (click)="addSuccessor(issue, op2)">+</button>
+                </div>
+                
+            </p-overlayPanel>
+        </div>
+    </div>
+
+    <div id="successors-list">
+        <ng-container>
+            <div *ngIf="issue.successors.length === 0">
+                <span class="info-msg"> {{'issue-dependencies.no-successors-added' | translate}} </span>
+            </div>
+            <div *ngFor="let successor of issue.successors">
+                <div class="issue-row">
+                    <div class="polje">
+                        <span class="successor-item" pTooltip="{{ successor.name }}">{{ getTrimmedTitle(successor.name, 1) }}</span>
+                    </div>
+                    <div class="closeBtn">
+                        <i class="fa-solid fa-xmark" (click)="deleteSuccessor(successor)"></i>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

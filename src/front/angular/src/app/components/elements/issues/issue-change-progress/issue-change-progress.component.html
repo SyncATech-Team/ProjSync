@@ -1,5 +1,5 @@
 <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border">
-  <p>Please change progress for {{ userName }}</p>
+  <p> {{ 'issue-change-progress.change-progress-for' | translate }} <span style="font-weight: bold;">{{ userName }}</span> </p>
   <div class="card">
     <input type="text" pInputText [(ngModel)]="sliderValue" />
     <p-slider [step]="5" [(ngModel)]="sliderValue"></p-slider>
@@ -11,6 +11,6 @@
 <p-button
   [text]="true"
   [raised]="true"
-  label="Change Progress"
+  [label]="'issue-change-progress.change-progress' | translate"
   (click)="changeProgress()">
 </p-button>

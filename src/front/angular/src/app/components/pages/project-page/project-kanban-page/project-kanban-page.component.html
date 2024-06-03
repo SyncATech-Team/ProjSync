@@ -12,24 +12,34 @@
 
     <div id="tasks-header">
       <div id="add-task-div">
-          <button id="create-task-button" (click)="showCreateTaskPopupTaskKanban()">Create task</button>
+          <button id="create-task-button" (click)="showCreateTaskPopupTaskKanban()">
+            {{ 'kanban-page.create-task' | translate }}
+          </button>
       </div>
 
       <div id="change-view">
         <div class="Viewbtn">
-          <thy-button routerLink="/home/projects/tasks/{{projectName}}" id="Viewbtn">List</thy-button>
+          <thy-button routerLink="/home/projects/tasks/{{projectName}}" id="Viewbtn">
+            {{ 'kanban-page.list-view' | translate }}
+          </thy-button>
         </div>
         <div class="Viewbtn">
-            <thy-button class="selected-button" id="Viewbtn">Kanban</thy-button>
+            <thy-button class="selected-button" id="Viewbtn">
+              {{ 'kanban-page.kanban-view' | translate }}
+            </thy-button>
         </div>
         <div class="Viewbtn">
-            <thy-button routerLink="/home/projects/gantt/{{projectName}}" id="Viewbtn">Gantt</thy-button>
+            <thy-button routerLink="/home/projects/gantt/{{projectName}}" id="Viewbtn">
+              {{ 'kanban-page.gantt-view' | translate }}
+            </thy-button>
         </div>
       </div>
     </div>
 
     <div class="pr-5 py-7 pl-10 h-100 w-100 d-flex flex-column kan-board">
-      <board-filter [usersPhotos]="usersPhotos"></board-filter>
+      <div class="kanban-filter">
+        <board-filter [usersPhotos]="usersPhotos"></board-filter>
+      </div>
       <board-dnd [usersPhotos]="usersPhotos"></board-dnd>
     </div>
   </div>

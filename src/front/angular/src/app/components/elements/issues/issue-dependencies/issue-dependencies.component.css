@@ -1,0 +1,82 @@
+.head{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+:host ::ng-deep .head .addBtn button{
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    color: #1053EB;
+    background-color: #EDF3FF;
+}
+
+:host ::ng-deep .head .addBtn button:hover{
+    background-color: #b6ccf9;
+}
+
+#panel{
+    background-color: red;
+}
+
+.title{
+    font-weight: bold;
+}
+
+.op-title{
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.op-row{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 14px;
+}
+
+.issue-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.polje{
+    width: 70%;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #7cdaf6;
+    background-color: #C9EFFB;
+    color: black;
+    border-radius: 4px;
+}
+
+.polje span{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.closeBtn{
+    cursor: pointer;
+}
+
+.opAddBtn{
+    color: var(--surface-d);
+    background-color: #EDF3FF;
+    color: #6798fb;
+    border: none;
+    border-radius: 4px;
+    margin-left: 14px;
+}
+
+.opAddBtn:hover{
+    background-color: #bacef8;
+}
+
+.info-msg{
+    font-size: 14px;
+    font-weight: 500;
+}

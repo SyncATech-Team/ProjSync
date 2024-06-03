@@ -1,58 +1,115 @@
 <app-nav-bar></app-nav-bar>
 <div class="content">
     <div class="title-content">
-        <h1 class="faq-title">Frequently Asked Questions</h1>
+        <h1 class="faq-title">
+            {{'faq-page.title' | translate}}
+        </h1>
     </div>
-    <h3>Here some common questions that may pop up as you use ProjSync: </h3>
+    <h3>
+        {{'faq-page.subtitle' | translate}}
+    </h3>
     <p-divider />
     <div class="questions">
         <p-accordion [activeIndex]="0">
-            <p-accordionTab header="How to create a project">
+            <p-accordionTab [header]="'faq-page.how-to-create-project' | translate">
                 <p>
-                    Creating a project is the first step to getting work done in ProjSync! If you're a project manager, you have the ability to add new projects.
-                     To create a project, click the 'Create Project' button on the application's home page. A pop-up menu will open where we enter the project information.
-                     Here's what every new project needs:
+                    {{'faq-page.hdicp1' | translate}} <span class="bold"> {{'faq-page.hdicp2' | translate}} </span> {{'faq-page.hdicp3' | translate}}
+                </p>
+                <p>
+                    {{'faq-page.hdicp4' | translate}} <span class="bold"> {{'faq-page.hdicp5' | translate}} </span> {{'faq-page.hdicp6' | translate}}
                 </p>
                 <div class="project-create-info" id="project-create">
                     <div class="required">
-                        <h6>Mandatory</h6>
+                        <h6> {{'faq-page.hdicp7' | translate}} </h6>
                         <ul>
-                            <li>Project name</li>
-                            <li>Project key</li>
-                            <li>Project type</li>
-                            <li>Start date</li>
-                            <li>Due date</li>
+                            <li> {{'faq-page.hdicp9' | translate}} </li>
+                            <li> {{'faq-page.hdicp10' | translate}} </li>
+                            <li> {{'faq-page.hdicp11' | translate}} </li>
+                            <li> {{'faq-page.hdicp12' | translate}} </li>
+                            <li> {{'faq-page.hdicp13' | translate}} </li>
                         </ul>
                     </div>
                     <div class="optional">
-                        <h6>Optional</h6>
+                        <h6>{{'faq-page.hdicp8' | translate}}</h6>
                         <ul>
-                            <li>Project description</li>
-                            <li>Project budget</li>
+                            <li> {{'faq-page.hdicp14' | translate}} </li>
+                            <li> {{'faq-page.hdicp15' | translate}} </li>
                         </ul>
                     </div>
                 </div>
-                <p>When you're done, click the 'Create' button to add your new project.</p>
+                <p> {{'faq-page.hdicp16' | translate}} <span class="bold">{{'faq-page.hdicp17' | translate}}</span> {{'faq-page.hdicp18' | translate}}</p>
             </p-accordionTab>
-            <p-accordionTab header="How to create a task">
-                <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
+            <p-accordionTab [header]="'faq-page.hdict01' | translate">
+                <p> {{'faq-page.hdict02' | translate }} <span class="bold"> {{'faq-page.hdict03' | translate }} </span>. {{'faq-page.hdict04' | translate }}
                 </p>
+                <p>
+                {{'faq-page.hdict05' | translate }} {{'faq-page.hdict06' | translate}} <span class="bold">  {{'faq-page.hdict07' | translate}} </span> {{'faq-page.hdict08' | translate}}
+                </p>
+                <div class="project-create-info">
+                    <div class="required">
+                        <h6> {{'faq-page.hdict09' | translate}} </h6>
+                        <ul>
+                            <li>{{'faq-page.hdict11' | translate}}</li>
+                            <li>{{'faq-page.hdict12' | translate}}</li>
+                            <li>{{'faq-page.hdict13' | translate}}</li>
+                            <li>{{'faq-page.hdict14' | translate}}</li>
+                            <li>{{'faq-page.hdict15' | translate}}</li>
+                            <li>{{'faq-page.hdict16' | translate}}</li>
+                            <li>{{'faq-page.hdict17' | translate}}</li>
+                            <li>{{'faq-page.hdict18' | translate}}</li>
+                            <li>{{'faq-page.hdict19' | translate}}</li>
+                        </ul>
+                    </div>
+                    <div class="optional">
+                        <h6>{{'faq-page.hdict10' | translate}}</h6>
+                        <ul>
+                            <li>{{'faq-page.hdict20' | translate}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <p>{{'faq-page.hdict21' | translate}} <span class="bold">{{'faq-page.hdict22' | translate}}</span>{{'faq-page.hdict23' | translate}}  </p> 
+                <p>{{'faq-page.hdict24' | translate}} <span class="bold">{{'faq-page.hdict25' | translate}}</span> {{'faq-page.hdict26' | translate}}</p>        
             </p-accordionTab>
-            <p-accordionTab header="How to calculate project progress">
+            <p-accordionTab [header]="'faq-page.ptp01' | translate">
                 <p>
-                    At vero eos et accusamus et iusto odio dignissimos...
+                    {{'faq-page.ptp02' | translate}}
                 </p>
+                <span class="bold">{{'faq-page.ptp03' | translate}}</span>  
+                <div class="fraction">
+                    <span class="fup bold">{{'faq-page.ptp04' | translate}}</span>
+                    <span class="bar bold">/</span>
+                    <span class="fdn bold">{{'faq-page.ptp05' | translate}}</span>
+                </div>
+                <br><br><br><p><span class="bold">{{'faq-page.ptp06' | translate}}</span></p>  
+                <br><p><span class="bold">{{'faq-page.ptp07' | translate}}</span></p>
+                <p>
+                    {{'faq-page.ptp08' | translate}}
+                </p>
+                <span class="bold">{{'faq-page.ptp09' | translate}}</span>  
+                <div class="fraction">
+                    <span class="fup bold">{{'faq-page.ptp10' | translate}}</span>
+                    <span class="bar bold">/</span>
+                    <span class="fdn bold">{{'faq-page.ptp11' | translate}}</span>
+                </div>
             </p-accordionTab>
-            <p-accordionTab header="How to add a user to project">
-                <p>
-                    At vero eos et accusamus et iusto odio dignissimos...
+            <p-accordionTab [header]="'faq-page.htapop01' | translate">
+                <p> {{'faq-page.htapop02' | translate}} <span class="bold">{{'faq-page.htapop03' | translate}}</span>. {{'faq-page.htapop04' | translate}}
                 </p>
+                <p>
+                    {{'faq-page.htapop05' | translate}} <span class="bold">{{'faq-page.htapop06' | translate}}</span> {{'faq-page.htapop07' | translate}} <span class="bold">{{'faq-page.htapop08' | translate}}</span>{{'faq-page.htapop09' | translate}} <span class="bold">{{'faq-page.htapop10' | translate}}</span> {{'faq-page.htapop11' | translate}}.
+                </p>     
             </p-accordionTab>
-            <p-accordionTab header="How to calculate the time progress of a project">
+            <p-accordionTab [header]="'faq-page.pp01' | translate">
                 <p>
-                    At vero eos et accusamus et iusto odio dignissimos...
+                    {{'faq-page.pp02' | translate}}
                 </p>
+                <span class="bold"> {{'faq-page.pp03' | translate}} </span>  
+                <div class="fraction">
+                    <span class="fup bold"> {{'faq-page.pp04' | translate}} </span>
+                    <span class="bar bold">/</span>
+                    <span class="fdn bold"> {{'faq-page.pp05' | translate}} </span>
+                </div>
+                <span class="bold"> * 100</span>  
             </p-accordionTab>
         </p-accordion>
     </div>

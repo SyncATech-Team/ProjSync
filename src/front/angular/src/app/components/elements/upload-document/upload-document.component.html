@@ -3,7 +3,9 @@
         <input type="file" #fileDropRef id="fileDropRef" multiple 
             (change)="onFileSelected($event)"
             accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .jpg, .jpeg, .png, .giff, .bmp, .svg">
-        <span>Drag files or click to upload</span>
+        <span>
+            {{ 'project-documents-page.drag-files-or-click-to-upload' | translate }}
+        </span>
     </div>
 </div>
 <!-- End of upload container -->

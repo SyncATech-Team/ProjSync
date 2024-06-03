@@ -20,7 +20,7 @@
             [columns]="showColumns"
             [rowsPerPageOptions]="[5,10, 25, 50]"
             [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [currentPageReportTemplate]="'project-people-page.showing-first-to-last' | translate"
             [filterDelay]="0"
             [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
             responsiveLayout="stack" [breakpoint]="'960px'"
@@ -33,16 +33,16 @@
                         <div class="search">
                             <span class="p-input-icon-right">
                                 <i class="pi pi-search"></i>
-                                <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" placeholder="Search" autocomplete="off"/>
+                                <input type="text" (input)="search()" pInputText [(ngModel)]="searchTerm" [style]="{minWidth: '14rem'}" [placeholder]="'project-people-page.search-placeholder' | translate" autocomplete="off"/>
                             </span>
                         </div>
                         <div style="padding-inline: 16px;">
                             <p-multiSelect 
                             [options]="columns" 
                             [(ngModel)]="selectedColumns" 
-                            selectedItemsLabel="{0} columns selected" 
+                            [selectedItemsLabel]="'project-people-page.selected-columns' | translate" 
                             [style]="{'width': '30vh'}" 
-                            placeholder="Choose Columns"
+                            [placeholder]="'project-people-page.choose-columns' | translate"
                             (onChange)="onSelectedChange()"
                             ></p-multiSelect>
                         </div>
@@ -55,7 +55,7 @@
                             [outlined]="true"
                             (click)="updateOptions(dropdown1)"
                         >
-                            Add user
+                            {{ 'project-people-page.add-user' | translate }}
                         </p-button>
                     </div>
                 </div>
@@ -66,36 +66,38 @@
                 <tr class="header">
                     <ng-container *ngFor="let column of columns">
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Username'" pSortableColumn="username">
-                            Username
+                            {{ 'project-people-page.username' | translate }}
                             <p-sortIcon field="username"></p-sortIcon>
                             <p-columnFilter type="text" field="username" display="menu"></p-columnFilter>
                         </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Email address' && selectedColumns.includes('Email address')" pSortableColumn="email">
-                            Email address
+                            {{ 'project-people-page.email-address' | translate }}
                             <p-sortIcon field="email"></p-sortIcon>
                             <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
                         </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Firstname' && selectedColumns.includes('Firstname')" pSortableColumn="firstName">
-                            Firstname
+                            {{ 'project-people-page.firstname' | translate }}
                             <p-sortIcon field="firstName"></p-sortIcon>
                             <p-columnFilter type="text" field="firstName" display="menu"></p-columnFilter>
                         </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Lastname' && selectedColumns.includes('Lastname')" pSortableColumn="lastName">
-                            Lastname
+                            {{ 'project-people-page.lastname' | translate }}
                             <p-sortIcon field="lastName"></p-sortIcon>
                             <p-columnFilter type="text" field="lastName" display="menu"></p-columnFilter>
                         </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Role' && selectedColumns.includes('Role')" pSortableColumn="companyRoleName">
-                            Role
+                            {{ 'project-people-page.role' | translate }}
                             <p-sortIcon field="companyRoleName"></p-sortIcon>
                             <p-columnFilter field="companyRoleName" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                                 <ng-template pTemplate="header">
                                     <div class="px-3 pt-3 pb-0">
-                                        <span class="font-bold">Role</span>
+                                        <span class="font-bold">
+                                            {{ 'project-people-page.role' | translate }}
+                                        </span>
                                     </div>
                                 </ng-template>
                                 <ng-template pTemplate="filter" let-user let-value let-filter="filterCallback" >
-                                    <p-multiSelect [ngModel]="value" [options]="userRole" placeholder="Any" (onChange)="filter($event.value)">
+                                    <p-multiSelect [ngModel]="value" [options]="userRole" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                         <ng-template let-user let-option pTemplate="item" >
                                             <div class="inline-block vertical-align-middle">
                                                 <span class="ml-1 mt-1">{{ option }}</span>
@@ -106,17 +108,17 @@
                             </p-columnFilter>
                         </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Address' && selectedColumns.includes('Address')" pSortableColumn="address">
-                            Address
+                            {{ 'project-people-page.address' | translate }}
                             <p-sortIcon field="address"></p-sortIcon>
                             <p-columnFilter type="text" field="address" display="menu"></p-columnFilter>
                         </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Contact phone' && selectedColumns.includes('Contact phone')" pSortableColumn="contactPhone">
-                            Contact phone
+                            {{ 'project-people-page.contact-phone' | translate }}
                             <p-sortIcon field="contactPhone"></p-sortIcon>
                             <p-columnFilter type="text" field="contactPhone" display="menu"></p-columnFilter>
                         </th>
                         <th pReorderableColumn pResizableColumn *ngIf="column=='Status' && selectedColumns.includes('Status')" pSortableColumn="status">
-                            Status
+                            {{ 'project-people-page.status' | translate }}
                             <p-sortIcon field="status"></p-sortIcon>
                             <p-columnFilter type="text" field="status" display="menu"></p-columnFilter>
                         </th>
@@ -129,49 +131,67 @@
                 <tr [ngClass]="{'active-user' : user.isActive, 'inactive-user': !user.isActive}">
                     <ng-container *ngFor="let column of columns">
                         <td *ngIf="column=='Username'">
-                            <span class="p-column-title" style="font-weight: bold;">Account</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.username' | translate }}
+                            </span>
                             <div class="profilecontent" (click)="showProfile(user.username)">
                                 <img id="image_{{user.username}}" draggable="false" src={{getUserImagePath(user.username,users)}} alt="user-default-image">
-                                <span style="margin-left: 8px;" pTooltip="User profile">{{ user.username }}</span>
+                                <span style="margin-left: 8px;" [pTooltip]="'project-people-page.user-profile' | translate">{{ user.username }}</span>
                             </div>
                         </td>
 
                         <td *ngIf="column=='Email address' && selectedColumns.includes('Email address')">
-                            <span class="p-column-title" style="font-weight: bold;">Email</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.email-address' | translate }}
+                            </span>
                             <a class="mail" href="mailto:{{user.email}}"> {{user.email}}</a>
                         </td>
 
                         <td *ngIf="column=='Firstname' && selectedColumns.includes('Firstname')">
-                            <span class="p-column-title" style="font-weight: bold;">Firstname</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.firstname' | translate }}
+                            </span>
                             <span > {{user.firstName }}</span>
                         </td>
 
                         <td *ngIf="column=='Lastname' && selectedColumns.includes('Lastname')">
-                            <span class="p-column-title" style="font-weight: bold;">Lastname</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.lastname' | translate }}
+                            </span>
                             <span> {{user.lastName }}</span>
                         </td>
 
                         <td *ngIf="column=='Role' && selectedColumns.includes('Role')">
-                            <span class="p-column-title" style="font-weight: bold;">Company role</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.role' | translate }}
+                            </span>
                             {{ user.companyRoleName }}
                         </td>
 
                         <td *ngIf="column=='Address' && selectedColumns.includes('Address')">
-                            <span class="p-column-title" style="font-weight: bold;">Address</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.address' | translate }}
+                            </span>
                             <span> {{user.address }}</span>
                         </td>
 
                         <td *ngIf="column=='Contact phone' && selectedColumns.includes('Contact phone')">
-                            <span class="p-column-title" style="font-weight: bold;">Contact phone</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.contact-phone' | translate }}
+                            </span>
                             <span> {{user.contactPhone }}</span>
                         </td>
 
                         <td *ngIf="column=='Status' && selectedColumns.includes('Status')">
-                            <span class="p-column-title" style="font-weight: bold;">Status</span>
+                            <span class="p-column-title" style="font-weight: bold;">
+                                {{ 'project-people-page.status' | translate }}
+                            </span>
                             <span> {{user.status }}</span>
                         </td>
 
-                        <td *ngIf="column==''"><span class="p-column-title" style="font-weight: bold">Actions</span>
+                        <td *ngIf="column==''"><span class="p-column-title" style="font-weight: bold">
+                            {{ 'project-people-page.actions' | translate}}
+                        </span>
                             <div *ngIf="project && (user.username !== project.ownerUsername)" class="action">
                                 <div class="deleteBtn">
                                     <button type="button" pButton pRipple icon="fa-solid fa-right-from-bracket" 
@@ -193,7 +213,9 @@
         <div class="modal-content">
             <!-- Form Header -->
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add new user on project</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    {{ 'project-people-page.add-user-to-project' | translate }}
+                </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- End of Form Header -->
@@ -205,11 +227,11 @@
                         [(ngModel)]="userForAdd" 
                         optionLabel="username" 
                         [filter]="true" 
-                        filterBy="username" 
+                        [filterFields]="['firstName','lastName','username']"
                         [showClear]="true" 
                         [style]="{minWidth: '100%'}" 
                         name="userForAdd"
-                        placeholder="Add user"
+                        [placeholder]="'project-people-page.add-user' | translate"
                         #dropdown1>
                         <ng-template let-user pTemplate="item">
                             <div class="profilecontent">
@@ -219,19 +241,25 @@
                         </ng-template>
                     </p-dropdown>
                 </form>
-                <div class="color-wrapper">
-                    <span>Color: </span>
+                <!-- <div class="color-wrapper">
+                    <span>
+                        {{ 'project-people-page.color' | translate }} :
+                    </span>
                     <p-colorPicker [(ngModel)]="color" class="color-picker"></p-colorPicker>
-                </div>
+                </div> -->
                 <!-- End of Form -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {{ 'general.close' | translate }}
+                </button>
                 <button type="button" 
                 class="btn btn-primary" 
                 (click)="addUser()" 
                 [disabled]="!addUserForm.valid" 
-                data-bs-dismiss="modal">Add User</button>
+                data-bs-dismiss="modal">
+                    {{ 'project-people-page.add-user' | translate }}
+                </button>
             </div>
         </div>
     </div>

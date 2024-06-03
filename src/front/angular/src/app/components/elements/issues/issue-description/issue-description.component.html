@@ -7,8 +7,8 @@
     </quill-editor>
 
     <div class="pt-3 d-flex align-items-center">
-        <p-button label="Save" icon="pi pi-save" [text]="true" (click)="save()"></p-button>
-        <p-button label="Cancel" severity="warning" icon="pi pi-times" [text]="true" (click)="cancel()"></p-button>
+        <p-button [label]="'issue-description.save-description' | translate" icon="pi pi-save" [text]="true" (click)="save()"></p-button>
+        <p-button [label]="'issue-description.cancel-description' | translate" severity="warning" icon="pi pi-times" [text]="true" (click)="cancel()"></p-button>
     </div>
 
 </ng-container>
@@ -17,7 +17,7 @@
     <div class="ql-snow content-readonly"
          *ngIf="!isEditing"
          (click)="setEditMode(true)">
-        <div class="ql-editor"
+        <div id="description" class="ql-editor"
              [innerHTML]="getSanitizedHTML(issue.description) || 'Click to add description'">
         </div>
     </div>

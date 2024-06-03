@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
 import { ContainerLoginComponent } from './components/elements/container-login/container-login.component';
 import { FormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NavBarComponent } from './components/elements/nav-bar/nav-bar.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
@@ -127,6 +127,14 @@ import { ChatPageComponent } from './components/pages/chat-page/chat-page.compon
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ChatElementComponent } from './components/elements/chat-element/chat-element.component';
 
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+import { IssueDependenciesComponent } from './components/elements/issues/issue-dependencies/issue-dependencies.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -190,7 +198,8 @@ import { ChatElementComponent } from './components/elements/chat-element/chat-el
     PageForgotPasswordComponent,
     InfoPageComponent,
     ChatPageComponent,
-    ChatElementComponent
+    ChatElementComponent,
+    IssueDependenciesComponent
   ],
     imports: [
         BrowserModule,
@@ -239,7 +248,15 @@ import { ChatElementComponent } from './components/elements/chat-element/chat-el
         BadgeModule,
         ScrollerModule,
         AccordionModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })
     ],
   providers: [
     CookieService,
@@ -250,6 +267,7 @@ import { ChatElementComponent } from './components/elements/chat-element/chat-el
     ConfirmationService,
     DialogService,
     DatePipe,
+    HttpClient,
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } }
     ],
   bootstrap: [AppComponent]

@@ -140,11 +140,9 @@ export class ProjectSummaryPageComponent implements OnInit, AfterViewInit, OnDes
   }
 
   getDefaultImagePath(): string {
-    // let x: number = this.getRandomInteger(1, 10);
     let x: number = 1;
     let path: string = "../../../../../assets/images/DefaultAccountProfileImages/default_account_image_" + x + ".png";
     
-    // console.log(path);
 
     return path;
   }

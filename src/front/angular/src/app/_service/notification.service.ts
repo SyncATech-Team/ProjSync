@@ -8,6 +8,8 @@ import { NotificationsPageComponent } from "../components/pages/notifications-pa
 import { ChatPageComponent } from "../components/pages/chat-page/chat-page.component";
 import { MessageSendDto } from "../_models/message-send.model";
 import { ChatElementComponent } from "../components/elements/chat-element/chat-element.component";
+import { TranslateService } from "@ngx-translate/core";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +20,9 @@ export class NotificationService {
     hubConnection?: signalR.HubConnection;
 
     constructor(
-        private msgPopupService: MessagePopupService
+        private msgPopupService: MessagePopupService,
+        private translateService: TranslateService,
+        private router: Router
     ) { }
 
     /**
@@ -45,27 +49,33 @@ export class NotificationService {
             });
         
         this.hubConnection.on('ReceiveNotification', (data: string) => {
-            this.msgPopupService.showInfo("You have a new notification. Check it out.");
+            this.translateService.get('general.new-notification').subscribe((res: string) => {
+                this.msgPopupService.showInfo(res);
+            });
             NotificationComponent.increaseNumberOfUnreadMessages();
             NotificationsPageComponent.NewNotificationAdded();
         });
 
         this.hubConnection.on('ReceiveChatMessage', (data: MessageSendDto) => {
             if(data.senderUsername != ChatPageComponent._loggedInUser?.username) {
-                this.msgPopupService.showInfo("You have a new message. Check it out.");
+                if(this.router.url.includes("chat?username=") == false) {
+                    this.translateService.get('general.new-message').subscribe((res: string) => {
+                        this.msgPopupService.showInfo(res);
+                    });
+                }
                 ChatElementComponent.increaseNumberOfUnreadMessages();
             }
             ChatPageComponent.initialize(data);
         });
 
         this.hubConnection.onreconnecting(() => {
-            console.log("Reconnecting to the notification hub...");
+
         })
 
     }
 
     stopHubConnection() {
-        console.log("Notifications hub: Stopping hub connection...");
+
         this.hubConnection?.stop().catch((error: Error) => {console.log(error)});
     }
 
@@ -76,7 +86,7 @@ export class NotificationService {
             this.createHubConnection(user);
         }
         else {
-            // console.log("NotificationHub Connection State: " + this.hubConnection.state);
+
         }
     }
 

@@ -9,7 +9,6 @@ import { UserGetterLazyLoad } from '../_models/user-getter-lazy-load';
   providedIn: 'root'
 })
 export class UserService {
-
   baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
@@ -36,10 +35,9 @@ export class UserService {
     criteriaObj.filters = criteriaObj.filters.filter(item => item.fieldfilters[0].value!=null);
 
     var criteria = encodeURIComponent( JSON.stringify(criteriaObj));
-    // console.log(criteriaObj);
+
    
     return this.http.get<UserGetterLazyLoad>(this.baseUrl + `Users/pagination?&criteria=${criteria}`);
-    
   }
 
   deleteUser(username: string){

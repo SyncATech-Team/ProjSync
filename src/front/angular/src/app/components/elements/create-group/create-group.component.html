@@ -1,11 +1,11 @@
 <div class="container">
     <form class="form-group" (ngSubmit)="onSubmit()" [formGroup]="form">
-        <p>Group name</p>
-        <input type="text" formControlName="group-name" pInputText class="input-size" placeholder="Enter group name" class="groupName"/>
+        <p> {{'create-group.group-name' | translate }} </p>
+        <input type="text" formControlName="group-name" pInputText class="input-size" [placeholder]="'create-group.name-placeholder' | translate" class="groupName"/>
         <div class="btns">
             <!--  [disabled]="!projectName2" -->
-            <button type="submit" pButton pRipple label="Submit" class="p-button-primary"></button>
-            <p-button label="Close" severity="secondary" (click)="closeModal('exited')"></p-button>
+            <button type="submit" pButton pRipple [label]="'create-group.submit' | translate" class="p-button-primary"></button>
+            <p-button [label]="'create-group.close' | translate" severity="secondary" (click)="closeModal('exited')"></p-button>
         </div>
     </form>
 </div>

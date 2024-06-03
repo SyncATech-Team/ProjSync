@@ -60,3 +60,7 @@
 #create-task-button:hover {
     background-color: #2cb52c; /* Slightly adjusted darker green on hover */
 }
+
+.kanban-filter{
+    margin-bottom: 10px;
+}

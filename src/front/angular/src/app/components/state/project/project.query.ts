@@ -13,6 +13,7 @@ export class ProjectQuery extends Query<ProjectState> {
   all$ = this.select();
   issues$ = this.select('issues');
   users$ = this.select('users');
+  groups$ = this.select('groups');
 
   constructor(protected override store: ProjectStore) {
     super(store);

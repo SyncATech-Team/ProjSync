@@ -7,6 +7,7 @@ import { MessagePopupService } from '../../../../_service/message-popup.service'
 import { UserProfilePicture } from '../../../../_service/userProfilePicture.service';
 import { AuthUserChangePassword } from '../../../../_models/change-passowrd-auth-user';
 import { AccountService } from '../../../../_service/account.service';
+import { LocalService } from '../../../../_service/local.service';
 @Component({
   selector: 'app-admin-edit-profile',
   templateUrl: './admin-edit-profile.component.html',
@@ -50,7 +51,9 @@ export class AdminEditProfileComponent implements OnInit {
     private msgPopupService: MessagePopupService,
     private userProfilePhoto: UserProfilePicture,
     private confirmationService: ConfirmationService,
-    private accountService: AccountService) {}
+    private accountService: AccountService,
+    private localService: LocalService
+  ) {}
 
 
   ngOnInit(): void {
@@ -59,7 +62,7 @@ export class AdminEditProfileComponent implements OnInit {
         this.user = response;
         this.username = this.user.username;
         this.editUser = response;
-        // console.log(this.user);
+
         if(this.user.profilePhoto != null) {
           this.userProfilePhoto.getUserImage(this.user.username).subscribe({
             next: response => {
@@ -87,7 +90,7 @@ export class AdminEditProfileComponent implements OnInit {
   }
 
   getUsername() {
-    let x = localStorage.getItem("user");
+    let x = this.localService.getData('user');
     if(x == null) return "";
 
     return JSON.parse(x)['username'];
@@ -120,7 +123,8 @@ export class AdminEditProfileComponent implements OnInit {
 
   applyEditChanges() {
     this.editUser.isActive = this.user?.isActive;  // spreciti deaktivaciju naloga kada se edituje user
-    if(/^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(this.editUser.contactPhone) || this.editUser.contactPhone == '' || this.editUser.contactPhone == null){//testira format broja telefona
+    if(/^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)?[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})?$/
+    .test(this.editUser.contactPhone) || this.editUser.contactPhone == '' || this.editUser.contactPhone == null){//testira format broja telefona
       this.userService.updateUserInfo(this.editUser.username, this.editUser).subscribe({
         next: response => {
           this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Successfully edited user info', life: 3000 });

@@ -28,7 +28,7 @@ export class NotificationsPageComponent implements OnInit {
   private static GetNotificationsFromDatabase(): void {
     this.staticNotificationControllerService.getUserNotifications().subscribe({
       next: response => {
-        // console.log(response);
+
         this.notifications = response.sort(this.sortFunction);
       },
       error: error => {

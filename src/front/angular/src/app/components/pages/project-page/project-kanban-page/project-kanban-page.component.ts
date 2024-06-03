@@ -8,6 +8,7 @@ import {UserOnProjectService} from "../../../../_service/userOnProject.service";
 import {UserGetter} from "../../../../_models/user-getter";
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-kanban-page',
@@ -27,7 +28,8 @@ export class ProjectKanbanPageComponent implements OnInit {
     private userOnProject : UserOnProjectService,
     public projectQuery: ProjectQuery,
     private route: ActivatedRoute,
-    private _modalService: DialogService
+    private _modalService: DialogService,
+    private translateService: TranslateService
   ){
   }
 
@@ -47,26 +49,30 @@ export class ProjectKanbanPageComponent implements OnInit {
   }
 
   showCreateTaskPopupTaskKanban() {
-    this.ref = this._modalService.open(CreateTaskComponent, {
-      header: 'Create task',
-        width: '50%',
-        contentStyle: { overflow: 'auto' },
-        baseZIndex: 10000,
-        maximizable: true,
-        closable: true,
-        modal: true,
-        dismissableMask: true,
-        closeOnEscape: true,
-        data: {
-          projectName: this.projectName
-        }
-    });
+    this.translateService.get('kanban-page.create-task').subscribe((res: string) => {
+    
+      this.ref = this._modalService.open(CreateTaskComponent, {
+        header: res,
+          width: '50%',
+          contentStyle: { overflow: 'auto' },
+          baseZIndex: 10000,
+          maximizable: true,
+          closable: true,
+          modal: true,
+          dismissableMask: true,
+          closeOnEscape: true,
+          data: {
+            projectName: this.projectName
+          }
+      });
+  
+      this.ref.onClose.subscribe((data: any) => {
+        if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+  
 
-    this.ref.onClose.subscribe((data: any) => {
-      if(data !== "created-task") return;         // NE REFRESHUJ STRANICU AKO NIJE DODAT ZADATAK
+        this.ngOnInit();
+      });
 
-      // console.log("Response: " + data + " . Refreshing tasks...");
-      this.ngOnInit();
     });
 
   }

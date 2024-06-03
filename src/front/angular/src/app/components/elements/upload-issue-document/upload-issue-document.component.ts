@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { IssueDocumentationService } from '../../../_service/issue-documentation.service';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { DocumentRefreshService } from '../../../_service/documentRefreshService.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-upload-issue-document',
@@ -16,7 +17,8 @@ export class UploadIssueDocumentComponent {
   constructor(
     private issueDocumentationService : IssueDocumentationService,
     private msgPopupService: MessagePopupService,
-    private docsRefreshService: DocumentRefreshService
+    private docsRefreshService: DocumentRefreshService,
+    private translateService: TranslateService
   ){  }
 
   onFileSelected(event: any){
@@ -28,7 +30,9 @@ export class UploadIssueDocumentComponent {
     this.issueDocumentationService.uploadDocument(issueIdNumber, filesArray).subscribe({
       next: response => {
         this.showUploadProgressBar = false;
-        this.msgPopupService.showSuccess("Files successfully uploaded.");
+        this.translateService.get('files-uploader.files-successfully-uploaded').subscribe((res: string) => {
+          this.msgPopupService.showSuccess(res);
+        });
         //Ovde osvezi prikaz na modalu za task
         this.docsRefreshService.refreshDocumentList.emit();
         //
@@ -36,7 +40,9 @@ export class UploadIssueDocumentComponent {
       },
       error: error => {
         this.showUploadProgressBar = false;
-        this.msgPopupService.showError("Files not uploaded. Try again.");
+        this.translateService.get('files-uploader.error-uploading-files').subscribe((res: string) => {
+          this.msgPopupService.showError(res);
+        });
         event.target.value = "";
       }
     });

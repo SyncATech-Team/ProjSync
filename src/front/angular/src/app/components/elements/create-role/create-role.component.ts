@@ -31,7 +31,6 @@ export class CreateRoleComponent {
     private adminRolePage: RolePageComponent) { }
 
   createRole() {
-    // console.log(this.roleToCreate);
     this.croleService.create(this.roleToCreate).subscribe({
       next: (response) => {
         this.msgPopUpService.showSuccess("Successfully created new role!");

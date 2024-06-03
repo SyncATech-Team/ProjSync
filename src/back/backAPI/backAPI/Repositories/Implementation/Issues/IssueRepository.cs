@@ -266,6 +266,28 @@ namespace backAPI.Repositories.Implementation.Issues
             return elements.Select(elem => elem.TargetId);
         }
 
+        public async Task<IEnumerable<Issue>> GetIssuePredecessors(int issueId)
+        {
+            var elements = await _dataContext.IssueDependencies
+                  .Where(elem => elem.TargetId == issueId)
+                  .ToListAsync();
+
+            return await _dataContext.Issues
+                .Where(issue => elements.Select(elem => elem.OriginId).Contains(issue.Id))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Issue>> GetIssueSuccessors(int issueId)
+        {
+            var elements = await _dataContext.IssueDependencies
+                .Where(elem => elem.OriginId == issueId)
+                .ToListAsync();
+
+            return await _dataContext.Issues
+                .Where(issue => elements.Select(elem => elem.TargetId).Contains(issue.Id))
+                .ToListAsync();
+        }
+
         public async Task<bool> UpdateIssueStartEndDate(int issueId, IssueUpdateDatesDto model) {
             var exists = await _dataContext.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
             if(exists == null) {
@@ -318,11 +340,16 @@ namespace backAPI.Repositories.Implementation.Issues
                 return false;
             }
 
+            var owner = await _usersRepository.GetUserByUsername(model.OwnerUsername);
+            if (owner == null) {
+                return false;
+            }
+
             exists.UpdatedDate = DateTime.Now;
             exists.Description = model.Description;
             exists.Name = model.Title;
             exists.ListPosition = model.ListPosition;
-            exists.OwnerId = Int32.Parse(model.ReporterId);
+            exists.OwnerId = owner.Id;
             IssueStatus issueStatus = await _dataContext.IssueStatuses.Where(type => type.Name == model.Status).FirstAsync();
             IssuePriority issuePriority = await _dataContext.IssuePriority.Where(type => type.Name == model.Priority).FirstAsync();
             IssueType issueType = await _dataContext.IssueTypes.Where(type => type.Name == model.Type).FirstAsync();
@@ -430,10 +457,16 @@ namespace backAPI.Repositories.Implementation.Issues
                     .ExecuteDeleteAsync();
             }
             else {
-                await _dataContext.IssueDependencies.AddAsync(new IssueDependencies {
-                    OriginId = model.OriginId,
-                    TargetId = model.TargetId
-                });
+                bool exists = await _dataContext.IssueDependencies.AnyAsync(
+                    elem => elem.OriginId == model.OriginId && elem.TargetId == model.TargetId
+                );
+
+                if(!exists) {
+                    await _dataContext.IssueDependencies.AddAsync(new IssueDependencies {
+                        OriginId = model.OriginId,
+                        TargetId = model.TargetId
+                    });
+                }
             }
 
             await _dataContext.SaveChangesAsync();
@@ -1001,5 +1034,30 @@ namespace backAPI.Repositories.Implementation.Issues
             return exists.Any();
         }
 
+        public async Task<string> GetProjectNameByIssueId(int issueId)
+        {
+            var issue = await _dataContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+
+            if (issue == null)
+            {
+                return null;
+            }
+
+            var group = await _dataContext.IssueGroups.FirstOrDefaultAsync(g => g.Id == issue.GroupId);
+
+            if (group == null)
+            {
+                return null;
+            }
+
+            var project = await _dataContext.Projects.FirstOrDefaultAsync(p => p.Id == group.ProjectId);
+
+            if (project == null)
+            {
+                return null;
+            }
+
+            return project.Name;
+        }
     }
 }
