@@ -33,6 +33,10 @@
     align-items: center;
 }
 
+.userInfo i{
+    margin-right: 5px;
+}
+
 @media screen and (max-width: 450px) {
     .userInfo {
         display: flex;

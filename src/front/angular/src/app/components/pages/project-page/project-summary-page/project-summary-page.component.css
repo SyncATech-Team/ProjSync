@@ -55,8 +55,14 @@ h4{
     padding: 1% 1% 1% 1%;
     overflow-y: hidden;
     word-wrap: break-word;
-    overflow-x: scroll;   
-    /* height: 10vh; */
+    overflow-x: hidden;
+    margin-top: 10px;
+}
+
+:host ::ng-deep #description img {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
 }
 
 canvas {

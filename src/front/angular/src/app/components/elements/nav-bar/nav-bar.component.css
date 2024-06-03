@@ -161,7 +161,8 @@
 
 .dropdown-item:hover {
     cursor: pointer;
-    background-color: #d8dde6;
+    background-color: var(--surface-ground);
+    border-radius: 4px;
 }
 
 #gear{
