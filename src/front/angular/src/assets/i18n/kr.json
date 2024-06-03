@@ -200,7 +200,9 @@
         "offline": "오프라인",
         "online": "온라인",
         "no-messages-yet": "아직 메시지가 없습니다",
-        "type-a-message": "여기에 메시지를 입력하세요"
+        "type-a-message": "여기에 메시지를 입력하세요",
+        "pro-tip": "전문가 팁",
+        "send-shortcut": "메시지를 보내려면 CTRL + Enter를 누르세요"
     },
     "issue-assignees": {
         "assignees": "담당자",

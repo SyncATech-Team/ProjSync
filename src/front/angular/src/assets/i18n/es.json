@@ -200,7 +200,9 @@
         "offline": "Desconectado",
         "online": "Conectado",
         "no-messages-yet": "Aún no hay mensajes",
-        "type-a-message": "Escribe un mensaje aquí"
+        "type-a-message": "Escribe un mensaje aquí",
+        "pro-tip": "Consejo Profesional",
+        "send-shortcut": "Presiona CTRL + Enter para enviar el mensaje"
     },
     "issue-assignees": {
         "assignees": "Asignados",

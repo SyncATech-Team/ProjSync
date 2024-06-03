@@ -200,7 +200,9 @@
         "offline": "Offline",
         "online": "Online",
         "no-messages-yet": "No messages yet",
-        "type-a-message": "Type a message here"
+        "type-a-message": "Type a message here",
+        "pro-tip": "Pro Tip",
+        "send-shortcut": "Press CTRL + Enter to send message"
     },
     "issue-assignees": {
         "assignees": "Assignees",

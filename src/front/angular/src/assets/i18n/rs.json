@@ -200,7 +200,9 @@
         "offline": "Neaktivan",
         "online": "Aktivan",
         "no-messages-yet": "Još uvek nema poruka",
-        "type-a-message": "Unesite poruku..."
+        "type-a-message": "Unesite poruku...",
+        "pro-tip": "Savet",
+        "send-shortcut": "Pritisnite CTRL + Enter za slanje poruke"
     },
     "issue-assignees": {
         "assignees": "Učesnici",

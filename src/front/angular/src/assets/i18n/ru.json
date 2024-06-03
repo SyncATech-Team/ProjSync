@@ -200,7 +200,9 @@
         "offline": "Не в сети",
         "online": "В сети",
         "no-messages-yet": "Пока нет сообщений",
-        "type-a-message": "Введите сообщение здесь"
+        "type-a-message": "Введите сообщение здесь",
+        "pro-tip": "Совет",
+        "send-shortcut": "Нажмите CTRL + Enter, чтобы отправить сообщение"
     },
     "issue-assignees": {
         "assignees": "Исполнители",

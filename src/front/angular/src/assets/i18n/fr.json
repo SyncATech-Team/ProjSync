@@ -200,7 +200,9 @@
         "offline": "Hors ligne",
         "online": "En ligne",
         "no-messages-yet": "Aucun message pour le moment",
-        "type-a-message": "Tapez un message ici"
+        "type-a-message": "Tapez un message ici",
+        "pro-tip": "Astuce professionnelle",
+        "send-shortcut": "Appuyez sur CTRL + Entrée pour envoyer le message"
     },
     "issue-assignees": {
         "assignees": "Assignés",

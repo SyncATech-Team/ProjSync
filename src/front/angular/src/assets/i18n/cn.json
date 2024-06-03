@@ -200,7 +200,9 @@
         "offline": "离线",
         "online": "在线",
         "no-messages-yet": "还没有消息",
-        "type-a-message": "在这里输入消息"
+        "type-a-message": "在这里输入消息",
+        "pro-tip": "专业提示",
+        "send-shortcut": "按下 CTRL + Enter 发送消息"
     },
     "issue-assignees": {
         "assignees": "受让人",
