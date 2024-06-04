@@ -53,4 +53,13 @@ export class ThemeService {
       }
       return 'blue';
     }
+
+    getIconColor(isDark:boolean,color:string){
+      if(isDark){
+        return "../../../../assets/Icons/projsync_home_logo_dark_"+ color +".png";
+      }
+      else{
+        return "../../../../assets/Icons/projsync_home_logo_light_"+ color +".png";
+      }
+    }
 }
