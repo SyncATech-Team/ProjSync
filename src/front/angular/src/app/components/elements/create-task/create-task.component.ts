@@ -225,6 +225,11 @@ export class CreateTaskComponent implements OnInit {
                   this.msgPopUpService.showError(res);
                 });
               }
+              else if(error.error.message == "There is already a task with the same name in this group") {
+                this.translateService.get('create-task.task-name-already-exists-in-group').subscribe((res: string) => {
+                  this.msgPopUpService.showError(res);
+                });
+              }
             }
           })
         }

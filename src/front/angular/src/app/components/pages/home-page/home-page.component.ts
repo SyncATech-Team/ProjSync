@@ -58,7 +58,7 @@ export class HomePageComponent implements OnInit {
   showIssueColumns!: string[];
   issuesShow: any[] = [];
   ref: DynamicDialogRef | undefined;
-  IssueTypes : any[] = ["Bug", "Story", "Task"];
+  IssueTypes : any[] = ["Problem", "Story", "Task"];
   IssueStatus: any[] = ["Planning", "In progress", "Done"];
   IssuePrioritys: any[] = ["Lowest", "Low", "Medium", "High", "Highest"];
 
@@ -307,7 +307,7 @@ export class HomePageComponent implements OnInit {
         case 'high':
             return 'warning';
 
-        case 'bug':
+        case 'problem':
             return 'danger';
 
         case 'story':
