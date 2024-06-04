@@ -5,7 +5,7 @@ import {UsersWithCompletion} from "./user-completion-level";
 export enum IssueType {
   STORY = 'Story',
   TASK = 'Task',
-  BUG = 'Bug'
+  PROBLEM = 'Problem'
 }
 
 export enum IssueStatus {

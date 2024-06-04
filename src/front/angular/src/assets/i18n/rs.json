@@ -314,6 +314,7 @@
         "assignees-not-selected": "Nije moguće kreirati zadatak, učesnici nisu izabrani",
         "due-date-before-start-date": "Nije moguće kreirati zadatak, datum završetka je pre datuma početka",
         "start-date-before-project-start-date": "Nije moguće kreirati zadatak, datum početka je pre datuma početka projekta",
+        "task-name-already-exists-in-group": "Nije moguće kreirati zadatak, naziv zadatka već postoji u grupi",
         "task-created": "Zadatak je uspešno kreiran",
         "unable-to-create-task": "Nije moguće kreirati zadatak",
         "task-has-a-dependency": "Zadatak ima zavisnost"

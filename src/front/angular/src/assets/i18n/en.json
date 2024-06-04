@@ -314,6 +314,7 @@
         "assignees-not-selected": "Unable to create task, assignees not selected",
         "due-date-before-start-date": "Unable to create task, due date is before start date",
         "start-date-before-project-start-date": "Unable to create task, start date is before project start date",
+        "task-name-already-exists-in-group": "Unable to create task, task name already exists in group",
         "task-created": "Task created successfully",
         "unable-to-create-task": "Unable to create task",
         "task-has-a-dependency": "Task has a dependency"
