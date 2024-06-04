@@ -51,6 +51,51 @@
                       <p-inputSwitch [(ngModel)]="isDarkTheme" class="small_input_switch" (onChange)="changeTheme()" />
                   </div>
                 </div>
+                <div class="flex flex-wrap gap-3">
+                  <div class="flex align-items-center">
+                    <p-radioButton 
+                      value="blue" 
+                      [(ngModel)]="themeColor" 
+                      inputId="blue"
+                      (onClick)="changeTheme()" />
+                    <label for="blue" class="ml-2">
+                      Blue
+                    </label>
+                  </div>
+                  
+                  <div class="flex align-items-center">
+                    <p-radioButton 
+                      value="pink" 
+                      [(ngModel)]="themeColor" 
+                      inputId="pink"
+                      (onClick)="changeTheme()" />
+                    <label for="pink" class="ml-2">
+                      Pink
+                    </label>
+                  </div>
+                  
+                  <div class="flex align-items-center">
+                    <p-radioButton 
+                      value="green" 
+                      [(ngModel)]="themeColor" 
+                      inputId="green"
+                      (onClick)="changeTheme()" />
+                    <label for="green" class="ml-2">
+                      Green
+                    </label>
+                  </div>
+              
+                  <div class="flex align-items-center">
+                    <p-radioButton 
+                      value="amber" 
+                      [(ngModel)]="themeColor" 
+                      inputId="amber"
+                      (onClick)="changeTheme()" />
+                    <label for="amber" class="ml-2">
+                      Amber
+                    </label>
+                  </div>
+                </div>
                 <div class="dropdown-div">
                   <div style="display: flex; align-items: center; justify-content: center;">
                     <p-dropdown 

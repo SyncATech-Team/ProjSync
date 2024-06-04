@@ -34,6 +34,7 @@ export class NavBarComponent implements OnInit {
   profilePicturePath: string = '';
 
   isDarkTheme?: boolean;
+  themeColor: string = 'blue';
 
   languages: Language[] = [
     { code: 'en', name: 'English', flag: '../../../../assets/flags/en.png' },
@@ -81,7 +82,7 @@ export class NavBarComponent implements OnInit {
         }
         this.themeService.switchTheme(this.user!.preferedTheme!);
         this.isDarkTheme =  this.themeService.getTheme();
-
+        this.themeColor = this.themeService.getThemeColor();
         this.setLanguage(this.user!.preferedLanguage!);
       },
       error: error => {
@@ -158,7 +159,7 @@ export class NavBarComponent implements OnInit {
 
   changeTheme(){
     if(this.isDarkTheme !== undefined)
-      this.themeService.updateTheme(this.user!.username,this.isDarkTheme);
+      this.themeService.updateTheme(this.user!.username,this.isDarkTheme,this.themeColor);
   }
 
   changeLanguageHandler(event: any) {

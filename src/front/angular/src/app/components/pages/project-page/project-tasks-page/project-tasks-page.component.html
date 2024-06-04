@@ -96,7 +96,7 @@
                                             <p-multiSelect [ngModel]="value" [options]="issuePriority" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                                 <ng-template let-task let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
-                                                        <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                                                        <p-tag [ngClass]="getSeverity(option)" [value]="option" [severity]="getSeverity(option)"></p-tag>
                                                     </div>
                                                 </ng-template>
                                             </p-multiSelect>
@@ -116,7 +116,7 @@
                                             <p-multiSelect [ngModel]="value" [options]="issueType" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                                 <ng-template let-task let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
-                                                        <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                                                        <p-tag [ngClass]="getSeverity(option)" [value]="option" [severity]="getSeverity(option)"></p-tag>
                                                     </div>
                                                 </ng-template>
                                             </p-multiSelect>
@@ -136,7 +136,7 @@
                                             <p-multiSelect [ngModel]="value" [options]="issueStatus" [placeholder]="'general.any' | translate" (onChange)="filter($event.value)">
                                                 <ng-template let-task let-option pTemplate="item" >
                                                     <div class="inline-block vertical-align-middle">
-                                                        <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                                                        <p-tag [ngClass]="getSeverity(option)" [value]="option" [severity]="getSeverity(option)"></p-tag>
                                                     </div>
                                                 </ng-template>
                                             </p-multiSelect>

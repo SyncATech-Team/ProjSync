@@ -1,4 +1,4 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/themes/lara-light-pink/theme.css";
 
 :root {
     --default-color: #263238;
@@ -7,6 +7,6 @@
     --side-bar-link: black;
     --chat-header: color-mix(in srgb, var(--primary-color), #fff 60% );
     --sent-msg-background:  lightgreen;
-    --primary-color-hover: #2563eb;
+    --primary-color-hover: #db2777;
 }
 

@@ -16,11 +16,11 @@ export class ThemeService {
         }
     }
 
-    updateTheme(username: string,isDark: boolean){
+    updateTheme(username: string,isDark: boolean,color: string){
       if(isDark)
-        var theme='lara-dark-blue';
+        var theme='lara-dark-'+color;
       else
-        var theme='lara-light-blue';
+        var theme='lara-light-'+color;
 
       this.userService.updateUserPreferedTheme(username,theme).subscribe({
         next: (_)=>{
@@ -36,7 +36,7 @@ export class ThemeService {
     getTheme(){
       let themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
       if (themeLink) {
-        if(themeLink.href.includes( 'lara-dark-blue.css')){
+        if(themeLink.href.includes( 'lara-dark-')){
           return true;
         }
         else{
@@ -44,5 +44,13 @@ export class ThemeService {
         }
       }
       return false;
+    }
+
+    getThemeColor(){
+      let themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
+      if (themeLink) {
+        return themeLink.href.split("-")[2].split(".")[0];
+      }
+      return 'blue';
     }
 }
