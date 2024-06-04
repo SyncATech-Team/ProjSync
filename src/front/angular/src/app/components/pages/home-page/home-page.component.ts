@@ -493,6 +493,26 @@ export class HomePageComponent implements OnInit {
         }
       });
     });
+    
+    // Update issue after modal is closed, so that changes are shown in the table
+    // Dodato je kako bi se nakon zatvaranja modala prikazale promene u tabeli. Konkretno,
+    // dodato je da bi se azurirao progres zadatka nakon zatvaranja modala
+    this.ref?.onClose.subscribe({
+      next: (response) => {
+        let issue = this._projectQuery.issueById$(issueId.toString());
+        issue.subscribe({
+          next: (resp) => {
+            if(resp != null) { // safety check :)
+              let index = this.issuesShow.findIndex(i => i.id == resp?.id);
+              if(index != -1) {
+                this.issuesShow[index] = resp;
+              }
+            }
+          }
+        });
+      }
+    });
+
   }
 
   get tasksTabSelected() {
