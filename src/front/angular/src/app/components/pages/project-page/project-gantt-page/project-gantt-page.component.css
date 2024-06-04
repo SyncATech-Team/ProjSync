@@ -146,3 +146,7 @@ thy-content{
 :host ::ng-deep .gantt-table-body .gantt-table-item:hover {
     background-color: var(--surface-d);
 }
+
+:host ::ng-deep .gantt-table-body-container{
+    background-color: var(--surface-card);
+}
