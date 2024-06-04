@@ -22,7 +22,7 @@
                         id="login_email" 
                         class="form-control input-lg" 
                         type="email" 
-                        placeholder="syncatechpmf@domain.com" 
+                        placeholder="Username/Email" 
                         [(ngModel)]="user.email"
                         (ngModelChange)="validateEmail(user.email)"
                         spellcheck="false"
@@ -71,7 +71,8 @@
                 <!-- Submit button -->
                 <div id="login-btn-div" class="form-group">
                     <!-- <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="loginForm.invalid">Login</button> -->
-                    <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="!emailValid || loginForm.invalid">Login</button>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Login</button>
+                    <!-- [disabled]="!emailValid || loginForm.invalid" - ZAKOMENTARISANO ZBOG LOGOVANJE PREKO USERNAME-A -->
                 </div>
                 <!-- End of Submit button -->
 
