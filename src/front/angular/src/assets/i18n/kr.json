@@ -314,6 +314,7 @@
         "assignees-not-selected": "작업을 생성할 수 없습니다. 담당자가 선택되지 않았습니다",
         "due-date-before-start-date": "작업을 생성할 수 없습니다. 마감일이 시작일보다 빠릅니다",
         "start-date-before-project-start-date": "작업을 생성할 수 없습니다. 시작일이 프로젝트 시작일보다 빠릅니다",
+        "task-name-already-exists-in-group": "작업을 생성할 수 없습니다. 작업 이름이 그룹에 이미 존재합니다",
         "task-created": "작업이 성공적으로 생성되었습니다",
         "unable-to-create-task": "작업을 생성할 수 없습니다",
         "task-has-a-dependency": "작업에 종속성이 있습니다"

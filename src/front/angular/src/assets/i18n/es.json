@@ -314,6 +314,7 @@
         "assignees-not-selected": "No se puede crear la tarea, no se han seleccionado los asignados",
         "due-date-before-start-date": "No se puede crear la tarea, la fecha de vencimiento es anterior a la fecha de inicio",
         "start-date-before-project-start-date": "No se puede crear la tarea, la fecha de inicio es anterior a la fecha de inicio del proyecto",
+        "task-name-already-exists-in-group": "No se puede crear la tarea, el nombre de la tarea ya existe en el grupo",
         "task-created": "Tarea creada exitosamente",
         "unable-to-create-task": "No se puede crear la tarea",
         "task-has-a-dependency": "La tarea tiene una dependencia"

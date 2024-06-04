@@ -144,7 +144,7 @@ if (!context.IssuePriority.Any()) {
 if(!context.IssueTypes.Any()) {
     await context.IssueTypes.AddRangeAsync(
         new IssueType { Id = 1, Name = "Task"},
-        new IssueType { Id = 2, Name = "Bug"},
+        new IssueType { Id = 2, Name = "Problem"},
         new IssueType { Id = 3, Name = "Story"}
     );
 }
