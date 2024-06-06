@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" (click)="initializeProjects()" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+<button id="createProjectButton" type="button" class="btn btn-primary" (click)="initializeProjects()" data-bs-toggle="modal" data-bs-target="#createProjectModal">
     {{ 'create-project-modal.title' | translate }}
 </button>
 
@@ -114,7 +114,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> {{ 'create-project-modal.close' | translate }} </button>
-                <button type="submit" form="formCreateProject" class="btn btn-primary" data-bs-dismiss="modal"> {{ 'create-project-modal.create' | translate }} </button>
+                <button id="submitProjectButton" type="submit" form="formCreateProject" class="btn btn-primary" data-bs-dismiss="modal"> {{ 'create-project-modal.create' | translate }} </button>
             </div>
             
         </div>

@@ -123,3 +123,23 @@ td{
 #create-task-button:hover {
     background-color: #2cb52c; /* Slightly adjusted darker green on hover */
 }
+
+:host ::ng-deep p-tag span.p-tag.p-component{
+    background-color: #3B82F6;
+}
+
+:host ::ng-deep p-tag span.p-tag.p-component.p-tag-success{
+    background-color: #22c55e;
+}
+
+:host ::ng-deep p-tag span.p-tag.p-component.p-tag-danger{
+    background-color: #ef4444;
+}
+
+:host ::ng-deep p-tag span.p-tag.p-component.p-tag-warning{
+    background-color: #f97316;
+}
+
+:host ::ng-deep p-tag span.p-tag.p-component.p-tag-info{
+    background-color: #0ea5e9;
+}

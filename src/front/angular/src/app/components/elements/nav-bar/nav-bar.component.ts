@@ -34,6 +34,7 @@ export class NavBarComponent implements OnInit {
   profilePicturePath: string = '';
 
   isDarkTheme?: boolean;
+  themeColor: string = 'blue';
 
   languages: Language[] = [
     { code: 'en', name: 'English', flag: '../../../../assets/flags/en.png' },
@@ -45,6 +46,8 @@ export class NavBarComponent implements OnInit {
     { code: 'ru', name: 'Русский', flag: '../../../../assets/flags/ru.png'}
   ];
   selectedLanguage: Language = this.languages[0];
+
+  appLogo: string = "../../../../assets/Icons/projsync_home_logo.png";
   
 
   constructor(
@@ -81,7 +84,8 @@ export class NavBarComponent implements OnInit {
         }
         this.themeService.switchTheme(this.user!.preferedTheme!);
         this.isDarkTheme =  this.themeService.getTheme();
-
+        this.themeColor = this.themeService.getThemeColor();
+        this.appLogo = this.themeService.getIconColor(this.isDarkTheme,this.themeColor);
         this.setLanguage(this.user!.preferedLanguage!);
       },
       error: error => {
@@ -158,7 +162,10 @@ export class NavBarComponent implements OnInit {
 
   changeTheme(){
     if(this.isDarkTheme !== undefined)
-      this.themeService.updateTheme(this.user!.username,this.isDarkTheme);
+    {
+      this.themeService.updateTheme(this.user!.username,this.isDarkTheme,this.themeColor);
+      this.appLogo=this.themeService.getIconColor(this.isDarkTheme,this.themeColor);
+    }
   }
 
   changeLanguageHandler(event: any) {
