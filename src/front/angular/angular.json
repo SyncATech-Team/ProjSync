@@ -49,6 +49,36 @@
                 "input": "src/themes/theme-lara-dark-blue.css",
                 "bundleName": "lara-dark-blue",
                 "inject": false
+              },
+              {
+                "input": "src/themes/theme-lara-light-pink.css",
+                "bundleName": "lara-light-pink",
+                "inject": false
+              },
+              {
+                "input": "src/themes/theme-lara-dark-pink.css",
+                "bundleName": "lara-dark-pink",
+                "inject": false
+              },
+              {
+                "input": "src/themes/theme-lara-light-amber.css",
+                "bundleName": "lara-light-amber",
+                "inject": false
+              },
+              {
+                "input": "src/themes/theme-lara-dark-amber.css",
+                "bundleName": "lara-dark-amber",
+                "inject": false
+              },
+              {
+                "input": "src/themes/theme-lara-light-green.css",
+                "bundleName": "lara-light-green",
+                "inject": false
+              },
+              {
+                "input": "src/themes/theme-lara-dark-green.css",
+                "bundleName": "lara-dark-green",
+                "inject": false
               }
             ],
             "scripts": []

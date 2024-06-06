@@ -134,7 +134,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{'general.close' | translate}}</button>
-                <button type="button" 
+                <button 
+                id="confirmButton"
+                type="button" 
                 class="btn btn-primary" 
                 (click)="transfer()" 
                 [disabled]="!transferForm.valid" 

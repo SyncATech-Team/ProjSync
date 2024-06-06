@@ -11,7 +11,7 @@
   }
   
   .bell:hover {
-    color: #5E5BF4;
+    color: var(--primary-color);
   }
   
   .badge {

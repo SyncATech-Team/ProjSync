@@ -129,6 +129,7 @@ import { ChatElementComponent } from './components/elements/chat-element/chat-el
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -256,7 +257,8 @@ import { IssueDependenciesComponent } from './components/elements/issues/issue-d
             useFactory: HttpLoaderFactory,
             deps: [HttpClient]
           }
-        })
+        }),
+        RadioButtonModule
     ],
   providers: [
     CookieService,

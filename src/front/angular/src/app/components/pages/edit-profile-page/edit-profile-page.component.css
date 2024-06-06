@@ -70,6 +70,15 @@
     width: 100%;
 }
 
+#saveChanges button {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+#saveChanges button:hover {
+    background-color: var(--primary-color-hover);
+}
+
 #inputs input {
     width: 100%;
 }
@@ -110,9 +119,13 @@
     cursor: pointer;
     border-radius: 6px;
     color: white;
-    background-color: #3B82F6;
+    background-color: var(--primary-color);
     font-weight: bold;
     transition: all 0.3s ease;
+}
+
+.files-btn:hover{
+    background-color: var(--primary-color-hover);
 }
 
 :host ::ng-deep .remove-photo button{
@@ -164,4 +177,17 @@
 #error-display-span {
     margin-left: 10px;
     color: red;
+}
+
+.form-control:focus{
+    box-shadow: var(--focus-ring);
+}
+
+#changePasswordSubmit button{
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+}
+
+#changePasswordSubmit button:hover {
+    background-color: var(--primary-color-hover);
 }

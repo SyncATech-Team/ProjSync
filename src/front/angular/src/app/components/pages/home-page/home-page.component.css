@@ -168,3 +168,7 @@ th{
 :host ::ng-deep .progress-bar-wrapper .project-progress-light-green .p-progressbar-value {
     background-color: #9ff778;
 }
+
+h1{
+    color: var(--primary-color);
+}

@@ -102,6 +102,7 @@
 thy-header thy-button{
     color: var(--text-color);
     background-color: var(--surface-ground);
+    border-color: var(--primary-color);
 }
 
 thy-content{
