@@ -127,6 +127,7 @@ export class ProjectDocumentsPageComponent implements OnInit{
     let filteredTitles = [...this.documentTitlesBackup];
     filteredTitles = filteredTitles.filter(title => title.title.toLowerCase().includes(searchTerm));
     this.documentTitles = filteredTitles;
+    this.hasDocuments = this.documentTitles.length > 0;
 
   }
 
