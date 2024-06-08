@@ -43,7 +43,12 @@
         "my-projects": "我的项目",
         "my-tasks": "我的任务",
         "select-language": "选择语言",
-        "faq": "常见问题"
+        "faq": "常见问题",
+        "color": "颜色",
+        "blue": "蓝色",
+        "green": "绿色",
+        "pink": "粉色",
+        "amber": "琥珀色"
     },
     "login": {
         "title": "欢迎，请登录",
@@ -314,6 +319,7 @@
         "assignees-not-selected": "无法创建任务，未选择受让人",
         "due-date-before-start-date": "无法创建任务，截止日期早于开始日期",
         "start-date-before-project-start-date": "无法创建任务，开始日期早于项目开始日期",
+        "task-name-already-exists-in-group": "无法创建任务，任务名称已存在于分组中",
         "task-created": "任务创建成功",
         "unable-to-create-task": "无法创建任务",
         "task-has-a-dependency": "任务有依赖关系"
@@ -409,7 +415,8 @@
         "selected-document-deleted-successfully": "已成功删除所选文档",
         "unable-to-delete-selected-document": "无法删除所选文档",
         "error-downloading-document": "下载文档时出错",
-        "error-previewing-document": "预览文档时出错"
+        "error-previewing-document": "预览文档时出错",
+        "no-files-uploaded": "没有上传文件"
     },
     "files-uploader": {
         "files-successfully-uploaded": "文件上传成功",

@@ -125,25 +125,42 @@ namespace backAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponseDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var userByEmail = await _userManager.FindByEmailAsync(loginDto.Email);
+            var userByUsername = await _userManager.FindByNameAsync(loginDto.Email);
 
             // ukoliko nema unosa u bazi, vratiti 401 Unauthorized
-            if (user == null) return Unauthorized("invalid credentials!");
-            if (user.IsActive == false) return Unauthorized("User is not active");
+            if (userByEmail == null && userByUsername == null) return Unauthorized("Invalid credentials!"); // oba su null, nema korisnika sigurno
 
-            if (user.EmailConfirmed /* [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS] */)
-            {
-                var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (userByEmail != null) { // ukoliko je korisnik unet preko email-a
+                if (userByEmail.IsActive == false) return Unauthorized(new { message = "User is not active" });
+
+                if (userByEmail.EmailConfirmed /* [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS] */) {
+                    var result = await _userManager.CheckPasswordAsync(userByEmail, loginDto.Password);
+                    if (!result) return Unauthorized();
+
+                    return new LoginResponseDto {
+                        Id = userByEmail.Id,
+                        Username = userByEmail.UserName,
+                        Token = await _tokenService.CreateToken(userByEmail)
+                    };
+                }
+                else return Unauthorized( new { message = "Email is not verified" });
+            }
+            
+            // ukoliko je korisnik unet preko username-a
+            if (userByUsername.IsActive == false) return Unauthorized(new { message = "User is not active" });
+
+            if (userByUsername.EmailConfirmed /* [ZAKOMENTARISANO DOK NE PRORADI EMAIL SERVIS] */) {
+                var result = await _userManager.CheckPasswordAsync(userByUsername, loginDto.Password);
                 if (!result) return Unauthorized();
 
-                return new LoginResponseDto
-                {
-                    Id = user.Id,
-                    Username = user.UserName,
-                    Token = await _tokenService.CreateToken(user)
+                return new LoginResponseDto {
+                    Id = userByUsername.Id,
+                    Username = userByUsername.UserName,
+                    Token = await _tokenService.CreateToken(userByUsername)
                 };
             }
-            else return Unauthorized("Email is not verified");
+            else return Unauthorized(new { message = "Email is not verified" });
         }
 
         private async Task<bool> UserExists(string username)

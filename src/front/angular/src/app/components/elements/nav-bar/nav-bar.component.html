@@ -4,7 +4,7 @@
   <div class="container-fluid">
     <div class="logo">
       <a class="navbar-brand" routerLink="/home">
-        <img class="logo-link" src="../../../../assets/Icons/projsync_home_logo.png" alt="home_logo" draggable="false">
+        <img class="logo-link" src="{{appLogo}}" alt="home_logo" draggable="false">
       </a>
     </div>
     <button class="navbar-toggler button-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,57 @@
                       <p-inputSwitch [(ngModel)]="isDarkTheme" class="small_input_switch" (onChange)="changeTheme()" />
                   </div>
                 </div>
+                <hr>
+                <p> {{'navbar.color' | translate}} </p>
+                <div class="flex flex-column gap-3">
+                  <div class="flex flex-wrap gap-3">
+                    <div class="flex align-items-center">
+                      <p-radioButton 
+                        value="blue" 
+                        [(ngModel)]="themeColor" 
+                        inputId="blue"
+                        (onClick)="changeTheme()" />
+                      <label for="blue" class="ml-2">
+                        &nbsp;{{'navbar.blue' | translate}}
+                      </label>
+                    </div>
+                    
+                    <div class="flex align-items-center">
+                      <p-radioButton 
+                        value="pink" 
+                        [(ngModel)]="themeColor" 
+                        inputId="pink"
+                        (onClick)="changeTheme()" />
+                      <label for="pink" class="ml-2">
+                        &nbsp;{{'navbar.pink' | translate}}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-3">
+                    <div class="flex align-items-center">
+                      <p-radioButton 
+                        value="green" 
+                        [(ngModel)]="themeColor" 
+                        inputId="green"
+                        (onClick)="changeTheme()" />
+                      <label for="green" class="ml-2">
+                        &nbsp;{{'navbar.green' | translate}}
+                      </label>
+                    </div>
+                
+                    <div class="flex align-items-center">
+                      <p-radioButton 
+                        value="amber" 
+                        [(ngModel)]="themeColor" 
+                        inputId="amber"
+                        (onClick)="changeTheme()" />
+                      <label for="amber" class="ml-2">
+                        &nbsp;{{'navbar.amber' | translate}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <hr>
                 <div class="dropdown-div">
                   <div style="display: flex; align-items: center; justify-content: center;">
                     <p-dropdown 

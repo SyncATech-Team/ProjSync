@@ -31,6 +31,8 @@ export class ProjectDocumentsPageComponent implements OnInit{
 
   searchTerm: string = "";
 
+  hasDocuments: boolean = false;
+
   constructor (
     public accoutService: AccountService,
     private ProjectDocService: ProjectDocumentService,
@@ -60,6 +62,7 @@ export class ProjectDocumentsPageComponent implements OnInit{
       next: response => {
         this.documentTitles = response.sort(this.sortFunc);
         this.documentTitlesBackup = response.sort(this.sortFunc);
+        this.hasDocuments = this.documentTitles.length > 0;
       },
       error: error => {
         console.log(error.error);
@@ -124,6 +127,7 @@ export class ProjectDocumentsPageComponent implements OnInit{
     let filteredTitles = [...this.documentTitlesBackup];
     filteredTitles = filteredTitles.filter(title => title.title.toLowerCase().includes(searchTerm));
     this.documentTitles = filteredTitles;
+    this.hasDocuments = this.documentTitles.length > 0;
 
   }
 

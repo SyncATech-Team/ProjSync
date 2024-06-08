@@ -1,10 +1,10 @@
 .lift-avatar.is-active {
-  box-shadow: 0 0 0 4px #1255b9;
+  box-shadow: 0 0 0 4px var(--primary-color);
   z-index: 1;
 }
 
 .subgroup-active {
-  box-shadow: 0 0 0 4px #1255b9;
+  box-shadow: 0 0 0 4px var(--primary-color);
   z-index: 1;
 }
 

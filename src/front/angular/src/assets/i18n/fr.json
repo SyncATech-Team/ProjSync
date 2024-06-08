@@ -43,7 +43,12 @@
         "my-projects": "Mes projets",
         "my-tasks": "Mes tâches",
         "select-language": "Langue",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "color": "Couleur",
+        "blue": "Bleu",
+        "green": "Vert",
+        "pink": "Rose",
+        "amber": "Ambre"
     },
     "login": {
         "title": "Bienvenue, veuillez vous connecter",
@@ -314,6 +319,7 @@
         "assignees-not-selected": "Impossible de créer la tâche, les assignés ne sont pas sélectionnés",
         "due-date-before-start-date": "Impossible de créer la tâche, la date d'échéance est antérieure à la date de début",
         "start-date-before-project-start-date": "Impossible de créer la tâche, la date de début est antérieure à la date de début du projet",
+        "task-name-already-exists-in-group": "Impossible de créer la tâche, le nom de la tâche existe déjà dans le groupe",
         "task-created": "Tâche créée avec succès",
         "unable-to-create-task": "Impossible de créer la tâche",
         "task-has-a-dependency": "La tâche a une dépendance"
@@ -409,7 +415,8 @@
         "selected-document-deleted-successfully": "Document sélectionné supprimé avec succès",
         "unable-to-delete-selected-document": "Impossible de supprimer le document sélectionné",
         "error-downloading-document": "Erreur lors du téléchargement du document",
-        "error-previewing-document": "Erreur lors de l'aperçu du document"
+        "error-previewing-document": "Erreur lors de l'aperçu du document",
+        "no-files-uploaded": "Aucun fichier téléchargé"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Fichiers téléchargés avec succès",

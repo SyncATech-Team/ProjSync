@@ -196,8 +196,7 @@
 
 .wrapper-icons .icon img:hover{
     transition: 0.2s ease;
-    border: 3px solid lightblue;
-    border-radius: 6px;
+    box-shadow: var(--focus-ring);
     padding: 1px;
 }
 
@@ -213,4 +212,17 @@
 
 :host ::ng-deep .p-button{
     color: white;
+}
+
+.form-control:focus{
+    box-shadow: var(--focus-ring);
+}
+
+#confirmButton{
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+#confirmButton:hover{
+    background-color: var(--primary-color-hover);
 }

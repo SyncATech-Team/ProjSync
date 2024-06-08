@@ -253,7 +253,9 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     {{ 'general.close' | translate }}
                 </button>
-                <button type="button" 
+                <button 
+                id="addUser"
+                type="button" 
                 class="btn btn-primary" 
                 (click)="addUser()" 
                 [disabled]="!addUserForm.valid" 
