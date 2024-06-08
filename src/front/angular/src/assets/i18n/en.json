@@ -43,7 +43,12 @@
         "my-projects": "My Projects",
         "my-tasks": "My Tasks",
         "select-language": "Language",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "color": "Color",
+        "blue": "Blue",
+        "green": "Green",
+        "pink": "Pink",
+        "amber": "Amber"
     },
     "login": {
         "title": "Welcome, please login",

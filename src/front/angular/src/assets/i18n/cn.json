@@ -43,7 +43,12 @@
         "my-projects": "我的项目",
         "my-tasks": "我的任务",
         "select-language": "选择语言",
-        "faq": "常见问题"
+        "faq": "常见问题",
+        "color": "颜色",
+        "blue": "蓝色",
+        "green": "绿色",
+        "pink": "粉色",
+        "amber": "琥珀色"
     },
     "login": {
         "title": "欢迎，请登录",

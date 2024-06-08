@@ -43,7 +43,12 @@
         "my-projects": "Mis proyectos",
         "my-tasks": "Mis tareas",
         "select-language": "Seleccionar idioma",
-        "faq": "Preguntas frecuentes"
+        "faq": "Preguntas frecuentes",
+        "color": "Color",
+        "blue": "Azul",
+        "green": "Verde",
+        "pink": "Rosa",
+        "amber": "Ámbar"
     },
     "login": {
         "title": "Bienvenido, por favor inicia sesión",

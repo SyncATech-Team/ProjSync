@@ -43,7 +43,12 @@
         "my-projects": "Moji projekti",
         "my-tasks": "Moji zadaci",
         "select-language": "Jezik",
-        "faq": "Često postavljana pitanja"
+        "faq": "Često postavljana pitanja",
+        "color": "Boja",
+        "blue": "Plava",
+        "green": "Zelena",
+        "pink": "Roze",
+        "amber": "Jantar"
     },
     "login": {
         "title": "Dobrodošli, molimo ulogujte se",

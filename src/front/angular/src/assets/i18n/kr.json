@@ -43,7 +43,12 @@
         "my-projects": "내 프로젝트",
         "my-tasks": "내 작업",
         "select-language": "언어 선택",
-        "faq": "자주 묻는 질문"
+        "faq": "자주 묻는 질문",
+        "color": "색상",
+        "blue": "파랑",
+        "green": "초록",
+        "pink": "분홍",
+        "amber": "황갈색"
     },
     "login": {
         "title": "환영합니다. 로그인해주세요",
