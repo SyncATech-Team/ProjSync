@@ -415,7 +415,8 @@
         "selected-document-deleted-successfully": "Выбранный документ успешно удален",
         "unable-to-delete-selected-document": "Не удалось удалить выбранный документ",
         "error-downloading-document": "Ошибка загрузки документа",
-        "error-previewing-document": "Ошибка предварительного просмотра документа"
+        "error-previewing-document": "Ошибка предварительного просмотра документа",
+        "no-files-uploaded": "Файлы не загружены"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Файлы успешно загружены",

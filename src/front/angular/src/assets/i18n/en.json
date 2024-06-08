@@ -415,7 +415,8 @@
         "selected-document-deleted-successfully": "Selected document deleted successfully",
         "unable-to-delete-selected-document": "Unable to delete selected document",
         "error-downloading-document": "Error downloading document",
-        "error-previewing-document": "Error previewing document"
+        "error-previewing-document": "Error previewing document",
+        "no-files-uploaded": "There are no files uploaded"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Files successfully uploaded",

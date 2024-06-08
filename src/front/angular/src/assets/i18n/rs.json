@@ -415,7 +415,8 @@
         "selected-document-deleted-successfully": "Izabrani dokument je uspešno obrisan",
         "unable-to-delete-selected-document": "Nije moguće obrisati izabrani dokument",
         "error-downloading-document": "Greška prilikom preuzimanja dokumenta",
-        "error-previewing-document": "Greška prilikom pregleda dokumenta"
+        "error-previewing-document": "Greška prilikom pregleda dokumenta",
+        "no-files-uploaded": "Nema učitanih fajlova"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Fajlovi uspešno učitani",

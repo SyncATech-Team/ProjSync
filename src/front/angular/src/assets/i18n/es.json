@@ -415,7 +415,8 @@
         "selected-document-deleted-successfully": "Documento seleccionado eliminado exitosamente",
         "unable-to-delete-selected-document": "No se puede eliminar el documento seleccionado",
         "error-downloading-document": "Error al descargar el documento",
-        "error-previewing-document": "Error al previsualizar el documento"
+        "error-previewing-document": "Error al previsualizar el documento",
+        "no-files-uploaded": "No se han cargado archivos"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Archivos cargados exitosamente",

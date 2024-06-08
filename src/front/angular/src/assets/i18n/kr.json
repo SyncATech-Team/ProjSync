@@ -415,7 +415,8 @@
         "selected-document-deleted-successfully": "선택한 문서가 성공적으로 삭제되었습니다",
         "unable-to-delete-selected-document": "선택한 문서를 삭제할 수 없습니다",
         "error-downloading-document": "문서 다운로드 오류",
-        "error-previewing-document": "문서 미리보기 오류"
+        "error-previewing-document": "문서 미리보기 오류",
+        "no-files-uploaded": "업로드된 파일 없음"
     },
     "files-uploader": {
         "files-successfully-uploaded": "파일이 성공적으로 업로드되었습니다",

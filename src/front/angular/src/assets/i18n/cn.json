@@ -415,7 +415,8 @@
         "selected-document-deleted-successfully": "已成功删除所选文档",
         "unable-to-delete-selected-document": "无法删除所选文档",
         "error-downloading-document": "下载文档时出错",
-        "error-previewing-document": "预览文档时出错"
+        "error-previewing-document": "预览文档时出错",
+        "no-files-uploaded": "没有上传文件"
     },
     "files-uploader": {
         "files-successfully-uploaded": "文件上传成功",

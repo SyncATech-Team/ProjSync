@@ -415,7 +415,8 @@
         "selected-document-deleted-successfully": "Document sélectionné supprimé avec succès",
         "unable-to-delete-selected-document": "Impossible de supprimer le document sélectionné",
         "error-downloading-document": "Erreur lors du téléchargement du document",
-        "error-previewing-document": "Erreur lors de l'aperçu du document"
+        "error-previewing-document": "Erreur lors de l'aperçu du document",
+        "no-files-uploaded": "Aucun fichier téléchargé"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Fichiers téléchargés avec succès",
