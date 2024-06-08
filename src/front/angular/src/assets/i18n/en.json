@@ -43,7 +43,12 @@
         "my-projects": "My Projects",
         "my-tasks": "My Tasks",
         "select-language": "Language",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "color": "Color",
+        "blue": "Blue",
+        "green": "Green",
+        "pink": "Pink",
+        "amber": "Amber"
     },
     "login": {
         "title": "Welcome, please login",
@@ -314,6 +319,7 @@
         "assignees-not-selected": "Unable to create task, assignees not selected",
         "due-date-before-start-date": "Unable to create task, due date is before start date",
         "start-date-before-project-start-date": "Unable to create task, start date is before project start date",
+        "task-name-already-exists-in-group": "Unable to create task, task name already exists in group",
         "task-created": "Task created successfully",
         "unable-to-create-task": "Unable to create task",
         "task-has-a-dependency": "Task has a dependency"
@@ -409,7 +415,8 @@
         "selected-document-deleted-successfully": "Selected document deleted successfully",
         "unable-to-delete-selected-document": "Unable to delete selected document",
         "error-downloading-document": "Error downloading document",
-        "error-previewing-document": "Error previewing document"
+        "error-previewing-document": "Error previewing document",
+        "no-files-uploaded": "There are no files uploaded"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Files successfully uploaded",

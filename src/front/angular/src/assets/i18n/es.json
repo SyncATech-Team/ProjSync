@@ -43,7 +43,12 @@
         "my-projects": "Mis proyectos",
         "my-tasks": "Mis tareas",
         "select-language": "Seleccionar idioma",
-        "faq": "Preguntas frecuentes"
+        "faq": "Preguntas frecuentes",
+        "color": "Color",
+        "blue": "Azul",
+        "green": "Verde",
+        "pink": "Rosa",
+        "amber": "Ámbar"
     },
     "login": {
         "title": "Bienvenido, por favor inicia sesión",
@@ -314,6 +319,7 @@
         "assignees-not-selected": "No se puede crear la tarea, no se han seleccionado los asignados",
         "due-date-before-start-date": "No se puede crear la tarea, la fecha de vencimiento es anterior a la fecha de inicio",
         "start-date-before-project-start-date": "No se puede crear la tarea, la fecha de inicio es anterior a la fecha de inicio del proyecto",
+        "task-name-already-exists-in-group": "No se puede crear la tarea, el nombre de la tarea ya existe en el grupo",
         "task-created": "Tarea creada exitosamente",
         "unable-to-create-task": "No se puede crear la tarea",
         "task-has-a-dependency": "La tarea tiene una dependencia"
@@ -409,7 +415,8 @@
         "selected-document-deleted-successfully": "Documento seleccionado eliminado exitosamente",
         "unable-to-delete-selected-document": "No se puede eliminar el documento seleccionado",
         "error-downloading-document": "Error al descargar el documento",
-        "error-previewing-document": "Error al previsualizar el documento"
+        "error-previewing-document": "Error al previsualizar el documento",
+        "no-files-uploaded": "No se han cargado archivos"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Archivos cargados exitosamente",

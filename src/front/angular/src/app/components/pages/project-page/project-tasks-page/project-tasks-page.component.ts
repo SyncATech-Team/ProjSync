@@ -46,7 +46,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   issuesInGroup : JIssue[] = [];
   groupNames : any[] | undefined;
 
-  issueType: string [] = ['Task','Bug','Story'];
+  issueType: string [] = ['Task','Problem','Story'];
   issuePriority: string [] = ['Lowest','Low','Medium','High','Highest'];
   issueStatus: string [] = ['Planning','In progress','Done'];
 
@@ -130,7 +130,7 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
         case 'high':
             return 'warning';
 
-        case 'bug':
+        case 'problem':
             return 'danger';
 
         case 'story':

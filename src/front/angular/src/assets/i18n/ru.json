@@ -43,7 +43,12 @@
         "my-projects": "Мои проекты",
         "my-tasks": "Мои задачи",
         "select-language": "Язык",
-        "faq": "Часто задаваемые вопросы"
+        "faq": "Часто задаваемые вопросы",
+        "color": "Цвет",
+        "blue": "Синий",
+        "green": "Зеленый",
+        "pink": "Розовый",
+        "amber": "Янтарный"
     },
     "login": {
         "title": "Добро пожаловать, пожалуйста, войдите",
@@ -314,6 +319,7 @@
         "assignees-not-selected": "Не удалось создать задачу, исполнители не выбраны",
         "due-date-before-start-date": "Не удалось создать задачу, срок выполнения раньше даты начала",
         "start-date-before-project-start-date": "Не удалось создать задачу, дата начала раньше даты начала проекта",
+        "task-name-already-exists-in-group": "Не удалось создать задачу, имя задачи уже существует в группе",
         "task-created": "Задача успешно создана",
         "unable-to-create-task": "Не удалось создать задачу",
         "task-has-a-dependency": "Задача имеет зависимость"
@@ -409,7 +415,8 @@
         "selected-document-deleted-successfully": "Выбранный документ успешно удален",
         "unable-to-delete-selected-document": "Не удалось удалить выбранный документ",
         "error-downloading-document": "Ошибка загрузки документа",
-        "error-previewing-document": "Ошибка предварительного просмотра документа"
+        "error-previewing-document": "Ошибка предварительного просмотра документа",
+        "no-files-uploaded": "Файлы не загружены"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Файлы успешно загружены",

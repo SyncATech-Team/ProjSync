@@ -82,5 +82,15 @@ export class IssueCardComponent implements OnChanges, OnInit {
     return this.usersPhotos[ind].photoSource;
   }
 
+  getTrimmedTitle(current: string) {
+    const MAX_NUMBER_OF_CHARACTERS = 28;
+    
+    if(current.length <= MAX_NUMBER_OF_CHARACTERS){
+      return current;
+    }
+
+    return current.substring(0, MAX_NUMBER_OF_CHARACTERS) + "...";
+  }
+
   protected readonly Math = Math;
 }

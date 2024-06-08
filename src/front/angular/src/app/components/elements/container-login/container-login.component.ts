@@ -18,7 +18,7 @@ export class ContainerLoginComponent implements OnInit {
   }
 
   showPassword: boolean = false;
-  emailValid: boolean = false;
+  emailValid: boolean = true;
 
   constructor(
     public accountService: AccountService,
@@ -80,7 +80,7 @@ export class ContainerLoginComponent implements OnInit {
   }
 
   validateEmail(email: string): boolean {
-    this.emailValid = this.mailValidationService.isValidEmailAddress(email);
+    this.emailValid = true;
     return this.emailValid;
   }
 

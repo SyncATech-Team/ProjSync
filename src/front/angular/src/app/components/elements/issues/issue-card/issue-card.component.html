@@ -3,7 +3,11 @@
     <p class="pb-2">
       <span id="span-type" class="type-{{issue.type}}">{{ issue.type }}: {{ issue.id }}</span> 
       - 
-      <span style="font-weight: 500;">{{ issue.title }}</span>
+      <span style="font-weight: 500;"
+      pTooltip="{{issue.title}}"
+      showDelay="500">
+        {{ getTrimmedTitle( issue.title ) }}
+      </span>
     </p>
 
     <p-progressBar

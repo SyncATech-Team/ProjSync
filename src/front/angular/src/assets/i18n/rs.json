@@ -43,7 +43,12 @@
         "my-projects": "Moji projekti",
         "my-tasks": "Moji zadaci",
         "select-language": "Jezik",
-        "faq": "Često postavljana pitanja"
+        "faq": "Često postavljana pitanja",
+        "color": "Boja",
+        "blue": "Plava",
+        "green": "Zelena",
+        "pink": "Roze",
+        "amber": "Jantar"
     },
     "login": {
         "title": "Dobrodošli, molimo ulogujte se",
@@ -314,6 +319,7 @@
         "assignees-not-selected": "Nije moguće kreirati zadatak, učesnici nisu izabrani",
         "due-date-before-start-date": "Nije moguće kreirati zadatak, datum završetka je pre datuma početka",
         "start-date-before-project-start-date": "Nije moguće kreirati zadatak, datum početka je pre datuma početka projekta",
+        "task-name-already-exists-in-group": "Nije moguće kreirati zadatak, naziv zadatka već postoji u grupi",
         "task-created": "Zadatak je uspešno kreiran",
         "unable-to-create-task": "Nije moguće kreirati zadatak",
         "task-has-a-dependency": "Zadatak ima zavisnost"
@@ -409,7 +415,8 @@
         "selected-document-deleted-successfully": "Izabrani dokument je uspešno obrisan",
         "unable-to-delete-selected-document": "Nije moguće obrisati izabrani dokument",
         "error-downloading-document": "Greška prilikom preuzimanja dokumenta",
-        "error-previewing-document": "Greška prilikom pregleda dokumenta"
+        "error-previewing-document": "Greška prilikom pregleda dokumenta",
+        "no-files-uploaded": "Nema učitanih fajlova"
     },
     "files-uploader": {
         "files-successfully-uploaded": "Fajlovi uspešno učitani",

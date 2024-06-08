@@ -148,7 +148,7 @@
 }
 
 .navbar-text {
-    color: #5E5BF4;
+    color: var(--primary-color);
     font-weight: bold;
     font-size: 24px;
 }
@@ -173,7 +173,7 @@
 }
 
 #gear:hover {
-    color: #5E5BF4;
+    color: var(--primary-color);
 }
 
 .user-div {
@@ -203,5 +203,5 @@
 }
 
 #faq:hover {
-    color: #5E5BF4;
+    color: var(--primary-color);
 }
