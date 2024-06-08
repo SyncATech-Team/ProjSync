@@ -323,7 +323,7 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
-    this.showConfirmDialog = false;
+    this.showConfirmDialog = false; // ne prikazuj dialog za potvrdu gantt stranice kada se otvori modal za issue
     this.translateService.get('issue.issue-details').subscribe((res: string) => {
         this.ref1 = this._modalService.open(IssueModalComponent, {
             header: res,
