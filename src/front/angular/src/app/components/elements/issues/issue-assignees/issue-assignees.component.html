@@ -17,7 +17,7 @@
       <span [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(assignee!.username)">
         <i class="pi pi-user"></i>
       </span>
-      <svg-icon (click)="removeUser(assignee?.id)"
+      <svg-icon *ngIf="canManageTask === 'True'" (click)="removeUser(assignee?.id)"
         [title]=" 'issue-assignees.remove-assignee' | translate "
         [size]="20"
         [name]="'times'"
@@ -48,7 +48,7 @@
   </div>
 </ng-template>
 
-<a class="add-more" (click)="op.toggle($event)"
+<a *ngIf="canManageTask === 'True'" class="add-more" (click)="op.toggle($event)"
    style="font-size: 12.5px; cursor: pointer; display: inline-block; align-items: center; color: #0052cc;">
   <i class="mr-1"></i>
   {{ 'issue-assignees.add-assignee' | translate }}

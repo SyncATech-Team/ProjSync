@@ -11,6 +11,8 @@ import {OverlayPanel} from "primeng/overlaypanel";
 })
 export class IssueStatusComponent implements OnInit {
   @Input() issue!: JIssue;
+  @Input() canManageTask!: string;
+
   IssueStatusDisplayMap = IssueStatusDisplay;
 
   variants = {

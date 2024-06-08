@@ -8,6 +8,7 @@ import {FilterQuery} from "../../../state/filter/filter.query";
 import {FilterState} from "../../../state/filter/filter.store";
 import {IssueUtil} from "../../../utils/issue-util";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
+import { AccountService } from '../../../../_service/account.service';
 
 @Component({
   selector: '[board-dnd-list]',
@@ -26,7 +27,11 @@ export class BoardDndListComponent implements OnInit {
   IssueStatusDisplay = IssueStatusDisplay;
   issues: JIssue[] = [];
 
-  constructor(private _projectService: ProjectService, private _filterQuery: FilterQuery) {
+  canManageTask: string = '';
+
+  constructor(private _projectService: ProjectService, private _filterQuery: FilterQuery,
+    private accountService: AccountService
+  ) {
   }
 
   ngOnInit(): void {
@@ -35,6 +40,13 @@ export class BoardDndListComponent implements OnInit {
       .subscribe(([issues, filter]) => {
         this.issues = this.filterIssues(issues, filter);
       });
+
+    var user = this.accountService.getCurrentUser();
+
+    if (user?.permitions) {
+
+      this.canManageTask = user.permitions.canManageTasks;
+    }
   }
 
   drop(event: CdkDragDrop<JIssue[]>) {

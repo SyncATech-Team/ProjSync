@@ -10,6 +10,8 @@ import {ProjectService} from "../../../state/project/project.service";
 })
 export class IssueTitleComponent implements OnChanges {
   @Input() issue!: JIssue;
+  @Input() canManageTask!: string;
+
   titleControl!: FormControl;
 
   constructor(private _projectService: ProjectService) {}
@@ -22,9 +24,18 @@ export class IssueTitleComponent implements OnChanges {
   }
 
   onBlur() {
-    this._projectService.updateIssue({
-      ...this.issue,
-      title: this.titleControl.value
-    }, this.issue.title);
+    // pozovi servis samo ako neko moze da menja zadatke
+    if (this.canManageTask === 'True') {
+
+      this._projectService.updateIssue({
+
+        ...this.issue,
+        title: this.titleControl.value
+      }, this.issue.title);
+
+    } else {
+      
+      return;
+    }
   }
 }

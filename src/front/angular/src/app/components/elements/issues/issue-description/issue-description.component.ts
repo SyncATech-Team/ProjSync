@@ -12,6 +12,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class IssueDescriptionComponent implements OnChanges {
   @Input() issue!: JIssue;
+  @Input() canManageTask!: string;
+
   descriptionControl!: FormControl;
   editorOptions = quillConfiguration;
   isEditing!: boolean;
@@ -20,7 +22,12 @@ export class IssueDescriptionComponent implements OnChanges {
   constructor(
     private _projectService: ProjectService,
     private _sanitizer: DomSanitizer
-  ) {}
+  ) {
+
+    if (this.canManageTask !== 'True') {
+      this.isEditing = false;
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const issueChange = changes['issue'];
@@ -30,7 +37,14 @@ export class IssueDescriptionComponent implements OnChanges {
   }
 
   setEditMode(mode: boolean) {
-    this.isEditing = mode;
+
+    if (this.canManageTask !== 'True') {
+      this.isEditing = false;
+
+    } else {
+      this.isEditing = mode;
+    }
+
   }
 
   editorCreated(editor: any) {
