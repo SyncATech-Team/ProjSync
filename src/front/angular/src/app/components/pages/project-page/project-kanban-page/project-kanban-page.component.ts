@@ -9,6 +9,7 @@ import {UserGetter} from "../../../../_models/user-getter";
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTaskComponent } from '../../../elements/create-task/create-task.component';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from '../../../../_service/account.service';
 
 @Component({
   selector: 'app-project-kanban-page',
@@ -20,6 +21,8 @@ export class ProjectKanbanPageComponent implements OnInit {
   usersPhotos: PhotoForUser[] = [];
   users: UserGetter[] = [];
 
+  canManageTask: string = '';
+
   ref: DynamicDialogRef | undefined;
 
   constructor(
@@ -29,7 +32,8 @@ export class ProjectKanbanPageComponent implements OnInit {
     public projectQuery: ProjectQuery,
     private route: ActivatedRoute,
     private _modalService: DialogService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private accountService: AccountService
   ){
   }
 
@@ -46,6 +50,13 @@ export class ProjectKanbanPageComponent implements OnInit {
         console.log(error);
       }
     });
+
+    var user = this.accountService.getCurrentUser();
+    
+    if(user?.permitions) {
+
+      this.canManageTask = user.permitions.canManageTasks;
+    }
   }
 
   showCreateTaskPopupTaskKanban() {
