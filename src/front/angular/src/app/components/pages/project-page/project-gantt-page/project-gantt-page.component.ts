@@ -39,6 +39,7 @@ import { UserProfilePicture } from '../../../../_service/userProfilePicture.serv
 import { ProjectService } from '../../../state/project/project.service';
 import { DateService } from '../../../../_service/date.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from '../../../../_service/account.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -112,6 +113,8 @@ ref1: DynamicDialogRef | undefined;
 users: UserGetter[] = [];
 usersPhotos!: PhotoForUser[];
 
+canManageTask: string = '';
+
 /**
  * Koje opcije se prikazuju u toolbar-u
  */
@@ -140,7 +143,7 @@ constructor(
     private issueService: IssueService,
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
-    private groupService: GroupService, 
+    private accountService: AccountService, 
     private _modalService: DialogService,
     private _projectQuery: ProjectQuery,
     private userOnProject : UserOnProjectService,
@@ -180,6 +183,13 @@ ngOnInit(): void {
     this.fetchGroups();
     this.fetchIssues();
     this.fetchUsers();
+
+    var user = this.accountService.getCurrentUser();
+    
+    if(user?.permitions) {
+
+      this.canManageTask = user.permitions.canManageTasks;
+    }
 }
 
 fetchGroups() {
@@ -200,27 +210,6 @@ fetchGroups() {
             this.groups = dataGroups;
         }
     });
-
-    // [NAPOMENA]: Ukoliko ne radi kod iznad, otkomentarisati stari poziv
-    // 
-    // this.groupService.getAllGroups(this.projectName).subscribe({
-    //     next: response => {
-    //         let data = response;
-    //         const dataGroups = [];
-    //         for(let group of data) {
-    //             dataGroups.push({
-    //                 // dodavanje nula za id da bi se razlikovali id-evi za task i grupe
-    //                 id: "0000" + group.id,
-    //                 title: group.name,
-    //                 expanded: this.expanded
-    //             })
-    //         }
-    //         this.groups = dataGroups;
-    //     },
-    //     error: error => {
-    //         console.log("ERROR!!!");
-    //     } 
-    // });
 }
 
 fetchIssues() {

@@ -14,6 +14,8 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class IssueDependenciesComponent implements OnInit{
   @Input() issue!: JIssue;
+  @Input() canManageTask!: string;
+  
   issues : JIssue[] = [];
   projectName : string = "";
 

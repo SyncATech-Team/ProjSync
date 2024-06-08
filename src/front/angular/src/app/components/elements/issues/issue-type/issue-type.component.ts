@@ -13,6 +13,8 @@ import {OverlayPanel} from "primeng/overlaypanel";
 })
 export class IssueTypeComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
+  @Input() canManageTask!: string;
+
   issueTypes: IssueTypeWithIcon[];
 
   constructor(private _projectService: ProjectService, private cdr: ChangeDetectorRef) {

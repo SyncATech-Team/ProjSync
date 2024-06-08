@@ -23,6 +23,8 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
   @Input() users!: JUser[] | null;
   @Input() usersPhotos!: PhotoForUser[];
+  @Input() canManageTask!: string;
+  
   assignees!: (JUser | undefined)[];
   valueList!: UsersWithCompletion[];
 
