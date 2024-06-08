@@ -13,6 +13,7 @@ import {OverlayPanel} from "primeng/overlaypanel";
 })
 export class IssuePriorityComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
+  @Input() canManageTask!: string;
 
   selectedPriority!: IssuePriority;
   get selectedPriorityIcon() {

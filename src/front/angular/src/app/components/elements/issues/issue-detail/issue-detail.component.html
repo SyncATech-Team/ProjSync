@@ -1,25 +1,20 @@
 <div *ngIf="issue; else loaderTmpl" class="detail-modal pl-3">
-    <div *ngIf="canManageTask === 'True'" class="d-flex align-items-center pt-3 text-dark">
-        <issue-type [issue]="issue"></issue-type>
+    <div class="d-flex align-items-center pt-3 text-dark">
+        <issue-type 
+          [issue]="issue"
+          [canManageTask]="canManageTask">
+        </issue-type>
 
         <div class="flex-auto"></div>
 
         <!-- <p-toast></p-toast> -->
         <p-confirmDialog></p-confirmDialog>
 
-        <button pButton
+        <button *ngIf="canManageTask==='True'" pButton
             class="btn btn-empty icon-only delButton"
             icon="pi pi-trash"
             (click)="confirmDelete($event)">
         </button>
-    </div>
-
-    <div *ngIf="canManageTask !== 'True'">
-        {{ issue.type }}-{{issue.id}}
-        <svg-icon 
-          [name]="selectedIssueTypeIcon" 
-          [size]="20">
-        </svg-icon>
     </div>
     
     <div class="d-flex w-100 flex-wrap pb-16">
@@ -45,32 +40,41 @@
             <div class="pt-4 pb-2 fs-5 fw-bold" >{{'issue-details.comments' | translate}}</div>   
             <issue-comments [issue]="issue"
                             [users]="projectQuery.users$ | async"
-                              [usersPhotos]="usersPhotos">
+                            [usersPhotos]="usersPhotos">
             </issue-comments>
             
         </div>
-    
-            
-            
-            <!-- Desna strana modala -->
+        
+        <!-- Desna strana modala -->
         <div class="col-sm-12 col-md-5 col-lg-4 pt-1">
-            <issue-status [issue]="issue"></issue-status>
+            <issue-status 
+              [issue]="issue"
+              [canManageTask]="canManageTask">
+            </issue-status>
+
             <p-divider></p-divider>
             <issue-reporter [issue]="issue"
                             [users]="projectQuery.users$ | async"
-                            [usersPhotos]="usersPhotos">
+                            [usersPhotos]="usersPhotos"
+                            [canManageTask]="canManageTask">
             </issue-reporter>
+
             <p-divider></p-divider>
             <issue-assignees [issue]="issue"
                             [users]="projectQuery.users$ | async"
-                            [usersPhotos]="usersPhotos">
+                            [usersPhotos]="usersPhotos"
+                            [canManageTask]="canManageTask">
             </issue-assignees>
+
             <p-divider></p-divider>
-            <issue-priority [issue]="issue"></issue-priority>
+            <issue-priority 
+              [issue]="issue" 
+              [canManageTask]="canManageTask">
+            </issue-priority>
             
             <p-divider></p-divider>
             <div>
-                <app-issue-dependencies [issue]="issue"></app-issue-dependencies>
+                <app-issue-dependencies [issue]="issue" [canManageTask]="canManageTask"></app-issue-dependencies>
             </div>
             <p-divider></p-divider>
 
