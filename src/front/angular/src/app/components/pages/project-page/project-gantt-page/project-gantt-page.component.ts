@@ -121,6 +121,8 @@ toolbarOptions: GanttToolbarOptions = {
 
 baselineItems: GanttBaselineItem[] = [];
 
+showConfirmDialog = true;
+
 options = {
     viewType: GanttViewType.day
 };
@@ -321,6 +323,7 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
+    this.showConfirmDialog = false;
     this.translateService.get('issue.issue-details').subscribe((res: string) => {
         this.ref1 = this._modalService.open(IssueModalComponent, {
             header: res,
@@ -342,6 +345,7 @@ openIssueModal(issueId : string){
 
         this.ref1.onClose.subscribe({
             next: _ => {
+                this.showConfirmDialog = true;
                 this.refresh();
             }
         });
