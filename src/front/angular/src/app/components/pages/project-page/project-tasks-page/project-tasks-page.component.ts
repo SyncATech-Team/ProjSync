@@ -16,6 +16,7 @@ import {UserOnProjectService} from "../../../../_service/userOnProject.service";
 import {UserGetter} from "../../../../_models/user-getter";
 import { TableLazyLoadEvent } from 'primeng/table';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from '../../../../_service/account.service';
 
 @Component({
   selector: 'app-project-tasks-page',
@@ -55,6 +56,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
   totalRecords = 0;
   completedValues: number[] = [0,100]; 
 
+  canManageTask: string = '';
+
   ref: DynamicDialogRef | undefined;
 
   clickedModalForCreatingTask: boolean = false;
@@ -70,7 +73,8 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
     private _projectService: ProjectService,
     public userPictureService: UserProfilePicture,
     private userOnProject : UserOnProjectService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private accountService: AccountService
   ) {
     this.projectName = route.snapshot.paramMap.get('projectName');
     this.searchTermChanged.pipe(debounceTime(500), distinctUntilChanged()).subscribe(_ => this.loadIssues(this.lastLazyLoadEvent));
@@ -103,6 +107,13 @@ export class ProjectTasksPageComponent implements OnInit, OnDestroy {
           console.log(error);
         }
       });
+    }
+
+    var user = this.accountService.getCurrentUser();
+    
+    if(user?.permitions) {
+
+      this.canManageTask = user.permitions.canManageTasks;
     }
 
   }

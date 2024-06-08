@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GroupService } from '../../../_service/group.service';
-import { CreateTaskComponent } from '../create-task/create-task.component';
 import { MessagePopupService } from '../../../_service/message-popup.service';
 import { GroupInProjectSend } from '../../../_models/group-in-project-send';
 import { TranslateService } from '@ngx-translate/core';
