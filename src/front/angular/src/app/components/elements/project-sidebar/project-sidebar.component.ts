@@ -163,4 +163,9 @@ export class ProjectSidebarComponent implements OnInit {
       image.src = src;
     }
   }
+
+  shouldShowProjectSettings() {
+    return this.permitions.canManageProjects === 'True' || this.project?.ownerUsername == this.accoutService.getCurrentUser()?.username;
+  }
+
 }
