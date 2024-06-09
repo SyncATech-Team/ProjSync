@@ -307,6 +307,8 @@ openIssueModal(issueId : string){
   }
 
 lineClick(event: GanttLineClickEvent) {
+    if(this.hasPermissionToManageTasks() === false) return;
+    
     this.translateService.get([
         'project-gantt-page.do-you-want-to-delete-this-dependency',
         'project-gantt-page.delete-confirmation',
@@ -507,6 +509,10 @@ showCreateTaskPopupTaskGantt() {
 
     });
 
+  }
+
+  hasPermissionToManageTasks() {
+    return this.canManageTask === 'True';
   }
 
 }
