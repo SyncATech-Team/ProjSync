@@ -5,9 +5,9 @@ import {ProjectService} from "../../../state/project/project.service";
 import {ProjectQuery} from "../../../state/project/project.query";
 import {PhotoForUser} from "../../../../_models/photo-for-user";
 import { DocumentTitle } from '../../../../_models/document-title.model';
-import { IssueDocumentationService } from '../../../../_service/issue-documentation.service';
 import { AccountService } from '../../../../_service/account.service';
 import { TranslateService } from '@ngx-translate/core';
+import { IssueUtil } from '../../../utils/issue-util';
 
 @Component({
   selector: 'issue-detail',
@@ -25,9 +25,10 @@ export class IssueDetailComponent implements OnInit{
   documentTitles: DocumentTitle[] = [];
   documentTitlesBackup: DocumentTitle[] = [];
   permission: any;
+  canManageTask: string = '';
 
   constructor(
-    public accoutService: AccountService,
+    public accountService: AccountService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     public projectQuery: ProjectQuery,
@@ -36,9 +37,12 @@ export class IssueDetailComponent implements OnInit{
   ) {
   }
   ngOnInit(): void {
-    var user = this.accoutService.getCurrentUser();
-    if(user?.permitions){
+    var user = this.accountService.getCurrentUser();
+
+    if(user?.permitions) {
+
       this.permission = user.permitions;
+      this.canManageTask = user.permitions.canManageTasks;
     }
   }
 
@@ -72,5 +76,10 @@ export class IssueDetailComponent implements OnInit{
         }
       });
     });
+  }
+
+  get selectedIssueTypeIcon(): string {
+    if (!this.issue) return '';
+    return IssueUtil.getIssueTypeIcon(this.issue.type);
   }
 }

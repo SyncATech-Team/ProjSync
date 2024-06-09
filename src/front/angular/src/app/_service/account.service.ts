@@ -54,7 +54,7 @@ export class AccountService {
       return null; // localStorage is not available, return null
     }
 
-    var storage = this.localService.getData('user'); //localStorage.getItem("user");
+    var storage = this.localService.getData('user');
     if(!storage) return null;
 
     var user = JSON.parse(storage);

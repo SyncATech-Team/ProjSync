@@ -50,6 +50,7 @@
                     
                     <div class="btn-add-user">
                         <p-button
+                            *ngIf="hasProjectManagementPermissions()"
                             data-bs-toggle="modal"
                             data-bs-target="#modalAddUser"
                             [outlined]="true"
@@ -122,7 +123,7 @@
                             <p-sortIcon field="status"></p-sortIcon>
                             <p-columnFilter type="text" field="status" display="menu"></p-columnFilter>
                         </th>
-                        <th pReorderableColumn pResizableColumn *ngIf="column==''"></th>
+                        <th pReorderableColumn pResizableColumn *ngIf="column=='' && hasProjectManagementPermissions()"></th>
                     </ng-container>
                 </tr>
             </ng-template>
@@ -189,9 +190,10 @@
                             <span> {{user.status }}</span>
                         </td>
 
-                        <td *ngIf="column==''"><span class="p-column-title" style="font-weight: bold">
-                            {{ 'project-people-page.actions' | translate}}
-                        </span>
+                        <td *ngIf="column=='' && hasProjectManagementPermissions()">
+                            <span class="p-column-title" style="font-weight: bold">
+                                {{ 'project-people-page.actions' | translate}}
+                            </span>
                             <div *ngIf="project && (user.username !== project.ownerUsername)" class="action">
                                 <div class="deleteBtn">
                                     <button type="button" pButton pRipple icon="fa-solid fa-right-from-bracket" 

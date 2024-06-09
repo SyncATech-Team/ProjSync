@@ -6,7 +6,7 @@
         </div>
 
         <div>
-            <p-button class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="showOptionsPredecessor()"/>
+            <p-button *ngIf="canManageTask === 'True'" class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op1.toggle($event)" (onClick)="showOptionsPredecessor()"/>
             <p-overlayPanel #op1 [style]="{'max-height':'300px','overflow-y':'auto'}">
                 <span class="op-title"> {{'issue-dependencies.add-predecessor' | translate}} </span>
                 
@@ -35,7 +35,7 @@
                     <div class="polje">
                         <span class="predecessor-item" pTooltip="{{ predecessor.name }}">{{ getTrimmedTitle(predecessor.name, 1) }}</span>
                     </div>
-                    <div class="closeBtn">
+                    <div *ngIf="canManageTask === 'True'" class="closeBtn">
                         <i class="fa-solid fa-xmark" (click)="deletePredecessor(predecessor)"></i>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
         </div>
 
         <div>
-            <p-button class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="showOptionsSuccessor()"/>
+            <p-button *ngIf="canManageTask === 'True'" class="addBtn" [label]="'general.add' | translate" [text]="true" [raised]="true" (click)="op2.toggle($event)" (onClick)="showOptionsSuccessor()"/>
             <p-overlayPanel #op2 [style]="{'max-height':'300px','overflow-y':'auto'}">
                 <span class="op-title"> {{'issue-dependencies.add-successor' | translate}} </span>
                 
@@ -79,7 +79,7 @@
                     <div class="polje">
                         <span class="successor-item" pTooltip="{{ successor.name }}">{{ getTrimmedTitle(successor.name, 1) }}</span>
                     </div>
-                    <div class="closeBtn">
+                    <div *ngIf="canManageTask === 'True'" class="closeBtn">
                         <i class="fa-solid fa-xmark" (click)="deleteSuccessor(successor)"></i>
                     </div>
                 </div>

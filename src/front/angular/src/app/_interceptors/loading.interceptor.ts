@@ -19,6 +19,11 @@ export class LoadingInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    // dont set loading for the logs -> look ath the logs.service.ts, method getLogsRange and getLogsCount
+    if (request.url.includes('Logs/logs')) {
+      return next.handle(request);
+    }
+
     this.totalRequests++;
     this.loadingService.setLoading(true);
     return next.handle(request).pipe(

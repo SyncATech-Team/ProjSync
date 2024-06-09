@@ -13,7 +13,7 @@
         <div id="content">
             <div id="tasks-header">
                 <div id="add-task-div">
-                    <button id="create-task-button" (click)="showCreateTaskPopupTaskList()"> {{'project-tasks-page.create-task' | translate }} </button>
+                    <button *ngIf="canManageTask === 'True'" id="create-task-button" (click)="showCreateTaskPopupTaskList()"> {{'project-tasks-page.create-task' | translate }} </button>
                 </div>
 
                 <div id="change-view">

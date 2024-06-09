@@ -114,6 +114,7 @@ namespace backAPI.Repositories.Implementation
             user.CreatedAt = user.CreatedAt;
             user.UpdatedAt = DateTime.Now;
             user.IsActive = request.isActive;
+            user.PreferedTheme = request.PreferedTheme;
 
             await userManager.UpdateAsync(user);
 

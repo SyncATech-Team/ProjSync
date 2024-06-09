@@ -90,7 +90,8 @@ namespace backAPI.Controllers
                     PreferedLanguage = user.PreferedLanguage,
                     CreatedAt = user.CreatedAt,
                     UpdatedAt = user.UpdatedAt,
-                    isActive = user.IsActive
+                    isActive = user.IsActive,
+                    PreferedTheme = user.PreferedTheme
                 });
             }
 

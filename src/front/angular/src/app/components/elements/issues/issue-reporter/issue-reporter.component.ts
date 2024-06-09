@@ -22,6 +22,8 @@ export class IssueReporterComponent implements OnInit, OnChanges {
   @Input() issue!: JIssue;
   @Input() users!: JUser[] | null;
   @Input() usersPhotos!: PhotoForUser[];
+  @Input() canManageTask!: string;
+  
   reporter: JUser | undefined;
 
   constructor(private _projectService: ProjectService,

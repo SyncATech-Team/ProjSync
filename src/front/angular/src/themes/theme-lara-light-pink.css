@@ -6,7 +6,7 @@
     --color-value-2: #bcd0f5;
     --side-bar-link: black;
     --chat-header: color-mix(in srgb, var(--primary-color), #fff 60% );
-    --sent-msg-background:  lightgreen;
+    --sent-msg-background: color-mix(in srgb, var(--primary-color), #fff 60% );
     --primary-color-hover: #db2777;
 }
 
