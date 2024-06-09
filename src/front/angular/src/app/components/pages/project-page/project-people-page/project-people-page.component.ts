@@ -14,6 +14,8 @@ import { PhotoForUser } from '../../../../_models/photo-for-user';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserProfileComponent } from '../../../elements/user-profile/user-profile.component';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from '../../../../_service/account.service';
+import { User } from '../../../../_models/user';
 
 @Component({
   selector: 'app-project-people-page',
@@ -46,6 +48,8 @@ export class ProjectPeoplePageComponent implements OnInit{
   usersPhotos: PhotoForUser[] = [];
   ref: DynamicDialogRef | undefined;
 
+  loggedUser!: User;
+
   @ViewChild('createRoleForm') formRecipe?: NgForm;
 
   constructor(
@@ -58,10 +62,12 @@ export class ProjectPeoplePageComponent implements OnInit{
     private projectService: ProjectService,
     private userPictureService: UserProfilePicture,
     private dialogService : DialogService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
+    this.loggedUser = this.accountService.getCurrentUser()!;
     this.columns = ['Email address','Firstname','Lastname','Role','Address','Contact phone','Status'];
     this.selectedColumns = ['Email address','Firstname','Lastname','Role'];
     this.showColumns = ['Username',...this.selectedColumns,''];
@@ -288,5 +294,9 @@ export class ProjectPeoplePageComponent implements OnInit{
         }
       });
     });
+  }
+
+  hasProjectManagementPermissions() {
+    return this.loggedUser.permitions.canManageProjects == 'True' || this.loggedUser.username == this.project?.ownerUsername;
   }
 }
