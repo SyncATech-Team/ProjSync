@@ -38,13 +38,14 @@ export class NavBarComponent implements OnInit {
 
   languages: Language[] = [
     { code: 'en', name: 'English', flag: '../../../../assets/flags/en.png' },
-    { code: 'rs', name: 'Srpski', flag: '../../../../assets/flags/rs.png'},
     { code: 'es', name: 'Español', flag: '../../../../assets/flags/es.png'},
     { code: 'fr', name: 'Français', flag: '../../../../assets/flags/fr.png'},
+    { code: 'it', name: 'Italiano', flag: '../../../../assets/flags/it.png' },
+    { code: 'de', name: 'Deutsch', flag: '../../../../assets/flags/de.png'},
+    { code: 'ru', name: 'Русский', flag: '../../../../assets/flags/ru.png'},
     { code: 'cn', name: '中文', flag: '../../../../assets/flags/cn.png'},
     { code: 'kr', name: '한국어', flag: '../../../../assets/flags/kr.png'},
-    { code: 'ru', name: 'Русский', flag: '../../../../assets/flags/ru.png'},
-    { code: 'de', name: 'Deutsch', flag: '../../../../assets/flags/de.png'},
+    { code: 'rs', name: 'Srpski', flag: '../../../../assets/flags/rs.png'},
     { code: 'gr', name: 'Ελληνικά', flag: '../../../../assets/flags/gr.png'}
   ];
   selectedLanguage: Language = this.languages[0];
