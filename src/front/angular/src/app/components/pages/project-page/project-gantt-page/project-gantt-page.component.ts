@@ -247,41 +247,6 @@ fetchIssues() {
             this.loading = false;
         }
     });
-
-    // [NAPOMENA]: Ukoliko ne radi kod iznad, otkomentarisati stari poziv
-    // 
-    // this.issueService.getAllIssuesForProject(this.projectName).subscribe({
-    //     next: response => {
-    //         let data = response;
-    //         const dataIssues = [];
-    //         for(let issue of data) {
-    //             let startDate = new Date(issue.createdAt);
-    //             let endDate = new Date(issue.dueDate);
-    //             let dependentOnList: string[] = [];
-    //             for(let issueId of issue.dependentOnIssues)
-    //                 dependentOnList.push("" + issueId);
-    //             dataIssues.push({
-    //                 id: issue.id.toString(),
-    //                 title: issue.title,
-    //                 start: getUnixTime(startDate),
-    //                 end: getUnixTime(endDate),
-    //                 group_id: "0000" + issue.groupId,
-    //                 links: dependentOnList,
-    //                 expandable: true,
-    //                 draggable: true,
-    //                 progress: issue.completed/100,
-    //                 reporterUsername: issue.reporterUsername
-    //             });
-    //         }
-    //         this.items = dataIssues;
-    //         this.viewType = GanttViewType.day;
-    //         this.selectedViewType = GanttViewType.day;
-    //         this.loading = false;
-    //     },
-    //     error: error => {
-    //         console.log("Error fetching tasks: " + error.error);
-    //     }
-    // });
 }
 
 fetchUsers() {
@@ -438,13 +403,14 @@ linkDragEnded(event: GanttLinkDragEvent) {
     }
 
     this.issueService.createOrDeleteIssueDependency(model).subscribe({
-        next: response => {
+        next: _ => {
             this.translateService.get('project-gantt-page.dependency-created').subscribe((res: string) => {
                 this.msgPopupService.showInfo(res);
             });
+            this.refresh();
         },
-        error: error => {
-            console.log("ERROR!!! " + error.error);
+        error: _ => {
+            
         }
     })
 
