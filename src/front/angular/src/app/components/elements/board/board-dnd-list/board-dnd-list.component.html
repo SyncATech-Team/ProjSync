@@ -12,7 +12,11 @@
                 [issue]="issue"
                 [usersPhotos]="usersPhotos"
                 cdkDrag
-                [cdkDragData]="issue">
+                [cdkDragData]="issue"
+                [cdkDragDisabled]="canManageTask !== 'True'">
         </issue-card>
+    </div>
+    <div id="break-heh">
+        <br><br><br>
     </div>
 </div>

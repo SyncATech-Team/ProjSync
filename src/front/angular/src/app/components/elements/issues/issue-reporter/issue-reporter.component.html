@@ -3,8 +3,9 @@
 </div>
 <p-button
   [text]="true"
-  [raised]="true"
-  (click)="op.toggle($event)">
+  [raised]="canManageTask === 'True'"
+  (click)="op.toggle($event)"
+  [disabled]="canManageTask !== 'True'">
 
   <div class="d-flex align-items-center items-center">
     <p-avatar

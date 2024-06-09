@@ -39,6 +39,7 @@ import { UserProfilePicture } from '../../../../_service/userProfilePicture.serv
 import { ProjectService } from '../../../state/project/project.service';
 import { DateService } from '../../../../_service/date.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from '../../../../_service/account.service';
 
 @Component({
   selector: 'app-project-gantt-page',
@@ -112,6 +113,8 @@ ref1: DynamicDialogRef | undefined;
 users: UserGetter[] = [];
 usersPhotos!: PhotoForUser[];
 
+canManageTask: string = '';
+
 /**
  * Koje opcije se prikazuju u toolbar-u
  */
@@ -120,6 +123,8 @@ toolbarOptions: GanttToolbarOptions = {
 };
 
 baselineItems: GanttBaselineItem[] = [];
+
+showConfirmDialog = true;
 
 options = {
     viewType: GanttViewType.day
@@ -138,7 +143,7 @@ constructor(
     private issueService: IssueService,
     private msgPopupService: MessagePopupService,
     private confirmationService: ConfirmationService,
-    private groupService: GroupService, 
+    private accountService: AccountService, 
     private _modalService: DialogService,
     private _projectQuery: ProjectQuery,
     private userOnProject : UserOnProjectService,
@@ -178,6 +183,13 @@ ngOnInit(): void {
     this.fetchGroups();
     this.fetchIssues();
     this.fetchUsers();
+
+    var user = this.accountService.getCurrentUser();
+    
+    if(user?.permitions) {
+
+      this.canManageTask = user.permitions.canManageTasks;
+    }
 }
 
 fetchGroups() {
@@ -198,27 +210,6 @@ fetchGroups() {
             this.groups = dataGroups;
         }
     });
-
-    // [NAPOMENA]: Ukoliko ne radi kod iznad, otkomentarisati stari poziv
-    // 
-    // this.groupService.getAllGroups(this.projectName).subscribe({
-    //     next: response => {
-    //         let data = response;
-    //         const dataGroups = [];
-    //         for(let group of data) {
-    //             dataGroups.push({
-    //                 // dodavanje nula za id da bi se razlikovali id-evi za task i grupe
-    //                 id: "0000" + group.id,
-    //                 title: group.name,
-    //                 expanded: this.expanded
-    //             })
-    //         }
-    //         this.groups = dataGroups;
-    //     },
-    //     error: error => {
-    //         console.log("ERROR!!!");
-    //     } 
-    // });
 }
 
 fetchIssues() {
@@ -256,41 +247,6 @@ fetchIssues() {
             this.loading = false;
         }
     });
-
-    // [NAPOMENA]: Ukoliko ne radi kod iznad, otkomentarisati stari poziv
-    // 
-    // this.issueService.getAllIssuesForProject(this.projectName).subscribe({
-    //     next: response => {
-    //         let data = response;
-    //         const dataIssues = [];
-    //         for(let issue of data) {
-    //             let startDate = new Date(issue.createdAt);
-    //             let endDate = new Date(issue.dueDate);
-    //             let dependentOnList: string[] = [];
-    //             for(let issueId of issue.dependentOnIssues)
-    //                 dependentOnList.push("" + issueId);
-    //             dataIssues.push({
-    //                 id: issue.id.toString(),
-    //                 title: issue.title,
-    //                 start: getUnixTime(startDate),
-    //                 end: getUnixTime(endDate),
-    //                 group_id: "0000" + issue.groupId,
-    //                 links: dependentOnList,
-    //                 expandable: true,
-    //                 draggable: true,
-    //                 progress: issue.completed/100,
-    //                 reporterUsername: issue.reporterUsername
-    //             });
-    //         }
-    //         this.items = dataIssues;
-    //         this.viewType = GanttViewType.day;
-    //         this.selectedViewType = GanttViewType.day;
-    //         this.loading = false;
-    //     },
-    //     error: error => {
-    //         console.log("Error fetching tasks: " + error.error);
-    //     }
-    // });
 }
 
 fetchUsers() {
@@ -321,6 +277,7 @@ barClick(event: GanttBarClickEvent) {
 }
 
 openIssueModal(issueId : string){
+    this.showConfirmDialog = false; // ne prikazuj dialog za potvrdu gantt stranice kada se otvori modal za issue
     this.translateService.get('issue.issue-details').subscribe((res: string) => {
         this.ref1 = this._modalService.open(IssueModalComponent, {
             header: res,
@@ -342,6 +299,7 @@ openIssueModal(issueId : string){
 
         this.ref1.onClose.subscribe({
             next: _ => {
+                this.showConfirmDialog = true;
                 this.refresh();
             }
         });
@@ -349,6 +307,8 @@ openIssueModal(issueId : string){
   }
 
 lineClick(event: GanttLineClickEvent) {
+    if(this.hasPermissionToManageTasks() === false) return;
+    
     this.translateService.get([
         'project-gantt-page.do-you-want-to-delete-this-dependency',
         'project-gantt-page.delete-confirmation',
@@ -445,13 +405,14 @@ linkDragEnded(event: GanttLinkDragEvent) {
     }
 
     this.issueService.createOrDeleteIssueDependency(model).subscribe({
-        next: response => {
+        next: _ => {
             this.translateService.get('project-gantt-page.dependency-created').subscribe((res: string) => {
                 this.msgPopupService.showInfo(res);
             });
+            this.refresh();
         },
-        error: error => {
-            console.log("ERROR!!! " + error.error);
+        error: _ => {
+            
         }
     })
 
@@ -548,6 +509,10 @@ showCreateTaskPopupTaskGantt() {
 
     });
 
+  }
+
+  hasPermissionToManageTasks() {
+    return this.canManageTask === 'True';
   }
 
 }

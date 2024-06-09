@@ -2,5 +2,6 @@
           cdkTextareaAutosize
           [formControl]="titleControl"
           [rows]="1"
-          (blur)="onBlur()">
+          (blur)="onBlur()"
+          [readonly]="canManageTask!=='True'">
 </textarea>

@@ -12,7 +12,7 @@
 
     <div id="tasks-header">
       <div id="add-task-div">
-          <button id="create-task-button" (click)="showCreateTaskPopupTaskKanban()">
+          <button *ngIf="canManageTask === 'True'" id="create-task-button" (click)="showCreateTaskPopupTaskKanban()">
             {{ 'kanban-page.create-task' | translate }}
           </button>
       </div>

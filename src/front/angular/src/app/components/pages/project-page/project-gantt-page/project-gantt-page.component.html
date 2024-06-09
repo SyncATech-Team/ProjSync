@@ -1,4 +1,4 @@
-<p-confirmDialog></p-confirmDialog>
+<p-confirmDialog *ngIf="showConfirmDialog"></p-confirmDialog>
 <!-- <app-spinner></app-spinner> -->
 <app-nav-bar></app-nav-bar>
 
@@ -13,7 +13,7 @@
 
         <div id="tasks-header">
             <div id="add-task-div">
-                <button id="create-task-button" (click)="showCreateTaskPopupTaskGantt()"> {{'project-gantt-page.create-task' | translate}} </button>
+                <button *ngIf="canManageTask === 'True'" id="create-task-button" (click)="showCreateTaskPopupTaskGantt()"> {{'project-gantt-page.create-task' | translate}} </button>
             </div>
 
             <div id="change-view">
@@ -38,11 +38,11 @@
                         </thy-button>
                     </thy-button-group>
                     &nbsp; &nbsp; &nbsp;
-                    <thy-button thyType="primary" thySize="sm" (click)="refresh()">{{'project-gantt-page.refresh' | translate}}</thy-button>
+                    <thy-button class="has-hover" thyType="primary" thySize="sm" (click)="refresh()">{{'project-gantt-page.refresh' | translate}}</thy-button>
                     &nbsp; &nbsp; &nbsp;
-                    <thy-button thyType="primary" thySize="sm" (click)="scrollToToday()">{{'project-gantt-page.today' | translate}}</thy-button>
+                    <thy-button class="has-hover" thyType="primary" thySize="sm" (click)="scrollToToday()">{{'project-gantt-page.today' | translate}}</thy-button>
                     &nbsp; &nbsp; &nbsp;
-                    <thy-button thyType="primary" thySize="sm" (click)="expandAllGroups()">{{'project-gantt-page.collapse-groups' | translate}}</thy-button>
+                    <thy-button class="has-hover" thyType="primary" thySize="sm" (click)="expandAllGroups()">{{'project-gantt-page.collapse-groups' | translate}}</thy-button>
                     <!-- Otkomentarisati za pokusaj printa -->
                     <!-- <thy-button thyType="primary" thySize="sm" (click)="print('gantt-example')"> ↓ 导出为图片 </thy-button> -->
                     <!-- &nbsp; &nbsp; &nbsp; -->
@@ -61,8 +61,8 @@
                     [items]="items"
                     [baselineItems]="baselineItems"
                     [viewType]="viewType"
-                    [draggable]="true"
-                    [linkable]="true"
+                    [draggable]="hasPermissionToManageTasks()"
+                    [linkable]="hasPermissionToManageTasks()"
                     [selectable]="true"
                     [multiple]="false"
                     [viewOptions]="viewOptions"

@@ -70,6 +70,10 @@
     background-color: #6495ED;
 }
 
+.has-hover:hover {
+    background-color: lightblue !important;
+}
+
 :host ::ng-deep .selected-button {
     background-color: rgb(16, 16, 94) !important;
 }
