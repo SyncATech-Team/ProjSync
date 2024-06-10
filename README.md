@@ -41,17 +41,18 @@ Nalozi kojima je moguće prijavljivanje na aplikaciju su dati u uputstvu na stra
 <details>
   <summary>Tabela sa kredencijalima</summary>
 
-|E-mail|Password|Role|
-|:----|:------|:--|
-|admin@gmail.com|Pa$$w0rd|Administrator|
-|lukagvozdenovic02@gmail.com|Ll12345|Administrator|
-|radovan.draskovic7321@gmail.com|Radovan123|Project Manager|
-|vlada.geroski@gmail.com|Password.123|Developer|
-|troveacc5565@gmail.com|Ll12345|Project Manager|
-|mihajlo.nikolic02@icloud.com|Mihajlo123|Developer|
+|E-mail|Username|Password|Role|
+|:----|:------|:------|:--|
+|admin@gmail.com|admin|Pa$$w0rd|Administrator|
+|radovan.draskovic7321@gmail.com|radovan.draskovic|Radovan123|Project Manager|
+|vlada.geroski@gmail.com|vlada.geroski|Password.123|Project Manager|
+|mihajlo.nikolic02@icloud.com|mihajlo.nikolic|Mihajlo123|Developer|
+|radovandk@gmail.com|radovandk|Radovan123|Guest|
 
 </details>
 
+<!-- # |lukagvozdenovic02@gmail.com|Ll12345|Administrator| -->
+<!-- |troveacc5565@gmail.com|Ll12345|Project Manager| -->
 
 <!-- TABLE OF CONTENTS -->
 
